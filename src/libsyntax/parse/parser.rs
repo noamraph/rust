@@ -1802,12 +1802,12 @@ impl<'a> Parser<'a> {
         }
     }
 
-    /// Parse ident COLON expr
+    // parse (ident COLON expr) or (ident EQ expr)
     pub fn parse_field(&mut self) -> Field {
         let lo = self.span.lo;
         let i = self.parse_ident();
         let hi = self.last_span.hi;
-        self.expect(&token::COLON);
+        self.expect_one_of(&[token::COLON, token::EQ], &[]);
         let e = self.parse_expr();
         ast::Field {
             ident: spanned(lo, hi, i),
@@ -2878,7 +2878,7 @@ impl<'a> Parser<'a> {
 
             let fieldname = self.parse_ident();
 
-            let subpat = if self.token == token::COLON {
+            let subpat = if self.token == token::COLON || self.token == token::EQ {
                 match bind_type {
                     BindByRef(..) | BindByValue(MutMutable) => {
                         let token_str = self.this_token_to_string();
