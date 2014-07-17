@@ -26,7 +26,7 @@ impl dog {
 
 fn dog() -> dog {
     dog {
-        cats_chased: 0u
+        cats_chased=0u
     }
 }
 

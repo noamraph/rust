@@ -19,12 +19,12 @@ impl Drop for X {
 }
 
 fn unwrap(x: X) -> String {
-    let X { x: y } = x; //~ ERROR cannot move out of type
+    let X { x=y } = x; //~ ERROR cannot move out of type
     y
 }
 
 fn main() {
-    let x = X { x: "hello".to_string() };
+    let x = X { x="hello".to_string() };
     let y = unwrap(x);
     println!("contents: {}", y);
 }

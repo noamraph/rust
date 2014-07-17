@@ -20,6 +20,6 @@ struct S6 : S1 {
 }
 
 pub fn main() {
-    let s = S6{f2: 3}; //~ ERROR missing field: `f1`
-    let s = S6{f1: 3}; //~ ERROR missing field: `f2`
+    let s = S6{f2=3}; //~ ERROR missing field: `f1`
+    let s = S6{f1=3}; //~ ERROR missing field: `f2`
 }

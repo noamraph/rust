@@ -20,7 +20,7 @@ fn call2<'a, 'b>(a: &'a uint, b: &'b uint) {
 }
 
 fn call3<'a, 'b>(a: &'a uint, b: &'b uint) {
-    let y: Paramd<'a> = Paramd { x: a };
+    let y: Paramd<'a> = Paramd { x=a };
     let z: Option<&'b Paramd<'a>> = None;
     //~^ ERROR pointer has a longer lifetime than the data it references
 }

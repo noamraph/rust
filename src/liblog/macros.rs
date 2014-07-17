@@ -34,9 +34,9 @@
 macro_rules! log(
     ($lvl:expr, $($arg:tt)+) => ({
         static LOC: ::log::LogLocation = ::log::LogLocation {
-            line: line!(),
-            file: file!(),
-            module_path: module_path!(),
+            line=line!(),
+            file=file!(),
+            module_path=module_path!(),
         };
         let lvl = $lvl;
         if log_enabled!(lvl) {

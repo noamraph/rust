@@ -77,13 +77,13 @@ mod cross_crate {
         foo.trait_locked_text();
 
 
-        let _ = DeprecatedStruct { i: 0 }; //~ ERROR use of deprecated item
-        let _ = ExperimentalStruct { i: 0 }; //~ ERROR use of experimental item
-        let _ = UnstableStruct { i: 0 }; //~ ERROR use of unstable item
-        let _ = UnmarkedStruct { i: 0 }; //~ ERROR use of unmarked item
-        let _ = StableStruct { i: 0 };
-        let _ = FrozenStruct { i: 0 };
-        let _ = LockedStruct { i: 0 };
+        let _ = DeprecatedStruct { i=0 }; //~ ERROR use of deprecated item
+        let _ = ExperimentalStruct { i=0 }; //~ ERROR use of experimental item
+        let _ = UnstableStruct { i=0 }; //~ ERROR use of unstable item
+        let _ = UnmarkedStruct { i=0 }; //~ ERROR use of unmarked item
+        let _ = StableStruct { i=0 };
+        let _ = FrozenStruct { i=0 };
+        let _ = LockedStruct { i=0 };
 
         let _ = DeprecatedUnitStruct; //~ ERROR use of deprecated item
         let _ = ExperimentalUnitStruct; //~ ERROR use of experimental item
@@ -381,13 +381,13 @@ mod this_crate {
         foo.trait_locked_text();
 
 
-        let _ = DeprecatedStruct { i: 0 };
-        let _ = ExperimentalStruct { i: 0 };
-        let _ = UnstableStruct { i: 0 };
-        let _ = UnmarkedStruct { i: 0 };
-        let _ = StableStruct { i: 0 };
-        let _ = FrozenStruct { i: 0 };
-        let _ = LockedStruct { i: 0 };
+        let _ = DeprecatedStruct { i=0 };
+        let _ = ExperimentalStruct { i=0 };
+        let _ = UnstableStruct { i=0 };
+        let _ = UnmarkedStruct { i=0 };
+        let _ = StableStruct { i=0 };
+        let _ = FrozenStruct { i=0 };
+        let _ = LockedStruct { i=0 };
 
         let _ = DeprecatedUnitStruct;
         let _ = ExperimentalUnitStruct;

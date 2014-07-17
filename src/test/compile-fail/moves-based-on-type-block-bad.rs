@@ -25,7 +25,7 @@ fn f(s: &S, g: |&S|) {
 }
 
 fn main() {
-    let s = S { x: box Bar(box 42) };
+    let s = S { x=box Bar(box 42) };
     loop {
         f(&s, |hellothere| {
             match hellothere.x { //~ ERROR cannot move out

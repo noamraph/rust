@@ -31,6 +31,6 @@ fn bar(f: &mut Foo) {
 }
 
 fn main() {
-  let mut f = Foo { n: HashSet::new() };
+  let mut f = Foo { n=HashSet::new() };
   bar(&mut f);
 }

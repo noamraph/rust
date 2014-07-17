@@ -12,7 +12,7 @@ struct vec2 { y: f32 }
 struct vec3 { y: f32, z: f32 }
 
 fn make(v: vec2) {
-    let vec3 { y: _, z: _ } = v;
+    let vec3 { y=_, z=_ } = v;
     //~^ ERROR `vec3` does not name the structure `vec2`
     //~^^ ERROR struct `vec2` does not have a field named `z`
 }

@@ -40,7 +40,7 @@ fn innocent_looking_victim() {
 }
 
 fn conspirator(f: |&mut R, bool|) {
-    let mut r = R {c: f};
+    let mut r = R {c=f};
     f(&mut r, false) //~ ERROR use of moved value
 }
 

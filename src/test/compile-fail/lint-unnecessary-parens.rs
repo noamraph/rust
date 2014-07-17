@@ -20,7 +20,7 @@ fn foo() -> int {
     return (1i); //~ ERROR unnecessary parentheses around `return` value
 }
 fn bar() -> X {
-    return (X { y: true }); //~ ERROR unnecessary parentheses around `return` value
+    return (X { y=true }); //~ ERROR unnecessary parentheses around `return` value
 }
 
 fn main() {
@@ -32,16 +32,16 @@ fn main() {
     match (true) { //~ ERROR unnecessary parentheses around `match` head expression
         _ => {}
     }
-    let v = X { y: false };
+    let v = X { y=false };
     // struct lits needs parens, so these shouldn't warn.
-    if (v == X { y: true }) {}
-    if (X { y: true } == v) {}
-    if (X { y: false }.y) {}
+    if (v == X { y=true }) {}
+    if (X { y=true } == v) {}
+    if (X { y=false }.y) {}
 
-    while (X { y: false }.foo()) {}
-    while (true | X { y: false }.y) {}
+    while (X { y=false }.foo()) {}
+    while (true | X { y=false }.y) {}
 
-    match (X { y: false }) {
+    match (X { y=false }) {
         _ => {}
     }
 

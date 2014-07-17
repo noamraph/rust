@@ -1550,14 +1550,14 @@ fn test_simplification() {
     let item = quote_item!(&cx,
         fn new_int_alist<B>() -> alist<int, B> {
             fn eq_int(a: int, b: int) -> bool { a == b }
-            return alist {eq_fn: eq_int, data: Vec::new()};
+            return alist {eq_fn=eq_int, data=Vec::new()};
         }
     ).unwrap();
     let item_in = e::IIItemRef(item);
     let item_out = simplify_ast(item_in);
     let item_exp = ast::IIItem(quote_item!(cx,
         fn new_int_alist<B>() -> alist<int, B> {
-            return alist {eq_fn: eq_int, data: Vec::new()};
+            return alist {eq_fn=eq_int, data=Vec::new()};
         }
     ).unwrap());
     match (item_out, item_exp) {

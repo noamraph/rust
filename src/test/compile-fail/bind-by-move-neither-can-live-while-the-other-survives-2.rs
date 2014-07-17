@@ -17,7 +17,7 @@ impl Drop for X {
 }
 
 fn main() {
-    let x = Some((X { x: () }, X { x: () }));
+    let x = Some((X { x=() }, X { x=() }));
     match x {
         Some((ref _y, _z)) => { }, //~ ERROR cannot bind by-move and by-ref in the same pattern
         None => fail!()

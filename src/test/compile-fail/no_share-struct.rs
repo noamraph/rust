@@ -15,7 +15,7 @@ struct Foo { a: int, m: marker::NoShare }
 fn bar<T: Share>(_: T) {}
 
 fn main() {
-    let x = Foo { a: 5, m: marker::NoShare };
+    let x = Foo { a=5, m=marker::NoShare };
     bar(x);
     //~^ ERROR instantiating a type parameter with an incompatible type `Foo`,
     //         which does not fulfill `Share`

@@ -14,7 +14,7 @@ struct Foo {
 
 impl Foo {
     fn bar() {
-        Foo { baz: 0 }.bar();
+        Foo { baz=0 }.bar();
     }
 
     fn bar() { //~ ERROR duplicate definition of value `bar`

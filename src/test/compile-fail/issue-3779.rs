@@ -14,5 +14,5 @@ struct S {
 }
 
 fn main() {
-    let x = S { element: None };
+    let x = S { element=None };
 }

@@ -25,7 +25,7 @@ impl methods for point {
 }
 
 fn a() {
-    let mut p = point {x: 3, y: 4};
+    let mut p = point {x=3, y=4};
 
     // Here: it's ok to call even though receiver is mutable, because we
     // can loan it out.
@@ -38,7 +38,7 @@ fn a() {
 }
 
 fn b() {
-    let mut p = point {x: 3, y: 4};
+    let mut p = point {x=3, y=4};
 
     // Here I create an outstanding loan and check that we get conflicts:
 

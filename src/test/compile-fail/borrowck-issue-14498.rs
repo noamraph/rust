@@ -25,7 +25,7 @@ fn borrow_in_var_from_var() {
 }
 
 fn borrow_in_var_from_field() {
-    let mut x = A { a: 1 };
+    let mut x = A { a=1 };
     let y = box &mut x.a;
     let p = &y;
     let q = &***p;
@@ -36,7 +36,7 @@ fn borrow_in_var_from_field() {
 
 fn borrow_in_field_from_var() {
     let mut x: int = 1;
-    let y = B { a: box &mut x };
+    let y = B { a=box &mut x };
     let p = &y.a;
     let q = &***p;
     **y.a = 2; //~ ERROR cannot assign to `**y.a` because it is borrowed
@@ -45,8 +45,8 @@ fn borrow_in_field_from_var() {
 }
 
 fn borrow_in_field_from_field() {
-    let mut x = A { a: 1 };
-    let y = B { a: box &mut x.a };
+    let mut x = A { a=1 };
+    let y = B { a=box &mut x.a };
     let p = &y.a;
     let q = &***p;
     **y.a = 2; //~ ERROR cannot assign to `**y.a` because it is borrowed

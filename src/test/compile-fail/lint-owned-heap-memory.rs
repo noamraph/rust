@@ -17,6 +17,6 @@ struct Foo {
 }
 
 fn main() {
-    let _x : Foo = Foo {x : box 10};
+    let _x : Foo = Foo {x =box 10};
     //~^ ERROR type uses owned
 }

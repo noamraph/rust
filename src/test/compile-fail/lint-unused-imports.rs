@@ -65,7 +65,7 @@ mod bar {
 }
 
 fn main() {
-    cal(foo::Point{x:3, y:9});
+    cal(foo::Point{x=3, y=9});
     let mut a = 3i;
     let mut b = 4i;
     swap(&mut a, &mut b);

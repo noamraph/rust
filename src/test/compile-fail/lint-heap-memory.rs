@@ -21,7 +21,7 @@ struct Foo {
 struct Bar { x: Box<int> } //~ ERROR type uses owned
 
 fn main() {
-    let _x : Bar = Bar {x : box 10i}; //~ ERROR type uses owned
+    let _x : Bar = Bar {x=box 10i}; //~ ERROR type uses owned
 
     box(GC) 2i; //~ ERROR type uses managed
 

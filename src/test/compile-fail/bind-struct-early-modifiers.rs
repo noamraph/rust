@@ -10,8 +10,8 @@
 
 fn main() {
     struct Foo { x: int }
-    match (Foo { x: 10 }) {
-        Foo { ref x: ref x } => {}, //~ ERROR unexpected `:`
+    match (Foo { x=10 }) {
+        Foo { ref x=ref x } => {}, //~ ERROR unexpected `=`
         _ => {}
     }
 }

@@ -16,7 +16,7 @@ struct S<'a> {
 }
 
 fn copy_borrowed_ptr<'a,'b>(p: &'a mut S<'b>) -> S<'b> {
-    S { pointer: &mut *p.pointer }
+    S { pointer=&mut *p.pointer }
     //~^ ERROR lifetime of `p` is too short to guarantee its contents can be safely reborrowed
 }
 
@@ -24,7 +24,7 @@ fn main() {
     let mut x = 1;
 
     {
-        let mut y = S { pointer: &mut x };
+        let mut y = S { pointer=&mut x };
         let z = copy_borrowed_ptr(&mut y);
         *y.pointer += 1;
         *z.pointer += 1;

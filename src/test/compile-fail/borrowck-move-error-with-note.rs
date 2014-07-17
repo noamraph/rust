@@ -34,10 +34,10 @@ impl Drop for S {
 }
 
 fn move_in_match() {
-    match (S {f: "foo".to_string(), g: "bar".to_string()}) {
+    match (S {f="foo".to_string(), g="bar".to_string()}) {
         S {         //~ ERROR cannot move out of type `S`, which defines the `Drop` trait
-            f: _s,  //~ NOTE attempting to move value to here
-            g: _t   //~ NOTE and here
+            f=_s,  //~ NOTE attempting to move value to here
+            g=_t   //~ NOTE and here
         } => {}
     }
 }
@@ -50,7 +50,7 @@ struct A {
 fn free<T>(_: T) {}
 
 fn blah2() {
-    let a = &A { a: box 1 };
+    let a = &A { a=box 1 };
     match a.a {           //~ ERROR cannot move out of
         n => {            //~ NOTE attempting to move value to here
             free(n)

@@ -46,8 +46,8 @@ impl FnOnce<(String,),uint> for SFnOnce {
 
 fn f() {
     let mut s = SFn {
-        x: 1,
-        y: 2,
+        x=1,
+        y=2,
     };
     let sp = &mut s;
     s(3);   //~ ERROR cannot borrow `s` as immutable because it is also borrowed as mutable
@@ -56,15 +56,15 @@ fn f() {
 
 fn g() {
     let s = SFnMut {
-        x: 1,
-        y: 2,
+        x=1,
+        y=2,
     };
     s(3);   //~ ERROR cannot borrow immutable local variable `s` as mutable
 }
 
 fn h() {
     let s = SFnOnce {
-        x: "hello".to_string(),
+        x="hello".to_string(),
     };
     s(" world".to_string());
     s(" world".to_string());    //~ ERROR use of moved value: `s`

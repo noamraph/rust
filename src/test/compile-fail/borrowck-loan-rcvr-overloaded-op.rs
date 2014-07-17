@@ -28,7 +28,7 @@ impl Point {
 }
 
 fn a() {
-    let mut p = Point {x: 3, y: 4};
+    let mut p = Point {x=3, y=4};
 
     // ok (we can loan out rcvr)
     p + 3;
@@ -36,7 +36,7 @@ fn a() {
 }
 
 fn b() {
-    let mut p = Point {x: 3, y: 4};
+    let mut p = Point {x=3, y=4};
 
     // Here I create an outstanding loan and check that we get conflicts:
 

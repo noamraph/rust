@@ -24,7 +24,7 @@ impl Trait<&'static str> for Struct {
 }
 
 fn main() {
-    let s: Box<Trait<int>> = box Struct { person: "Fred" };
+    let s: Box<Trait<int>> = box Struct { person="Fred" };
     //~^ ERROR expected Trait<int>, but found Trait<&'static str>
     //~^^ ERROR expected Trait<int>, but found Trait<&'static str>
     s.f(1);

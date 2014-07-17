@@ -22,27 +22,27 @@ mod a {
     }
 
     fn test() {
-        let foo = Bar { baz: 42 };
+        let foo = Bar { baz=42 };
 
-        let Bar { baz: _ } = foo;
-        match foo { Bar { baz: _ } => {} }
+        let Bar { baz=_ } = foo;
+        match foo { Bar { baz=_ } => {} }
     }
 }
 
 fn main() {
-    let foo = a::Bar { baz: 42 };
+    let foo = a::Bar { baz=42 };
     //~^ ERROR: field `baz` of variant `Bar` of enum `a::Foo` is private
 
-    let a::Bar { baz: _ } = foo;
+    let a::Bar { baz=_ } = foo;
     //~^ ERROR: field `baz` of variant `Bar` of enum `a::Foo` is private
-    match foo { a::Bar { baz: _ } => {} }
+    match foo { a::Bar { baz=_ } => {} }
     //~^ ERROR: field `baz` of variant `Bar` of enum `a::Foo` is private
     //
-    let foo = other::Bar { baz: 42 };
+    let foo = other::Bar { baz=42 };
     //~^ ERROR: field `baz` of variant `Bar` of enum `privacy-struct-variant::Foo` is private
 
-    let other::Bar { baz: _ } = foo;
+    let other::Bar { baz=_ } = foo;
     //~^ ERROR: field `baz` of variant `Bar` of enum `privacy-struct-variant::Foo` is private
-    match foo { other::Bar { baz: _ } => {} }
+    match foo { other::Bar { baz=_ } => {} }
     //~^ ERROR: field `baz` of variant `Bar` of enum `privacy-struct-variant::Foo` is private
 }

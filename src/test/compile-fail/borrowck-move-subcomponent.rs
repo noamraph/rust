@@ -19,8 +19,8 @@ struct S {
 fn f<T>(_: T) {}
 
 fn main() {
-  let a : S = S { x : box 1 };
+  let a : S = S { x =box 1 };
   let pb = &a;
-  let S { x: ax } = a;  //~ ERROR cannot move out
+  let S { x=ax } = a;  //~ ERROR cannot move out
   f(pb);
 }

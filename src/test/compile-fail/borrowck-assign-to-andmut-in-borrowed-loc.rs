@@ -16,14 +16,14 @@ struct S<'a> {
 }
 
 fn copy_borrowed_ptr<'a>(p: &'a mut S<'a>) -> S<'a> {
-    S { pointer: &mut *p.pointer }
+    S { pointer=&mut *p.pointer }
 }
 
 fn main() {
     let mut x = 1;
 
     {
-        let mut y = S { pointer: &mut x };
+        let mut y = S { pointer=&mut x };
         let z = copy_borrowed_ptr(&mut y);
         *y.pointer += 1; //~ ERROR cannot assign
         *z.pointer += 1;

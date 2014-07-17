@@ -66,21 +66,21 @@ struct SafeStruct {
 
 
 // Struct fields are safe, hence this static should be safe
-static STATIC6: SafeStruct = SafeStruct{field1: Variant1, field2: Variant2(0)};
+static STATIC6: SafeStruct = SafeStruct{field1=Variant1, field2=Variant2(0)};
 
 // field2 has an unsafe value, hence this should fail
-static STATIC7: SafeStruct = SafeStruct{field1: Variant1, field2: Variant3(WithDtor)};
+static STATIC7: SafeStruct = SafeStruct{field1=Variant1, field2=Variant3(WithDtor)};
 //~^ ERROR static items are not allowed to have destructors
 
 // Test variadic constructor for structs. The base struct should be examined
 // as well as every field persent in the constructor.
 // This example shouldn't fail because all the fields are safe.
-static STATIC8: SafeStruct = SafeStruct{field1: Variant1,
-                                        ..SafeStruct{field1: Variant1, field2: Variant1}};
+static STATIC8: SafeStruct = SafeStruct{field1=Variant1,
+                                        ..SafeStruct{field1=Variant1, field2=Variant1}};
 
 // This example should fail because field1 in the base struct is not safe
-static STATIC9: SafeStruct = SafeStruct{field1: Variant1,
-                                        ..SafeStruct{field1: Variant3(WithDtor), field2: Variant1}};
+static STATIC9: SafeStruct = SafeStruct{field1=Variant1,
+                                        ..SafeStruct{field1=Variant3(WithDtor), field2=Variant1}};
 //~^ ERROR static items are not allowed to have destructors
 
 struct UnsafeStruct;
@@ -104,13 +104,13 @@ static STATIC11: Box<MyOwned> = box MyOwned;
 static mut STATIC12: UnsafeStruct = UnsafeStruct;
 //~^ ERROR mutable static items are not allowed to have destructors
 
-static mut STATIC13: SafeStruct = SafeStruct{field1: Variant1, field2: Variant3(WithDtor)};
+static mut STATIC13: SafeStruct = SafeStruct{field1=Variant1, field2=Variant3(WithDtor)};
 //~^ ERROR mutable static items are not allowed to have destructors
 
 static mut STATIC14: SafeStruct = SafeStruct {
 //~^ ERROR mutable static items are not allowed to have destructors
-    field1: Variant1,
-    field2: Variant4("str".to_string())
+    field1=Variant1,
+    field2=Variant4("str".to_string())
 };
 
 static STATIC15: &'static [Box<MyOwned>] = &[box MyOwned, box MyOwned];
@@ -125,7 +125,7 @@ static STATIC16: (&'static Box<MyOwned>, &'static Box<MyOwned>) =
 static mut STATIC17: SafeEnum = Variant1;
 //~^ ERROR mutable static items are not allowed to have destructors
 
-static STATIC18: Gc<SafeStruct> = box(GC) SafeStruct{field1: Variant1, field2: Variant2(0)};
+static STATIC18: Gc<SafeStruct> = box(GC) SafeStruct{field1=Variant1, field2=Variant2(0)};
 //~^ ERROR static items are not allowed to have custom pointers
 
 static STATIC19: Box<int> = box 3;

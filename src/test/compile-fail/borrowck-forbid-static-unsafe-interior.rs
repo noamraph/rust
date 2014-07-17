@@ -29,8 +29,8 @@ enum UnsafeEnum<T> {
 
 static STATIC1: UnsafeEnum<int> = VariantSafe;
 
-static STATIC2: Unsafe<int> = Unsafe{value: 1, marker1: marker::InvariantType};
-static STATIC3: MyUnsafe<int> = MyUnsafe{value: STATIC2};
+static STATIC2: Unsafe<int> = Unsafe{value=1, marker1=marker::InvariantType};
+static STATIC3: MyUnsafe<int> = MyUnsafe{value=STATIC2};
 
 static STATIC4: &'static Unsafe<int> = &STATIC2;
 //~^ ERROR borrow of immutable static items with unsafe interior is not allowed
@@ -39,8 +39,8 @@ struct Wrap<T> {
     value: T
 }
 
-static UNSAFE: Unsafe<int> = Unsafe{value: 1, marker1: marker::InvariantType};
-static WRAPPED_UNSAFE: Wrap<&'static Unsafe<int>> = Wrap { value: &UNSAFE };
+static UNSAFE: Unsafe<int> = Unsafe{value=1, marker1=marker::InvariantType};
+static WRAPPED_UNSAFE: Wrap<&'static Unsafe<int>> = Wrap { value=&UNSAFE };
 //~^ ERROR borrow of immutable static items with unsafe interior is not allowed
 
 fn main() {

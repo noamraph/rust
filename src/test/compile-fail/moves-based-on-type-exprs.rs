@@ -19,7 +19,7 @@ fn touch<A>(_a: &A) {}
 
 fn f10() {
     let x = "hi".to_string();
-    let _y = Foo { f:x };
+    let _y = Foo { f=x };
     touch(&x); //~ ERROR use of moved value: `x`
 }
 

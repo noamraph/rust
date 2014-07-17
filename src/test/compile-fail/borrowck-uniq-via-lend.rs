@@ -18,7 +18,7 @@ fn local() {
 
 fn local_rec() {
     struct F { f: Box<int> }
-    let mut v = F {f: box 3};
+    let mut v = F {f=box 3};
     borrow(v.f);
 }
 
@@ -26,7 +26,7 @@ fn local_recs() {
     struct F { f: G }
     struct G { g: H }
     struct H { h: Box<int> }
-    let mut v = F {f: G {g: H {h: box 3}}};
+    let mut v = F {f=G {g=H {h=box 3}}};
     borrow(v.f.g.h);
 }
 

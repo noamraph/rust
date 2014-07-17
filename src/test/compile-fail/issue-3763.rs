@@ -17,7 +17,7 @@ mod my_mod {
         priv_field: int
     }
     pub fn MyStruct () -> MyStruct {
-        MyStruct {priv_field: 4}
+        MyStruct {priv_field=4}
     }
     impl MyStruct {
         fn happyfun(&self) {}

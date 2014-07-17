@@ -19,6 +19,6 @@ mod a {
 }
 
 fn main() {
-    let s = a::Foo { x: 1 };
+    let s = a::Foo { x=1 };
     s.foo();    //~ ERROR method `foo` is private
 }

@@ -28,16 +28,16 @@ fn test<T: Share>(s: T){
 }
 
 fn main() {
-    let us = Unsafe::new(MyShare{u: Unsafe::new(0i)});
+    let us = Unsafe::new(MyShare{u=Unsafe::new(0i)});
     test(us);
 
-    let uns = Unsafe::new(NoShare{m: marker::NoShare});
+    let uns = Unsafe::new(NoShare{m=marker::NoShare});
     test(uns);
 
-    let ms = MyShare{u: uns};
+    let ms = MyShare{u=uns};
     test(ms);
 
-    let ns = NoShare{m: marker::NoShare};
+    let ns = NoShare{m=marker::NoShare};
     test(ns);
     //~^ ERROR instantiating a type parameter with an incompatible type `NoShare`, which does not fulfill `Share`
 }

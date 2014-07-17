@@ -13,7 +13,7 @@
 extern crate xc_private_method_lib;
 
 fn main() {
-    let _ = xc_private_method_lib::Struct{ x: 10 }.meth_struct();
+    let _ = xc_private_method_lib::Struct{ x=10 }.meth_struct();
     //~^ ERROR method `meth_struct` is private
 
     let _ = xc_private_method_lib::Variant1(20).meth_enum();

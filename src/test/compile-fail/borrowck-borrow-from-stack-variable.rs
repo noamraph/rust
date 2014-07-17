@@ -58,7 +58,7 @@ fn borrow_both_mut() {
 fn borrow_both_mut_pattern() {
     let mut foo = make_foo();
     match foo {
-        Foo { bar1: ref mut _bar1, bar2: ref mut _bar2 } => {}
+        Foo { bar1=ref mut _bar1, bar2=ref mut _bar2 } => {}
     }
 }
 
@@ -66,7 +66,7 @@ fn borrow_var_and_pattern() {
     let mut foo = make_foo();
     let bar1 = &mut foo.bar1;
     match foo {
-        Foo { bar1: ref mut _bar1, bar2: _ } => {} //
+        Foo { bar1=ref mut _bar1, bar2=_ } => {} //
         //~^ ERROR cannot borrow
     }
     *bar1;

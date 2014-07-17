@@ -13,7 +13,7 @@ struct closure_box<'a> {
 }
 
 fn box_it<'r>(x: ||: 'r) -> closure_box<'r> {
-    closure_box {cl: x}
+    closure_box {cl=x}
 }
 
 fn main() {

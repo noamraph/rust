@@ -17,7 +17,7 @@ impl Drop for X {
 }
 
 fn main() {
-    let x = Some(X { x: () });
+    let x = Some(X { x=() });
     match x {
         Some(_y @ ref _z) => { }, //~ ERROR cannot bind by-move with sub-bindings
         None => fail!()

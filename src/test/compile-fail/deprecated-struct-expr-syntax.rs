@@ -8,25 +8,12 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-enum E {
-    Foo,
-    Bar(String)
+struct Point {
+    x: int,
 }
-
-struct S {
-    x: E
-}
-
-fn f(x: String) {}
 
 fn main() {
-    let s = S { x=Bar("hello".to_string()) };
-    match &s.x {
-        &Foo => {}
-        &Bar(identifier) => f(identifier.clone())  //~ ERROR cannot move
-    };
-    match &s.x {
-        &Foo => {}
-        &Bar(ref identifier) => println!("{}", *identifier)
-    };
+    let p = Point { x: 3 }; //ignore-tidy-linelength //~ WARNING Use '=' instead of ':' in struct expressions. You can use the rust-update-structs tool to automate the replacement process.
+    let Point { x: x0 } = p; //ignore-tidy-linelength //~ WARNING Use '=' instead of ':' in struct expressions. You can use the rust-update-structs tool to automate the replacement process.
+    let () = p; //~ ERROR mismatched types: expected `Point` but found `()`
 }

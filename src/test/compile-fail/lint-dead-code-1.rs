@@ -71,7 +71,7 @@ fn f<T>() {}
 
 pub fn pub_fn() {
     used_fn();
-    let used_struct1 = UsedStruct1 { x: 1 };
+    let used_struct1 = UsedStruct1 { x=1 };
     let used_struct2 = UsedStruct2(1);
     let used_struct3 = UsedStruct3;
     let e = foo3;

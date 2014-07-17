@@ -21,7 +21,7 @@ struct Box<T> { f: T }
 struct AddFlags { bits: u64 }
 
 fn AddFlags(bits: u64) -> AddFlags {
-    AddFlags { bits: bits }
+    AddFlags { bits=bits }
 }
 
 fn arg<'a>(x: &'a AddFlags) -> &'a AddFlags {
@@ -41,5 +41,5 @@ pub fn main() {
     let ref _x = *arg(&AddFlags(1)); //~ ERROR value does not live long enough
     let &ref _x = arg(&AddFlags(1)); //~ ERROR value does not live long enough
     let _x = AddFlags(1).get(); //~ ERROR value does not live long enough
-    let Box { f: _x } = Box { f: AddFlags(1).get() }; //~ ERROR value does not live long enough
+    let Box { f=_x } = Box { f=AddFlags(1).get() }; //~ ERROR value does not live long enough
 }

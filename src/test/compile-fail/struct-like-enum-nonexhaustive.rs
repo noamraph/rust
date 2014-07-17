@@ -16,9 +16,9 @@ enum A {
 }
 
 fn main() {
-    let x = B { x: Some(3) };
+    let x = B { x=Some(3) };
     match x {   //~ ERROR non-exhaustive patterns
         C => {}
-        B { x: None } => {}
+        B { x=None } => {}
     }
 }

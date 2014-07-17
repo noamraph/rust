@@ -23,6 +23,6 @@ impl S {
 }
 
 fn main() {
-    let x = S { x: box 1 };
+    let x = S { x=box 1 };
     println!("{}", x.foo());
 }

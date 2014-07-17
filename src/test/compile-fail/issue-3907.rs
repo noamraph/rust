@@ -24,7 +24,7 @@ impl Foo for S { //~ ERROR: `Foo` is not a trait
 
 fn main() {
     let s = S {
-        name: 0
+        name=0
     };
     s.bar();
 }

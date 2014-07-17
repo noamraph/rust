@@ -32,12 +32,12 @@ fn main() {
     let mut buff = [0u8, ..16];
     match f.read(buff) {
         Ok(cnt) => println!("read this many bytes: {}", cnt),
-        Err(IoError{ kind: EndOfFile, .. }) => println!("Got end of file: {}", EndOfFile.to_string()),
+        Err(IoError{ kind=EndOfFile, .. }) => println!("Got end of file: {}", EndOfFile.to_string()),
                         //~^ ERROR variable names should start with a lowercase character
     }
 
     test(1);
 
-    let _ = Something { X: 0 };
+    let _ = Something { X=0 };
 }
 

@@ -29,7 +29,7 @@ fn main() {
         })
     }
 
-    let rs: Foo = Foo{t: pth};
+    let rs: Foo = Foo{t=pth};
 
     let unconstrained = break; //~ ERROR: `break` outside of loop
 }

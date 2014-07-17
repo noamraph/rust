@@ -45,8 +45,8 @@ impl Index<int,int> for Bar {
 
 fn main() {
     let mut f = Foo {
-        x: 1,
-        y: 2,
+        x=1,
+        y=2,
     };
     let mut s = "hello".to_string();
     let rs = &mut s;
@@ -55,7 +55,7 @@ fn main() {
     f[s] = 10;
     //~^ ERROR cannot borrow `s` as immutable because it is also borrowed as mutable
     let s = Bar {
-        x: 1,
+        x=1,
     };
     s[2] = 20;
     //~^ ERROR cannot assign to immutable indexed content

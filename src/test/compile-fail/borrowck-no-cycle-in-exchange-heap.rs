@@ -18,7 +18,7 @@ enum cycle {
     empty
 }
 fn main() {
-    let mut x = box node(node_ {a: box empty});
+    let mut x = box node(node_ {a=box empty});
     // Create a cycle!
     match *x {
       node(ref mut y) => {

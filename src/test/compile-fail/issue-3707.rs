@@ -22,7 +22,7 @@ impl Obj {
 }
 
 fn main() {
-    let o = Obj { member: 0 };
+    let o = Obj { member=0 };
     o.chirp();
     1i + 1;
 }

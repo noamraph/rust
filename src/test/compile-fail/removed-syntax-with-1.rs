@@ -14,7 +14,7 @@ fn removed_with() {
         bar: (),
     }
 
-    let a = S { foo: (), bar: () };
-    let b = S { foo: () with a };
+    let a = S { foo=(), bar=() };
+    let b = S { foo=() with a };
     //~^ ERROR expected one of `,`, `}` but found `with`
 }

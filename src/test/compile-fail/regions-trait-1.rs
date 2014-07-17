@@ -33,7 +33,7 @@ fn get_v(gc: Box<get_ctxt>) -> uint {
 }
 
 fn main() {
-    let ctxt = ctxt { v: 22u };
-    let hc = has_ctxt { c: &ctxt };
+    let ctxt = ctxt { v=22u };
+    let hc = has_ctxt { c=&ctxt };
     assert_eq!(get_v(box hc as Box<get_ctxt>), 22u);
 }

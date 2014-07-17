@@ -14,7 +14,7 @@ mod cat {
     }
 
     pub fn new_cat() -> Cat {
-        Cat { meows: 52 }
+        Cat { meows=52 }
     }
 }
 

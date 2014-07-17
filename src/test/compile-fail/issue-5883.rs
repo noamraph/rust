@@ -16,7 +16,7 @@ struct Struct {
 
 fn new_struct(r: A) -> Struct {
     //~^ ERROR reference to trait `A` where a type is expected; try `Box<A>` or `&A`
-    Struct { r: r }
+    Struct { r=r }
 }
 
 trait Curve {}

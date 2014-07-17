@@ -20,7 +20,7 @@ impl Drop for foo {
 
 fn foo(i:int) -> foo {
     foo {
-        i: i
+        i=i
     }
 }
 

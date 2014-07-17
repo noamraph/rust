@@ -19,10 +19,10 @@ impl Drop for X {
 }
 
 fn main() {
-    let x = X { x: "hello".to_string() };
+    let x = X { x="hello".to_string() };
 
     match x {
-        X { x: y } => println!("contents: {}", y)
+        X { x=y } => println!("contents: {}", y)
         //~^ ERROR cannot move out of type `X`, which defines the `Drop` trait
     }
 }

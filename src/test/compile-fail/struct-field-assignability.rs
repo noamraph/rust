@@ -17,6 +17,6 @@ struct Foo<'a> {
 }
 
 pub fn main() {
-    let f = Foo { x: box(GC) 3 }; //~ ERROR borrowed value does not live long enough
+    let f = Foo { x=box(GC) 3 }; //~ ERROR borrowed value does not live long enough
     assert_eq!(*f.x, 3);
 }

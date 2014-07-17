@@ -459,12 +459,12 @@ fn mk_test_desc_and_fn_rec(cx: &TestCtxt, test: &Test) -> Gc<ast::Expr> {
 
     let e = quote_expr!(&cx.ext_cx,
         self::test::TestDescAndFn {
-            desc: self::test::TestDesc {
-                name: self::test::StaticTestName($name_expr),
-                ignore: $ignore_expr,
-                should_fail: $fail_expr
+            desc=self::test::TestDesc {
+                name=self::test::StaticTestName($name_expr),
+                ignore=$ignore_expr,
+                should_fail=$fail_expr
             },
-            testfn: $t_expr,
+            testfn=$t_expr,
         }
     );
     e

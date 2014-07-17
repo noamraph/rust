@@ -25,7 +25,7 @@ fn test<T:Dot> (n:int, i:int, first:T, second:T) ->int {
     0 => {first.dot(second)}
       // Error message should be here. It should be a type error
       // to instantiate `test` at a type other than T. (See #4287)
-    _ => {test (n-1, i+1, Cons {head:2*i+1, tail:first}, Cons{head:i*i, tail:second})}
+    _ => {test (n-1, i+1, Cons {head=2*i+1, tail=first}, Cons{head=i*i, tail=second})}
   }
 }
 pub fn main() {

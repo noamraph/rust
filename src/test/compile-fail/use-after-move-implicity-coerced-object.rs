@@ -32,8 +32,8 @@ impl List {
 }
 
 fn main() {
-    let n = box Number { n: 42 };
-    let mut l = box List { list: Vec::new() };
+    let n = box Number { n=42 };
+    let mut l = box List { list=Vec::new() };
     l.push(n);
     let x = n.to_string();
     //~^ ERROR: use of moved value: `n`

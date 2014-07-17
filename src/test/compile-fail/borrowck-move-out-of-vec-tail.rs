@@ -19,16 +19,16 @@ struct Foo {
 
 pub fn main() {
     let x = vec!(
-        Foo { string: "foo".to_string() },
-        Foo { string: "bar".to_string() },
-        Foo { string: "baz".to_string() }
+        Foo { string="foo".to_string() },
+        Foo { string="bar".to_string() },
+        Foo { string="baz".to_string() }
     );
     let x: &[Foo] = x.as_slice();
     match x {
         [_, ..tail] => {
             match tail {
-                [Foo { string: a }, //~ ERROR cannot move out of dereference of `&`-pointer
-                 Foo { string: b }] => {
+                [Foo { string=a }, //~ ERROR cannot move out of dereference of `&`-pointer
+                 Foo { string=b }] => {
                     //~^^ NOTE attempting to move value to here
                     //~^^ NOTE and here
                 }

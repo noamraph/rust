@@ -23,7 +23,7 @@ impl Drop for bar {
 
 fn bar(x:int) -> bar {
     bar {
-        x: x
+        x=x
     }
 }
 
@@ -34,8 +34,8 @@ struct foo {
 
 fn foo(i:int) -> foo {
     foo {
-        i: i,
-        j: bar(5)
+        i=i,
+        j=bar(5)
     }
 }
 

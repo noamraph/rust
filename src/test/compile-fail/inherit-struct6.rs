@@ -24,7 +24,7 @@ struct S2 : Foo::S1 {
 
 impl S2 {
     fn new() -> S2 {
-        S2{f1: 3, f2: 4, f3: 5} //~ ERROR field `f2` of struct `S2` is private
+        S2{f1=3, f2=4, f3=5} //~ ERROR field `f2` of struct `S2` is private
     }
 
     fn bar(&self) {
@@ -35,7 +35,7 @@ impl S2 {
 }
 
 pub fn main() {
-    let s = S2{f1: 3, f2: 4, f3: 5}; //~ ERROR field `f2` of struct `S2` is private
+    let s = S2{f1=3, f2=4, f3=5}; //~ ERROR field `f2` of struct `S2` is private
     s.f3;
     s.f1;
     s.f2; //~ ERROR field `f2` of struct `S2` is private

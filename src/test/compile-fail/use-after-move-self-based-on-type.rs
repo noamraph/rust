@@ -26,6 +26,6 @@ impl S {
 }
 
 fn main() {
-    let x = S { x: 1 };
+    let x = S { x=1 };
     println!("{}", x.foo());
 }

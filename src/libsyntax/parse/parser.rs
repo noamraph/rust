@@ -1807,6 +1807,10 @@ impl<'a> Parser<'a> {
         let lo = self.span.lo;
         let i = self.parse_ident();
         let hi = self.last_span.hi;
+        if self.token == token::COLON {
+            self.warn("Use '=' instead of ':' in struct expressions. You can \
+use the rust-update-structs tool to automate the replacement process.")
+        }
         self.expect_one_of(&[token::COLON, token::EQ], &[]);
         let e = self.parse_expr();
         ast::Field {
@@ -2879,6 +2883,10 @@ impl<'a> Parser<'a> {
             let fieldname = self.parse_ident();
 
             let subpat = if self.token == token::COLON || self.token == token::EQ {
+                if self.token == token::COLON {
+                    self.warn("Use '=' instead of ':' in struct expressions. You can \
+use the rust-update-structs tool to automate the replacement process.")
+                }
                 match bind_type {
                     BindByRef(..) | BindByValue(MutMutable) => {
                         let token_str = self.this_token_to_string();

@@ -23,7 +23,7 @@ struct S<T> {
 impl<T> S<T> {
     fn new<U>(x: T, _: U) -> S<T> {
         S {
-            contents: x,
+            contents=x,
         }
     }
 }
@@ -39,7 +39,7 @@ struct S2 {
 impl Trait<int> for S2 {
     fn new<U>(x: int, _: U) -> S2 {
         S2 {
-            contents: x,
+            contents=x,
         }
     }
 }

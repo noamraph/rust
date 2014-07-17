@@ -19,6 +19,6 @@ struct Foo {
 }
 
 fn main() {
-    let _x : Foo = Foo {x : box(GC) 10};
+    let _x : Foo = Foo {x =box(GC) 10};
     //~^ ERROR type uses managed
 }

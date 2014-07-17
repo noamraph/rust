@@ -16,6 +16,6 @@ struct Foo<'a, T> {
 }
 
 pub fn main() {
-    let c: Foo<_, _> = Foo { r: &5u };
+    let c: Foo<_, _> = Foo { r=&5u };
     //~^ ERROR wrong number of type arguments: expected 1 but found 2
 }

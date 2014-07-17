@@ -16,13 +16,13 @@ struct X {
 }
 
 fn main() {
-    let x1 = X { y: [0, 0] };
+    let x1 = X { y=[0, 0] };
 
     let p1: *const u8 = &x1.y as *const _;  //~ ERROR mismatched types
     let t1: *const [u8, ..2] = &x1.y as *const _;
     let h1: *const [u8, ..2] = &x1.y as *const [u8, ..2];
 
-    let mut x1 = X { y: [0, 0] };
+    let mut x1 = X { y=[0, 0] };
 
     let p1: *mut u8 = &mut x1.y as *mut _;  //~ ERROR mismatched types
     let t1: *mut [u8, ..2] = &mut x1.y as *mut _;

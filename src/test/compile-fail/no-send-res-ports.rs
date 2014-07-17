@@ -29,7 +29,7 @@ fn main() {
 
     fn foo(x: Port<()>) -> foo {
         foo {
-            _x: x
+            _x=x
         }
     }
 

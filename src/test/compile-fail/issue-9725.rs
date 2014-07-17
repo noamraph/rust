@@ -11,6 +11,6 @@
 struct A { foo: int }
 
 fn main() {
-    let A { foo, foo } = A { foo: 3 };
+    let A { foo, foo } = A { foo=3 };
     //~^ ERROR: identifier `foo` is bound more than once in the same pattern
 }

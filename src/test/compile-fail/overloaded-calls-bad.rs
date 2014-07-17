@@ -25,8 +25,8 @@ impl FnMut<(int,),int> for S {
 
 fn main() {
     let mut s = S {
-        x: 3,
-        y: 3,
+        x=3,
+        y=3,
     };
     let ans = s("what");    //~ ERROR mismatched types
     let ans = s();  //~ ERROR this function takes 1 parameter but 0 parameters were supplied

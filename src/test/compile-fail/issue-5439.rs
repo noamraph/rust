@@ -19,12 +19,12 @@ struct Bar {
 
 impl Bar {
     fn make_foo (&self, i: int) -> Box<Foo> {
-        return box Foo { nonexistent: self, foo: i }; //~ ERROR: no field named
+        return box Foo { nonexistent=self, foo=i }; //~ ERROR: no field named
     }
 }
 
 fn main () {
-    let bar = Bar { bar: 1 };
+    let bar = Bar { bar=1 };
     let foo = bar.make_foo(2);
     println!("{}", foo.foo);
 }

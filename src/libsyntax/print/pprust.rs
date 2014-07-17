@@ -1265,7 +1265,7 @@ impl<'a> State<'a> {
                     |s, field| {
                         try!(s.ibox(indent_unit));
                         try!(s.print_ident(field.ident.node));
-                        try!(s.word_space(":"));
+                        try!(word(&mut s.s, "="));
                         try!(s.print_expr(&*field.expr));
                         s.end()
                     },
@@ -1757,7 +1757,7 @@ impl<'a> State<'a> {
                     |s, f| {
                         try!(s.cbox(indent_unit));
                         try!(s.print_ident(f.ident));
-                        try!(s.word_nbsp(":"));
+                        try!(word(&mut s.s, "="));
                         try!(s.print_pat(&*f.pat));
                         s.end()
                     },

@@ -14,7 +14,7 @@ struct X {
 }
 
 fn main() {
-    let x = X { a: [0] };
+    let x = X { a=[0] };
     let _f = &x.a as *mut u8;
     //~^ ERROR mismatched types: expected `*mut u8` but found `&[u8, .. 1]`
 

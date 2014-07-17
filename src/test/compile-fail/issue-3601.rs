@@ -30,9 +30,9 @@ struct NodeData {
 }
 
 fn main() {
-    let mut id = HTMLImageData { image: None };
-    let ed = ElementData { kind: box HTMLImageElement(id) };
-    let n = NodeData {kind : box Element(ed)};
+    let mut id = HTMLImageData { image=None };
+    let ed = ElementData { kind=box HTMLImageElement(id) };
+    let n = NodeData {kind =box Element(ed)};
     // n.b. span could be better
     match n.kind {
         box Element(ed) => match ed.kind { //~ ERROR non-exhaustive patterns

@@ -13,7 +13,7 @@ struct Foo {
 }
 
 fn main(){
-    let Foo {a: _, a: _} = Foo {a: 29};
+    let Foo {a=_, a=_} = Foo {a=29};
     //~^ ERROR field `a` bound twice in pattern
 }
 

@@ -19,7 +19,7 @@ struct Point {
 }
 impl Point {
     fn new() -> Point {
-        Point{x:0, y:0}
+        Point{x=0, y=0}
     }
     fn get_x(&self) -> int {
         self.x

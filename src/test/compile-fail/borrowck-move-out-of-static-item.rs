@@ -17,11 +17,11 @@ struct Foo {
     nocopy: marker::NoCopy
 }
 
-static BAR: Foo = Foo{foo: 5, nocopy: marker::NoCopy};
+static BAR: Foo = Foo{foo=5, nocopy=marker::NoCopy};
 
 
 fn test(f: Foo) {
-    let _f = Foo{foo: 4, ..f};
+    let _f = Foo{foo=4, ..f};
 }
 
 fn main() {

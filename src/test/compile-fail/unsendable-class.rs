@@ -22,8 +22,8 @@ struct foo {
 
 fn foo(i:int, j: Gc<String>) -> foo {
     foo {
-        i: i,
-        j: j
+        i=i,
+        j=j
     }
 }
 

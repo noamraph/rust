@@ -95,8 +95,8 @@ fn native(cx: &mut ExtCtxt, sp: codemap::Span, tts: &[ast::TokenTree])
     };
 
     let mut gen = NfaGen {
-        cx: &*cx, sp: sp, prog: prog,
-        names: re.names_iter().collect(), original: re.as_str().to_string(),
+        cx=&*cx, sp=sp, prog=prog,
+        names=re.names_iter().collect(), original=re.as_str().to_string(),
     };
     MacExpr::new(gen.code())
 }
@@ -162,10 +162,10 @@ fn exec<'t>(which: ::regex::native::MatchKind, input: &'t str,
     };
 
     return Nfa {
-        which: which,
-        input: input,
-        ic: 0,
-        chars: CharReader::new(input),
+        which=which,
+        input=input,
+        ic=0,
+        chars=CharReader::new(input),
     }.run(start, end);
 
     type Captures = [Option<uint>, ..$num_cap_locs];
@@ -257,7 +257,7 @@ fn exec<'t>(which: ::regex::native::MatchKind, input: &'t str,
     impl Threads {
         fn new(which: MatchKind) -> Threads {
             Threads {
-                which: which,
+                which=which,
                 // These unsafe blocks are used for performance reasons, as it
                 // gives us a zero-cost initialization of a sparse set. The
                 // trick is described in more detail here:
@@ -265,9 +265,9 @@ fn exec<'t>(which: ::regex::native::MatchKind, input: &'t str,
                 // The idea here is to avoid initializing threads that never
                 // need to be initialized, particularly for larger regexs with
                 // a lot of instructions.
-                queue: unsafe { ::std::mem::uninitialized() },
-                sparse: unsafe { ::std::mem::uninitialized() },
-                size: 0,
+                queue=unsafe { ::std::mem::uninitialized() },
+                sparse=unsafe { ::std::mem::uninitialized() },
+                size=0,
             }
         }
 
@@ -322,9 +322,9 @@ fn exec<'t>(which: ::regex::native::MatchKind, input: &'t str,
 }
 
 ::regex::native::Native(::regex::native::Native {
-    original: $regex,
-    names: CAP_NAMES,
-    prog: exec,
+    original=$regex,
+    names=CAP_NAMES,
+    prog=exec,
 })
         })
     }
@@ -589,14 +589,14 @@ fn exec<'t>(which: ::regex::native::MatchKind, input: &'t str,
     // Creates a wild-card match arm with the expression `body`.
     fn wild_arm_expr(&self, body: Gc<ast::Expr>) -> ast::Arm {
         ast::Arm {
-            attrs: vec!(),
-            pats: vec!(box(GC) ast::Pat{
-                id: ast::DUMMY_NODE_ID,
-                span: self.sp,
-                node: ast::PatWild,
+            attrs=vec!(),
+            pats=vec!(box(GC) ast::Pat{
+                id=ast::DUMMY_NODE_ID,
+                span=self.sp,
+                node=ast::PatWild,
             }),
-            guard: None,
-            body: body,
+            guard=None,
+            body=body,
         }
     }
 

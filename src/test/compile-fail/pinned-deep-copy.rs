@@ -30,7 +30,7 @@ impl Drop for r {
 
 fn r(i: Gc<Cell<int>>) -> r {
     r {
-        i: i
+        i=i
     }
 }
 
@@ -42,7 +42,7 @@ fn main() {
     let i = box(GC) Cell::new(0);
     {
         // Can't do this copy
-        let x = box box box A {y: r(i)};
+        let x = box box box A {y=r(i)};
         let _z = x.clone(); //~ ERROR failed to find an implementation
         println!("{:?}", x);
     }

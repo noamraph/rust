@@ -16,6 +16,6 @@ struct BuildData {
 
 fn main() {
     let foo = BuildData { //~ ERROR missing field: `bar`
-        foo: 0
+        foo=0
     };
 }
