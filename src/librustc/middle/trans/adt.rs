@@ -178,10 +178,10 @@ fn represent_type_uncached(cx: &CrateContext, t: ty::t) -> Repr {
                 // All bodies empty -> intlike
                 let discrs: Vec<u64> = cases.iter().map(|c| c.discr).collect();
                 let bounds = IntBounds {
-                    ulo: *discrs.iter().min().unwrap(),
-                    uhi: *discrs.iter().max().unwrap(),
-                    slo: discrs.iter().map(|n| *n as i64).min().unwrap(),
-                    shi: discrs.iter().map(|n| *n as i64).max().unwrap()
+                    ulo=*discrs.iter().min().unwrap(),
+                    uhi=*discrs.iter().max().unwrap(),
+                    slo=discrs.iter().map(|n| *n as i64).min().unwrap(),
+                    shi=discrs.iter().map(|n| *n as i64).max().unwrap()
                 };
                 return mk_cenum(cx, hint, &bounds);
             }
@@ -215,17 +215,17 @@ fn represent_type_uncached(cx: &CrateContext, t: ty::t) -> Repr {
                         match cases.get(discr).find_ptr() {
                             Some(ThinPointer(_)) if st.fields.len() == 1 => {
                                 return RawNullablePointer {
-                                    nndiscr: discr as Disr,
-                                    nnty: *st.fields.get(0),
-                                    nullfields: cases.get(1 - discr).tys.clone()
+                                    nndiscr=discr as Disr,
+                                    nnty=*st.fields.get(0),
+                                    nullfields=cases.get(1 - discr).tys.clone()
                                 };
                             }
                             Some(ptrfield) => {
                                 return StructWrappedNullablePointer {
-                                    nndiscr: discr as Disr,
-                                    nonnull: st,
-                                    ptrfield: ptrfield,
-                                    nullfields: cases.get(1 - discr).tys.clone()
+                                    nndiscr=discr as Disr,
+                                    nonnull=st,
+                                    ptrfield=ptrfield,
+                                    nullfields=cases.get(1 - discr).tys.clone()
                                 };
                             }
                             None => { }
@@ -237,8 +237,8 @@ fn represent_type_uncached(cx: &CrateContext, t: ty::t) -> Repr {
 
             // The general case.
             assert!((cases.len() - 1) as i64 >= 0);
-            let bounds = IntBounds { ulo: 0, uhi: (cases.len() - 1) as u64,
-                                     slo: 0, shi: (cases.len() - 1) as i64 };
+            let bounds = IntBounds { ulo=0, uhi=(cases.len() - 1) as u64,
+                                     slo=0, shi=(cases.len() - 1) as i64 };
             let ity = range_to_inttype(cx, hint, &bounds);
             return General(ity, cases.iter().map(|c| {
                 let discr = vec!(ty_of_inttype(ity));
@@ -349,7 +349,7 @@ fn get_cases(tcx: &ty::ctxt, def_id: ast::DefId, substs: &subst::Substs) -> Vec<
         let arg_tys = vi.args.iter().map(|&raw_ty| {
             raw_ty.subst(tcx, substs)
         }).collect();
-        Case { discr: vi.disr_val, tys: arg_tys }
+        Case { discr=vi.disr_val, tys=arg_tys }
     }).collect()
 }
 
@@ -358,10 +358,10 @@ fn mk_struct(cx: &CrateContext, tys: &[ty::t], packed: bool) -> Struct {
     let lltys = tys.iter().map(|&ty| type_of::sizing_type_of(cx, ty)).collect::<Vec<_>>();
     let llty_rec = Type::struct_(cx, lltys.as_slice(), packed);
     Struct {
-        size: machine::llsize_of_alloc(cx, llty_rec) /*bad*/as u64,
-        align: machine::llalign_of_min(cx, llty_rec) /*bad*/as u64,
-        packed: packed,
-        fields: Vec::from_slice(tys),
+        size=machine::llsize_of_alloc(cx, llty_rec) /*bad*/as u64,
+        align=machine::llalign_of_min(cx, llty_rec) /*bad*/as u64,
+        packed=packed,
+        fields=Vec::from_slice(tys),
     }
 }
 
@@ -474,7 +474,7 @@ pub fn incomplete_type_of(cx: &CrateContext, r: &Repr, name: &str) -> Type {
 pub fn finish_type_of(cx: &CrateContext, r: &Repr, llty: &mut Type) {
     match *r {
         CEnum(..) | General(..) | RawNullablePointer { .. } => { }
-        Univariant(ref st, _) | StructWrappedNullablePointer { nonnull: ref st, .. } =>
+        Univariant(ref st, _) | StructWrappedNullablePointer { nonnull=ref st, .. } =>
             llty.set_struct_body(struct_llfields(cx, st, false).as_slice(),
                                  st.packed)
     }
@@ -484,7 +484,7 @@ fn generic_type_of(cx: &CrateContext, r: &Repr, name: Option<&str>, sizing: bool
     match *r {
         CEnum(ity, _, _) => ll_inttype(cx, ity),
         RawNullablePointer { nnty, .. } => type_of::sizing_type_of(cx, nnty),
-        Univariant(ref st, _) | StructWrappedNullablePointer { nonnull: ref st, .. } => {
+        Univariant(ref st, _) | StructWrappedNullablePointer { nonnull=ref st, .. } => {
             match name {
                 None => {
                     Type::struct_(cx, struct_llfields(cx, st, sizing).as_slice(),
@@ -697,7 +697,7 @@ pub fn trans_start_init(bcx: &Block, r: &Repr, val: ValueRef, discr: Disr) {
                 Store(bcx, C_null(llptrty), val)
             }
         }
-        StructWrappedNullablePointer { nonnull: ref nonnull, nndiscr, ptrfield, .. } => {
+        StructWrappedNullablePointer { nonnull=ref nonnull, nndiscr, ptrfield, .. } => {
             if discr != nndiscr {
                 let (llptrptr, llptrty) = match ptrfield {
                     ThinPointer(field) =>
@@ -736,8 +736,8 @@ pub fn num_args(r: &Repr, discr: Disr) -> uint {
         RawNullablePointer { nndiscr, ref nullfields, .. } => {
             if discr == nndiscr { 1 } else { nullfields.len() }
         }
-        StructWrappedNullablePointer { nonnull: ref nonnull, nndiscr,
-                                       nullfields: ref nullfields, .. } => {
+        StructWrappedNullablePointer { nonnull=ref nonnull, nndiscr,
+                                       nullfields=ref nullfields, .. } => {
             if discr == nndiscr { nonnull.fields.len() } else { nullfields.len() }
         }
     }
@@ -858,7 +858,7 @@ pub fn trans_const(ccx: &CrateContext, r: &Repr, discr: Disr,
                 C_null(type_of::sizing_type_of(ccx, nnty))
             }
         }
-        StructWrappedNullablePointer { nonnull: ref nonnull, nndiscr, .. } => {
+        StructWrappedNullablePointer { nonnull=ref nonnull, nndiscr, .. } => {
             if discr == nndiscr {
                 C_struct(ccx, build_const_struct(ccx,
                                                  nonnull,

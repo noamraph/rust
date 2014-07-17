@@ -47,7 +47,7 @@ pub fn strip_items(krate: ast::Crate,
                    in_cfg: |attrs: &[ast::Attribute]| -> bool)
                    -> ast::Crate {
     let mut ctxt = Context {
-        in_cfg: in_cfg,
+        in_cfg=in_cfg,
     };
     ctxt.fold_crate(krate)
 }
@@ -72,9 +72,9 @@ fn fold_mod(cx: &mut Context, m: &ast::Mod) -> ast::Mod {
         filter_view_item(cx, a).map(|x| cx.fold_view_item(x))
     }).collect();
     ast::Mod {
-        inner: m.inner,
-        view_items: filtered_view_items,
-        items: flattened_items
+        inner=m.inner,
+        view_items=filtered_view_items,
+        items=flattened_items
     }
 }
 
@@ -96,9 +96,9 @@ fn fold_foreign_mod(cx: &mut Context, nm: &ast::ForeignMod) -> ast::ForeignMod {
         filter_view_item(cx, a).map(|x| cx.fold_view_item(x))
     }).collect();
     ast::ForeignMod {
-        abi: nm.abi,
-        view_items: filtered_view_items,
-        items: filtered_items
+        abi=nm.abi,
+        view_items=filtered_view_items,
+        items=filtered_items
     }
 }
 
@@ -130,8 +130,8 @@ fn fold_item_underscore(cx: &mut Context, item: &ast::Item_) -> ast::Item_ {
                                 ast::StructVariantKind(ref def) => {
                                     let def = fold_struct(cx, &**def);
                                     box(GC) codemap::Spanned {
-                                        node: ast::Variant_ {
-                                            kind: ast::StructVariantKind(def.clone()),
+                                        node=ast::Variant_ {
+                                            kind=ast::StructVariantKind(def.clone()),
                                             ..v.node.clone()
                                         },
                                         ..*v
@@ -141,7 +141,7 @@ fn fold_item_underscore(cx: &mut Context, item: &ast::Item_) -> ast::Item_ {
                     }
                 });
             ast::ItemEnum(ast::EnumDef {
-                variants: variants.collect(),
+                variants=variants.collect(),
             }, generics.clone())
         }
         ref item => item.clone(),
@@ -155,10 +155,10 @@ fn fold_struct(cx: &mut Context, def: &ast::StructDef) -> Gc<ast::StructDef> {
         (cx.in_cfg)(m.node.attrs.as_slice())
     });
     box(GC) ast::StructDef {
-        fields: fields.collect(),
-        ctor_id: def.ctor_id,
-        super_struct: def.super_struct.clone(),
-        is_virtual: def.is_virtual,
+        fields=fields.collect(),
+        ctor_id=def.ctor_id,
+        super_struct=def.super_struct.clone(),
+        is_virtual=def.is_virtual,
     }
 }
 
@@ -186,12 +186,12 @@ fn fold_block(cx: &mut Context, b: ast::P<ast::Block>) -> ast::P<ast::Block> {
         filter_view_item(cx, a).map(|x| cx.fold_view_item(x))
     }).collect();
     ast::P(ast::Block {
-        view_items: filtered_view_items,
-        stmts: resulting_stmts,
-        expr: b.expr.map(|x| cx.fold_expr(x)),
-        id: b.id,
-        rules: b.rules,
-        span: b.span,
+        view_items=filtered_view_items,
+        stmts=resulting_stmts,
+        expr=b.expr.map(|x| cx.fold_expr(x)),
+        id=b.id,
+        rules=b.rules,
+        span=b.span,
     })
 }
 
@@ -203,9 +203,9 @@ fn fold_expr(cx: &mut Context, expr: Gc<ast::Expr>) -> Gc<ast::Expr> {
                 .map(|a| a.clone())
                 .collect();
             box(GC) ast::Expr {
-                id: expr.id,
-                span: expr.span.clone(),
-                node: ast::ExprMatch(m.clone(), arms),
+                id=expr.id,
+                span=expr.span.clone(),
+                node=ast::ExprMatch(m.clone(), arms),
             }
         }
         _ => expr.clone()

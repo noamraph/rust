@@ -64,6 +64,6 @@ fn test_user_defined_eq() {
     }
 
     // Now these binary operators will work when applied!
-    assert!(SketchyNum {num: 37} == SketchyNum {num: 34});
-    assert!(SketchyNum {num: 25} != SketchyNum {num: 57});
+    assert!(SketchyNum {num=37} == SketchyNum {num=34});
+    assert!(SketchyNum {num=25} != SketchyNum {num=57});
 }

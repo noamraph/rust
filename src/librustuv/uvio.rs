@@ -47,9 +47,9 @@ impl UvEventLoop {
         let mut loop_ = Loop::new();
         let handle_pool = QueuePool::new(&mut loop_);
         UvEventLoop {
-            uvio: UvIoFactory {
-                loop_: loop_,
-                handle_pool: Some(handle_pool),
+            uvio=UvIoFactory {
+                loop_=loop_,
+                handle_pool=Some(handle_pool),
             }
         }
     }

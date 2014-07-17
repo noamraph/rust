@@ -51,22 +51,22 @@ pub fn new_tt_reader<'a>(sp_diag: &'a SpanHandler,
                          src: Vec<ast::TokenTree> )
                          -> TtReader<'a> {
     let mut r = TtReader {
-        sp_diag: sp_diag,
-        stack: vec!(TtFrame {
-            forest: Rc::new(src),
-            idx: 0,
-            dotdotdoted: false,
-            sep: None,
+        sp_diag=sp_diag,
+        stack=vec!(TtFrame {
+            forest=Rc::new(src),
+            idx=0,
+            dotdotdoted=false,
+            sep=None,
         }),
-        interpolations: match interp { /* just a convenience */
+        interpolations=match interp { /* just a convenience */
             None => HashMap::new(),
             Some(x) => x,
         },
-        repeat_idx: Vec::new(),
-        repeat_len: Vec::new(),
+        repeat_idx=Vec::new(),
+        repeat_len=Vec::new(),
         /* dummy values, never read: */
-        cur_tok: EOF,
-        cur_span: DUMMY_SP,
+        cur_tok=EOF,
+        cur_span=DUMMY_SP,
     };
     tt_next_token(&mut r); /* get cur_tok and cur_span set up */
     r
@@ -143,8 +143,8 @@ fn lockstep_iter_size(t: &TokenTree, r: &TtReader) -> LockstepIterSize {
 pub fn tt_next_token(r: &mut TtReader) -> TokenAndSpan {
     // FIXME(pcwalton): Bad copy?
     let ret_val = TokenAndSpan {
-        tok: r.cur_tok.clone(),
-        sp: r.cur_span.clone(),
+        tok=r.cur_tok.clone(),
+        sp=r.cur_span.clone(),
     };
     loop {
         let should_pop = match r.stack.last() {
@@ -199,10 +199,10 @@ pub fn tt_next_token(r: &mut TtReader) -> TokenAndSpan {
         match t {
             TTDelim(tts) => {
                 r.stack.push(TtFrame {
-                    forest: tts,
-                    idx: 0,
-                    dotdotdoted: false,
-                    sep: None
+                    forest=tts,
+                    idx=0,
+                    dotdotdoted=false,
+                    sep=None
                 });
                 // if this could be 0-length, we'd need to potentially recur here
             }
@@ -240,10 +240,10 @@ pub fn tt_next_token(r: &mut TtReader) -> TokenAndSpan {
                         r.repeat_len.push(len);
                         r.repeat_idx.push(0);
                         r.stack.push(TtFrame {
-                            forest: tts,
-                            idx: 0,
-                            dotdotdoted: true,
-                            sep: sep.clone()
+                            forest=tts,
+                            idx=0,
+                            dotdotdoted=true,
+                            sep=sep.clone()
                         });
                     }
                 }

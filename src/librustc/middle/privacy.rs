@@ -623,7 +623,7 @@ impl<'a> PrivacyVisitor<'a> {
         let struct_type = ty::lookup_item_type(self.tcx, id).ty;
         let struct_desc = match ty::get(struct_type).sty {
             ty::ty_struct(_, _) => format!("struct `{}`", ty::item_path_str(self.tcx, id)),
-            ty::ty_bare_fn(ty::BareFnTy { sig: ty::FnSig { output, .. }, .. }) => {
+            ty::ty_bare_fn(ty::BareFnTy { sig=ty::FnSig { output, .. }, .. }) => {
                 // Struct `id` is really a struct variant of an enum,
                 // and we're really looking at the variant's constructor
                 // function. So get the return type for a detailed error
@@ -688,10 +688,10 @@ impl<'a> PrivacyVisitor<'a> {
                 resolve::LastMod(resolve::DependsOn(def)) => {
                     self.report_error(ck_public(def));
                 },
-                resolve::LastImport{value_priv: value_priv,
-                                    value_used: check_value,
-                                    type_priv: type_priv,
-                                    type_used: check_type} => {
+                resolve::LastImport{value_priv=value_priv,
+                                    value_used=check_value,
+                                    type_priv=type_priv,
+                                    type_used=check_type} => {
                     // This dance with found_error is because we don't want to report
                     // a privacy error twice for the same directive.
                     let found_error = match (type_priv, check_type) {
@@ -774,8 +774,8 @@ impl<'a> PrivacyVisitor<'a> {
             }
             // Trait methods are always all public. The only controlling factor
             // is whether the trait itself is accessible or not.
-            MethodParam(MethodParam { trait_id: trait_id, .. }) |
-            MethodObject(MethodObject { trait_id: trait_id, .. }) => {
+            MethodParam(MethodParam { trait_id=trait_id, .. }) |
+            MethodObject(MethodObject { trait_id=trait_id, .. }) => {
                 self.report_error(self.ensure_public(span, trait_id, None,
                                                      "source trait"));
             }
@@ -904,15 +904,15 @@ impl<'a> Visitor<()> for PrivacyVisitor<'a> {
                         for pid in list.iter() {
                             debug!("privacy - list {}", pid.node.id);
                             let seg = ast::PathSegment {
-                                identifier: pid.node.name,
-                                lifetimes: Vec::new(),
-                                types: OwnedSlice::empty(),
+                                identifier=pid.node.name,
+                                lifetimes=Vec::new(),
+                                types=OwnedSlice::empty(),
                             };
                             let segs = vec!(seg);
                             let path = ast::Path {
-                                global: false,
-                                span: pid.span,
-                                segments: segs,
+                                global=false,
+                                span=pid.span,
+                                segments=segs,
                             };
                             self.check_path(pid.span, pid.node.id, &path);
                         }
@@ -1278,10 +1278,10 @@ impl<'a> Visitor<()> for VisiblePrivateTypesVisitor<'a> {
                 // check the properties of the Self type:
                 {
                     let mut visitor = CheckTypeForPrivatenessVisitor {
-                        inner: self,
-                        contains_private: false,
-                        at_outer_type: true,
-                        outer_type_is_public_path: false,
+                        inner=self,
+                        contains_private=false,
+                        at_outer_type=true,
+                        outer_type_is_public_path=false,
                     };
                     visitor.visit_ty(&*self_, ());
                     self_contains_private = visitor.contains_private;
@@ -1438,27 +1438,27 @@ pub fn check_crate(tcx: &ty::ctxt,
                    krate: &ast::Crate) -> (ExportedItems, PublicItems) {
     // Figure out who everyone's parent is
     let mut visitor = ParentVisitor {
-        parents: NodeMap::new(),
-        curparent: ast::DUMMY_NODE_ID,
+        parents=NodeMap::new(),
+        curparent=ast::DUMMY_NODE_ID,
     };
     visit::walk_crate(&mut visitor, krate, ());
 
     // Use the parent map to check the privacy of everything
     let mut visitor = PrivacyVisitor {
-        curitem: ast::DUMMY_NODE_ID,
-        in_foreign: false,
-        tcx: tcx,
-        parents: visitor.parents,
-        external_exports: external_exports,
-        last_private_map: last_private_map,
+        curitem=ast::DUMMY_NODE_ID,
+        in_foreign=false,
+        tcx=tcx,
+        parents=visitor.parents,
+        external_exports=external_exports,
+        last_private_map=last_private_map,
     };
     visit::walk_crate(&mut visitor, krate, ());
 
     // Sanity check to make sure that all privacy usage and controls are
     // reasonable.
     let mut visitor = SanePrivacyVisitor {
-        in_fn: false,
-        tcx: tcx,
+        in_fn=false,
+        tcx=tcx,
     };
     visit::walk_crate(&mut visitor, krate, ());
 
@@ -1467,13 +1467,13 @@ pub fn check_crate(tcx: &ty::ctxt,
     // Build up a set of all exported items in the AST. This is a set of all
     // items which are reachable from external crates based on visibility.
     let mut visitor = EmbargoVisitor {
-        tcx: tcx,
-        exported_items: NodeSet::new(),
-        public_items: NodeSet::new(),
-        reexports: NodeSet::new(),
-        exp_map2: exp_map2,
-        prev_exported: true,
-        prev_public: true,
+        tcx=tcx,
+        exported_items=NodeSet::new(),
+        public_items=NodeSet::new(),
+        reexports=NodeSet::new(),
+        exp_map2=exp_map2,
+        prev_exported=true,
+        prev_public=true,
     };
     loop {
         let before = visitor.exported_items.len();
@@ -1487,9 +1487,9 @@ pub fn check_crate(tcx: &ty::ctxt,
 
     {
         let mut visitor = VisiblePrivateTypesVisitor {
-            tcx: tcx,
-            exported_items: &exported_items,
-            public_items: &public_items
+            tcx=tcx,
+            exported_items=&exported_items,
+            public_items=&public_items
         };
         visit::walk_crate(&mut visitor, krate, ());
     }

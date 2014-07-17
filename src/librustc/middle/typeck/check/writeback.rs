@@ -88,7 +88,7 @@ struct WritebackCx<'cx> {
 
 impl<'cx> WritebackCx<'cx> {
     fn new(fcx: &'cx FnCtxt) -> WritebackCx<'cx> {
-        WritebackCx { fcx: fcx }
+        WritebackCx { fcx=fcx }
     }
 
     fn tcx(&self) -> &'cx ty::ctxt {
@@ -191,8 +191,8 @@ impl<'cx> WritebackCx<'cx> {
         for (upvar_id, upvar_borrow) in self.fcx.inh.upvar_borrow_map.borrow().iter() {
             let r = upvar_borrow.region;
             let r = self.resolve(&r, ResolvingUpvar(*upvar_id));
-            let new_upvar_borrow = ty::UpvarBorrow { kind: upvar_borrow.kind,
-                                                     region: r };
+            let new_upvar_borrow = ty::UpvarBorrow { kind=upvar_borrow.kind,
+                                                     region=r };
             debug!("Upvar borrow for {} resolved to {}",
                    upvar_id.repr(self.tcx()),
                    new_upvar_borrow.repr(self.tcx()));
@@ -254,8 +254,8 @@ impl<'cx> WritebackCx<'cx> {
                         }
 
                         ty::AutoDerefRef(ty::AutoDerefRef {
-                            autoderefs: adj.autoderefs,
-                            autoref: self.resolve(&adj.autoref, reason),
+                            autoderefs=adj.autoderefs,
+                            autoref=self.resolve(&adj.autoref, reason),
                         })
                     }
 
@@ -289,9 +289,9 @@ impl<'cx> WritebackCx<'cx> {
                        method_call,
                        method.repr(self.tcx()));
                 let new_method = MethodCallee {
-                    origin: method.origin,
-                    ty: self.resolve(&method.ty, reason),
-                    substs: self.resolve(&method.substs, reason),
+                    origin=method.origin,
+                    ty=self.resolve(&method.ty, reason),
+                    substs=self.resolve(&method.substs, reason),
                 };
 
                 self.tcx().method_map.borrow_mut().insert(
@@ -377,10 +377,10 @@ impl<'cx> Resolver<'cx> {
            reason: ResolveReason)
            -> Resolver<'cx>
     {
-        Resolver { infcx: fcx.infcx(),
-                   tcx: fcx.tcx(),
-                   writeback_errors: &fcx.writeback_errors,
-                   reason: reason }
+        Resolver { infcx=fcx.infcx(),
+                   tcx=fcx.tcx(),
+                   writeback_errors=&fcx.writeback_errors,
+                   reason=reason }
     }
 
     fn from_infcx(infcx: &'cx infer::InferCtxt<'cx>,
@@ -388,10 +388,10 @@ impl<'cx> Resolver<'cx> {
                   reason: ResolveReason)
                   -> Resolver<'cx>
     {
-        Resolver { infcx: infcx,
-                   tcx: infcx.tcx,
-                   writeback_errors: writeback_errors,
-                   reason: reason }
+        Resolver { infcx=infcx,
+                   tcx=infcx.tcx,
+                   writeback_errors=writeback_errors,
+                   reason=reason }
     }
 
     fn report_error(&self, e: infer::fixup_err) {

@@ -357,7 +357,7 @@ impl<'a> TraitDef<'a> {
             }
         }).map(|a| a.clone()));
         push(box(GC) ast::Item {
-            attrs: attrs,
+            attrs=attrs,
             ..(*newitem).clone()
         })
     }
@@ -408,8 +408,8 @@ impl<'a> TraitDef<'a> {
                        None)
         }));
         let trait_generics = Generics {
-            lifetimes: lifetimes,
-            ty_params: OwnedSlice::from_vec(ty_params)
+            lifetimes=lifetimes,
+            ty_params=OwnedSlice::from_vec(ty_params)
         };
 
         // Create the reference to the trait.
@@ -526,11 +526,11 @@ impl<'a> MethodDef<'a> {
                                 fields: &SubstructureFields)
         -> Gc<Expr> {
         let substructure = Substructure {
-            type_ident: type_ident,
-            method_ident: cx.ident_of(self.name),
-            self_args: self_args,
-            nonself_args: nonself_args,
-            fields: fields
+            type_ident=type_ident,
+            method_ident=cx.ident_of(self.name),
+            self_args=self_args,
+            nonself_args=nonself_args,
+            fields=fields
         };
         let mut f = self.combine_substructure.borrow_mut();
         let f: &mut CombineSubstructureFunc = &mut *f;
@@ -632,16 +632,16 @@ impl<'a> MethodDef<'a> {
 
         // Create the method.
         box(GC) ast::Method {
-            ident: method_ident,
-            attrs: self.attributes.clone(),
-            generics: fn_generics,
-            explicit_self: explicit_self,
-            fn_style: ast::NormalFn,
-            decl: fn_decl,
-            body: body_block,
-            id: ast::DUMMY_NODE_ID,
-            span: trait_.span,
-            vis: ast::Inherited,
+            ident=method_ident,
+            attrs=self.attributes.clone(),
+            generics=fn_generics,
+            explicit_self=explicit_self,
+            fn_style=ast::NormalFn,
+            decl=fn_decl,
+            body=body_block,
+            id=ast::DUMMY_NODE_ID,
+            span=trait_.span,
+            vis=ast::Inherited,
         }
     }
 
@@ -702,10 +702,10 @@ impl<'a> MethodDef<'a> {
                     }
                 }).collect();
                 FieldInfo {
-                    span: span,
-                    name: opt_id,
-                    self_: field,
-                    other: other_fields
+                    span=span,
+                    name=opt_id,
+                    self_=field,
+                    other=other_fields
                 }
             }).collect()
         } else {
@@ -866,10 +866,10 @@ impl<'a> MethodDef<'a> {
                                 .zip(enum_matching_fields.iter())
                                 .map(|(&(span, id, self_f), other)| {
                         FieldInfo {
-                            span: span,
-                            name: id,
-                            self_: self_f,
-                            other: (*other).clone()
+                            span=span,
+                            name=id,
+                            self_=self_f,
+                            other=(*other).clone()
                         }
                     }).collect();
                     EnumMatching(variant_index, &*variant, field_tuples)
@@ -1011,11 +1011,11 @@ impl<'a> TraitDef<'a> {
             Some(name) => *name
         };
         to_set.expn_info = Some(box(GC) codemap::ExpnInfo {
-            call_site: to_set,
-            callee: codemap::NameAndSpan {
-                name: format!("deriving({})", trait_name),
-                format: codemap::MacroAttribute,
-                span: Some(self.span)
+            call_site=to_set,
+            callee=codemap::NameAndSpan {
+                name=format!("deriving({})", trait_name),
+                format=codemap::MacroAttribute,
+                span=Some(self.span)
             }
         });
         to_set
@@ -1094,7 +1094,7 @@ impl<'a> TraitDef<'a> {
                 }
             };
             let ident = cx.ident_of(format!("{}_{}", prefix, i).as_slice());
-            paths.push(codemap::Spanned{span: sp, node: ident});
+            paths.push(codemap::Spanned{span=sp, node=ident});
             let val = cx.expr(
                 sp, ast::ExprParen(cx.expr_deref(sp, cx.expr_path(cx.path_ident(sp,ident)))));
             ident_expr.push((sp, opt_id, val));
@@ -1107,7 +1107,7 @@ impl<'a> TraitDef<'a> {
         let pattern = if struct_type == Record {
             let field_pats = subpats.iter().zip(ident_expr.iter()).map(|(&pat, &(_, id, _))| {
                 // id is guaranteed to be Some
-                ast::FieldPat { ident: id.unwrap(), pat: pat }
+                ast::FieldPat { ident=id.unwrap(), pat=pat }
             }).collect();
             cx.pat_struct(self.span, matching_path, field_pats)
         } else {
@@ -1139,7 +1139,7 @@ impl<'a> TraitDef<'a> {
                 for (i, va) in variant_args.iter().enumerate() {
                     let sp = self.set_expn_info(cx, va.ty.span);
                     let ident = cx.ident_of(format!("{}_{}", prefix, i).as_slice());
-                    let path1 = codemap::Spanned{span: sp, node: ident};
+                    let path1 = codemap::Spanned{span=sp, node=ident};
                     paths.push(path1);
                     let expr_path = cx.expr_path(cx.path_ident(sp, ident));
                     let val = cx.expr(sp, ast::ExprParen(cx.expr_deref(sp, expr_path)));

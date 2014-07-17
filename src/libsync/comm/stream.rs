@@ -74,13 +74,13 @@ enum Message<T> {
 impl<T: Send> Packet<T> {
     pub fn new() -> Packet<T> {
         Packet {
-            queue: spsc::Queue::new(128),
+            queue=spsc::Queue::new(128),
 
-            cnt: atomics::AtomicInt::new(0),
-            steals: 0,
-            to_wake: atomics::AtomicUint::new(0),
+            cnt=atomics::AtomicInt::new(0),
+            steals=0,
+            to_wake=atomics::AtomicUint::new(0),
 
-            port_dropped: atomics::AtomicBool::new(false),
+            port_dropped=atomics::AtomicBool::new(false),
         }
     }
 

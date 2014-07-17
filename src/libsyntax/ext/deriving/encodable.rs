@@ -95,34 +95,34 @@ pub fn expand_deriving_encodable(cx: &mut ExtCtxt,
                                  item: Gc<Item>,
                                  push: |Gc<Item>|) {
     let trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: Path::new_(vec!("serialize", "Encodable"), None,
+        span=span,
+        attributes=Vec::new(),
+        path=Path::new_(vec!("serialize", "Encodable"), None,
                          vec!(box Literal(Path::new_local("__S")),
                               box Literal(Path::new_local("__E"))), true),
-        additional_bounds: Vec::new(),
-        generics: LifetimeBounds {
-            lifetimes: Vec::new(),
-            bounds: vec!(("__S", None, vec!(Path::new_(
+        additional_bounds=Vec::new(),
+        generics=LifetimeBounds {
+            lifetimes=Vec::new(),
+            bounds=vec!(("__S", None, vec!(Path::new_(
                             vec!("serialize", "Encoder"), None,
                             vec!(box Literal(Path::new_local("__E"))), true))),
                          ("__E", None, vec!()))
         },
-        methods: vec!(
+        methods=vec!(
             MethodDef {
-                name: "encode",
-                generics: LifetimeBounds::empty(),
-                explicit_self: borrowed_explicit_self(),
-                args: vec!(Ptr(box Literal(Path::new_local("__S")),
+                name="encode",
+                generics=LifetimeBounds::empty(),
+                explicit_self=borrowed_explicit_self(),
+                args=vec!(Ptr(box Literal(Path::new_local("__S")),
                             Borrowed(None, MutMutable))),
-                ret_ty: Literal(Path::new_(vec!("std", "result", "Result"),
+                ret_ty=Literal(Path::new_(vec!("std", "result", "Result"),
                                            None,
                                            vec!(box Tuple(Vec::new()),
                                                 box Literal(Path::new_local("__E"))),
                                            true)),
-                attributes: Vec::new(),
-                const_nonmatching: true,
-                combine_substructure: combine_substructure(|a, b, c| {
+                attributes=Vec::new(),
+                const_nonmatching=true,
+                combine_substructure=combine_substructure(|a, b, c| {
                     encodable_substructure(a, b, c)
                 }),
             })

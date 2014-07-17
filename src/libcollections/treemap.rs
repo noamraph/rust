@@ -122,52 +122,52 @@ impl<K: Ord, V> Default for TreeMap<K,V> {
 
 impl<K: Ord, V> TreeMap<K, V> {
     /// Create an empty TreeMap
-    pub fn new() -> TreeMap<K, V> { TreeMap{root: None, length: 0} }
+    pub fn new() -> TreeMap<K, V> { TreeMap{root=None, length=0} }
 
     /// Get a lazy iterator over the key-value pairs in the map.
     /// Requires that it be frozen (immutable).
     pub fn iter<'a>(&'a self) -> Entries<'a, K, V> {
         Entries {
-            stack: vec!(),
-            node: deref(&self.root),
-            remaining_min: self.length,
-            remaining_max: self.length
+            stack=vec!(),
+            node=deref(&self.root),
+            remaining_min=self.length,
+            remaining_max=self.length
         }
     }
 
     /// Get a lazy reverse iterator over the key-value pairs in the map.
     /// Requires that it be frozen (immutable).
     pub fn rev_iter<'a>(&'a self) -> RevEntries<'a, K, V> {
-        RevEntries{iter: self.iter()}
+        RevEntries{iter=self.iter()}
     }
 
     /// Get a lazy forward iterator over the key-value pairs in the
     /// map, with the values being mutable.
     pub fn mut_iter<'a>(&'a mut self) -> MutEntries<'a, K, V> {
         MutEntries {
-            stack: vec!(),
-            node: mut_deref(&mut self.root),
-            remaining_min: self.length,
-            remaining_max: self.length
+            stack=vec!(),
+            node=mut_deref(&mut self.root),
+            remaining_min=self.length,
+            remaining_max=self.length
         }
     }
     /// Get a lazy reverse iterator over the key-value pairs in the
     /// map, with the values being mutable.
     pub fn mut_rev_iter<'a>(&'a mut self) -> RevMutEntries<'a, K, V> {
-        RevMutEntries{iter: self.mut_iter()}
+        RevMutEntries{iter=self.mut_iter()}
     }
 
 
     /// Get a lazy iterator that consumes the treemap.
     pub fn move_iter(self) -> MoveEntries<K, V> {
-        let TreeMap { root: root, length: length } = self;
+        let TreeMap { root=root, length=length } = self;
         let stk = match root {
             None => vec!(),
             Some(box tn) => vec!(tn)
         };
         MoveEntries {
-            stack: stk,
-            remaining: length
+            stack=stk,
+            remaining=length
         }
     }
 }
@@ -260,10 +260,10 @@ impl<K: Ord, V> TreeMap<K, V> {
     /// `traverse_left`/`traverse_right`/`traverse_complete`.
     fn iter_for_traversal<'a>(&'a self) -> Entries<'a, K, V> {
         Entries {
-            stack: vec!(),
-            node: deref(&self.root),
-            remaining_min: 0,
-            remaining_max: self.length
+            stack=vec!(),
+            node=deref(&self.root),
+            remaining_min=0,
+            remaining_max=self.length
         }
     }
 
@@ -283,10 +283,10 @@ impl<K: Ord, V> TreeMap<K, V> {
     /// `traverse_left`/`traverse_right`/`traverse_complete`.
     fn mut_iter_for_traversal<'a>(&'a mut self) -> MutEntries<'a, K, V> {
         MutEntries {
-            stack: vec!(),
-            node: mut_deref(&mut self.root),
-            remaining_min: 0,
-            remaining_max: self.length
+            stack=vec!(),
+            node=mut_deref(&mut self.root),
+            remaining_min=0,
+            remaining_max=self.length
         }
     }
 
@@ -530,21 +530,21 @@ impl<K, V> Iterator<(K, V)> for MoveEntries<K,V> {
     fn next(&mut self) -> Option<(K, V)> {
         while !self.stack.is_empty() {
             let TreeNode {
-                key: key,
-                value: value,
-                left: left,
-                right: right,
-                level: level
+                key=key,
+                value=value,
+                left=left,
+                right=right,
+                level=level
             } = self.stack.pop().unwrap();
 
             match left {
                 Some(box left) => {
                     let n = TreeNode {
-                        key: key,
-                        value: value,
-                        left: None,
-                        right: right,
-                        level: level
+                        key=key,
+                        value=value,
+                        left=None,
+                        right=right,
+                        level=level
                     };
                     self.stack.push(n);
                     self.stack.push(left);
@@ -677,20 +677,20 @@ impl<T: Ord> Default for TreeSet<T> {
 impl<T: Ord> TreeSet<T> {
     /// Create an empty TreeSet
     #[inline]
-    pub fn new() -> TreeSet<T> { TreeSet{map: TreeMap::new()} }
+    pub fn new() -> TreeSet<T> { TreeSet{map=TreeMap::new()} }
 
     /// Get a lazy iterator over the values in the set.
     /// Requires that it be frozen (immutable).
     #[inline]
     pub fn iter<'a>(&'a self) -> SetItems<'a, T> {
-        SetItems{iter: self.map.iter()}
+        SetItems{iter=self.map.iter()}
     }
 
     /// Get a lazy iterator over the values in the set.
     /// Requires that it be frozen (immutable).
     #[inline]
     pub fn rev_iter<'a>(&'a self) -> RevSetItems<'a, T> {
-        RevSetItems{iter: self.map.rev_iter()}
+        RevSetItems{iter=self.map.rev_iter()}
     }
 
     /// Get a lazy iterator that consumes the set.
@@ -703,36 +703,36 @@ impl<T: Ord> TreeSet<T> {
     /// If all elements in the set are less than `v` empty iterator is returned.
     #[inline]
     pub fn lower_bound<'a>(&'a self, v: &T) -> SetItems<'a, T> {
-        SetItems{iter: self.map.lower_bound(v)}
+        SetItems{iter=self.map.lower_bound(v)}
     }
 
     /// Get a lazy iterator pointing to the first value greater than `v`.
     /// If all elements in the set are not greater than `v` empty iterator is returned.
     #[inline]
     pub fn upper_bound<'a>(&'a self, v: &T) -> SetItems<'a, T> {
-        SetItems{iter: self.map.upper_bound(v)}
+        SetItems{iter=self.map.upper_bound(v)}
     }
 
     /// Visit the values (in-order) representing the difference
     pub fn difference<'a>(&'a self, other: &'a TreeSet<T>) -> DifferenceItems<'a, T> {
-        DifferenceItems{a: self.iter().peekable(), b: other.iter().peekable()}
+        DifferenceItems{a=self.iter().peekable(), b=other.iter().peekable()}
     }
 
     /// Visit the values (in-order) representing the symmetric difference
     pub fn symmetric_difference<'a>(&'a self, other: &'a TreeSet<T>)
         -> SymDifferenceItems<'a, T> {
-        SymDifferenceItems{a: self.iter().peekable(), b: other.iter().peekable()}
+        SymDifferenceItems{a=self.iter().peekable(), b=other.iter().peekable()}
     }
 
     /// Visit the values (in-order) representing the intersection
     pub fn intersection<'a>(&'a self, other: &'a TreeSet<T>)
         -> IntersectionItems<'a, T> {
-        IntersectionItems{a: self.iter().peekable(), b: other.iter().peekable()}
+        IntersectionItems{a=self.iter().peekable(), b=other.iter().peekable()}
     }
 
     /// Visit the values (in-order) representing the union
     pub fn union<'a>(&'a self, other: &'a TreeSet<T>) -> UnionItems<'a, T> {
-        UnionItems{a: self.iter().peekable(), b: other.iter().peekable()}
+        UnionItems{a=self.iter().peekable(), b=other.iter().peekable()}
     }
 }
 
@@ -853,7 +853,7 @@ impl<K: Ord, V> TreeNode<K, V> {
     /// Creates a new tree node.
     #[inline]
     pub fn new(key: K, value: V) -> TreeNode<K, V> {
-        TreeNode{key: key, value: value, left: None, right: None, level: 1}
+        TreeNode{key=key, value=value, left=None, right=None, level=1}
     }
 }
 

@@ -57,7 +57,7 @@ impl Variables {
     /// Return a new zero-initialized Variables
     pub fn new() -> Variables {
         Variables {
-            sta: [
+            sta=[
                 Number(0), Number(0), Number(0), Number(0), Number(0),
                 Number(0), Number(0), Number(0), Number(0), Number(0),
                 Number(0), Number(0), Number(0), Number(0), Number(0),
@@ -65,7 +65,7 @@ impl Variables {
                 Number(0), Number(0), Number(0), Number(0), Number(0),
                 Number(0),
             ],
-            dyn: [
+            dyn=[
                 Number(0), Number(0), Number(0), Number(0), Number(0),
                 Number(0), Number(0), Number(0), Number(0), Number(0),
                 Number(0), Number(0), Number(0), Number(0), Number(0),
@@ -453,8 +453,8 @@ struct Flags {
 
 impl Flags {
     fn new() -> Flags {
-        Flags{ width: 0, precision: 0, alternate: false,
-               left: false, sign: false, space: false }
+        Flags{ width=0, precision=0, alternate=false,
+               left=false, sign=false, space=false }
     }
 }
 

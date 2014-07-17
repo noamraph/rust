@@ -35,8 +35,8 @@ pub struct DuplexStream<S, R> {
 pub fn duplex<S: Send, R: Send>() -> (DuplexStream<S, R>, DuplexStream<R, S>) {
     let (tx1, rx1) = channel();
     let (tx2, rx2) = channel();
-    (DuplexStream { tx: tx1, rx: rx2 },
-     DuplexStream { tx: tx2, rx: rx1 })
+    (DuplexStream { tx=tx1, rx=rx2 },
+     DuplexStream { tx=tx2, rx=rx1 })
 }
 
 // Allow these methods to be used without import:

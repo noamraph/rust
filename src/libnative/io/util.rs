@@ -28,9 +28,9 @@ pub fn timeout(desc: &'static str) -> IoError {
     #[cfg(unix)] use ERROR = libc::ETIMEDOUT;
     #[cfg(windows)] use ERROR = libc::ERROR_OPERATION_ABORTED;
     IoError {
-        code: ERROR as uint,
-        extra: 0,
-        detail: Some(desc.to_string()),
+        code=ERROR as uint,
+        extra=0,
+        detail=Some(desc.to_string()),
     }
 }
 
@@ -38,24 +38,24 @@ pub fn short_write(n: uint, desc: &'static str) -> IoError {
     #[cfg(unix)] use ERROR = libc::EAGAIN;
     #[cfg(windows)] use ERROR = libc::ERROR_OPERATION_ABORTED;
     IoError {
-        code: ERROR as uint,
-        extra: n,
-        detail: Some(desc.to_string()),
+        code=ERROR as uint,
+        extra=n,
+        detail=Some(desc.to_string()),
     }
 }
 
 pub fn eof() -> IoError {
     IoError {
-        code: libc::EOF as uint,
-        extra: 0,
-        detail: None,
+        code=libc::EOF as uint,
+        extra=0,
+        detail=None,
     }
 }
 
 pub fn ms_to_timeval(ms: u64) -> libc::timeval {
     libc::timeval {
-        tv_sec: (ms / 1000) as libc::time_t,
-        tv_usec: ((ms % 1000) * 1000) as libc::suseconds_t,
+        tv_sec=(ms / 1000) as libc::time_t,
+        tv_usec=((ms % 1000) * 1000) as libc::suseconds_t,
     }
 }
 
@@ -120,9 +120,9 @@ pub fn connect_timeout(fd: net::sock_t,
                         Ok(())
                     } else {
                         Err(IoError {
-                            code: err as uint,
-                            extra: 0,
-                            detail: Some(os::error_string(err as uint)),
+                            code=err as uint,
+                            extra=0,
+                            detail=Some(os::error_string(err as uint)),
                         })
                     }
                 }

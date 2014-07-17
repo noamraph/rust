@@ -80,8 +80,8 @@ struct Parser<'a> {
 impl<'a> Parser<'a> {
     fn new(s: &'a str) -> Parser<'a> {
         Parser {
-            s: s.as_bytes(),
-            pos: 0,
+            s=s.as_bytes(),
+            pos=0,
         }
     }
 
@@ -325,7 +325,7 @@ impl<'a> Parser<'a> {
 
         // host, colon, port
         self.read_seq_3::<IpAddr, char, u16>(ip_addr, colon, port)
-                .map(|t| match t { (ip, _, port) => SocketAddr { ip: ip, port: port } })
+                .map(|t| match t { (ip, _, port) => SocketAddr { ip=ip, port=port } })
     }
 }
 
@@ -421,11 +421,11 @@ mod test {
 
     #[test]
     fn test_from_str_socket_addr() {
-        assert_eq!(Some(SocketAddr { ip: Ipv4Addr(77, 88, 21, 11), port: 80 }),
+        assert_eq!(Some(SocketAddr { ip=Ipv4Addr(77, 88, 21, 11), port=80 }),
                 FromStr::from_str("77.88.21.11:80"));
-        assert_eq!(Some(SocketAddr { ip: Ipv6Addr(0x2a02, 0x6b8, 0, 1, 0, 0, 0, 1), port: 53 }),
+        assert_eq!(Some(SocketAddr { ip=Ipv6Addr(0x2a02, 0x6b8, 0, 1, 0, 0, 0, 1), port=53 }),
                 FromStr::from_str("[2a02:6b8:0:1::1]:53"));
-        assert_eq!(Some(SocketAddr { ip: Ipv6Addr(0, 0, 0, 0, 0, 0, 0x7F00, 1), port: 22 }),
+        assert_eq!(Some(SocketAddr { ip=Ipv6Addr(0, 0, 0, 0, 0, 0, 0x7F00, 1), port=22 }),
                 FromStr::from_str("[::127.0.0.1]:22"));
 
         // without port

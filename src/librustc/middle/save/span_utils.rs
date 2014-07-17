@@ -55,9 +55,9 @@ impl<'a> SpanUtils<'a> {
                     self.sess.codemap().lookup_byte_offset(span.lo);
                 let base = pos + fm.start_pos;
                 Some(Span {
-                    lo: base + self.sess.codemap().lookup_byte_offset(sub.lo).pos,
-                    hi: base + self.sess.codemap().lookup_byte_offset(sub.hi).pos,
-                    expn_info: None,
+                    lo=base + self.sess.codemap().lookup_byte_offset(sub.lo).pos,
+                    hi=base + self.sess.codemap().lookup_byte_offset(sub.hi).pos,
+                    expn_info=None,
                 })
             }
         }

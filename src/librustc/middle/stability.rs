@@ -69,12 +69,12 @@ impl Visitor<Option<Stability>> for Annotator {
 
     fn visit_trait_method(&mut self, t: &TraitMethod, parent: Option<Stability>) {
         let stab = match *t {
-            Required(TypeMethod {attrs: ref attrs, id: id, ..}) =>
+            Required(TypeMethod {attrs=ref attrs, id=id, ..}) =>
                 self.annotate(id, attrs.as_slice(), parent),
 
             // work around lack of pattern matching for @ types
             Provided(method) => match *method {
-                Method {attrs: ref attrs, id: id, ..} =>
+                Method {attrs=ref attrs, id=id, ..} =>
                     self.annotate(id, attrs.as_slice(), parent)
             }
         };
@@ -97,9 +97,9 @@ impl Index {
     /// Construct the stability index for a crate being compiled.
     pub fn build(krate: &Crate) -> Index {
         let mut annotator = Annotator {
-            index: Index {
-                local: NodeMap::new(),
-                extern_cache: DefIdMap::new()
+            index=Index {
+                local=NodeMap::new(),
+                extern_cache=DefIdMap::new()
             }
         };
         visit::walk_crate(&mut annotator, krate,

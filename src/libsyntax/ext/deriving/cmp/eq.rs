@@ -39,14 +39,14 @@ pub fn expand_deriving_eq(cx: &mut ExtCtxt,
             let inline = cx.meta_word(span, InternedString::new("inline"));
             let attrs = vec!(cx.attribute(span, inline));
             MethodDef {
-                name: $name,
-                generics: LifetimeBounds::empty(),
-                explicit_self: borrowed_explicit_self(),
-                args: vec!(borrowed_self()),
-                ret_ty: Literal(Path::new(vec!("bool"))),
-                attributes: attrs,
-                const_nonmatching: true,
-                combine_substructure: combine_substructure(|a, b, c| {
+                name=$name,
+                generics=LifetimeBounds::empty(),
+                explicit_self=borrowed_explicit_self(),
+                args=vec!(borrowed_self()),
+                ret_ty=Literal(Path::new(vec!("bool"))),
+                attributes=attrs,
+                const_nonmatching=true,
+                combine_substructure=combine_substructure(|a, b, c| {
                     $f(a, b, c)
                 })
             }
@@ -54,12 +54,12 @@ pub fn expand_deriving_eq(cx: &mut ExtCtxt,
     );
 
     let trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: Path::new(vec!("std", "cmp", "PartialEq")),
-        additional_bounds: Vec::new(),
-        generics: LifetimeBounds::empty(),
-        methods: vec!(
+        span=span,
+        attributes=Vec::new(),
+        path=Path::new(vec!("std", "cmp", "PartialEq")),
+        additional_bounds=Vec::new(),
+        generics=LifetimeBounds::empty(),
+        methods=vec!(
             md!("eq", cs_eq),
             md!("ne", cs_ne)
         )

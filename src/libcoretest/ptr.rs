@@ -21,7 +21,7 @@ fn test() {
             fst: int,
             snd: int
         };
-        let mut p = Pair {fst: 10, snd: 20};
+        let mut p = Pair {fst=10, snd=20};
         let pptr: *mut Pair = &mut p;
         let iptr: *mut int = mem::transmute(pptr);
         assert_eq!(*iptr, 10);
@@ -29,7 +29,7 @@ fn test() {
         assert_eq!(*iptr, 30);
         assert_eq!(p.fst, 30);
 
-        *pptr = Pair {fst: 50, snd: 60};
+        *pptr = Pair {fst=50, snd=60};
         assert_eq!(*iptr, 50);
         assert_eq!(p.fst, 50);
         assert_eq!(p.snd, 60);

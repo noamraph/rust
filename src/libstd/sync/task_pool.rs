@@ -71,8 +71,8 @@ impl<T> TaskPool<T> {
         });
 
         return TaskPool {
-            channels: channels,
-            next_index: 0,
+            channels=channels,
+            next_index=0,
         };
     }
 

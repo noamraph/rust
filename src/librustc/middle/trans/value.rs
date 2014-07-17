@@ -101,7 +101,7 @@ impl Value {
     /// Returns an iterator for the users of this value
     pub fn user_iter(self) -> Users {
         Users {
-            next: self.get_first_use()
+            next=self.get_first_use()
         }
     }
 

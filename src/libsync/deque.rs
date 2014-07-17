@@ -145,7 +145,7 @@ impl<T: Send> BufferPool<T> {
     /// Allocates a new buffer pool which in turn can be used to allocate new
     /// deques.
     pub fn new() -> BufferPool<T> {
-        BufferPool { pool: Arc::new(Exclusive::new(Vec::new())) }
+        BufferPool { pool=Arc::new(Exclusive::new(Vec::new())) }
     }
 
     /// Allocates a new work-stealing deque which will send/receiving memory to
@@ -153,8 +153,8 @@ impl<T: Send> BufferPool<T> {
     pub fn deque(&self) -> (Worker<T>, Stealer<T>) {
         let a = Arc::new(Deque::new(self.clone()));
         let b = a.clone();
-        (Worker { deque: a, noshare: marker::NoShare },
-         Stealer { deque: b, noshare: marker::NoShare })
+        (Worker { deque=a, noshare=marker::NoShare },
+         Stealer { deque=b, noshare=marker::NoShare })
     }
 
     fn alloc(&mut self, bits: uint) -> Box<Buffer<T>> {
@@ -179,7 +179,7 @@ impl<T: Send> BufferPool<T> {
 }
 
 impl<T: Send> Clone for BufferPool<T> {
-    fn clone(&self) -> BufferPool<T> { BufferPool { pool: self.pool.clone() } }
+    fn clone(&self) -> BufferPool<T> { BufferPool { pool=self.pool.clone() } }
 }
 
 impl<T: Send> Worker<T> {
@@ -217,7 +217,7 @@ impl<T: Send> Stealer<T> {
 
 impl<T: Send> Clone for Stealer<T> {
     fn clone(&self) -> Stealer<T> {
-        Stealer { deque: self.deque.clone(), noshare: marker::NoShare }
+        Stealer { deque=self.deque.clone(), noshare=marker::NoShare }
     }
 }
 
@@ -228,10 +228,10 @@ impl<T: Send> Deque<T> {
     fn new(mut pool: BufferPool<T>) -> Deque<T> {
         let buf = pool.alloc(MIN_BITS);
         Deque {
-            bottom: AtomicInt::new(0),
-            top: AtomicInt::new(0),
-            array: AtomicPtr::new(unsafe { transmute(buf) }),
-            pool: pool,
+            bottom=AtomicInt::new(0),
+            top=AtomicInt::new(0),
+            array=AtomicPtr::new(unsafe { transmute(buf) }),
+            pool=pool,
         }
     }
 
@@ -354,8 +354,8 @@ impl<T: Send> Buffer<T> {
         let size = buffer_alloc_size::<T>(log_size);
         let buffer = allocate(size, min_align_of::<T>());
         Buffer {
-            storage: buffer as *const T,
-            log_size: log_size,
+            storage=buffer as *const T,
+            log_size=log_size,
         }
     }
 

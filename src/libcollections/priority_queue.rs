@@ -47,7 +47,7 @@ impl<T: Ord> PriorityQueue<T> {
     /// An iterator visiting all values in underlying vector, in
     /// arbitrary order.
     pub fn iter<'a>(&'a self) -> Items<'a, T> {
-        Items { iter: self.data.iter() }
+        Items { iter=self.data.iter() }
     }
 
     /// Returns the greatest item in a queue or None if it is empty
@@ -127,7 +127,7 @@ impl<T: Ord> PriorityQueue<T> {
     fn to_sorted_vec(self) -> Vec<T> { self.into_sorted_vec() }
 
     /// Consume the PriorityQueue and return the underlying vector
-    pub fn into_vec(self) -> Vec<T> { let PriorityQueue{data: v} = self; v }
+    pub fn into_vec(self) -> Vec<T> { let PriorityQueue{data=v} = self; v }
 
     /// Consume the PriorityQueue and return a vector in sorted
     /// (ascending) order
@@ -143,16 +143,16 @@ impl<T: Ord> PriorityQueue<T> {
     }
 
     /// Create an empty PriorityQueue
-    pub fn new() -> PriorityQueue<T> { PriorityQueue{data: vec!(),} }
+    pub fn new() -> PriorityQueue<T> { PriorityQueue{data=vec!(),} }
 
     /// Create an empty PriorityQueue with capacity `capacity`
     pub fn with_capacity(capacity: uint) -> PriorityQueue<T> {
-        PriorityQueue { data: Vec::with_capacity(capacity) }
+        PriorityQueue { data=Vec::with_capacity(capacity) }
     }
 
     /// Create a PriorityQueue from a vector (heapify)
     pub fn from_vec(xs: Vec<T>) -> PriorityQueue<T> {
-        let mut q = PriorityQueue{data: xs,};
+        let mut q = PriorityQueue{data=xs,};
         let mut n = q.len() / 2;
         while n > 0 {
             n -= 1;

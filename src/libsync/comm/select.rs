@@ -108,10 +108,10 @@ impl Select {
     /// rather much easier through the `select!` macro.
     pub fn new() -> Select {
         Select {
-            marker1: marker::NoSend,
-            head: 0 as *mut Handle<'static, ()>,
-            tail: 0 as *mut Handle<'static, ()>,
-            next_id: Cell::new(1),
+            marker1=marker::NoSend,
+            head=0 as *mut Handle<'static, ()>,
+            tail=0 as *mut Handle<'static, ()>,
+            next_id=Cell::new(1),
         }
     }
 
@@ -122,13 +122,13 @@ impl Select {
         let id = self.next_id.get();
         self.next_id.set(id + 1);
         Handle {
-            id: id,
-            selector: self,
-            next: 0 as *mut Handle<'static, ()>,
-            prev: 0 as *mut Handle<'static, ()>,
-            added: false,
-            rx: rx,
-            packet: rx,
+            id=id,
+            selector=self,
+            next=0 as *mut Handle<'static, ()>,
+            prev=0 as *mut Handle<'static, ()>,
+            added=false,
+            rx=rx,
+            packet=rx,
         }
     }
 
@@ -227,7 +227,7 @@ impl Select {
         }
     }
 
-    fn iter(&self) -> Packets { Packets { cur: self.head } }
+    fn iter(&self) -> Packets { Packets { cur=self.head } }
 }
 
 impl<'rx, T: Send> Handle<'rx, T> {

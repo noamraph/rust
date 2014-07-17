@@ -135,10 +135,10 @@ struct Inner {
 impl Inner {
     fn new(handle: libc::HANDLE) -> Inner {
         Inner {
-            handle: handle,
-            lock: unsafe { mutex::NativeMutex::new() },
-            read_closed: atomics::AtomicBool::new(false),
-            write_closed: atomics::AtomicBool::new(false),
+            handle=handle,
+            lock=unsafe { mutex::NativeMutex::new() },
+            read_closed=atomics::AtomicBool::new(false),
+            write_closed=atomics::AtomicBool::new(false),
         }
     }
 }
@@ -191,9 +191,9 @@ pub fn await(handle: libc::HANDLE, deadline: u64,
 
 fn epipe() -> IoError {
     IoError {
-        code: libc::ERROR_BROKEN_PIPE as uint,
-        extra: 0,
-        detail: None,
+        code=libc::ERROR_BROKEN_PIPE as uint,
+        extra=0,
+        detail=None,
     }
 }
 
@@ -280,11 +280,11 @@ impl UnixStream {
                         Err(super::last_error())
                     } else {
                         Ok(UnixStream {
-                            inner: Arc::new(inner),
-                            read: None,
-                            write: None,
-                            read_deadline: 0,
-                            write_deadline: 0,
+                            inner=Arc::new(inner),
+                            read=None,
+                            write=None,
+                            read_deadline=0,
+                            write_deadline=0,
                         })
                     }
                 }
@@ -452,9 +452,9 @@ impl rtio::RtioPipe for UnixStream {
             if ret == 0 {
                 if err != libc::ERROR_IO_PENDING as uint {
                     return Err(IoError {
-                        code: err as uint,
-                        extra: 0,
-                        detail: Some(os::error_string(err as uint)),
+                        code=err as uint,
+                        extra=0,
+                        detail=Some(os::error_string(err as uint)),
                     })
                 }
                 // Process a timeout if one is pending
@@ -477,9 +477,9 @@ impl rtio::RtioPipe for UnixStream {
                         let amt = offset + bytes_written as uint;
                         return if amt > 0 {
                             Err(IoError {
-                                code: libc::ERROR_OPERATION_ABORTED as uint,
-                                extra: amt,
-                                detail: Some("short write during write".to_string()),
+                                code=libc::ERROR_OPERATION_ABORTED as uint,
+                                extra=amt,
+                                detail=Some("short write during write".to_string()),
                             })
                         } else {
                             Err(util::timeout("write timed out"))
@@ -498,11 +498,11 @@ impl rtio::RtioPipe for UnixStream {
 
     fn clone(&self) -> Box<rtio::RtioPipe + Send> {
         box UnixStream {
-            inner: self.inner.clone(),
-            read: None,
-            write: None,
-            read_deadline: 0,
-            write_deadline: 0,
+            inner=self.inner.clone(),
+            read=None,
+            write=None,
+            read_deadline=0,
+            write_deadline=0,
         } as Box<rtio::RtioPipe + Send>
     }
 
@@ -568,15 +568,15 @@ impl UnixListener {
         if ret == libc::INVALID_HANDLE_VALUE as libc::HANDLE {
             Err(super::last_error())
         } else {
-            Ok(UnixListener { handle: ret, name: addr.clone() })
+            Ok(UnixListener { handle=ret, name=addr.clone() })
         }
     }
 
     pub fn native_listen(self) -> IoResult<UnixAcceptor> {
         Ok(UnixAcceptor {
-            listener: self,
-            event: try!(Event::new(true, false)),
-            deadline: 0,
+            listener=self,
+            event=try!(Event::new(true, false)),
+            deadline=0,
         })
     }
 }
@@ -692,11 +692,11 @@ impl UnixAcceptor {
 
         // Transfer ownership of our handle into this stream
         Ok(UnixStream {
-            inner: Arc::new(Inner::new(handle)),
-            read: None,
-            write: None,
-            read_deadline: 0,
-            write_deadline: 0,
+            inner=Arc::new(Inner::new(handle)),
+            read=None,
+            write=None,
+            read_deadline=0,
+            write_deadline=0,
         })
     }
 }

@@ -607,7 +607,7 @@ pub unsafe fn pipe() -> IoResult<Pipe> {
     unsafe fn _pipe() -> IoResult<Pipe> {
         let mut fds = [0, ..2];
         match libc::pipe(fds.as_mut_ptr()) {
-            0 => Ok(Pipe { reader: fds[0], writer: fds[1] }),
+            0 => Ok(Pipe { reader=fds[0], writer=fds[1] }),
             _ => Err(IoError::last_error()),
         }
     }
@@ -625,7 +625,7 @@ pub unsafe fn pipe() -> IoResult<Pipe> {
             0 => {
                 assert!(fds[0] != -1 && fds[0] != 0);
                 assert!(fds[1] != -1 && fds[1] != 0);
-                Ok(Pipe { reader: fds[0], writer: fds[1] })
+                Ok(Pipe { reader=fds[0], writer=fds[1] })
             }
             _ => Err(IoError::last_error()),
         }
@@ -1449,9 +1449,9 @@ impl MemoryMap {
             })
         } else {
             Ok(MemoryMap {
-               data: r as *mut u8,
-               len: len,
-               kind: if fd == -1 {
+               data=r as *mut u8,
+               len=len,
+               kind=if fd == -1 {
                    MapVirtual
                } else {
                    MapFile(ptr::null())
@@ -1529,9 +1529,9 @@ impl MemoryMap {
             match r as uint {
                 0 => Err(ErrVirtualAlloc(errno())),
                 _ => Ok(MemoryMap {
-                   data: r as *mut u8,
-                   len: len,
-                   kind: MapVirtual
+                   data=r as *mut u8,
+                   len=len,
+                   kind=MapVirtual
                 })
             }
         } else {
@@ -1565,9 +1565,9 @@ impl MemoryMap {
                 match r as uint {
                     0 => Err(ErrMapViewOfFile(errno())),
                     _ => Ok(MemoryMap {
-                       data: r as *mut u8,
-                       len: len,
-                       kind: MapFile(mapping as *const u8)
+                       data=r as *mut u8,
+                       len=len,
+                       kind=MapFile(mapping as *const u8)
                     })
                 }
             }

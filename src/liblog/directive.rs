@@ -64,8 +64,8 @@ pub fn parse_logging_spec(spec: &str) -> Vec<LogDirective> {
             }
         };
         dirs.push(LogDirective {
-            name: name.map(|s| s.to_string()),
-            level: log_level,
+            name=name.map(|s| s.to_string()),
+            level=log_level,
         });
     }
     return dirs;

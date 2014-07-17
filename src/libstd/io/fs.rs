@@ -144,9 +144,9 @@ impl File {
         let err = LocalIo::maybe_raise(|io| {
             io.fs_open(&path.to_c_str(), rtio_mode, rtio_access).map(|fd| {
                 File {
-                    path: path.clone(),
-                    fd: fd,
-                    last_nread: -1
+                    path=path.clone(),
+                    fd=fd,
+                    last_nread=-1
                 }
             })
         }).map_err(IoError::from_rtio_error);
@@ -337,8 +337,8 @@ fn from_rtio(s: rtio::FileStat) -> FileStat {
     } = s;
 
     FileStat {
-        size: size,
-        kind: match (kind as libc::c_int) & libc::S_IFMT {
+        size=size,
+        kind=match (kind as libc::c_int) & libc::S_IFMT {
             libc::S_IFREG => io::TypeFile,
             libc::S_IFDIR => io::TypeDirectory,
             libc::S_IFIFO => io::TypeNamedPipe,
@@ -346,21 +346,21 @@ fn from_rtio(s: rtio::FileStat) -> FileStat {
             libc::S_IFLNK => io::TypeSymlink,
             _ => io::TypeUnknown,
         },
-        perm: FilePermission::from_bits_truncate(perm as u32),
-        created: created,
-        modified: modified,
-        accessed: accessed,
-        unstable: UnstableFileStat {
-            device: device,
-            inode: inode,
-            rdev: rdev,
-            nlink: nlink,
-            uid: uid,
-            gid: gid,
-            blksize: blksize,
-            blocks: blocks,
-            flags: flags,
-            gen: gen,
+        perm=FilePermission::from_bits_truncate(perm as u32),
+        created=created,
+        modified=modified,
+        accessed=accessed,
+        unstable=UnstableFileStat {
+            device=device,
+            inode=inode,
+            rdev=rdev,
+            nlink=nlink,
+            uid=uid,
+            gid=gid,
+            blksize=blksize,
+            blocks=blocks,
+            flags=flags,
+            gen=gen,
         },
     }
 }
@@ -426,9 +426,9 @@ pub fn copy(from: &Path, to: &Path) -> IoResult<()> {
 
     if !from.is_file() {
         return update_err(Err(IoError {
-            kind: io::MismatchedFileTypeForOperation,
-            desc: "the source path is not an existing file",
-            detail: None
+            kind=io::MismatchedFileTypeForOperation,
+            desc="the source path is not an existing file",
+            detail=None
         }), from, to)
     }
 
@@ -622,7 +622,7 @@ pub fn readdir(path: &Path) -> IoResult<Vec<Path>> {
 /// subdirectories are ignored.
 pub fn walk_dir(path: &Path) -> IoResult<Directories> {
     Ok(Directories {
-        stack: try!(readdir(path).update_err("couldn't walk directory",
+        stack=try!(readdir(path).update_err("couldn't walk directory",
                                              |e| format!("{}; path={}",
                                                          e, path.display())))
     })

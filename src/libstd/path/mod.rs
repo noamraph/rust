@@ -181,7 +181,7 @@ pub trait GenericPath: Clone + GenericPathUnsafe {
     ///
     /// This will print the equivalent of `to_display_str()` when used with a {} format parameter.
     fn display<'a>(&'a self) -> Display<'a, Self> {
-        Display{ path: self, filename: false }
+        Display{ path=self, filename=false }
     }
 
     /// Returns an object that implements `Show` for printing filenames
@@ -189,7 +189,7 @@ pub trait GenericPath: Clone + GenericPathUnsafe {
     /// This will print the equivalent of `to_filename_display_str()` when used with a {}
     /// format parameter. If there is no filename, nothing will be printed.
     fn filename_display<'a>(&'a self) -> Display<'a, Self> {
-        Display{ path: self, filename: true }
+        Display{ path=self, filename=true }
     }
 
     /// Returns the directory component of `self`, as a byte vector (with no trailing separator).

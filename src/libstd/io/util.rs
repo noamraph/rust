@@ -25,7 +25,7 @@ pub struct LimitReader<R> {
 impl<R: Reader> LimitReader<R> {
     /// Creates a new `LimitReader`
     pub fn new(r: R, limit: uint) -> LimitReader<R> {
-        LimitReader { limit: limit, inner: r }
+        LimitReader { limit=limit, inner=r }
     }
 
     /// Consumes the `LimitReader`, returning the underlying `Reader`.
@@ -125,7 +125,7 @@ pub struct MultiWriter {
 impl MultiWriter {
     /// Creates a new `MultiWriter`
     pub fn new(writers: Vec<Box<Writer>>) -> MultiWriter {
-        MultiWriter { writers: writers }
+        MultiWriter { writers=writers }
     }
 }
 
@@ -160,7 +160,7 @@ impl<R: Reader, I: Iterator<R>> ChainedReader<I, R> {
     /// Creates a new `ChainedReader`
     pub fn new(mut readers: I) -> ChainedReader<I, R> {
         let r = readers.next();
-        ChainedReader { readers: readers, cur_reader: r }
+        ChainedReader { readers=readers, cur_reader=r }
     }
 }
 
@@ -197,7 +197,7 @@ pub struct TeeReader<R, W> {
 impl<R: Reader, W: Writer> TeeReader<R, W> {
     /// Creates a new `TeeReader`
     pub fn new(r: R, w: W) -> TeeReader<R, W> {
-        TeeReader { reader: r, writer: w }
+        TeeReader { reader=r, writer=w }
     }
 
     /// Consumes the `TeeReader`, returning the underlying `Reader` and
@@ -238,7 +238,7 @@ impl<T: Iterator<u8>> IterReader<T> {
     /// Create a new `IterReader` which will read from the specified `Iterator`.
     pub fn new(iter: T) -> IterReader<T> {
         IterReader {
-            iter: iter,
+            iter=iter,
         }
     }
 }

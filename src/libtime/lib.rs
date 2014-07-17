@@ -87,7 +87,7 @@ pub struct Timespec { pub sec: i64, pub nsec: i32 }
 impl Timespec {
     pub fn new(sec: i64, nsec: i32) -> Timespec {
         assert!(nsec >= 0 && nsec < NSEC_PER_SEC);
-        Timespec { sec: sec, nsec: nsec }
+        Timespec { sec=sec, nsec=nsec }
     }
 }
 
@@ -106,8 +106,8 @@ pub fn get_time() -> Timespec {
         static NANOSECONDS_FROM_1601_TO_1970: u64 = 11644473600000000;
 
         let mut time = libc::FILETIME {
-            dwLowDateTime: 0,
-            dwHighDateTime: 0,
+            dwLowDateTime=0,
+            dwHighDateTime=0,
         };
         libc::GetSystemTimeAsFileTime(&mut time);
 
@@ -126,14 +126,14 @@ pub fn get_time() -> Timespec {
     #[cfg(target_os = "ios")]
     unsafe fn os_get_time() -> (i64, i32) {
         use std::ptr;
-        let mut tv = libc::timeval { tv_sec: 0, tv_usec: 0 };
+        let mut tv = libc::timeval { tv_sec=0, tv_usec=0 };
         imp::gettimeofday(&mut tv, ptr::mut_null());
         (tv.tv_sec as i64, tv.tv_usec * 1000)
     }
 
     #[cfg(not(target_os = "macos"), not(target_os = "ios"), not(windows))]
     unsafe fn os_get_time() -> (i64, i32) {
-        let mut tv = libc::timespec { tv_sec: 0, tv_nsec: 0 };
+        let mut tv = libc::timespec { tv_sec=0, tv_nsec=0 };
         imp::clock_gettime(libc::CLOCK_REALTIME, &mut tv);
         (tv.tv_sec as i64, tv.tv_nsec as i32)
     }
@@ -165,8 +165,8 @@ pub fn precise_time_ns() -> u64 {
     #[cfg(target_os = "macos")]
     #[cfg(target_os = "ios")]
     fn os_precise_time_ns() -> u64 {
-        static mut TIMEBASE: libc::mach_timebase_info = libc::mach_timebase_info { numer: 0,
-                                                                                   denom: 0 };
+        static mut TIMEBASE: libc::mach_timebase_info = libc::mach_timebase_info { numer=0,
+                                                                                   denom=0 };
         static mut ONCE: std::sync::Once = std::sync::ONCE_INIT;
         unsafe {
             ONCE.doit(|| {
@@ -179,7 +179,7 @@ pub fn precise_time_ns() -> u64 {
 
     #[cfg(not(windows), not(target_os = "macos"), not(target_os = "ios"))]
     fn os_precise_time_ns() -> u64 {
-        let mut ts = libc::timespec { tv_sec: 0, tv_nsec: 0 };
+        let mut ts = libc::timespec { tv_sec=0, tv_nsec=0 };
         unsafe {
             imp::clock_gettime(libc::CLOCK_MONOTONIC, &mut ts);
         }
@@ -247,17 +247,17 @@ pub struct Tm {
 
 pub fn empty_tm() -> Tm {
     Tm {
-        tm_sec: 0_i32,
-        tm_min: 0_i32,
-        tm_hour: 0_i32,
-        tm_mday: 0_i32,
-        tm_mon: 0_i32,
-        tm_year: 0_i32,
-        tm_wday: 0_i32,
-        tm_yday: 0_i32,
-        tm_isdst: 0_i32,
-        tm_gmtoff: 0_i32,
-        tm_nsec: 0_i32,
+        tm_sec=0_i32,
+        tm_min=0_i32,
+        tm_hour=0_i32,
+        tm_mday=0_i32,
+        tm_mon=0_i32,
+        tm_year=0_i32,
+        tm_wday=0_i32,
+        tm_yday=0_i32,
+        tm_isdst=0_i32,
+        tm_gmtoff=0_i32,
+        tm_nsec=0_i32,
     }
 }
 
@@ -796,17 +796,17 @@ pub fn strptime(s: &str, format: &str) -> Result<Tm, String> {
 
     let mut rdr = BufReader::new(format.as_bytes());
     let mut tm = Tm {
-        tm_sec: 0_i32,
-        tm_min: 0_i32,
-        tm_hour: 0_i32,
-        tm_mday: 0_i32,
-        tm_mon: 0_i32,
-        tm_year: 0_i32,
-        tm_wday: 0_i32,
-        tm_yday: 0_i32,
-        tm_isdst: 0_i32,
-        tm_gmtoff: 0_i32,
-        tm_nsec: 0_i32,
+        tm_sec=0_i32,
+        tm_min=0_i32,
+        tm_hour=0_i32,
+        tm_mday=0_i32,
+        tm_mon=0_i32,
+        tm_year=0_i32,
+        tm_wday=0_i32,
+        tm_yday=0_i32,
+        tm_isdst=0_i32,
+        tm_gmtoff=0_i32,
+        tm_nsec=0_i32,
     };
     let mut pos = 0u;
     let len = s.len();
@@ -842,17 +842,17 @@ pub fn strptime(s: &str, format: &str) -> Result<Tm, String> {
 
     if pos == len && rdr.tell().unwrap() == format.len() as u64 {
         Ok(Tm {
-            tm_sec: tm.tm_sec,
-            tm_min: tm.tm_min,
-            tm_hour: tm.tm_hour,
-            tm_mday: tm.tm_mday,
-            tm_mon: tm.tm_mon,
-            tm_year: tm.tm_year,
-            tm_wday: tm.tm_wday,
-            tm_yday: tm.tm_yday,
-            tm_isdst: tm.tm_isdst,
-            tm_gmtoff: tm.tm_gmtoff,
-            tm_nsec: tm.tm_nsec,
+            tm_sec=tm.tm_sec,
+            tm_min=tm.tm_min,
+            tm_hour=tm.tm_hour,
+            tm_mday=tm.tm_mday,
+            tm_mon=tm.tm_mon,
+            tm_year=tm.tm_year,
+            tm_wday=tm.tm_wday,
+            tm_yday=tm.tm_yday,
+            tm_isdst=tm.tm_isdst,
+            tm_gmtoff=tm.tm_gmtoff,
+            tm_nsec=tm.tm_nsec,
         })
     } else { result }
 }

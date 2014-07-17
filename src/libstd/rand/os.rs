@@ -41,7 +41,7 @@ mod imp {
             let reader = try!(File::open(&Path::new("/dev/urandom")));
             let reader_rng = ReaderRng::new(reader);
 
-            Ok(OsRng { inner: reader_rng })
+            Ok(OsRng { inner=reader_rng })
         }
     }
 
@@ -98,7 +98,7 @@ mod imp {
     impl OsRng {
         /// Create a new `OsRng`.
         pub fn new() -> IoResult<OsRng> {
-            Ok(OsRng {marker: marker::NoCopy} )
+            Ok(OsRng {marker=marker::NoCopy} )
         }
     }
 
@@ -221,7 +221,7 @@ mod imp {
             if ret == 0 {
                 Err(IoError::last_error())
             } else {
-                Ok(OsRng { hcryptprov: hcp })
+                Ok(OsRng { hcryptprov=hcp })
             }
         }
     }

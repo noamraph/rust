@@ -524,12 +524,12 @@ impl<'a, 'b> Context<'a, 'b> {
         // We did all the work of making sure that the arguments
         // structure is safe, so we can safely have an unsafe block.
         let result = self.ecx.expr_block(P(ast::Block {
-           view_items: Vec::new(),
-           stmts: Vec::new(),
-           expr: Some(result),
-           id: ast::DUMMY_NODE_ID,
-           rules: ast::UnsafeBlock(ast::CompilerGenerated),
-           span: self.fmtsp,
+           view_items=Vec::new(),
+           stmts=Vec::new(),
+           expr=Some(result),
+           id=ast::DUMMY_NODE_ID,
+           rules=ast::UnsafeBlock(ast::CompilerGenerated),
+           span=self.fmtsp,
         }));
         let resname = self.ecx.ident_of("__args");
         lets.push(self.ecx.stmt_let(self.fmtsp, false, resname, result));
@@ -676,18 +676,18 @@ pub fn expand_preparsed_format_args(ecx: &mut ExtCtxt, sp: Span,
 {
     let arg_types = Vec::from_fn(args.len(), |_| None);
     let mut cx = Context {
-        ecx: ecx,
-        args: args,
-        arg_types: arg_types,
-        names: names,
-        name_positions: HashMap::new(),
-        name_types: HashMap::new(),
-        name_ordering: name_ordering,
-        nest_level: 0,
-        next_arg: 0,
-        pieces: Vec::new(),
-        method_statics: Vec::new(),
-        fmtsp: sp,
+        ecx=ecx,
+        args=args,
+        arg_types=arg_types,
+        names=names,
+        name_positions=HashMap::new(),
+        name_types=HashMap::new(),
+        name_ordering=name_ordering,
+        nest_level=0,
+        next_arg=0,
+        pieces=Vec::new(),
+        method_statics=Vec::new(),
+        fmtsp=sp,
     };
     cx.fmtsp = efmt.span;
     let fmt = match expr_to_string(cx.ecx,

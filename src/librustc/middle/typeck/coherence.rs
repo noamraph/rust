@@ -261,7 +261,7 @@ impl<'a> CoherenceChecker<'a> {
         // Check implementations and traits. This populates the tables
         // containing the inherent methods and extension methods. It also
         // builds up the trait inheritance table.
-        let mut visitor = CoherenceCheckVisitor { cc: self };
+        let mut visitor = CoherenceCheckVisitor { cc=self };
         visit::walk_crate(&mut visitor, krate, ());
 
         // Check that there are no overlapping trait instances
@@ -380,8 +380,8 @@ impl<'a> CoherenceChecker<'a> {
             // method_ty.  it will have all the generics from the
             // impl, plus its own.
             let new_polytype = ty::Polytype {
-                generics: new_method_ty.generics.clone(),
-                ty: ty::mk_bare_fn(tcx, new_method_ty.fty.clone())
+                generics=new_method_ty.generics.clone(),
+                ty=ty::mk_bare_fn(tcx, new_method_ty.fty.clone())
             };
             debug!("new_polytype={}", new_polytype.repr(tcx));
 
@@ -513,7 +513,7 @@ impl<'a> CoherenceChecker<'a> {
         let monotype = polytype.ty.subst(self.crate_context.tcx, &substitutions);
 
         UniversalQuantificationResult {
-            monotype: monotype
+            monotype=monotype
         }
     }
 
@@ -534,7 +534,7 @@ impl<'a> CoherenceChecker<'a> {
 
     // Privileged scope checking
     fn check_privileged_scopes(&self, krate: &Crate) {
-        let mut visitor = PrivilegedScopeVisitor{ cc: self };
+        let mut visitor = PrivilegedScopeVisitor{ cc=self };
         visit::walk_crate(&mut visitor, krate, ());
     }
 
@@ -797,7 +797,7 @@ fn subst_receiver_types_in_method_ty(tcx: &ty::ctxt,
 
 pub fn check_coherence(crate_context: &CrateCtxt, krate: &Crate) {
     CoherenceChecker {
-        crate_context: crate_context,
-        inference_context: new_infer_ctxt(crate_context.tcx),
+        crate_context=crate_context,
+        inference_context=new_infer_ctxt(crate_context.tcx),
     }.check(krate);
 }

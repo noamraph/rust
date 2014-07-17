@@ -43,9 +43,9 @@ impl FileDesc {
     /// Note that all I/O operations done on this object will be *blocking*, but
     /// they do not require the runtime to be active.
     pub fn new(fd: fd_t, close_on_drop: bool) -> FileDesc {
-        FileDesc { inner: Arc::new(Inner {
-            fd: fd,
-            close_on_drop: close_on_drop
+        FileDesc { inner=Arc::new(Inner {
+            fd=fd,
+            close_on_drop=close_on_drop
         }) }
     }
 
@@ -202,7 +202,7 @@ impl rtio::RtioPipe for FileDesc {
         self.inner_write(buf)
     }
     fn clone(&self) -> Box<rtio::RtioPipe + Send> {
-        box FileDesc { inner: self.inner.clone() } as Box<rtio::RtioPipe + Send>
+        box FileDesc { inner=self.inner.clone() } as Box<rtio::RtioPipe + Send>
     }
 
     // Only supported on named pipes currently. Note that this doesn't have an
@@ -257,9 +257,9 @@ pub fn to_utf16(s: &CString) -> IoResult<Vec<u16>> {
     match s.as_str() {
         Some(s) => Ok(s.utf16_units().collect::<Vec<u16>>().append_one(0)),
         None => Err(IoError {
-            code: libc::ERROR_INVALID_NAME as uint,
-            extra: 0,
-            detail: Some("valid unicode input required".to_string()),
+            code=libc::ERROR_INVALID_NAME as uint,
+            extra=0,
+            detail=Some("valid unicode input required".to_string()),
         })
     }
 }
@@ -481,22 +481,22 @@ pub fn link(src: &CString, dst: &CString) -> IoResult<()> {
 
 fn mkstat(stat: &libc::stat) -> rtio::FileStat {
     rtio::FileStat {
-        size: stat.st_size as u64,
-        kind: stat.st_mode as u64,
-        perm: stat.st_mode as u64,
-        created: stat.st_ctime as u64,
-        modified: stat.st_mtime as u64,
-        accessed: stat.st_atime as u64,
-        device: stat.st_dev as u64,
-        inode: stat.st_ino as u64,
-        rdev: stat.st_rdev as u64,
-        nlink: stat.st_nlink as u64,
-        uid: stat.st_uid as u64,
-        gid: stat.st_gid as u64,
-        blksize: 0,
-        blocks: 0,
-        flags: 0,
-        gen: 0,
+        size=stat.st_size as u64,
+        kind=stat.st_mode as u64,
+        perm=stat.st_mode as u64,
+        created=stat.st_ctime as u64,
+        modified=stat.st_mtime as u64,
+        accessed=stat.st_atime as u64,
+        device=stat.st_dev as u64,
+        inode=stat.st_ino as u64,
+        rdev=stat.st_rdev as u64,
+        nlink=stat.st_nlink as u64,
+        uid=stat.st_uid as u64,
+        gid=stat.st_gid as u64,
+        blksize=0,
+        blocks=0,
+        flags=0,
+        gen=0,
     }
 }
 
@@ -516,8 +516,8 @@ pub fn lstat(_p: &CString) -> IoResult<rtio::FileStat> {
 
 pub fn utime(p: &CString, atime: u64, mtime: u64) -> IoResult<()> {
     let mut buf = libc::utimbuf {
-        actime: (atime / 1000) as libc::time64_t,
-        modtime: (mtime / 1000) as libc::time64_t,
+        actime=(atime / 1000) as libc::time64_t,
+        modtime=(mtime / 1000) as libc::time64_t,
     };
     let p = try!(to_utf16(p));
     super::mkerr_libc(unsafe {

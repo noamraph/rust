@@ -169,7 +169,7 @@ impl<'f> Coerce<'f> {
             }
 
             ty::ty_closure(box ty::ClosureTy {
-                    store: ty::RegionTraitStore(..),
+                    store=ty::RegionTraitStore(..),
                     ..
                 }) => {
                 return self.unpack_actual_value(a, |sty_a| {
@@ -262,11 +262,11 @@ impl<'f> Coerce<'f> {
 
         let a_borrowed = ty::mk_rptr(self.get_ref().infcx.tcx,
                                      r_borrow,
-                                     mt {ty: inner_ty, mutbl: mt_b.mutbl});
+                                     mt {ty=inner_ty, mutbl=mt_b.mutbl});
         if_ok!(sub.tys(a_borrowed, b));
         Ok(Some(AutoDerefRef(AutoDerefRef {
-            autoderefs: 1,
-            autoref: Some(AutoPtr(r_borrow, mt_b.mutbl))
+            autoderefs=1,
+            autoref=Some(AutoPtr(r_borrow, mt_b.mutbl))
         })))
     }
 
@@ -294,8 +294,8 @@ impl<'f> Coerce<'f> {
         let a_borrowed = ty::mk_str_slice(self.get_ref().infcx.tcx, r_a, ast::MutImmutable);
         if_ok!(self.subtype(a_borrowed, b));
         Ok(Some(AutoDerefRef(AutoDerefRef {
-            autoderefs: 0,
-            autoref: Some(AutoBorrowVec(r_a, MutImmutable))
+            autoderefs=0,
+            autoref=Some(AutoBorrowVec(r_a, MutImmutable))
         })))
     }
 
@@ -313,8 +313,8 @@ impl<'f> Coerce<'f> {
         let coercion = Coercion(self.get_ref().trace.clone());
         let r_borrow = self.get_ref().infcx.next_region_var(coercion);
         let ty_inner = match *sty_a {
-            ty::ty_uniq(t) | ty::ty_ptr(ty::mt{ty: t, ..}) |
-            ty::ty_rptr(_, ty::mt{ty: t, ..}) => match ty::get(t).sty {
+            ty::ty_uniq(t) | ty::ty_ptr(ty::mt{ty=t, ..}) |
+            ty::ty_rptr(_, ty::mt{ty=t, ..}) => match ty::get(t).sty {
                 ty::ty_vec(mt, None) => mt.ty,
                 _ => {
                     return self.subtype(a, b);
@@ -327,11 +327,11 @@ impl<'f> Coerce<'f> {
         };
 
         let a_borrowed = ty::mk_slice(self.get_ref().infcx.tcx, r_borrow,
-                                      mt {ty: ty_inner, mutbl: mutbl_b});
+                                      mt {ty=ty_inner, mutbl=mutbl_b});
         if_ok!(sub.tys(a_borrowed, b));
         Ok(Some(AutoDerefRef(AutoDerefRef {
-            autoderefs: 0,
-            autoref: Some(AutoBorrowVec(r_borrow, mutbl_b))
+            autoderefs=0,
+            autoref=Some(AutoBorrowVec(r_borrow, mutbl_b))
         })))
     }
 
@@ -358,7 +358,7 @@ impl<'f> Coerce<'f> {
                         ..
                     }) => {
                     let tr = ty::mk_trait(tcx, def_id, substs.clone(), bounds);
-                    ty::mk_rptr(tcx, r_a, ty::mt{ mutbl: b_mutbl, ty: tr })
+                    ty::mk_rptr(tcx, r_a, ty::mt{ mutbl=b_mutbl, ty=tr })
                 }
                 _ => {
                     return self.subtype(a, b);
@@ -371,8 +371,8 @@ impl<'f> Coerce<'f> {
 
         if_ok!(self.subtype(a_borrowed, b));
         Ok(Some(AutoDerefRef(AutoDerefRef {
-            autoderefs: 0,
-            autoref: Some(AutoBorrowObj(r_a, b_mutbl))
+            autoderefs=0,
+            autoref=Some(AutoBorrowObj(r_a, b_mutbl))
         })))
     }
 
@@ -420,7 +420,7 @@ impl<'f> Coerce<'f> {
             let adj = ty::AutoAddEnv(fn_ty_b.store);
             let a_closure = ty::mk_closure(self.get_ref().infcx.tcx,
                                            ty::ClosureTy {
-                                                sig: fn_ty_a.sig.clone(),
+                                                sig=fn_ty_a.sig.clone(),
                                                 .. *fn_ty_b
                                            });
             if_ok!(self.subtype(a_closure, b));
@@ -453,8 +453,8 @@ impl<'f> Coerce<'f> {
         // representation, we still register an AutoDerefRef so that
         // regionck knows that the region for `a` must be valid here
         Ok(Some(AutoDerefRef(AutoDerefRef {
-            autoderefs: 1,
-            autoref: Some(ty::AutoUnsafe(mt_b.mutbl))
+            autoderefs=1,
+            autoref=Some(ty::AutoUnsafe(mt_b.mutbl))
         })))
     }
 

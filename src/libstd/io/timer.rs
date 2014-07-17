@@ -83,7 +83,7 @@ impl Timer {
     /// get notified after an amount of time has passed.
     pub fn new() -> IoResult<Timer> {
         LocalIo::maybe_raise(|io| {
-            io.timer_init().map(|t| Timer { obj: t })
+            io.timer_init().map(|t| Timer { obj=t })
         }).map_err(IoError::from_rtio_error)
     }
 
@@ -131,7 +131,7 @@ impl Timer {
     /// ```
     pub fn oneshot(&mut self, msecs: u64) -> Receiver<()> {
         let (tx, rx) = channel();
-        self.obj.oneshot(msecs, box TimerCallback { tx: tx });
+        self.obj.oneshot(msecs, box TimerCallback { tx=tx });
         return rx
     }
 
@@ -179,7 +179,7 @@ impl Timer {
     /// ```
     pub fn periodic(&mut self, msecs: u64) -> Receiver<()> {
         let (tx, rx) = channel();
-        self.obj.period(msecs, box TimerCallback { tx: tx });
+        self.obj.period(msecs, box TimerCallback { tx=tx });
         return rx
     }
 }

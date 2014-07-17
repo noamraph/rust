@@ -33,12 +33,12 @@ pub fn guarantee_lifetime(bccx: &BorrowckCtxt,
                           -> Result<(),()> {
     debug!("guarantee_lifetime(cmt={}, loan_region={})",
            cmt.repr(bccx.tcx), loan_region.repr(bccx.tcx));
-    let ctxt = GuaranteeLifetimeContext {bccx: bccx,
-                                         item_scope_id: item_scope_id,
-                                         span: span,
-                                         cause: cause,
-                                         loan_region: loan_region,
-                                         cmt_original: cmt.clone()};
+    let ctxt = GuaranteeLifetimeContext {bccx=bccx,
+                                         item_scope_id=item_scope_id,
+                                         span=span,
+                                         cause=cause,
+                                         loan_region=loan_region,
+                                         cmt_original=cmt.clone()};
     ctxt.check(&cmt, None)
 }
 
@@ -194,9 +194,9 @@ impl<'a> GuaranteeLifetimeContext<'a> {
     }
 
     fn report_error(&self, code: bckerr_code) {
-        self.bccx.report(BckError { cmt: self.cmt_original.clone(),
-                                    span: self.span,
-                                    cause: self.cause,
-                                    code: code });
+        self.bccx.report(BckError { cmt=self.cmt_original.clone(),
+                                    span=self.span,
+                                    cause=self.cause,
+                                    code=code });
     }
 }

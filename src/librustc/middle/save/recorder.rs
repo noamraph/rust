@@ -88,9 +88,9 @@ pub enum Row {
 impl<'a> FmtStrs<'a> {
     pub fn new(rec: Box<Recorder>, span: SpanUtils<'a>, krate: String) -> FmtStrs<'a> {
         FmtStrs {
-            recorder: rec,
-            span: span,
-            krate: krate,
+            recorder=rec,
+            span=span,
+            krate=krate,
         }
     }
 

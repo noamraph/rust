@@ -289,8 +289,8 @@ fn primitive_link(f: &mut fmt::Formatter,
         }
         Some(&cnum) => {
             let path = m.paths.get(&ast::DefId {
-                krate: cnum,
-                node: ast::CRATE_NODE_ID,
+                krate=cnum,
+                node=ast::CRATE_NODE_ID,
             });
             let loc = match *m.extern_locations.get(&cnum) {
                 render::Remote(ref s) => Some(s.to_string()),
@@ -443,7 +443,7 @@ impl fmt::Show for clean::Type {
             clean::RawPointer(m, ref t) => {
                 write!(f, "*{}{}", MutableSpace(m), **t)
             }
-            clean::BorrowedRef{ lifetime: ref l, mutability, type_: ref ty} => {
+            clean::BorrowedRef{ lifetime=ref l, mutability, type_=ref ty} => {
                 let lt = match *l {
                     Some(ref l) => format!("{} ", *l),
                     _ => "".to_string(),
@@ -578,11 +578,11 @@ impl fmt::Show for clean::ViewListIdent {
         match self.source {
             Some(did) => {
                 let path = clean::Path {
-                    global: false,
-                    segments: vec!(clean::PathSegment {
-                        name: self.name.clone(),
-                        lifetimes: Vec::new(),
-                        types: Vec::new(),
+                    global=false,
+                    segments=vec!(clean::PathSegment {
+                        name=self.name.clone(),
+                        lifetimes=Vec::new(),
+                        types=Vec::new(),
                     })
                 };
                 resolved_path(f, did, &path, false)

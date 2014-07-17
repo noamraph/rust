@@ -21,7 +21,7 @@ pub struct SleeperList {
 
 impl SleeperList {
     pub fn new() -> SleeperList {
-        SleeperList{q: Queue::with_capacity(8*1024)}
+        SleeperList{q=Queue::with_capacity(8*1024)}
     }
 
     pub fn push(&mut self, value: SchedHandle) {
@@ -40,7 +40,7 @@ impl SleeperList {
 impl Clone for SleeperList {
     fn clone(&self) -> SleeperList {
         SleeperList {
-            q: self.q.clone()
+            q=self.q.clone()
         }
     }
 }

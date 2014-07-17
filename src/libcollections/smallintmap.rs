@@ -122,11 +122,11 @@ impl<V> Default for SmallIntMap<V> {
 
 impl<V> SmallIntMap<V> {
     /// Create an empty SmallIntMap
-    pub fn new() -> SmallIntMap<V> { SmallIntMap{v: vec!()} }
+    pub fn new() -> SmallIntMap<V> { SmallIntMap{v=vec!()} }
 
     /// Create an empty SmallIntMap with capacity `capacity`
     pub fn with_capacity(capacity: uint) -> SmallIntMap<V> {
-        SmallIntMap { v: Vec::with_capacity(capacity) }
+        SmallIntMap { v=Vec::with_capacity(capacity) }
     }
 
     pub fn get<'a>(&'a self, key: &uint) -> &'a V {
@@ -137,9 +137,9 @@ impl<V> SmallIntMap<V> {
     /// Iterator element type is (uint, &'r V)
     pub fn iter<'r>(&'r self) -> Entries<'r, V> {
         Entries {
-            front: 0,
-            back: self.v.len(),
-            iter: self.v.iter()
+            front=0,
+            back=self.v.len(),
+            iter=self.v.iter()
         }
     }
 
@@ -148,9 +148,9 @@ impl<V> SmallIntMap<V> {
     /// Iterator element type is (uint, &'r mut V)
     pub fn mut_iter<'r>(&'r mut self) -> MutEntries<'r, V> {
         MutEntries {
-            front: 0,
-            back: self.v.len(),
-            iter: self.v.mut_iter()
+            front=0,
+            back=self.v.len(),
+            iter=self.v.mut_iter()
         }
     }
 

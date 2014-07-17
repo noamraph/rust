@@ -32,10 +32,10 @@ pub fn compute_restrictions(bccx: &BorrowckCtxt,
                             cmt: mc::cmt,
                             loan_region: ty::Region) -> RestrictionResult {
     let ctxt = RestrictionsContext {
-        bccx: bccx,
-        span: span,
-        cause: cause,
-        loan_region: loan_region,
+        bccx=bccx,
+        span=span,
+        cause=cause,
+        loan_region=loan_region,
     };
 
     ctxt.restrict(cmt)
@@ -127,10 +127,10 @@ impl<'a> RestrictionsContext<'a> {
                 if !self.bccx.is_subregion_of(self.loan_region, lt) {
                     self.bccx.report(
                         BckError {
-                            span: self.span,
-                            cause: self.cause,
-                            cmt: cmt_base,
-                            code: err_borrowed_pointer_too_short(
+                            span=self.span,
+                            cause=self.cause,
+                            cmt=cmt_base,
+                            code=err_borrowed_pointer_too_short(
                                 self.loan_region, lt)});
                     return Safe;
                 }
@@ -142,10 +142,10 @@ impl<'a> RestrictionsContext<'a> {
                 if !self.bccx.is_subregion_of(self.loan_region, lt) {
                     self.bccx.report(
                         BckError {
-                            span: self.span,
-                            cause: self.cause,
-                            cmt: cmt_base,
-                            code: err_borrowed_pointer_too_short(
+                            span=self.span,
+                            cause=self.cause,
+                            cmt=cmt_base,
+                            code=err_borrowed_pointer_too_short(
                                 self.loan_region, lt)});
                     return Safe;
                 }

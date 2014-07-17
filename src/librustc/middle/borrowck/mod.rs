@@ -71,12 +71,12 @@ impl<'a> Visitor<()> for BorrowckCtxt<'a> {
 pub fn check_crate(tcx: &ty::ctxt,
                    krate: &ast::Crate) {
     let mut bccx = BorrowckCtxt {
-        tcx: tcx,
-        stats: box(GC) BorrowStats {
-            loaned_paths_same: Cell::new(0),
-            loaned_paths_imm: Cell::new(0),
-            stable_paths: Cell::new(0),
-            guaranteed_paths: Cell::new(0),
+        tcx=tcx,
+        stats=box(GC) BorrowStats {
+            loaned_paths_same=Cell::new(0),
+            loaned_paths_imm=Cell::new(0),
+            stable_paths=Cell::new(0),
+            guaranteed_paths=Cell::new(0),
         }
     };
 
@@ -244,7 +244,7 @@ pub fn opt_loan_path(cmt: &mc::cmt) -> Option<Rc<LoanPath>> {
     match cmt.cat {
         mc::cat_rvalue(..) |
         mc::cat_static_item |
-        mc::cat_copied_upvar(mc::CopiedUpvar { onceness: ast::Many, .. }) => {
+        mc::cat_copied_upvar(mc::CopiedUpvar { onceness=ast::Many, .. }) => {
             None
         }
 
@@ -253,11 +253,11 @@ pub fn opt_loan_path(cmt: &mc::cmt) -> Option<Rc<LoanPath>> {
             Some(Rc::new(LpVar(id)))
         }
 
-        mc::cat_upvar(ty::UpvarId {var_id: id, closure_expr_id: proc_id}, _) |
-        mc::cat_copied_upvar(mc::CopiedUpvar { upvar_id: id,
-                                               onceness: _,
-                                               capturing_proc: proc_id }) => {
-            let upvar_id = ty::UpvarId{ var_id: id, closure_expr_id: proc_id };
+        mc::cat_upvar(ty::UpvarId {var_id=id, closure_expr_id=proc_id}, _) |
+        mc::cat_copied_upvar(mc::CopiedUpvar { upvar_id=id,
+                                               onceness=_,
+                                               capturing_proc=proc_id }) => {
+            let upvar_id = ty::UpvarId{ var_id=id, closure_expr_id=proc_id };
             Some(Rc::new(LpUpvar(upvar_id)))
         }
 
@@ -359,7 +359,7 @@ impl<'a> BorrowckCtxt<'a> {
 
             ty::AutoDerefRef(
                 ty::AutoDerefRef {
-                    autoderefs: autoderefs, ..}) => {
+                    autoderefs=autoderefs, ..}) => {
                 self.mc().cat_expr_autoderefd(expr, autoderefs)
             }
         };
@@ -401,8 +401,8 @@ impl<'a> BorrowckCtxt<'a> {
 
     pub fn cat_discr(&self, cmt: mc::cmt, match_id: ast::NodeId) -> mc::cmt {
         Rc::new(mc::cmt_ {
-            cat: mc::cat_discr(cmt.clone(), match_id),
-            mutbl: cmt.mutbl.inherit(),
+            cat=mc::cat_discr(cmt.clone(), match_id),
+            mutbl=cmt.mutbl.inherit(),
             ..*cmt
         })
     }
@@ -516,7 +516,7 @@ impl<'a> BorrowckCtxt<'a> {
                           -> &'static str {
             match ty::get(ty).sty {
                 ty::ty_closure(box ty::ClosureTy {
-                        store: ty::RegionTraitStore(..),
+                        store=ty::RegionTraitStore(..),
                         ..
                     }) =>
                     "a non-copyable stack closure (capture it in a new closure, \
@@ -714,7 +714,7 @@ impl<'a> BorrowckCtxt<'a> {
                                    loan_path: &LoanPath,
                                    out: &mut String) {
         match *loan_path {
-            LpUpvar(ty::UpvarId{ var_id: id, closure_expr_id: _ }) |
+            LpUpvar(ty::UpvarId{ var_id=id, closure_expr_id=_ }) |
             LpVar(id) => {
                 out.push_str(ty::local_var_name_str(self.tcx, id).get());
             }

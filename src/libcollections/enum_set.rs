@@ -38,7 +38,7 @@ fn bit<E:CLike>(e: E) -> uint {
 impl<E:CLike> EnumSet<E> {
     /// Returns an empty EnumSet.
     pub fn empty() -> EnumSet<E> {
-        EnumSet {bits: 0}
+        EnumSet {bits=0}
     }
 
     /// Returns true if an EnumSet is empty.
@@ -53,7 +53,7 @@ impl<E:CLike> EnumSet<E> {
 
     /// Returns an intersection of both EnumSets.
     pub fn intersection(&self, e: EnumSet<E>) -> EnumSet<E> {
-        EnumSet {bits: self.bits & e.bits}
+        EnumSet {bits=self.bits & e.bits}
     }
 
     /// Returns true if a given EnumSet is included in an EnumSet.
@@ -63,7 +63,7 @@ impl<E:CLike> EnumSet<E> {
 
     /// Returns a union of both EnumSets.
     pub fn union(&self, e: EnumSet<E>) -> EnumSet<E> {
-        EnumSet {bits: self.bits | e.bits}
+        EnumSet {bits=self.bits | e.bits}
     }
 
     /// Add an enum to an EnumSet
@@ -84,19 +84,19 @@ impl<E:CLike> EnumSet<E> {
 
 impl<E:CLike> Sub<EnumSet<E>, EnumSet<E>> for EnumSet<E> {
     fn sub(&self, e: &EnumSet<E>) -> EnumSet<E> {
-        EnumSet {bits: self.bits & !e.bits}
+        EnumSet {bits=self.bits & !e.bits}
     }
 }
 
 impl<E:CLike> BitOr<EnumSet<E>, EnumSet<E>> for EnumSet<E> {
     fn bitor(&self, e: &EnumSet<E>) -> EnumSet<E> {
-        EnumSet {bits: self.bits | e.bits}
+        EnumSet {bits=self.bits | e.bits}
     }
 }
 
 impl<E:CLike> BitAnd<EnumSet<E>, EnumSet<E>> for EnumSet<E> {
     fn bitand(&self, e: &EnumSet<E>) -> EnumSet<E> {
-        EnumSet {bits: self.bits & e.bits}
+        EnumSet {bits=self.bits & e.bits}
     }
 }
 
@@ -108,7 +108,7 @@ pub struct Items<E> {
 
 impl<E:CLike> Items<E> {
     fn new(bits: uint) -> Items<E> {
-        Items { index: 0, bits: bits }
+        Items { index=0, bits=bits }
     }
 }
 

@@ -36,9 +36,9 @@ fn parse_expected(line_num: uint, line: &str, re: &Regex) -> Option<ExpectedErro
 
         debug!("line={} kind={} msg={}", line_num, kind, msg);
         Some(ExpectedError {
-            line: line_num - adjusts,
-            kind: kind,
-            msg: msg,
+            line=line_num - adjusts,
+            kind=kind,
+            msg=msg,
         })
     })
 }

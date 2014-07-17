@@ -38,8 +38,8 @@ impl<T: Send> Exclusive<T> {
     /// Creates a new `Exclusive` which will protect the data provided.
     pub fn new(user_data: T) -> Exclusive<T> {
         Exclusive {
-            lock: unsafe { mutex::NativeMutex::new() },
-            data: Unsafe::new(user_data),
+            lock=unsafe { mutex::NativeMutex::new() },
+            data=Unsafe::new(user_data),
         }
     }
 
@@ -53,8 +53,8 @@ impl<T: Send> Exclusive<T> {
         let data = &mut *self.data.get();
 
         ExclusiveGuard {
-            _data: data,
-            _guard: guard,
+            _data=data,
+            _guard=guard,
         }
     }
 }

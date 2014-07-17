@@ -28,21 +28,21 @@ pub fn expand_deriving_totalord(cx: &mut ExtCtxt,
     let inline = cx.meta_word(span, InternedString::new("inline"));
     let attrs = vec!(cx.attribute(span, inline));
     let trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: Path::new(vec!("std", "cmp", "Ord")),
-        additional_bounds: Vec::new(),
-        generics: LifetimeBounds::empty(),
-        methods: vec!(
+        span=span,
+        attributes=Vec::new(),
+        path=Path::new(vec!("std", "cmp", "Ord")),
+        additional_bounds=Vec::new(),
+        generics=LifetimeBounds::empty(),
+        methods=vec!(
             MethodDef {
-                name: "cmp",
-                generics: LifetimeBounds::empty(),
-                explicit_self: borrowed_explicit_self(),
-                args: vec!(borrowed_self()),
-                ret_ty: Literal(Path::new(vec!("std", "cmp", "Ordering"))),
-                attributes: attrs,
-                const_nonmatching: false,
-                combine_substructure: combine_substructure(|a, b, c| {
+                name="cmp",
+                generics=LifetimeBounds::empty(),
+                explicit_self=borrowed_explicit_self(),
+                args=vec!(borrowed_self()),
+                ret_ty=Literal(Path::new(vec!("std", "cmp", "Ordering"))),
+                attributes=attrs,
+                const_nonmatching=false,
+                combine_substructure=combine_substructure(|a, b, c| {
                     cs_cmp(a, b, c)
                 }),
             }

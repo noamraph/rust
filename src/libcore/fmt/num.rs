@@ -116,7 +116,7 @@ pub struct Radix {
 impl Radix {
     fn new(base: u8) -> Radix {
         assert!(2 <= base && base <= 36, "the base must be in the range of 0..36: {}", base);
-        Radix { base: base }
+        Radix { base=base }
     }
 }
 

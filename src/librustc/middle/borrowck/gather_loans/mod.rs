@@ -40,11 +40,11 @@ pub fn gather_loans_in_fn(bccx: &BorrowckCtxt,
                           -> (Vec<Loan>, move_data::MoveData)
 {
     let mut glcx = GatherLoanCtxt {
-        bccx: bccx,
-        all_loans: Vec::new(),
-        item_ub: body.id,
-        move_data: MoveData::new(),
-        move_error_collector: move_error::MoveErrorCollector::new(),
+        bccx=bccx,
+        all_loans=Vec::new(),
+        item_ub=body.id,
+        move_data=MoveData::new(),
+        move_error_collector=move_error::MoveErrorCollector::new(),
     };
 
     {
@@ -308,14 +308,14 @@ impl<'a> GatherLoanCtxt<'a> {
                 }
 
                 Loan {
-                    index: self.all_loans.len(),
-                    loan_path: loan_path,
-                    kind: req_kind,
-                    gen_scope: gen_scope,
-                    kill_scope: kill_scope,
-                    span: borrow_span,
-                    restricted_paths: restricted_paths,
-                    cause: cause,
+                    index=self.all_loans.len(),
+                    loan_path=loan_path,
+                    kind=req_kind,
+                    gen_scope=gen_scope,
+                    kill_scope=kill_scope,
+                    span=borrow_span,
+                    restricted_paths=restricted_paths,
+                    cause=cause,
                 }
             }
         };
@@ -378,10 +378,10 @@ impl<'a> GatherLoanCtxt<'a> {
                 ty::MutBorrow => {
                     // Only mutable data can be lent as mutable.
                     if !cmt.mutbl.is_mutable() {
-                        Err(bccx.report(BckError { span: borrow_span,
-                                                   cause: cause,
-                                                   cmt: cmt,
-                                                   code: err_mutbl }))
+                        Err(bccx.report(BckError { span=borrow_span,
+                                                   cause=cause,
+                                                   cmt=cmt,
+                                                   code=err_mutbl }))
                     } else {
                         Ok(())
                     }
@@ -396,7 +396,7 @@ impl<'a> GatherLoanCtxt<'a> {
 
         match *loan_path {
             LpVar(local_id) |
-            LpUpvar(ty::UpvarId{ var_id: local_id, closure_expr_id: _ }) => {
+            LpUpvar(ty::UpvarId{ var_id=local_id, closure_expr_id=_ }) => {
                 self.tcx().used_mut_nodes.borrow_mut().insert(local_id);
             }
             LpExtend(ref base, mc::McInherited, _) => {
@@ -493,7 +493,7 @@ pub fn gather_loans_in_static_initializer(bccx: &mut BorrowckCtxt, expr: &ast::E
     debug!("gather_loans_in_static_initializer(expr={})", expr.repr(bccx.tcx));
 
     let mut sicx = StaticInitializerCtxt {
-        bccx: bccx
+        bccx=bccx
     };
 
     sicx.visit_expr(expr, ());

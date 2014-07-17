@@ -73,9 +73,9 @@ impl Lint {
 macro_rules! lint_initializer (
     ($name:ident, $level:ident, $desc:expr) => (
         ::rustc::lint::Lint {
-            name: stringify!($name),
-            default_level: ::rustc::lint::$level,
-            desc: $desc,
+            name=stringify!($name),
+            default_level=::rustc::lint::$level,
+            desc=$desc,
         }
     )
 )
@@ -193,7 +193,7 @@ impl LintId {
     /// Get the `LintId` for a `Lint`.
     pub fn of(lint: &'static Lint) -> LintId {
         LintId {
-            lint: lint,
+            lint=lint,
         }
     }
 

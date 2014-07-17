@@ -45,21 +45,21 @@ pub fn expand_syntax_ext(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
     let res = str_to_ident(res_str.as_slice());
 
     let e = box(GC) ast::Expr {
-        id: ast::DUMMY_NODE_ID,
-        node: ast::ExprPath(
+        id=ast::DUMMY_NODE_ID,
+        node=ast::ExprPath(
             ast::Path {
-                 span: sp,
-                 global: false,
-                 segments: vec!(
+                 span=sp,
+                 global=false,
+                 segments=vec!(
                     ast::PathSegment {
-                        identifier: res,
-                        lifetimes: Vec::new(),
-                        types: OwnedSlice::empty(),
+                        identifier=res,
+                        lifetimes=Vec::new(),
+                        types=OwnedSlice::empty(),
                     }
                 )
             }
         ),
-        span: sp,
+        span=sp,
     };
     MacExpr::new(e)
 }

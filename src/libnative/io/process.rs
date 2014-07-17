@@ -104,11 +104,11 @@ impl Process {
         match res {
             Ok(res) => {
                 let p = Process {
-                    pid: res.pid,
-                    handle: res.handle,
-                    exit_code: None,
-                    exit_signal: None,
-                    deadline: 0,
+                    pid=res.pid,
+                    handle=res.handle,
+                    exit_code=None,
+                    exit_signal=None,
+                    deadline=0,
                 };
                 Ok((p, ret_io))
             }
@@ -168,9 +168,9 @@ impl rtio::RtioProcess for Process {
         // newer process that happens to have the same (re-used) id
         match self.exit_code {
             Some(..) => return Err(IoError {
-                code: ERROR as uint,
-                extra: 0,
-                detail: Some("can't kill an exited process".to_string()),
+                code=ERROR as uint,
+                extra=0,
+                detail=Some("can't kill an exited process".to_string()),
             }),
             None => {}
         }
@@ -199,13 +199,13 @@ fn pipe() -> IoResult<(file::FileDesc, file::FileDesc)> {
     let os::Pipe { reader, writer } = match unsafe { os::pipe() } {
         Ok(p) => p,
         Err(io::IoError { detail, .. }) => return Err(IoError {
-            code: ERROR as uint,
-            extra: 0,
-            detail: detail,
+            code=ERROR as uint,
+            extra=0,
+            detail=detail,
         })
     };
-    let mut reader = Closer { fd: reader };
-    let mut writer = Closer { fd: writer };
+    let mut reader = Closer { fd=reader };
+    let mut writer = Closer { fd=writer };
 
     let native_reader = file::FileDesc::new(reader.fd, true);
     reader.fd = -1;
@@ -239,9 +239,9 @@ unsafe fn killpid(pid: pid_t, signal: int) -> IoResult<()> {
                 Err(super::last_error())
             } else if status != libc::STILL_ACTIVE {
                 Err(IoError {
-                    code: libc::ERROR_NOTHING_TO_TERMINATE as uint,
-                    extra: 0,
-                    detail: None,
+                    code=libc::ERROR_NOTHING_TO_TERMINATE as uint,
+                    extra=0,
+                    detail=None,
                 })
             } else {
                 Ok(())
@@ -252,9 +252,9 @@ unsafe fn killpid(pid: pid_t, signal: int) -> IoResult<()> {
             super::mkerr_winbool(ret)
         }
         _ => Err(IoError {
-            code: libc::ERROR_CALL_NOT_IMPLEMENTED as uint,
-            extra: 0,
-            detail: Some("unsupported signal on windows".to_string()),
+            code=libc::ERROR_CALL_NOT_IMPLEMENTED as uint,
+            extra=0,
+            detail=Some("unsupported signal on windows".to_string()),
         })
     };
     let _ = libc::CloseHandle(handle);
@@ -299,9 +299,9 @@ fn spawn_process_os(cfg: ProcessConfig,
 
     if cfg.gid.is_some() || cfg.uid.is_some() {
         return Err(IoError {
-            code: libc::ERROR_CALL_NOT_IMPLEMENTED as uint,
-            extra: 0,
-            detail: Some("unsupported gid/uid requested on windows".to_string()),
+            code=libc::ERROR_CALL_NOT_IMPLEMENTED as uint,
+            extra=0,
+            detail=Some("unsupported gid/uid requested on windows".to_string()),
         })
     }
 
@@ -326,9 +326,9 @@ fn spawn_process_os(cfg: ProcessConfig,
                     };
                     let size = mem::size_of::<libc::SECURITY_ATTRIBUTES>();
                     let mut sa = libc::SECURITY_ATTRIBUTES {
-                        nLength: size as libc::DWORD,
-                        lpSecurityDescriptor: ptr::mut_null(),
-                        bInheritHandle: 1,
+                        nLength=size as libc::DWORD,
+                        lpSecurityDescriptor=ptr::mut_null(),
+                        bInheritHandle=1,
                     };
                     let filename: Vec<u16> = "NUL".utf16_units().collect();
                     let filename = filename.append_one(0);
@@ -406,8 +406,8 @@ fn spawn_process_os(cfg: ProcessConfig,
         assert!(CloseHandle(pi.hThread) != 0);
 
         Ok(SpawnProcessResult {
-            pid: pi.dwProcessId as pid_t,
-            handle: pi.hProcess as *mut ()
+            pid=pi.dwProcessId as pid_t,
+            handle=pi.hProcess as *mut ()
         })
     }
 }
@@ -415,34 +415,34 @@ fn spawn_process_os(cfg: ProcessConfig,
 #[cfg(windows)]
 fn zeroed_startupinfo() -> libc::types::os::arch::extra::STARTUPINFO {
     libc::types::os::arch::extra::STARTUPINFO {
-        cb: 0,
-        lpReserved: ptr::mut_null(),
-        lpDesktop: ptr::mut_null(),
-        lpTitle: ptr::mut_null(),
-        dwX: 0,
-        dwY: 0,
-        dwXSize: 0,
-        dwYSize: 0,
-        dwXCountChars: 0,
-        dwYCountCharts: 0,
-        dwFillAttribute: 0,
-        dwFlags: 0,
-        wShowWindow: 0,
-        cbReserved2: 0,
-        lpReserved2: ptr::mut_null(),
-        hStdInput: libc::INVALID_HANDLE_VALUE as libc::HANDLE,
-        hStdOutput: libc::INVALID_HANDLE_VALUE as libc::HANDLE,
-        hStdError: libc::INVALID_HANDLE_VALUE as libc::HANDLE,
+        cb=0,
+        lpReserved=ptr::mut_null(),
+        lpDesktop=ptr::mut_null(),
+        lpTitle=ptr::mut_null(),
+        dwX=0,
+        dwY=0,
+        dwXSize=0,
+        dwYSize=0,
+        dwXCountChars=0,
+        dwYCountCharts=0,
+        dwFillAttribute=0,
+        dwFlags=0,
+        wShowWindow=0,
+        cbReserved2=0,
+        lpReserved2=ptr::mut_null(),
+        hStdInput=libc::INVALID_HANDLE_VALUE as libc::HANDLE,
+        hStdOutput=libc::INVALID_HANDLE_VALUE as libc::HANDLE,
+        hStdError=libc::INVALID_HANDLE_VALUE as libc::HANDLE,
     }
 }
 
 #[cfg(windows)]
 fn zeroed_process_information() -> libc::types::os::arch::extra::PROCESS_INFORMATION {
     libc::types::os::arch::extra::PROCESS_INFORMATION {
-        hProcess: ptr::mut_null(),
-        hThread: ptr::mut_null(),
-        dwProcessId: 0,
-        dwThreadId: 0
+        hProcess=ptr::mut_null(),
+        hThread=ptr::mut_null(),
+        dwProcessId=0,
+        dwThreadId=0
     }
 }
 
@@ -564,15 +564,15 @@ fn spawn_process_os(cfg: ProcessConfig,
                                     (bytes[2] <<  8) as i32 |
                                     (bytes[3] <<  0) as i32;
                         Err(IoError {
-                            code: errno as uint,
-                            detail: None,
-                            extra: 0,
+                            code=errno as uint,
+                            detail=None,
+                            extra=0,
                         })
                     }
                     Err(..) => {
                         Ok(SpawnProcessResult {
-                            pid: pid,
-                            handle: ptr::mut_null()
+                            pid=pid,
+                            handle=ptr::mut_null()
                         })
                     }
                     Ok(..) => fail!("short read on the cloexec pipe"),

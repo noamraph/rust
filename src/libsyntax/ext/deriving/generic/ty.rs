@@ -53,10 +53,10 @@ impl<'a> Path<'a> {
                     global: bool)
                     -> Path<'r> {
         Path {
-            path: path,
-            lifetime: lifetime,
-            params: params,
-            global: global
+            path=path,
+            lifetime=lifetime,
+            params=params,
+            global=global
         }
     }
 
@@ -204,8 +204,8 @@ fn mk_ty_param(cx: &ExtCtxt, span: Span, name: &str,
 
 fn mk_generics(lifetimes: Vec<ast::Lifetime>, ty_params: Vec<ast::TyParam> ) -> Generics {
     Generics {
-        lifetimes: lifetimes,
-        ty_params: OwnedSlice::from_vec(ty_params)
+        lifetimes=lifetimes,
+        ty_params=OwnedSlice::from_vec(ty_params)
     }
 }
 
@@ -218,7 +218,7 @@ pub struct LifetimeBounds<'a> {
 impl<'a> LifetimeBounds<'a> {
     pub fn empty() -> LifetimeBounds<'static> {
         LifetimeBounds {
-            lifetimes: Vec::new(), bounds: Vec::new()
+            lifetimes=Vec::new(), bounds=Vec::new()
         }
     }
     pub fn to_generics(&self,

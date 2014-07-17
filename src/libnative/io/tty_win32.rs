@@ -38,9 +38,9 @@ use std::str::{from_utf16, from_utf8};
 
 fn invalid_encoding() -> IoError {
     IoError {
-        code: ERROR_ILLEGAL_CHARACTER as uint,
-        extra: 0,
-        detail: Some("text was not valid unicode".to_string()),
+        code=ERROR_ILLEGAL_CHARACTER as uint,
+        extra=0,
+        detail=Some("text was not valid unicode".to_string()),
     }
 }
 
@@ -70,9 +70,9 @@ impl WindowsTTY {
         };
         let handle = unsafe { get_osfhandle(fd) as HANDLE };
         WindowsTTY {
-            handle: handle,
-            utf8: MemReader::new(Vec::new()),
-            closeme: closeme,
+            handle=handle,
+            utf8=MemReader::new(Vec::new()),
+            closeme=closeme,
         }
     }
 }

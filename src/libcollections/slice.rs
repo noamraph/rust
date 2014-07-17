@@ -175,9 +175,9 @@ impl ElementSwaps {
         // (all negative at the beginning) and the `size` of the
         // element (equal to the original index).
         ElementSwaps{
-            emit_reset: true,
-            sdir: range(0, length).map(|i| SizeDirection{ size: i, dir: Neg }).collect(),
-            swaps_made: 0
+            emit_reset=true,
+            sdir=range(0, length).map(|i| SizeDirection{ size=i, dir=Neg }).collect(),
+            swaps_made=0
         }
     }
 }
@@ -324,8 +324,8 @@ impl<'a,T:Clone> ImmutableCloneableVector<T> for &'a [T] {
 
     fn permutations(self) -> Permutations<T> {
         Permutations{
-            swaps: ElementSwaps::new(self.len()),
-            v: self.to_owned(),
+            swaps=ElementSwaps::new(self.len()),
+            v=self.to_owned(),
         }
     }
 
@@ -1503,11 +1503,11 @@ mod tests {
             fn clone(&self) -> S {
                 self.f.set(self.f.get() + 1);
                 if self.f.get() == 10 { fail!() }
-                S { f: self.f, boxes: self.boxes.clone() }
+                S { f=self.f, boxes=self.boxes.clone() }
             }
         }
 
-        let s = S { f: Cell::new(0), boxes: (box 0, Rc::new(0)) };
+        let s = S { f=Cell::new(0), boxes=(box 0, Rc::new(0)) };
         let _ = Vec::from_elem(100, s);
     }
 

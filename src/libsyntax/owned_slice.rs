@@ -36,7 +36,7 @@ impl<T> Drop for OwnedSlice<T> {
 
 impl<T> OwnedSlice<T> {
     pub fn empty() -> OwnedSlice<T> {
-        OwnedSlice  { data: ptr::mut_null(), len: 0 }
+        OwnedSlice  { data=ptr::mut_null(), len=0 }
     }
 
     #[inline(never)]
@@ -50,7 +50,7 @@ impl<T> OwnedSlice<T> {
             // we own the allocation now
             unsafe {mem::forget(v)}
 
-            OwnedSlice { data: p, len: len }
+            OwnedSlice { data=p, len=len }
         }
     }
 
@@ -75,8 +75,8 @@ impl<T> OwnedSlice<T> {
         };
 
         let slice: &[T] = unsafe {mem::transmute(raw::Slice {
-            data: ptr,
-            len: self.len
+            data=ptr,
+            len=self.len
         })};
 
         slice

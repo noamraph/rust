@@ -160,7 +160,7 @@ pub trait Rng {
     ///                   .collect::<Vec<(f64, bool)>>());
     /// ```
     fn gen_iter<'a, T: Rand>(&'a mut self) -> Generator<'a, T, Self> {
-        Generator { rng: self }
+        Generator { rng=self }
     }
 
     /// Generate a random value in the range [`low`, `high`). Fails if
@@ -213,7 +213,7 @@ pub trait Rng {
     /// println!("{}", s);
     /// ```
     fn gen_ascii_chars<'a>(&'a mut self) -> AsciiGenerator<'a, Self> {
-        AsciiGenerator { rng: self }
+        AsciiGenerator { rng=self }
     }
 
     /// Return a random element from `values`.
@@ -355,10 +355,10 @@ impl XorShiftRng {
     /// this function
     pub fn new_unseeded() -> XorShiftRng {
         XorShiftRng {
-            x: 0x193a6754,
-            y: 0xa8a7d469,
-            z: 0x97830e05,
-            w: 0x113ba7bb,
+            x=0x193a6754,
+            y=0xa8a7d469,
+            z=0x97830e05,
+            w=0x113ba7bb,
         }
     }
 }
@@ -395,10 +395,10 @@ impl SeedableRng<[u32, .. 4]> for XorShiftRng {
                 "XorShiftRng::from_seed called with an all zero seed.");
 
         XorShiftRng {
-            x: seed[0],
-            y: seed[1],
-            z: seed[2],
-            w: seed[3]
+            x=seed[0],
+            y=seed[1],
+            z=seed[2],
+            w=seed[3]
         }
     }
 }
@@ -410,7 +410,7 @@ impl Rand for XorShiftRng {
             tuple = rng.gen();
         }
         let (x, y, z, w) = tuple;
-        XorShiftRng { x: x, y: y, z: z, w: w }
+        XorShiftRng { x=x, y=y, z=z, w=w }
     }
 }
 
@@ -469,10 +469,10 @@ mod test {
     }
 
     pub fn rng() -> MyRng<rand::TaskRng> {
-        MyRng { inner: rand::task_rng() }
+        MyRng { inner=rand::task_rng() }
     }
 
     pub fn weak_rng() -> MyRng<rand::XorShiftRng> {
-        MyRng { inner: rand::weak_rng() }
+        MyRng { inner=rand::weak_rng() }
     }
 }

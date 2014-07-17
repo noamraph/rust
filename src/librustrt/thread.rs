@@ -88,9 +88,9 @@ impl Thread<()> {
         let native = unsafe { imp::create(stack, box main) };
 
         Thread {
-            native: native,
-            joined: false,
-            packet: packet,
+            native=native,
+            joined=false,
+            packet=packet,
         }
     }
 

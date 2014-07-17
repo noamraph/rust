@@ -287,16 +287,16 @@ fn determine_parameters_to_be_inferred<'a>(tcx: &'a ty::ctxt,
                                            krate: &ast::Crate)
                                            -> TermsContext<'a> {
     let mut terms_cx = TermsContext {
-        tcx: tcx,
-        arena: arena,
-        inferred_map: HashMap::new(),
-        inferred_infos: Vec::new(),
+        tcx=tcx,
+        arena=arena,
+        inferred_map=HashMap::new(),
+        inferred_infos=Vec::new(),
 
         // cache and share the variance struct used for items with
         // no type/region parameters
-        empty_variances: Rc::new(ty::ItemVariances {
-            types: VecPerParamSpace::empty(),
-            regions: VecPerParamSpace::empty()
+        empty_variances=Rc::new(ty::ItemVariances {
+            types=VecPerParamSpace::empty(),
+            regions=VecPerParamSpace::empty()
         })
     };
 
@@ -314,12 +314,12 @@ impl<'a> TermsContext<'a> {
                     param_id: ast::NodeId) {
         let inf_index = InferredIndex(self.inferred_infos.len());
         let term = self.arena.alloc(|| InferredTerm(inf_index));
-        self.inferred_infos.push(InferredInfo { item_id: item_id,
-                                                kind: kind,
-                                                space: space,
-                                                index: index,
-                                                param_id: param_id,
-                                                term: term });
+        self.inferred_infos.push(InferredInfo { item_id=item_id,
+                                                kind=kind,
+                                                space=space,
+                                                index=index,
+                                                param_id=param_id,
+                                                term=term });
         let newly_added = self.inferred_map.insert(param_id, inf_index);
         assert!(newly_added);
 
@@ -455,17 +455,17 @@ fn add_constraints_from_crate<'a>(terms_cx: TermsContext<'a>,
     let invariant = terms_cx.arena.alloc(|| ConstantTerm(ty::Invariant));
     let bivariant = terms_cx.arena.alloc(|| ConstantTerm(ty::Bivariant));
     let mut constraint_cx = ConstraintContext {
-        terms_cx: terms_cx,
+        terms_cx=terms_cx,
 
-        invariant_lang_items: invariant_lang_items,
-        covariant_lang_items: covariant_lang_items,
-        contravariant_lang_items: contravariant_lang_items,
+        invariant_lang_items=invariant_lang_items,
+        covariant_lang_items=covariant_lang_items,
+        contravariant_lang_items=contravariant_lang_items,
 
-        covariant: covariant,
-        contravariant: contravariant,
-        invariant: invariant,
-        bivariant: bivariant,
-        constraints: Vec::new(),
+        covariant=covariant,
+        contravariant=contravariant,
+        invariant=invariant,
+        bivariant=bivariant,
+        constraints=Vec::new(),
     };
     visit::walk_crate(&mut constraint_cx, krate, ());
     constraint_cx
@@ -659,8 +659,8 @@ impl<'a> ConstraintContext<'a> {
                       variance: VarianceTermPtr<'a>) {
         debug!("add_constraint(index={}, variance={})",
                 index, variance.to_string());
-        self.constraints.push(Constraint { inferred: InferredIndex(index),
-                                           variance: variance });
+        self.constraints.push(Constraint { inferred=InferredIndex(index),
+                                           variance=variance });
     }
 
     fn contravariant(&mut self,
@@ -788,7 +788,7 @@ impl<'a> ConstraintContext<'a> {
                     variance);
             }
 
-            ty::ty_param(ty::ParamTy { def_id: ref def_id, .. }) => {
+            ty::ty_param(ty::ParamTy { def_id=ref def_id, .. }) => {
                 assert_eq!(def_id.krate, ast::LOCAL_CRATE);
                 match self.terms_cx.inferred_map.find(&def_id.node) {
                     Some(&index) => {
@@ -805,14 +805,14 @@ impl<'a> ConstraintContext<'a> {
             ty::ty_bare_fn(ty::BareFnTy { ref sig, .. }) |
             ty::ty_closure(box ty::ClosureTy {
                     ref sig,
-                    store: ty::UniqTraitStore,
+                    store=ty::UniqTraitStore,
                     ..
                 }) => {
                 self.add_constraints_from_sig(sig, variance);
             }
 
             ty::ty_closure(box ty::ClosureTy { ref sig,
-                    store: ty::RegionTraitStore(region, _), .. }) => {
+                    store=ty::RegionTraitStore(region, _), .. }) => {
                 let contra = self.contravariant(variance);
                 self.add_constraints_from_region(region, contra);
                 self.add_constraints_from_sig(sig, variance);
@@ -940,9 +940,9 @@ fn solve_constraints(constraints_cx: ConstraintContext) {
     let ConstraintContext { terms_cx, constraints, .. } = constraints_cx;
     let solutions = Vec::from_elem(terms_cx.num_inferred(), ty::Bivariant);
     let mut solutions_cx = SolveContext {
-        terms_cx: terms_cx,
-        constraints: constraints,
-        solutions: solutions
+        terms_cx=terms_cx,
+        constraints=constraints,
+        solutions=solutions
     };
     solutions_cx.solve();
     solutions_cx.write();
@@ -960,7 +960,7 @@ impl<'a> SolveContext<'a> {
             changed = false;
 
             for constraint in self.constraints.iter() {
-                let Constraint { inferred, variance: term } = *constraint;
+                let Constraint { inferred, variance=term } = *constraint;
                 let InferredIndex(inferred) = inferred;
                 let variance = self.evaluate(term);
                 let old_value = *self.solutions.get(inferred);
@@ -1022,8 +1022,8 @@ impl<'a> SolveContext<'a> {
             }
 
             let item_variances = ty::ItemVariances {
-                types: types,
-                regions: regions
+                types=types,
+                regions=regions
             };
             debug!("item_id={} item_variances={}",
                     item_id,

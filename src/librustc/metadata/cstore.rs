@@ -81,12 +81,12 @@ type extern_mod_crate_map = HashMap<ast::NodeId, ast::CrateNum>;
 impl CStore {
     pub fn new(intr: Rc<IdentInterner>) -> CStore {
         CStore {
-            metas: RefCell::new(HashMap::new()),
-            extern_mod_crate_map: RefCell::new(HashMap::new()),
-            used_crate_sources: RefCell::new(Vec::new()),
-            used_libraries: RefCell::new(Vec::new()),
-            used_link_args: RefCell::new(Vec::new()),
-            intr: intr
+            metas=RefCell::new(HashMap::new()),
+            extern_mod_crate_map=RefCell::new(HashMap::new()),
+            used_crate_sources=RefCell::new(Vec::new()),
+            used_libraries=RefCell::new(Vec::new()),
+            used_link_args=RefCell::new(Vec::new()),
+            intr=intr
         }
     }
 

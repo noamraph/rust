@@ -96,12 +96,12 @@ mod imp {
             });
             assert!(fd > 0);
             let flock = os::flock {
-                l_start: 0,
-                l_len: 0,
-                l_pid: 0,
-                l_whence: libc::SEEK_SET as libc::c_short,
-                l_type: os::F_WRLCK,
-                l_sysid: 0,
+                l_start=0,
+                l_len=0,
+                l_pid=0,
+                l_whence=libc::SEEK_SET as libc::c_short,
+                l_type=os::F_WRLCK,
+                l_sysid=0,
             };
             let ret = unsafe {
                 libc::fcntl(fd, os::F_SETLKW, &flock as *const os::flock)
@@ -110,19 +110,19 @@ mod imp {
                 unsafe { libc::close(fd); }
                 fail!("could not lock `{}`", p.display())
             }
-            Lock { fd: fd }
+            Lock { fd=fd }
         }
     }
 
     impl Drop for Lock {
         fn drop(&mut self) {
             let flock = os::flock {
-                l_start: 0,
-                l_len: 0,
-                l_pid: 0,
-                l_whence: libc::SEEK_SET as libc::c_short,
-                l_type: os::F_UNLCK,
-                l_sysid: 0,
+                l_start=0,
+                l_len=0,
+                l_pid=0,
+                l_whence=libc::SEEK_SET as libc::c_short,
+                l_type=os::F_UNLCK,
+                l_sysid=0,
             };
             unsafe {
                 libc::fcntl(self.fd, os::F_SETLK, &flock as *const os::flock);
@@ -189,7 +189,7 @@ mod imp {
                 fail!("could not lock `{}`: {}", p.display(),
                       os::last_os_error())
             }
-            Lock { handle: handle }
+            Lock { handle=handle }
         }
     }
 

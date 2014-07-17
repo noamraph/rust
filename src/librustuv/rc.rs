@@ -26,7 +26,7 @@ pub struct Refcount {
 impl Refcount {
     /// Creates a new refcount of 1
     pub fn new() -> Refcount {
-        Refcount { rc: Arc::new(Unsafe::new(1)) }
+        Refcount { rc=Arc::new(Unsafe::new(1)) }
     }
 
     fn increment(&self) {
@@ -45,6 +45,6 @@ impl Refcount {
 impl Clone for Refcount {
     fn clone(&self) -> Refcount {
         self.increment();
-        Refcount { rc: self.rc.clone() }
+        Refcount { rc=self.rc.clone() }
     }
 }

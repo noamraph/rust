@@ -94,8 +94,8 @@ impl FsRequest {
                 offset + written as i64
             };
             let uvbuf = uvll::uv_buf_t {
-                base: buf.slice_from(written as uint).as_ptr() as *mut _,
-                len: (buf.len() - written) as uvll::uv_buf_len_t,
+                base=buf.slice_from(written as uint).as_ptr() as *mut _,
+                len=(buf.len() - written) as uvll::uv_buf_len_t,
             };
             match execute(|req, cb| unsafe {
                 uvll::uv_fs_write(loop_.handle, req, fd, &uvbuf, 1, offset, cb)
@@ -112,8 +112,8 @@ impl FsRequest {
     {
         execute(|req, cb| unsafe {
             let mut uvbuf = uvll::uv_buf_t {
-                base: buf.as_mut_ptr(),
-                len: buf.len() as uvll::uv_buf_len_t,
+                base=buf.as_mut_ptr(),
+                len=buf.len() as uvll::uv_buf_len_t,
             };
             uvll::uv_fs_read(loop_.handle, req, fd, &mut uvbuf, 1, offset, cb)
         }).map(|req| {
@@ -279,22 +279,22 @@ impl FsRequest {
             (stat.tv_sec as u64) * 1000 + (stat.tv_nsec as u64) / 1000000
         }
         rtio::FileStat {
-            size: stat.st_size as u64,
-            kind: stat.st_mode as u64,
-            perm: stat.st_mode as u64,
-            created: to_msec(stat.st_birthtim),
-            modified: to_msec(stat.st_mtim),
-            accessed: to_msec(stat.st_atim),
-            device: stat.st_dev as u64,
-            inode: stat.st_ino as u64,
-            rdev: stat.st_rdev as u64,
-            nlink: stat.st_nlink as u64,
-            uid: stat.st_uid as u64,
-            gid: stat.st_gid as u64,
-            blksize: stat.st_blksize as u64,
-            blocks: stat.st_blocks as u64,
-            flags: stat.st_flags as u64,
-            gen: stat.st_gen as u64,
+            size=stat.st_size as u64,
+            kind=stat.st_mode as u64,
+            perm=stat.st_mode as u64,
+            created=to_msec(stat.st_birthtim),
+            modified=to_msec(stat.st_mtim),
+            accessed=to_msec(stat.st_atim),
+            device=stat.st_dev as u64,
+            inode=stat.st_ino as u64,
+            rdev=stat.st_rdev as u64,
+            nlink=stat.st_nlink as u64,
+            uid=stat.st_uid as u64,
+            gid=stat.st_gid as u64,
+            blksize=stat.st_blksize as u64,
+            blocks=stat.st_blocks as u64,
+            flags=stat.st_flags as u64,
+            gen=stat.st_gen as u64,
         }
     }
 }
@@ -314,8 +314,8 @@ fn execute(f: |*mut uvll::uv_fs_t, uvll::uv_fs_cb| -> c_int)
     -> Result<FsRequest, UvError>
 {
     let mut req = FsRequest {
-        fired: false,
-        req: unsafe { uvll::malloc_req(uvll::UV_FS) }
+        fired=false,
+        req=unsafe { uvll::malloc_req(uvll::UV_FS) }
     };
     return match f(req.req, fs_cb) {
         0 => {
@@ -354,10 +354,10 @@ impl FileWatcher {
     pub fn new(io: &mut UvIoFactory, fd: c_int,
                close: rtio::CloseBehavior) -> FileWatcher {
         FileWatcher {
-            loop_: Loop::wrap(io.uv_loop()),
-            fd: fd,
-            close: close,
-            home: io.make_handle(),
+            loop_=Loop::wrap(io.uv_loop()),
+            fd=fd,
+            close=close,
+            home=io.make_handle(),
         }
     }
 
@@ -375,9 +375,9 @@ impl FileWatcher {
         match unsafe { libc::lseek(self.fd, pos as libc::off_t, whence) } {
             -1 => {
                 Err(IoError {
-                    code: os::errno() as uint,
-                    extra: 0,
-                    detail: None,
+                    code=os::errno() as uint,
+                    extra=0,
+                    detail=None,
                 })
             },
             n => Ok(n as u64)

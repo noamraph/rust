@@ -27,7 +27,7 @@ pub struct Doc<'a> {
 
 impl<'doc> Doc<'doc> {
     pub fn new(data: &'doc [u8]) -> Doc<'doc> {
-        Doc { data: data, start: 0u, end: data.len() }
+        Doc { data=data, start=0u, end=data.len() }
     }
 
     pub fn get<'a>(&'a self, tag: uint) -> Doc<'a> {
@@ -130,25 +130,25 @@ pub mod reader {
     fn vuint_at_slow(data: &[u8], start: uint) -> DecodeResult<Res> {
         let a = data[start];
         if a & 0x80u8 != 0u8 {
-            return Ok(Res {val: (a & 0x7fu8) as uint, next: start + 1u});
+            return Ok(Res {val=(a & 0x7fu8) as uint, next=start + 1u});
         }
         if a & 0x40u8 != 0u8 {
-            return Ok(Res {val: ((a & 0x3fu8) as uint) << 8u |
+            return Ok(Res {val=((a & 0x3fu8) as uint) << 8u |
                         (data[start + 1u] as uint),
-                    next: start + 2u});
+                    next=start + 2u});
         }
         if a & 0x20u8 != 0u8 {
-            return Ok(Res {val: ((a & 0x1fu8) as uint) << 16u |
+            return Ok(Res {val=((a & 0x1fu8) as uint) << 16u |
                         (data[start + 1u] as uint) << 8u |
                         (data[start + 2u] as uint),
-                    next: start + 3u});
+                    next=start + 3u});
         }
         if a & 0x10u8 != 0u8 {
-            return Ok(Res {val: ((a & 0x0fu8) as uint) << 24u |
+            return Ok(Res {val=((a & 0x0fu8) as uint) << 24u |
                         (data[start + 1u] as uint) << 16u |
                         (data[start + 2u] as uint) << 8u |
                         (data[start + 3u] as uint),
-                    next: start + 4u});
+                    next=start + 4u});
         }
         Err(IntTooBig(a as uint))
     }
@@ -188,8 +188,8 @@ pub mod reader {
             let i = (val >> 28u) as uint;
             let (shift, mask) = SHIFT_MASK_TABLE[i];
             Ok(Res {
-                val: ((val >> shift) & mask) as uint,
-                next: start + (((32 - shift) >> 3) as uint)
+                val=((val >> shift) & mask) as uint,
+                next=start + (((32 - shift) >> 3) as uint)
             })
         }
     }
@@ -199,8 +199,8 @@ pub mod reader {
         let elt_size = try!(vuint_at(data, elt_tag.next));
         let end = elt_size.next + elt_size.val;
         Ok(TaggedDoc {
-            tag: elt_tag.val,
-            doc: Doc { data: data, start: elt_size.next, end: end }
+            tag=elt_tag.val,
+            doc=Doc { data=data, start=elt_size.next, end=end }
         })
     }
 
@@ -211,8 +211,8 @@ pub mod reader {
             let elt_size = try_or!(vuint_at(d.data, elt_tag.next), None);
             pos = elt_size.next + elt_size.val;
             if elt_tag.val == tg {
-                return Some(Doc { data: d.data, start: elt_size.next,
-                                  end: pos });
+                return Some(Doc { data=d.data, start=elt_size.next,
+                                  end=pos });
             }
         }
         None
@@ -234,7 +234,7 @@ pub mod reader {
             let elt_tag = try_or!(vuint_at(d.data, pos), false);
             let elt_size = try_or!(vuint_at(d.data, elt_tag.next), false);
             pos = elt_size.next + elt_size.val;
-            let doc = Doc { data: d.data, start: elt_size.next, end: pos };
+            let doc = Doc { data=d.data, start=elt_size.next, end=pos };
             if !it(elt_tag.val, doc) {
                 return false;
             }
@@ -249,8 +249,8 @@ pub mod reader {
             let elt_size = try_or!(vuint_at(d.data, elt_tag.next), false);
             pos = elt_size.next + elt_size.val;
             if elt_tag.val == tg {
-                let doc = Doc { data: d.data, start: elt_size.next,
-                                end: pos };
+                let doc = Doc { data=d.data, start=elt_size.next,
+                                end=pos };
                 if !it(doc) {
                     return false;
                 }
@@ -297,14 +297,14 @@ pub mod reader {
     impl<'doc> Decoder<'doc> {
         pub fn new(d: Doc<'doc>) -> Decoder<'doc> {
             Decoder {
-                parent: d,
-                pos: d.start
+                parent=d,
+                pos=d.start
             }
         }
 
         fn _check_label(&mut self, lbl: &str) -> DecodeResult<()> {
             if self.pos < self.parent.end {
-                let TaggedDoc { tag: r_tag, doc: r_doc } =
+                let TaggedDoc { tag=r_tag, doc=r_doc } =
                     try!(doc_at(self.parent.data, self.pos));
 
                 if r_tag == (EsLabel as uint) {
@@ -325,7 +325,7 @@ pub mod reader {
                 return Err(Expected(format!("no more documents in \
                                              current node!")));
             }
-            let TaggedDoc { tag: r_tag, doc: r_doc } =
+            let TaggedDoc { tag=r_tag, doc=r_doc } =
                 try!(doc_at(self.parent.data, self.pos));
             debug!("self.parent={}-{} self.pos={} r_tag={} r_doc={}-{}",
                    self.parent.start,
@@ -652,9 +652,9 @@ pub mod writer {
             4u => w.write(&[0x10u8 | ((n >> 24_u) as u8), (n >> 16_u) as u8,
                             (n >> 8_u) as u8, n as u8]),
             _ => Err(io::IoError {
-                kind: io::OtherIoError,
-                desc: "int too big",
-                detail: Some(format!("{}", n))
+                kind=io::OtherIoError,
+                desc="int too big",
+                detail=Some(format!("{}", n))
             })
         }
     }
@@ -665,9 +665,9 @@ pub mod writer {
         if n < 0x200000_u { return write_sized_vuint(w, n, 3u); }
         if n < 0x10000000_u { return write_sized_vuint(w, n, 4u); }
         Err(io::IoError {
-            kind: io::OtherIoError,
-            desc: "int too big",
-            detail: Some(format!("{}", n))
+            kind=io::OtherIoError,
+            desc="int too big",
+            detail=Some(format!("{}", n))
         })
     }
 
@@ -675,16 +675,16 @@ pub mod writer {
     impl<'a, W: Writer + Seek> Encoder<'a, W> {
         pub fn new(w: &'a mut W) -> Encoder<'a, W> {
             Encoder {
-                writer: w,
-                size_positions: vec!(),
+                writer=w,
+                size_positions=vec!(),
             }
         }
 
         /// FIXME(pcwalton): Workaround for badness in trans. DO NOT USE ME.
         pub unsafe fn unsafe_clone(&self) -> Encoder<'a, W> {
             Encoder {
-                writer: mem::transmute_copy(&self.writer),
-                size_positions: self.size_positions.clone(),
+                writer=mem::transmute_copy(&self.writer),
+                size_positions=self.size_positions.clone(),
             }
         }
 

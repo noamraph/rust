@@ -28,9 +28,9 @@ impl IdleWatcher {
             uvll::uv_idle_init(loop_.handle, handle)
         }, 0);
         let me = box IdleWatcher {
-            handle: handle,
-            idle_flag: false,
-            callback: cb,
+            handle=handle,
+            idle_flag=false,
+            callback=cb,
         };
         return me.install();
     }

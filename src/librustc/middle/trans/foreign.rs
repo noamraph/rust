@@ -847,8 +847,8 @@ fn foreign_signature(ccx: &CrateContext, fn_sig: &ty::FnSig, arg_tys: &[ty::t])
     let llarg_tys = arg_tys.iter().map(|&arg| arg_type_of(ccx, arg)).collect();
     let llret_ty = type_of::arg_type_of(ccx, fn_sig.output);
     LlvmSignature {
-        llarg_tys: llarg_tys,
-        llret_ty: llret_ty
+        llarg_tys=llarg_tys,
+        llret_ty=llret_ty
     }
 }
 
@@ -882,10 +882,10 @@ fn foreign_types_for_fn_ty(ccx: &CrateContext,
            ret_def);
 
     ForeignTypes {
-        fn_sig: fn_sig,
-        llsig: llsig,
-        ret_def: ret_def,
-        fn_ty: fn_ty
+        fn_sig=fn_sig,
+        llsig=llsig,
+        ret_def=ret_def,
+        fn_ty=fn_ty
     }
 }
 

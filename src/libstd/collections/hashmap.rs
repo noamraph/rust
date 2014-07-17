@@ -161,8 +161,8 @@ mod table {
         match hasher.hash(t) {
             // This constant is exceedingly likely to hash to the same
             // bucket, but it won't be counted as empty!
-            EMPTY_BUCKET => SafeHash { hash: 0x8000_0000_0000_0000 },
-            h            => SafeHash { hash: h },
+            EMPTY_BUCKET => SafeHash { hash=0x8000_0000_0000_0000 },
+            h            => SafeHash { hash=h },
         }
     }
 
@@ -242,11 +242,11 @@ mod table {
             let vals   = buffer.offset(vals_offset as int) as *mut V;
 
             RawTable {
-                capacity: capacity,
-                size:     0,
-                hashes:   hashes,
-                keys:     keys,
-                vals:     vals,
+                capacity=capacity,
+                size=    0,
+                hashes=  hashes,
+                keys=    keys,
+                vals=    vals,
             }
         }
 
@@ -276,14 +276,14 @@ mod table {
             match hash {
                 EMPTY_BUCKET =>
                     Empty(EmptyIndex {
-                        idx:    idx,
-                        nocopy: nocopy
+                        idx=   idx,
+                        nocopy=nocopy
                     }),
                 full_hash =>
                     Full(FullIndex {
-                        idx:    idx,
-                        hash:   SafeHash { hash: full_hash },
-                        nocopy: nocopy,
+                        idx=   idx,
+                        hash=  SafeHash { hash=full_hash },
+                        nocopy=nocopy,
                     })
             }
         }
@@ -340,7 +340,7 @@ mod table {
 
             self.size += 1;
 
-            FullIndex { idx: idx, hash: hash, nocopy: marker::NoCopy }
+            FullIndex { idx=idx, hash=hash, nocopy=marker::NoCopy }
         }
 
         /// Removes a key and value from the hashtable.
@@ -364,7 +364,7 @@ mod table {
 
                 self.size -= 1;
 
-                (EmptyIndex { idx: idx, nocopy: marker::NoCopy }, k, v)
+                (EmptyIndex { idx=idx, nocopy=marker::NoCopy }, k, v)
             }
         }
 
@@ -380,15 +380,15 @@ mod table {
         }
 
         pub fn iter<'a>(&'a self) -> Entries<'a, K, V> {
-            Entries { table: self, idx: 0, elems_seen: 0 }
+            Entries { table=self, idx=0, elems_seen=0 }
         }
 
         pub fn mut_iter<'a>(&'a mut self) -> MutEntries<'a, K, V> {
-            MutEntries { table: self, idx: 0, elems_seen: 0 }
+            MutEntries { table=self, idx=0, elems_seen=0 }
         }
 
         pub fn move_iter(self) -> MoveEntries<K, V> {
-            MoveEntries { table: self, idx: 0 }
+            MoveEntries { table=self, idx=0 }
         }
     }
 
@@ -586,7 +586,7 @@ struct DefaultResizePolicy {
 impl DefaultResizePolicy {
     fn new(new_capacity: uint) -> DefaultResizePolicy {
         DefaultResizePolicy {
-            minimum_capacity2: new_capacity << 1
+            minimum_capacity2=new_capacity << 1
         }
     }
 
@@ -1063,9 +1063,9 @@ impl<K: Eq + Hash<S>, V, S, H: Hasher<S>> HashMap<K, V, H> {
     pub fn with_capacity_and_hasher(capacity: uint, hasher: H) -> HashMap<K, V, H> {
         let cap = num::next_power_of_two(max(INITIAL_CAPACITY, capacity));
         HashMap {
-            hasher:        hasher,
-            resize_policy: DefaultResizePolicy::new(cap),
-            table:         table::RawTable::new(cap),
+            hasher=       hasher,
+            resize_policy=DefaultResizePolicy::new(cap),
+            table=        table::RawTable::new(cap),
         }
     }
 
@@ -1536,7 +1536,7 @@ impl<T: Hash + Eq> HashSet<T, RandomSipHasher> {
     /// the hash table.
     #[inline]
     pub fn with_capacity(capacity: uint) -> HashSet<T, RandomSipHasher> {
-        HashSet { map: HashMap::with_capacity(capacity) }
+        HashSet { map=HashMap::with_capacity(capacity) }
     }
 }
 
@@ -1559,7 +1559,7 @@ impl<T: Eq + Hash<S>, S, H: Hasher<S>> HashSet<T, H> {
     /// manually using this function can expose a DoS attack vector.
     #[inline]
     pub fn with_capacity_and_hasher(capacity: uint, hasher: H) -> HashSet<T, H> {
-        HashSet { map: HashMap::with_capacity_and_hasher(capacity, hasher) }
+        HashSet { map=HashMap::with_capacity_and_hasher(capacity, hasher) }
     }
 
     /// Reserve space for at least `n` elements in the hash table.
@@ -1719,7 +1719,7 @@ mod test_map {
             let v = drop_vector.get().unwrap();
             v.borrow_mut().as_mut_slice()[k] += 1;
 
-            Dropable { k: k }
+            Dropable { k=k }
         }
     }
 

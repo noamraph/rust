@@ -65,8 +65,8 @@ impl UdpSocket {
     pub fn bind(addr: SocketAddr) -> IoResult<UdpSocket> {
         let SocketAddr { ip, port } = addr;
         LocalIo::maybe_raise(|io| {
-            let addr = rtio::SocketAddr { ip: super::to_rtio(ip), port: port };
-            io.udp_bind(addr).map(|s| UdpSocket { obj: s })
+            let addr = rtio::SocketAddr { ip=super::to_rtio(ip), port=port };
+            io.udp_bind(addr).map(|s| UdpSocket { obj=s })
         }).map_err(IoError::from_rtio_error)
     }
 
@@ -76,7 +76,7 @@ impl UdpSocket {
                     -> IoResult<(uint, SocketAddr)> {
         match self.obj.recv_from(buf) {
             Ok((amt, rtio::SocketAddr { ip, port })) => {
-                Ok((amt, SocketAddr { ip: super::from_rtio(ip), port: port }))
+                Ok((amt, SocketAddr { ip=super::from_rtio(ip), port=port }))
             }
             Err(e) => Err(IoError::from_rtio_error(e)),
         }
@@ -93,8 +93,8 @@ impl UdpSocket {
     /// success.
     pub fn send_to(&mut self, buf: &[u8], dst: SocketAddr) -> IoResult<()> {
         self.obj.send_to(buf, rtio::SocketAddr {
-            ip: super::to_rtio(dst.ip),
-            port: dst.port,
+            ip=super::to_rtio(dst.ip),
+            port=dst.port,
         }).map_err(IoError::from_rtio_error)
     }
 
@@ -112,15 +112,15 @@ impl UdpSocket {
     /// because UDP is a datagram protocol.
     pub fn connect(self, other: SocketAddr) -> UdpStream {
         UdpStream {
-            socket: self,
-            connected_to: other,
+            socket=self,
+            connected_to=other,
         }
     }
 
     /// Returns the socket address that this socket was created from.
     pub fn socket_name(&mut self) -> IoResult<SocketAddr> {
         match self.obj.socket_name() {
-            Ok(a) => Ok(SocketAddr { ip: super::from_rtio(a.ip), port: a.port }),
+            Ok(a) => Ok(SocketAddr { ip=super::from_rtio(a.ip), port=a.port }),
             Err(e) => Err(IoError::from_rtio_error(e))
         }
     }
@@ -214,7 +214,7 @@ impl Clone for UdpSocket {
     /// received, and the second read will receive the second packet.
     fn clone(&self) -> UdpSocket {
         UdpSocket {
-            obj: self.obj.clone(),
+            obj=self.obj.clone(),
         }
     }
 }
@@ -268,7 +268,7 @@ mod test {
 
     // FIXME #11530 this fails on android because tests are run as root
     iotest!(fn bind_error() {
-        let addr = SocketAddr { ip: Ipv4Addr(0, 0, 0, 0), port: 1 };
+        let addr = SocketAddr { ip=Ipv4Addr(0, 0, 0, 0), port=1 };
         match UdpSocket::bind(addr) {
             Ok(..) => fail!(),
             Err(e) => assert_eq!(e.kind, PermissionDenied),
@@ -590,8 +590,8 @@ mod test {
         a.set_write_timeout(Some(1000));
         for _ in range(0u, 100) {
             match a.send_to([0, ..4*1024], addr2) {
-                Ok(()) | Err(IoError { kind: ShortWrite(..), .. }) => {},
-                Err(IoError { kind: TimedOut, .. }) => break,
+                Ok(()) | Err(IoError { kind=ShortWrite(..), .. }) => {},
+                Err(IoError { kind=TimedOut, .. }) => break,
                 Err(e) => fail!("other error: {}", e),
             }
         }

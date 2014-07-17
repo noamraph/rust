@@ -70,21 +70,21 @@ pub enum AbiArchitecture {
 
 static AbiDatas: &'static [AbiData] = &[
     // Platform-specific ABIs
-    AbiData {abi: Cdecl, name: "cdecl", abi_arch: Archs(IntelBits)},
-    AbiData {abi: Stdcall, name: "stdcall", abi_arch: Archs(IntelBits)},
-    AbiData {abi: Fastcall, name:"fastcall", abi_arch: Archs(IntelBits)},
-    AbiData {abi: Aapcs, name: "aapcs", abi_arch: Archs(ArmBits)},
-    AbiData {abi: Win64, name: "win64",
-             abi_arch: Archs(1 << (X86_64 as uint))},
+    AbiData {abi=Cdecl, name="cdecl", abi_arch=Archs(IntelBits)},
+    AbiData {abi=Stdcall, name="stdcall", abi_arch=Archs(IntelBits)},
+    AbiData {abi=Fastcall, name="fastcall", abi_arch=Archs(IntelBits)},
+    AbiData {abi=Aapcs, name="aapcs", abi_arch=Archs(ArmBits)},
+    AbiData {abi=Win64, name="win64",
+             abi_arch=Archs(1 << (X86_64 as uint))},
 
     // Cross-platform ABIs
     //
     // NB: Do not adjust this ordering without
     // adjusting the indices below.
-    AbiData {abi: Rust, name: "Rust", abi_arch: RustArch},
-    AbiData {abi: C, name: "C", abi_arch: AllArch},
-    AbiData {abi: System, name: "system", abi_arch: AllArch},
-    AbiData {abi: RustIntrinsic, name: "rust-intrinsic", abi_arch: RustArch},
+    AbiData {abi=Rust, name="Rust", abi_arch=RustArch},
+    AbiData {abi=C, name="C", abi_arch=AllArch},
+    AbiData {abi=System, name="system", abi_arch=AllArch},
+    AbiData {abi=RustIntrinsic, name="rust-intrinsic", abi_arch=RustArch},
 ];
 
 /// Returns the ABI with the given name (if any).

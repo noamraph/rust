@@ -44,7 +44,7 @@ impl<T> HomogeneousTuple3<T> for (T, T, T) {
     fn as_slice<'a>(&'a self) -> &'a [T] {
         unsafe {
             let ptr: *const T = mem::transmute(self);
-            let slice = raw::Slice { data: ptr, len: 3 };
+            let slice = raw::Slice { data=ptr, len=3 };
             mem::transmute(slice)
         }
     }
@@ -52,7 +52,7 @@ impl<T> HomogeneousTuple3<T> for (T, T, T) {
     fn as_mut_slice<'a>(&'a mut self) -> &'a mut [T] {
         unsafe {
             let ptr: *const T = mem::transmute(self);
-            let slice = raw::Slice { data: ptr, len: 3 };
+            let slice = raw::Slice { data=ptr, len=3 };
             mem::transmute(slice)
         }
     }
@@ -104,7 +104,7 @@ impl Substs {
                r: VecPerParamSpace<ty::Region>)
                -> Substs
     {
-        Substs { types: t, regions: NonerasedRegions(r) }
+        Substs { types=t, regions=NonerasedRegions(r) }
     }
 
     pub fn new_type(t: Vec<ty::t>,
@@ -126,20 +126,20 @@ impl Substs {
 
     pub fn erased(t: VecPerParamSpace<ty::t>) -> Substs
     {
-        Substs { types: t, regions: ErasedRegions }
+        Substs { types=t, regions=ErasedRegions }
     }
 
     pub fn empty() -> Substs {
         Substs {
-            types: VecPerParamSpace::empty(),
-            regions: NonerasedRegions(VecPerParamSpace::empty()),
+            types=VecPerParamSpace::empty(),
+            regions=NonerasedRegions(VecPerParamSpace::empty()),
         }
     }
 
     pub fn trans_empty() -> Substs {
         Substs {
-            types: VecPerParamSpace::empty(),
-            regions: ErasedRegions
+            types=VecPerParamSpace::empty(),
+            regions=ErasedRegions
         }
     }
 
@@ -203,7 +203,7 @@ impl Substs {
         let types = types.with_vec(FnSpace, m_types);
         let regions = regions.map(m_regions,
                                   |r, m_regions| r.with_vec(FnSpace, m_regions));
-        Substs { types: types, regions: regions }
+        Substs { types=types, regions=regions }
     }
 }
 
@@ -295,9 +295,9 @@ impl<T> VecPerParamSpace<T> {
 
     pub fn empty() -> VecPerParamSpace<T> {
         VecPerParamSpace {
-            type_limit: 0,
-            self_limit: 0,
-            content: Vec::new()
+            type_limit=0,
+            self_limit=0,
+            content=Vec::new()
         }
     }
 
@@ -312,9 +312,9 @@ impl<T> VecPerParamSpace<T> {
         content.push_all_move(s);
         content.push_all_move(f);
         VecPerParamSpace {
-            type_limit: type_limit,
-            self_limit: self_limit,
-            content: content,
+            type_limit=type_limit,
+            self_limit=self_limit,
+            content=content,
         }
     }
 
@@ -521,11 +521,11 @@ impl<T:TypeFoldable> Subst for T {
                      span: Option<Span>)
                      -> T
     {
-        let mut folder = SubstFolder { tcx: tcx,
-                                       substs: substs,
-                                       span: span,
-                                       root_ty: None,
-                                       ty_stack_depth: 0 };
+        let mut folder = SubstFolder { tcx=tcx,
+                                       substs=substs,
+                                       span=span,
+                                       root_ty=None,
+                                       ty_stack_depth=0 };
         (*self).fold_with(&mut folder)
     }
 }

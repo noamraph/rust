@@ -65,9 +65,9 @@ impl StreamWatcher {
             unsafe { uvll::set_data_for_uv_handle(stream, 0 as *mut int) }
         }
         StreamWatcher {
-            handle: stream,
-            last_write_req: None,
-            blocked_writer: None,
+            handle=stream,
+            last_write_req=None,
+            blocked_writer=None,
         }
     }
 
@@ -77,11 +77,11 @@ impl StreamWatcher {
         let _f = ForbidUnwind::new("stream read");
 
         let mut rcx = ReadContext {
-            buf: Some(slice_to_uv_buf(buf)),
+            buf=Some(slice_to_uv_buf(buf)),
             // if the read is canceled, we'll see eof, otherwise this will get
             // overwritten
-            result: 0,
-            task: None,
+            result=0,
+            task=None,
         };
         // When reading a TTY stream on windows, libuv will invoke alloc_cb
         // immediately as part of the call to alloc_cb. What this means is that
@@ -174,9 +174,9 @@ impl StreamWatcher {
         } {
             0 => {
                 let mut wcx = WriteContext {
-                    result: uvll::ECANCELED,
-                    stream: self as *mut _,
-                    data: data,
+                    result=uvll::ECANCELED,
+                    stream=self as *mut _,
+                    data=data,
                 };
                 req.defuse(); // uv callback now owns this request
 
@@ -209,9 +209,9 @@ impl StreamWatcher {
                 // stream watcher because we no longer have ownership of it, and
                 // we never will.
                 let mut new_wcx = box WriteContext {
-                    result: 0,
-                    stream: 0 as *mut StreamWatcher,
-                    data: wcx.data.take(),
+                    result=0,
+                    stream=0 as *mut StreamWatcher,
+                    data=wcx.data.take(),
                 };
                 unsafe {
                     req.set_data(&mut *new_wcx);

@@ -428,9 +428,9 @@ fn expand_nested_bindings<'a, 'b>(
         let mut pats = br.pats.clone();
         *pats.get_mut(col) = pat;
         Match {
-            pats: pats,
-            data: &*br.data,
-            bound_ptrs: bound_ptrs
+            pats=pats,
+            data=&*br.data,
+            bound_ptrs=bound_ptrs
         }
     }).collect()
 }
@@ -466,9 +466,9 @@ fn enter_match<'a, 'b>(
             }
 
             Match {
-                pats: pats,
-                data: br.data,
-                bound_ptrs: bound_ptrs
+                pats=pats,
+                data=br.data,
+                bound_ptrs=bound_ptrs
             }
         })
     }).collect()
@@ -557,7 +557,7 @@ fn enter_opt<'a, 'b>(
 
     let mut i = 0;
     let tcx = bcx.tcx();
-    let mcx = check_match::MatchCheckCtxt { tcx: bcx.tcx() };
+    let mcx = check_match::MatchCheckCtxt { tcx=bcx.tcx() };
     enter_match(bcx, dm, m, col, val, |pats| {
         let span = pats[col].span;
         let specialized = match pats[col].node {
@@ -713,7 +713,7 @@ fn extract_variant_args<'a>(
         adt::trans_field_ptr(bcx, repr, val, disr_val, i)
     });
 
-    ExtractedBlock { vals: args, bcx: bcx }
+    ExtractedBlock { vals=args, bcx=bcx }
 }
 
 fn match_datum(bcx: &Block,
@@ -764,7 +764,7 @@ fn extract_vec_elems<'a>(
         let slice_len = Sub(bcx, len, slice_len_offset);
         let slice_ty = ty::mk_slice(bcx.tcx(),
                                     ty::ReStatic,
-                                    ty::mt {ty: vt.unit_ty, mutbl: ast::MutImmutable});
+                                    ty::mt {ty=vt.unit_ty, mutbl=ast::MutImmutable});
         let scratch = rvalue_scratch_datum(bcx, slice_ty, "");
         Store(bcx, slice_begin,
               GEPi(bcx, scratch.val, [0u, abi::slice_elt_base]));
@@ -772,7 +772,7 @@ fn extract_vec_elems<'a>(
         *elems.get_mut(n) = scratch.val;
     }
 
-    ExtractedBlock { vals: elems, bcx: bcx }
+    ExtractedBlock { vals=elems, bcx=bcx }
 }
 
 // Macro for deciding whether any of the remaining matches fit a given kind of
@@ -1124,7 +1124,7 @@ fn compile_submatch_continue<'a, 'b>(
         node_id_type(bcx, pat_id)
     };
 
-    let mcx = check_match::MatchCheckCtxt { tcx: bcx.tcx() };
+    let mcx = check_match::MatchCheckCtxt { tcx=bcx.tcx() };
     let adt_vals = if any_irrefutable_adt_pat(bcx, m, col) {
         let repr = adt::represent_type(bcx.ccx(), left_ty);
         let arg_count = adt::num_args(&*repr, 0);
@@ -1232,7 +1232,7 @@ fn compile_submatch_continue<'a, 'b>(
                   } else {
                       ty::mk_uint() // vector length
                   };
-                  let Result {bcx: after_cx, val: matches} = {
+                  let Result {bcx=after_cx, val=matches} = {
                       match trans_opt(bcx, opt) {
                           single_result(Result {bcx, val}) => {
                               compare_values(bcx, test_val, val, t)
@@ -1240,13 +1240,13 @@ fn compile_submatch_continue<'a, 'b>(
                           lower_bound(Result {bcx, val}) => {
                               compare_scalar_types(bcx, test_val, val, t, ast::BiGe)
                           }
-                          range_result(Result {val: vbegin, ..},
-                                       Result {bcx, val: vend}) => {
-                              let Result {bcx, val: llge} =
+                          range_result(Result {val=vbegin, ..},
+                                       Result {bcx, val=vend}) => {
+                              let Result {bcx, val=llge} =
                                   compare_scalar_types(
                                   bcx, test_val,
                                   vbegin, t, ast::BiGe);
-                              let Result {bcx, val: llle} =
+                              let Result {bcx, val=llle} =
                                   compare_scalar_types(
                                   bcx, test_val, vend,
                                   t, ast::BiLe);
@@ -1277,7 +1277,7 @@ fn compile_submatch_continue<'a, 'b>(
         let mut unpacked = Vec::new();
         match *opt {
             var(disr_val, ref repr, _) => {
-                let ExtractedBlock {vals: argvals, bcx: new_bcx} =
+                let ExtractedBlock {vals=argvals, bcx=new_bcx} =
                     extract_variant_args(opt_cx, &**repr, disr_val, val);
                 size = argvals.len();
                 unpacked = argvals;
@@ -1394,11 +1394,11 @@ fn create_bindings_map(bcx: &Block, pat: Gc<ast::Pat>) -> BindingsMap {
             }
         };
         bindings_map.insert(ident, BindingInfo {
-            llmatch: llmatch,
-            trmode: trmode,
-            id: p_id,
-            span: span,
-            ty: variable_ty
+            llmatch=llmatch,
+            trmode=trmode,
+            id=p_id,
+            span=span,
+            ty=variable_ty
         });
     });
     return bindings_map;
@@ -1426,11 +1426,11 @@ fn trans_match_inner<'a>(scope_cx: &'a Block<'a>,
             // Special case for empty types
             let fail_cx = Cell::new(None);
             let fail_handler = box DynamicFailureHandler {
-                bcx: scope_cx,
-                sp: discr_expr.span,
-                msg: InternedString::new("scrutinizing value that can't \
+                bcx=scope_cx,
+                sp=discr_expr.span,
+                msg=InternedString::new("scrutinizing value that can't \
                                           exist"),
-                finished: fail_cx,
+                finished=fail_cx,
             };
             DynamicFailureHandlerClass(fail_handler)
         } else {
@@ -1439,17 +1439,17 @@ fn trans_match_inner<'a>(scope_cx: &'a Block<'a>,
     };
 
     let arm_datas: Vec<ArmData> = arms.iter().map(|arm| ArmData {
-        bodycx: fcx.new_id_block("case_body", arm.body.id),
-        arm: arm,
-        bindings_map: create_bindings_map(bcx, *arm.pats.get(0))
+        bodycx=fcx.new_id_block("case_body", arm.body.id),
+        arm=arm,
+        bindings_map=create_bindings_map(bcx, *arm.pats.get(0))
     }).collect();
 
     let mut matches = Vec::new();
     for arm_data in arm_datas.iter() {
         matches.extend(arm_data.arm.pats.iter().map(|p| Match {
-            pats: vec!(*p),
-            data: arm_data,
-            bound_ptrs: Vec::new(),
+            pats=vec!(*p),
+            data=arm_data,
+            bound_ptrs=Vec::new(),
         }));
     }
 

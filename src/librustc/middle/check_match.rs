@@ -118,7 +118,7 @@ impl<'a> Visitor<()> for MatchCheckCtxt<'a> {
 }
 
 pub fn check_crate(tcx: &ty::ctxt, krate: &Crate) {
-    let mut cx = MatchCheckCtxt { tcx: tcx, };
+    let mut cx = MatchCheckCtxt { tcx=tcx, };
 
     visit::walk_crate(&mut cx, krate, ());
 
@@ -240,21 +240,21 @@ fn const_val_to_expr(value: &const_val) -> Gc<Expr> {
         _ => unreachable!()
     };
     box (GC) Expr {
-        id: 0,
-        node: ExprLit(box(GC) Spanned { node: node, span: DUMMY_SP }),
-        span: DUMMY_SP
+        id=0,
+        node=ExprLit(box(GC) Spanned { node=node, span=DUMMY_SP }),
+        span=DUMMY_SP
     }
 }
 
 fn def_to_path(tcx: &ty::ctxt, id: DefId) -> Path {
     ty::with_path(tcx, id, |mut path| Path {
-        global: false,
-        segments: path.last().map(|elem| PathSegment {
-            identifier: Ident::new(elem.name()),
-            lifetimes: vec!(),
-            types: OwnedSlice::empty()
+        global=false,
+        segments=path.last().map(|elem| PathSegment {
+            identifier=Ident::new(elem.name()),
+            lifetimes=vec!(),
+            types=OwnedSlice::empty()
         }).move_iter().collect(),
-        span: DUMMY_SP,
+        span=DUMMY_SP,
     })
 }
 
@@ -288,8 +288,8 @@ fn construct_witness(cx: &MatchCheckCtxt, ctor: &Constructor,
                     .zip(pats.iter())
                     .filter(|&(_, pat)| pat.node != PatWild)
                     .map(|(field, pat)| FieldPat {
-                        ident: Ident::new(field.name),
-                        pat: pat.clone()
+                        ident=Ident::new(field.name),
+                        pat=pat.clone()
                     }).collect();
                 let has_more_fields = field_pats.len() < pats.len();
                 PatStruct(def_to_path(cx.tcx, vid), field_pats, has_more_fields)
@@ -298,7 +298,7 @@ fn construct_witness(cx: &MatchCheckCtxt, ctor: &Constructor,
             }
         }
 
-        ty::ty_rptr(_, ty::mt { ty: ty, .. }) => {
+        ty::ty_rptr(_, ty::mt { ty=ty, .. }) => {
             match ty::get(ty).sty {
                ty::ty_vec(_, Some(n)) => match ctor {
                     &Single => {
@@ -342,9 +342,9 @@ fn construct_witness(cx: &MatchCheckCtxt, ctor: &Constructor,
     };
 
     box (GC) Pat {
-        id: 0,
-        node: pat,
-        span: DUMMY_SP
+        id=0,
+        node=pat,
+        span=DUMMY_SP
     }
 }
 
@@ -371,7 +371,7 @@ fn all_constructors(cx: &MatchCheckCtxt, left_ty: ty::t,
         ty::ty_nil =>
             vec!(ConstantValue(const_nil)),
 
-        ty::ty_rptr(_, ty::mt { ty: ty, .. }) => match ty::get(ty).sty {
+        ty::ty_rptr(_, ty::mt { ty=ty, .. }) => match ty::get(ty).sty {
             ty::ty_vec(_, None) =>
                 range_inclusive(0, max_slice_length).map(|length| Slice(length)).collect(),
             _ => vec!(Single)
@@ -556,7 +556,7 @@ pub fn constructor_arity(cx: &MatchCheckCtxt, ctor: &Constructor, ty: ty::t) -> 
     match ty::get(ty).sty {
         ty::ty_tup(ref fs) => fs.len(),
         ty::ty_box(_) | ty::ty_uniq(_) => 1u,
-        ty::ty_rptr(_, ty::mt { ty: ty, .. }) => match ty::get(ty).sty {
+        ty::ty_rptr(_, ty::mt { ty=ty, .. }) => match ty::get(ty).sty {
             ty::ty_vec(_, None) => match *ctor {
                 Slice(length) => length,
                 ConstantValue(_) => 0u,
@@ -604,7 +604,7 @@ fn range_covered_by_constructor(ctor: &Constructor,
 pub fn specialize(cx: &MatchCheckCtxt, r: &[Gc<Pat>],
                   constructor: &Constructor, col: uint, arity: uint) -> Option<Vec<Gc<Pat>>> {
     let &Pat {
-        id: pat_id, node: ref node, span: pat_span
+        id=pat_id, node=ref node, span=pat_span
     } = &(*raw_pat(r[col]));
     let head: Option<Vec<Gc<Pat>>> = match node {
         &PatWild =>

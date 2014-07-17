@@ -128,9 +128,9 @@ impl<'a> FileSearch<'a> {
                addl_lib_search_paths: &'a RefCell<HashSet<Path>>) -> FileSearch<'a> {
         debug!("using sysroot = {}, triple = {}", sysroot.display(), triple);
         FileSearch {
-            sysroot: sysroot,
-            addl_lib_search_paths: addl_lib_search_paths,
-            triple: triple,
+            sysroot=sysroot,
+            addl_lib_search_paths=addl_lib_search_paths,
+            triple=triple,
         }
     }
 

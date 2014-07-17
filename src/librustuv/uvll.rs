@@ -190,22 +190,22 @@ pub struct uv_stat_t {
 impl uv_stat_t {
     pub fn new() -> uv_stat_t {
         uv_stat_t {
-            st_dev: 0,
-            st_mode: 0,
-            st_nlink: 0,
-            st_uid: 0,
-            st_gid: 0,
-            st_rdev: 0,
-            st_ino: 0,
-            st_size: 0,
-            st_blksize: 0,
-            st_blocks: 0,
-            st_flags: 0,
-            st_gen: 0,
-            st_atim: uv_timespec_t { tv_sec: 0, tv_nsec: 0 },
-            st_mtim: uv_timespec_t { tv_sec: 0, tv_nsec: 0 },
-            st_ctim: uv_timespec_t { tv_sec: 0, tv_nsec: 0 },
-            st_birthtim: uv_timespec_t { tv_sec: 0, tv_nsec: 0 }
+            st_dev=0,
+            st_mode=0,
+            st_nlink=0,
+            st_uid=0,
+            st_gid=0,
+            st_rdev=0,
+            st_ino=0,
+            st_size=0,
+            st_blksize=0,
+            st_blocks=0,
+            st_flags=0,
+            st_gen=0,
+            st_atim=uv_timespec_t { tv_sec=0, tv_nsec=0 },
+            st_mtim=uv_timespec_t { tv_sec=0, tv_nsec=0 },
+            st_ctim=uv_timespec_t { tv_sec=0, tv_nsec=0 },
+            st_birthtim=uv_timespec_t { tv_sec=0, tv_nsec=0 }
         }
     }
     pub fn is_file(&self) -> bool {

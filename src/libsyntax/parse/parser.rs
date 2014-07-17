@@ -345,35 +345,35 @@ impl<'a> Parser<'a> {
         let tok0 = real_token(rdr);
         let span = tok0.sp;
         let placeholder = TokenAndSpan {
-            tok: token::UNDERSCORE,
-            sp: span,
+            tok=token::UNDERSCORE,
+            sp=span,
         };
 
         Parser {
-            reader: rdr,
-            interner: token::get_ident_interner(),
-            sess: sess,
-            cfg: cfg,
-            token: tok0.tok,
-            span: span,
-            last_span: span,
-            last_token: None,
-            buffer: [
+            reader=rdr,
+            interner=token::get_ident_interner(),
+            sess=sess,
+            cfg=cfg,
+            token=tok0.tok,
+            span=span,
+            last_span=span,
+            last_token=None,
+            buffer=[
                 placeholder.clone(),
                 placeholder.clone(),
                 placeholder.clone(),
                 placeholder.clone(),
             ],
-            buffer_start: 0,
-            buffer_end: 0,
-            tokens_consumed: 0,
-            restriction: UNRESTRICTED,
-            quote_depth: 0,
-            obsolete_set: HashSet::new(),
-            mod_path_stack: Vec::new(),
-            open_braces: Vec::new(),
-            owns_directory: true,
-            root_module_name: None,
+            buffer_start=0,
+            buffer_end=0,
+            tokens_consumed=0,
+            restriction=UNRESTRICTED,
+            quote_depth=0,
+            obsolete_set=HashSet::new(),
+            mod_path_stack=Vec::new(),
+            open_braces=Vec::new(),
+            owns_directory=true,
+            root_module_name=None,
         }
     }
 
@@ -538,8 +538,8 @@ impl<'a> Parser<'a> {
         let lo = self.span.lo;
         let ident = self.parse_ident();
         let hi = self.last_span.hi;
-        spanned(lo, hi, ast::PathListIdent_ { name: ident,
-                                              id: ast::DUMMY_NODE_ID })
+        spanned(lo, hi, ast::PathListIdent_ { name=ident,
+                                              id=ast::DUMMY_NODE_ID })
     }
 
     /// Consume token 'tok' if it exists. Returns true if the given
@@ -886,8 +886,8 @@ impl<'a> Parser<'a> {
             self.buffer_start = next_index as int;
 
             let placeholder = TokenAndSpan {
-                tok: token::UNDERSCORE,
-                sp: self.span,
+                tok=token::UNDERSCORE,
+                sp=self.span,
             };
             replace(&mut self.buffer[buffer_start], placeholder)
         };
@@ -1023,10 +1023,10 @@ impl<'a> Parser<'a> {
         self.expect_keyword(keywords::Fn);
         let (decl, lifetimes) = self.parse_ty_fn_decl(true);
         return TyBareFn(box(GC) BareFnTy {
-            abi: abi,
-            fn_style: fn_style,
-            lifetimes: lifetimes,
-            decl: decl
+            abi=abi,
+            fn_style=fn_style,
+            lifetimes=lifetimes,
+            decl=decl
         });
     }
 
@@ -1065,17 +1065,17 @@ impl<'a> Parser<'a> {
         };
         let (ret_style, ret_ty) = self.parse_ret_ty();
         let decl = P(FnDecl {
-            inputs: inputs,
-            output: ret_ty,
-            cf: ret_style,
-            variadic: variadic
+            inputs=inputs,
+            output=ret_ty,
+            cf=ret_style,
+            variadic=variadic
         });
         TyProc(box(GC) ClosureTy {
-            fn_style: NormalFn,
-            onceness: Once,
-            bounds: bounds,
-            decl: decl,
-            lifetimes: lifetimes,
+            fn_style=NormalFn,
+            onceness=Once,
+            bounds=bounds,
+            decl=decl,
+            lifetimes=lifetimes,
         })
     }
 
@@ -1141,23 +1141,23 @@ impl<'a> Parser<'a> {
 
         let (return_style, output) = self.parse_ret_ty();
         let decl = P(FnDecl {
-            inputs: inputs,
-            output: output,
-            cf: return_style,
-            variadic: false
+            inputs=inputs,
+            output=output,
+            cf=return_style,
+            variadic=false
         });
 
         if is_unboxed {
             TyUnboxedFn(box(GC) UnboxedFnTy {
-                decl: decl,
+                decl=decl,
             })
         } else {
             TyClosure(box(GC) ClosureTy {
-                fn_style: fn_style,
-                onceness: onceness,
-                bounds: bounds,
-                decl: decl,
-                lifetimes: lifetimes,
+                fn_style=fn_style,
+                onceness=onceness,
+                bounds=bounds,
+                decl=decl,
+                lifetimes=lifetimes,
             }, region)
         }
     }
@@ -1194,10 +1194,10 @@ impl<'a> Parser<'a> {
         let (inputs, variadic) = self.parse_fn_args(false, allow_variadic);
         let (ret_style, ret_ty) = self.parse_ret_ty();
         let decl = P(FnDecl {
-            inputs: inputs,
-            output: ret_ty,
-            cf: ret_style,
-            variadic: variadic
+            inputs=inputs,
+            output=ret_ty,
+            cf=ret_style,
+            variadic=variadic
         });
         (decl, lifetimes)
     }
@@ -1232,15 +1232,15 @@ impl<'a> Parser<'a> {
                 p.bump();
                 debug!("parse_trait_methods(): parsing required method");
                 Required(TypeMethod {
-                    ident: ident,
-                    attrs: attrs,
-                    fn_style: style,
-                    decl: d,
-                    generics: generics,
-                    explicit_self: explicit_self,
-                    id: ast::DUMMY_NODE_ID,
-                    span: mk_sp(lo, hi),
-                    vis: vis,
+                    ident=ident,
+                    attrs=attrs,
+                    fn_style=style,
+                    decl=d,
+                    generics=generics,
+                    explicit_self=explicit_self,
+                    id=ast::DUMMY_NODE_ID,
+                    span=mk_sp(lo, hi),
+                    vis=vis,
                 })
               }
               token::LBRACE => {
@@ -1249,16 +1249,16 @@ impl<'a> Parser<'a> {
                     p.parse_inner_attrs_and_block();
                 let attrs = attrs.append(inner_attrs.as_slice());
                 Provided(box(GC) ast::Method {
-                    ident: ident,
-                    attrs: attrs,
-                    generics: generics,
-                    explicit_self: explicit_self,
-                    fn_style: style,
-                    decl: d,
-                    body: body,
-                    id: ast::DUMMY_NODE_ID,
-                    span: mk_sp(lo, hi),
-                    vis: vis,
+                    ident=ident,
+                    attrs=attrs,
+                    generics=generics,
+                    explicit_self=explicit_self,
+                    fn_style=style,
+                    decl=d,
+                    body=body,
+                    id=ast::DUMMY_NODE_ID,
+                    span=mk_sp(lo, hi),
+                    vis=vis,
                 })
               }
 
@@ -1275,7 +1275,7 @@ impl<'a> Parser<'a> {
     pub fn parse_mt(&mut self) -> MutTy {
         let mutbl = self.parse_mutability();
         let t = self.parse_ty(true);
-        MutTy { ty: t, mutbl: mutbl }
+        MutTy { ty=t, mutbl=mutbl }
     }
 
     /// Parse [mut/const/imm] ID : TY
@@ -1288,9 +1288,9 @@ impl<'a> Parser<'a> {
         let ty = self.parse_ty(true);
         let hi = ty.span.hi;
         ast::TypeField {
-            ident: id,
-            mt: MutTy { ty: ty, mutbl: mutbl },
-            span: mk_sp(lo, hi),
+            ident=id,
+            mt=MutTy { ty=ty, mutbl=mutbl },
+            span=mk_sp(lo, hi),
         }
     }
 
@@ -1302,9 +1302,9 @@ impl<'a> Parser<'a> {
                 (
                     NoReturn,
                     P(Ty {
-                        id: ast::DUMMY_NODE_ID,
-                        node: TyBot,
-                        span: mk_sp(lo, self.last_span.hi)
+                        id=ast::DUMMY_NODE_ID,
+                        node=TyBot,
+                        span=mk_sp(lo, self.last_span.hi)
                     })
                 )
             } else {
@@ -1315,9 +1315,9 @@ impl<'a> Parser<'a> {
             (
                 Return,
                 P(Ty {
-                    id: ast::DUMMY_NODE_ID,
-                    node: TyNil,
-                    span: mk_sp(pos, pos),
+                    id=ast::DUMMY_NODE_ID,
+                    node=TyNil,
+                    span=mk_sp(pos, pos),
                 })
             )
         }
@@ -1447,7 +1447,7 @@ impl<'a> Parser<'a> {
         };
 
         let sp = mk_sp(lo, self.last_span.hi);
-        P(Ty {id: ast::DUMMY_NODE_ID, node: t, span: sp})
+        P(Ty {id=ast::DUMMY_NODE_ID, node=t, span=sp})
     }
 
     pub fn parse_borrowed_pointee(&mut self) -> Ty_ {
@@ -1472,7 +1472,7 @@ impl<'a> Parser<'a> {
             MutImmutable
         };
         let t = self.parse_ty(true);
-        MutTy { ty: t, mutbl: mutbl }
+        MutTy { ty=t, mutbl=mutbl }
     }
 
     pub fn is_named_argument(&mut self) -> bool {
@@ -1514,9 +1514,9 @@ impl<'a> Parser<'a> {
         let t = self.parse_ty(true);
 
         Arg {
-            ty: t,
-            pat: pat,
-            id: ast::DUMMY_NODE_ID,
+            ty=t,
+            pat=pat,
+            id=ast::DUMMY_NODE_ID,
         }
     }
 
@@ -1532,15 +1532,15 @@ impl<'a> Parser<'a> {
             self.parse_ty(true)
         } else {
             P(Ty {
-                id: ast::DUMMY_NODE_ID,
-                node: TyInfer,
-                span: mk_sp(self.span.lo, self.span.hi),
+                id=ast::DUMMY_NODE_ID,
+                node=TyInfer,
+                span=mk_sp(self.span.lo, self.span.hi),
             })
         };
         Arg {
-            ty: t,
-            pat: pat,
-            id: ast::DUMMY_NODE_ID
+            ty=t,
+            pat=pat,
+            id=ast::DUMMY_NODE_ID
         }
     }
 
@@ -1592,7 +1592,7 @@ impl<'a> Parser<'a> {
             let lit = self.lit_from_token(&token);
             lit
         };
-        codemap::Spanned { node: lit, span: mk_sp(lo, self.last_span.hi) }
+        codemap::Spanned { node=lit, span=mk_sp(lo, self.last_span.hi) }
     }
 
     /// matches '-' lit | lit
@@ -1627,8 +1627,8 @@ impl<'a> Parser<'a> {
         match found {
             Some(INTERPOLATED(token::NtPath(box path))) => {
                 return PathAndBounds {
-                    path: path,
-                    bounds: None,
+                    path=path,
+                    bounds=None,
                 }
             }
             _ => {}
@@ -1650,9 +1650,9 @@ impl<'a> Parser<'a> {
             if mode == LifetimeAndTypesWithColons &&
                     !self.eat(&token::MOD_SEP) {
                 segments.push(ast::PathSegment {
-                    identifier: identifier,
-                    lifetimes: Vec::new(),
-                    types: OwnedSlice::empty(),
+                    identifier=identifier,
+                    lifetimes=Vec::new(),
+                    types=OwnedSlice::empty(),
                 });
                 break
             }
@@ -1670,9 +1670,9 @@ impl<'a> Parser<'a> {
 
             // Assemble and push the result.
             segments.push(ast::PathSegment {
-                identifier: identifier,
-                lifetimes: lifetimes,
-                types: types,
+                identifier=identifier,
+                lifetimes=lifetimes,
+                types=types,
             });
 
             // We're done if we don't see a '::', unless the mode required
@@ -1711,12 +1711,12 @@ impl<'a> Parser<'a> {
 
         // Assemble the result.
         PathAndBounds {
-            path: ast::Path {
-                span: span,
-                global: is_global,
-                segments: segments,
+            path=ast::Path {
+                span=span,
+                global=is_global,
+                segments=segments,
             },
-            bounds: bounds,
+            bounds=bounds,
         }
     }
 
@@ -1740,9 +1740,9 @@ impl<'a> Parser<'a> {
                 let span = self.span;
                 self.bump();
                 return ast::Lifetime {
-                    id: ast::DUMMY_NODE_ID,
-                    span: span,
-                    name: i.name
+                    id=ast::DUMMY_NODE_ID,
+                    span=span,
+                    name=i.name
                 };
             }
             _ => {
@@ -1814,17 +1814,17 @@ use the rust-update-structs tool to automate the replacement process.")
         self.expect_one_of(&[token::COLON, token::EQ], &[]);
         let e = self.parse_expr();
         ast::Field {
-            ident: spanned(lo, hi, i),
-            expr: e,
-            span: mk_sp(lo, e.span.hi),
+            ident=spanned(lo, hi, i),
+            expr=e,
+            span=mk_sp(lo, e.span.hi),
         }
     }
 
     pub fn mk_expr(&mut self, lo: BytePos, hi: BytePos, node: Expr_) -> Gc<Expr> {
         box(GC) Expr {
-            id: ast::DUMMY_NODE_ID,
-            node: node,
-            span: mk_sp(lo, hi),
+            id=ast::DUMMY_NODE_ID,
+            node=node,
+            span=mk_sp(lo, hi),
         }
     }
 
@@ -1865,23 +1865,23 @@ use the rust-update-structs tool to automate the replacement process.")
 
     pub fn mk_mac_expr(&mut self, lo: BytePos, hi: BytePos, m: Mac_) -> Gc<Expr> {
         box(GC) Expr {
-            id: ast::DUMMY_NODE_ID,
-            node: ExprMac(codemap::Spanned {node: m, span: mk_sp(lo, hi)}),
-            span: mk_sp(lo, hi),
+            id=ast::DUMMY_NODE_ID,
+            node=ExprMac(codemap::Spanned {node=m, span=mk_sp(lo, hi)}),
+            span=mk_sp(lo, hi),
         }
     }
 
     pub fn mk_lit_u32(&mut self, i: u32) -> Gc<Expr> {
         let span = &self.span;
         let lv_lit = box(GC) codemap::Spanned {
-            node: LitUint(i as u64, TyU32),
-            span: *span
+            node=LitUint(i as u64, TyU32),
+            span=*span
         };
 
         box(GC) Expr {
-            id: ast::DUMMY_NODE_ID,
-            node: ExprLit(lv_lit),
-            span: *span,
+            id=ast::DUMMY_NODE_ID,
+            node=ExprLit(lv_lit),
+            span=*span,
         }
     }
 
@@ -1943,20 +1943,20 @@ use the rust-update-structs tool to automate the replacement process.")
                 let decl = self.parse_proc_decl();
                 let body = self.parse_expr();
                 let fakeblock = P(ast::Block {
-                        view_items: Vec::new(),
-                        stmts: Vec::new(),
-                        expr: Some(body),
-                        id: ast::DUMMY_NODE_ID,
-                        rules: DefaultBlock,
-                        span: body.span,
+                        view_items=Vec::new(),
+                        stmts=Vec::new(),
+                        expr=Some(body),
+                        id=ast::DUMMY_NODE_ID,
+                        rules=DefaultBlock,
+                        span=body.span,
                     });
                 return self.mk_expr(lo, body.span.hi, ExprProc(decl, fakeblock));
             },
             // FIXME #13626: Should be able to stick in
             // token::SELF_KEYWORD_NAME
             token::IDENT(id @ ast::Ident{
-                        name: ast::Name(token::SELF_KEYWORD_NAME_NUM),
-                        ctxt: _
+                        name=ast::Name(token::SELF_KEYWORD_NAME_NUM),
+                        ctxt=_
                     } ,false) => {
                 self.bump();
                 let path = ast_util::ident_to_path(mk_sp(lo, hi), id);
@@ -2639,14 +2639,14 @@ use the rust-update-structs tool to automate the replacement process.")
                     _ => {
                         // No argument list - `do foo {`
                         P(FnDecl {
-                            inputs: Vec::new(),
-                            output: P(Ty {
-                                id: ast::DUMMY_NODE_ID,
-                                node: TyInfer,
-                                span: p.span
+                            inputs=Vec::new(),
+                            output=P(Ty {
+                                id=ast::DUMMY_NODE_ID,
+                                node=TyInfer,
+                                span=p.span
                             }),
-                            cf: Return,
-                            variadic: false
+                            cf=Return,
+                            variadic=false
                         })
                     }
                 }
@@ -2674,12 +2674,12 @@ use the rust-update-structs tool to automate the replacement process.")
         let decl = parse_decl(self);
         let body = parse_body(self);
         let fakeblock = P(ast::Block {
-            view_items: Vec::new(),
-            stmts: Vec::new(),
-            expr: Some(body),
-            id: ast::DUMMY_NODE_ID,
-            rules: DefaultBlock,
-            span: body.span,
+            view_items=Vec::new(),
+            stmts=Vec::new(),
+            expr=Some(body),
+            id=ast::DUMMY_NODE_ID,
+            rules=DefaultBlock,
+            span=body.span,
         });
 
         return self.mk_expr(lo, body.span.hi, ExprFnBlock(decl, fakeblock));
@@ -2749,10 +2749,10 @@ use the rust-update-structs tool to automate the replacement process.")
             }
 
             arms.push(ast::Arm {
-                attrs: attrs,
-                pats: pats,
-                guard: guard,
-                body: expr
+                attrs=attrs,
+                pats=pats,
+                guard=guard,
+                body=expr
             });
         }
         let hi = self.span.hi;
@@ -2819,14 +2819,14 @@ use the rust-update-structs tool to automate the replacement process.")
             if is_slice {
                 if self.token == token::COMMA || self.token == token::RBRACKET {
                     slice = Some(box(GC) ast::Pat {
-                        id: ast::DUMMY_NODE_ID,
-                        node: PatWildMulti,
-                        span: self.span,
+                        id=ast::DUMMY_NODE_ID,
+                        node=PatWildMulti,
+                        span=self.span,
                     })
                 } else {
                     let subpat = self.parse_pat();
                     match *subpat {
-                        ast::Pat { node: PatIdent(_, _, _), .. } => {
+                        ast::Pat { node=PatIdent(_, _, _), .. } => {
                             slice = Some(subpat);
                         }
                         ast::Pat { span, .. } => self.span_fatal(
@@ -2899,14 +2899,14 @@ use the rust-update-structs tool to automate the replacement process.")
                 self.bump();
                 self.parse_pat()
             } else {
-                let fieldpath = codemap::Spanned{span:self.last_span, node: fieldname};
+                let fieldpath = codemap::Spanned{span=self.last_span, node=fieldname};
                 box(GC) ast::Pat {
-                    id: ast::DUMMY_NODE_ID,
-                    node: PatIdent(bind_type, fieldpath, None),
-                    span: self.last_span
+                    id=ast::DUMMY_NODE_ID,
+                    node=PatIdent(bind_type, fieldpath, None),
+                    span=self.last_span
                 }
             };
-            fields.push(ast::FieldPat { ident: fieldname, pat: subpat });
+            fields.push(ast::FieldPat { ident=fieldname, pat=subpat });
         }
         return (fields, etc);
     }
@@ -2925,9 +2925,9 @@ use the rust-update-structs tool to automate the replacement process.")
             pat = PatWild;
             hi = self.last_span.hi;
             return box(GC) ast::Pat {
-                id: ast::DUMMY_NODE_ID,
-                node: pat,
-                span: mk_sp(lo, hi)
+                id=ast::DUMMY_NODE_ID,
+                node=pat,
+                span=mk_sp(lo, hi)
             }
           }
           token::TILDE => {
@@ -2939,9 +2939,9 @@ use the rust-update-structs tool to automate the replacement process.")
             hi = last_span.hi;
             self.obsolete(last_span, ObsoleteOwnedPattern);
             return box(GC) ast::Pat {
-                id: ast::DUMMY_NODE_ID,
-                node: pat,
-                span: mk_sp(lo, hi)
+                id=ast::DUMMY_NODE_ID,
+                node=pat,
+                span=mk_sp(lo, hi)
             }
           }
           token::BINOP(token::AND) | token::ANDAND => {
@@ -2952,9 +2952,9 @@ use the rust-update-structs tool to automate the replacement process.")
             pat = PatRegion(sub);
             hi = self.last_span.hi;
             return box(GC) ast::Pat {
-                id: ast::DUMMY_NODE_ID,
-                node: pat,
-                span: mk_sp(lo, hi)
+                id=ast::DUMMY_NODE_ID,
+                node=pat,
+                span=mk_sp(lo, hi)
             }
           }
           token::LPAREN => {
@@ -2964,8 +2964,8 @@ use the rust-update-structs tool to automate the replacement process.")
                 hi = self.span.hi;
                 self.bump();
                 let lit = box(GC) codemap::Spanned {
-                    node: LitNil,
-                    span: mk_sp(lo, hi)};
+                    node=LitNil,
+                    span=mk_sp(lo, hi)};
                 let expr = self.mk_expr(lo, hi, ExprLit(lit));
                 pat = PatLit(expr);
             } else {
@@ -2983,9 +2983,9 @@ use the rust-update-structs tool to automate the replacement process.")
             }
             hi = self.last_span.hi;
             return box(GC) ast::Pat {
-                id: ast::DUMMY_NODE_ID,
-                node: pat,
-                span: mk_sp(lo, hi)
+                id=ast::DUMMY_NODE_ID,
+                node=pat,
+                span=mk_sp(lo, hi)
             }
           }
           token::LBRACKET => {
@@ -2998,9 +2998,9 @@ use the rust-update-structs tool to automate the replacement process.")
             pat = ast::PatVec(before, slice, after);
             hi = self.last_span.hi;
             return box(GC) ast::Pat {
-                id: ast::DUMMY_NODE_ID,
-                node: pat,
-                span: mk_sp(lo, hi)
+                id=ast::DUMMY_NODE_ID,
+                node=pat,
+                span=mk_sp(lo, hi)
             }
           }
           _ => {}
@@ -3043,9 +3043,9 @@ use the rust-update-structs tool to automate the replacement process.")
             pat = PatBox(sub);
             hi = self.last_span.hi;
             return box(GC) ast::Pat {
-                id: ast::DUMMY_NODE_ID,
-                node: pat,
-                span: mk_sp(lo, hi)
+                id=ast::DUMMY_NODE_ID,
+                node=pat,
+                span=mk_sp(lo, hi)
             }
         } else {
             let can_be_enum_or_struct = self.look_ahead(1, |t| {
@@ -3064,7 +3064,7 @@ use the rust-update-structs tool to automate the replacement process.")
             } else if is_plain_ident(&self.token) && !can_be_enum_or_struct {
                 let id = self.parse_ident();
                 let id_span = self.last_span;
-                let pth1 = codemap::Spanned{span:id_span, node: id};
+                let pth1 = codemap::Spanned{span=id_span, node=id};
                 if self.eat(&token::NOT) {
                     // macro invocation
                     let ket = token::close_delimiter_for(&self.token)
@@ -3076,7 +3076,7 @@ use the rust-update-structs tool to automate the replacement process.")
                                                     |p| p.parse_token_tree());
 
                     let mac = MacInvocTT(ident_to_path(id_span,id), tts, EMPTY_CTXT);
-                    pat = ast::PatMac(codemap::Spanned {node: mac, span: self.span});
+                    pat = ast::PatMac(codemap::Spanned {node=mac, span=self.span});
                 } else {
                     let sub = if self.eat(&token::AT) {
                         // parse foo @ pat
@@ -3132,8 +3132,8 @@ use the rust-update-structs tool to automate the replacement process.")
                                   // will sort it out:
                                   pat = PatIdent(BindByValue(MutImmutable),
                                                  codemap::Spanned{
-                                                    span: enum_path.span,
-                                                    node: enum_path.segments.get(0)
+                                                    span=enum_path.span,
+                                                    node=enum_path.segments.get(0)
                                                            .identifier},
                                                  None);
                               } else {
@@ -3147,9 +3147,9 @@ use the rust-update-structs tool to automate the replacement process.")
         }
         hi = self.last_span.hi;
         box(GC) ast::Pat {
-            id: ast::DUMMY_NODE_ID,
-            node: pat,
-            span: mk_sp(lo, hi),
+            id=ast::DUMMY_NODE_ID,
+            node=pat,
+            span=mk_sp(lo, hi),
         }
     }
 
@@ -3166,7 +3166,7 @@ use the rust-update-structs tool to automate the replacement process.")
         }
         let ident = self.parse_ident();
         let last_span = self.last_span;
-        let name = codemap::Spanned{span: last_span, node: ident};
+        let name = codemap::Spanned{span=last_span, node=ident};
         let sub = if self.eat(&token::AT) {
             Some(self.parse_pat())
         } else {
@@ -3195,21 +3195,21 @@ use the rust-update-structs tool to automate the replacement process.")
         let pat = self.parse_pat();
 
         let mut ty = P(Ty {
-            id: ast::DUMMY_NODE_ID,
-            node: TyInfer,
-            span: mk_sp(lo, lo),
+            id=ast::DUMMY_NODE_ID,
+            node=TyInfer,
+            span=mk_sp(lo, lo),
         });
         if self.eat(&token::COLON) {
             ty = self.parse_ty(true);
         }
         let init = self.parse_initializer();
         box(GC) ast::Local {
-            ty: ty,
-            pat: pat,
-            init: init,
-            id: ast::DUMMY_NODE_ID,
-            span: mk_sp(lo, self.last_span.hi),
-            source: LocalLet,
+            ty=ty,
+            pat=pat,
+            init=init,
+            id=ast::DUMMY_NODE_ID,
+            span=mk_sp(lo, self.last_span.hi),
+            source=LocalLet,
         }
     }
 
@@ -3231,10 +3231,10 @@ use the rust-update-structs tool to automate the replacement process.")
         self.expect(&token::COLON);
         let ty = self.parse_ty(true);
         spanned(lo, self.last_span.hi, ast::StructField_ {
-            kind: NamedField(name, pr),
-            id: ast::DUMMY_NODE_ID,
-            ty: ty,
-            attrs: attrs,
+            kind=NamedField(name, pr),
+            id=ast::DUMMY_NODE_ID,
+            ty=ty,
+            attrs=attrs,
         })
     }
 
@@ -3387,9 +3387,9 @@ use the rust-update-structs tool to automate the replacement process.")
 
         // wouldn't it be more uniform to parse view items only, here?
         let ParsedItemsAndViewItems {
-            attrs_remaining: attrs_remaining,
-            view_items: view_items,
-            items: items,
+            attrs_remaining=attrs_remaining,
+            view_items=view_items,
+            items=items,
             ..
         } = self.parse_items_and_view_items(first_item_attrs,
                                             false, false);
@@ -3433,13 +3433,13 @@ use the rust-update-structs tool to automate the replacement process.")
                                 token::SEMI => {
                                     self.bump();
                                     let span_with_semi = Span {
-                                        lo: stmt.span.lo,
-                                        hi: self.last_span.hi,
-                                        expn_info: stmt.span.expn_info,
+                                        lo=stmt.span.lo,
+                                        hi=self.last_span.hi,
+                                        expn_info=stmt.span.expn_info,
                                     };
                                     stmts.push(box(GC) codemap::Spanned {
-                                        node: StmtSemi(e, stmt_id),
-                                        span: span_with_semi,
+                                        node=StmtSemi(e, stmt_id),
+                                        span=span_with_semi,
                                     });
                                 }
                                 token::RBRACE => {
@@ -3456,8 +3456,8 @@ use the rust-update-structs tool to automate the replacement process.")
                                 token::SEMI => {
                                     self.bump();
                                     stmts.push(box(GC) codemap::Spanned {
-                                        node: StmtMac((*m).clone(), true),
-                                        span: stmt.span,
+                                        node=StmtMac((*m).clone(), true),
+                                        span=stmt.span,
                                     });
                                 }
                                 token::RBRACE => {
@@ -3493,12 +3493,12 @@ use the rust-update-structs tool to automate the replacement process.")
         let hi = self.span.hi;
         self.bump();
         P(ast::Block {
-            view_items: view_items,
-            stmts: stmts,
-            expr: expr,
-            id: ast::DUMMY_NODE_ID,
-            rules: s,
-            span: mk_sp(lo, hi),
+            view_items=view_items,
+            stmts=stmts,
+            expr=expr,
+            id=ast::DUMMY_NODE_ID,
+            rules=s,
+            span=mk_sp(lo, hi),
         })
     }
 
@@ -3528,11 +3528,11 @@ use the rust-update-structs tool to automate the replacement process.")
 
         let (return_style, output) = self.parse_ret_ty();
         UnboxedFnTy {
-            decl: P(FnDecl {
-                inputs: inputs,
-                output: output,
-                cf: return_style,
-                variadic: false,
+            decl=P(FnDecl {
+                inputs=inputs,
+                output=output,
+                cf=return_style,
+                variadic=false,
             })
         }
     }
@@ -3562,16 +3562,16 @@ use the rust-update-structs tool to automate the replacement process.")
                         result.push(StaticRegionTyParamBound);
                         if allow_any_lifetime && ret_lifetime.is_none() {
                             ret_lifetime = Some(ast::Lifetime {
-                                id: ast::DUMMY_NODE_ID,
-                                span: self.span,
-                                name: lifetime.name
+                                id=ast::DUMMY_NODE_ID,
+                                span=self.span,
+                                name=lifetime.name
                             });
                         }
                     } else if allow_any_lifetime && ret_lifetime.is_none() {
                         ret_lifetime = Some(ast::Lifetime {
-                            id: ast::DUMMY_NODE_ID,
-                            span: self.span,
-                            name: lifetime.name
+                            id=ast::DUMMY_NODE_ID,
+                            span=self.span,
+                            name=lifetime.name
                         });
                     } else {
                         result.push(OtherRegionTyParamBound(self.span));
@@ -3600,18 +3600,18 @@ use the rust-update-structs tool to automate the replacement process.")
 
     fn trait_ref_from_ident(ident: Ident, span: Span) -> ast::TraitRef {
         let segment = ast::PathSegment {
-            identifier: ident,
-            lifetimes: Vec::new(),
-            types: OwnedSlice::empty(),
+            identifier=ident,
+            lifetimes=Vec::new(),
+            types=OwnedSlice::empty(),
         };
         let path = ast::Path {
-            span: span,
-            global: false,
-            segments: vec![segment],
+            span=span,
+            global=false,
+            segments=vec![segment],
         };
         ast::TraitRef {
-            path: path,
-            ref_id: ast::DUMMY_NODE_ID,
+            path=path,
+            ref_id=ast::DUMMY_NODE_ID,
         }
     }
 
@@ -3650,12 +3650,12 @@ use the rust-update-structs tool to automate the replacement process.")
         else { None };
 
         TyParam {
-            ident: ident,
-            id: ast::DUMMY_NODE_ID,
-            bounds: bounds,
-            unbound: unbound,
-            default: default,
-            span: span,
+            ident=ident,
+            id=ast::DUMMY_NODE_ID,
+            bounds=bounds,
+            unbound=unbound,
+            default=default,
+            span=span,
         }
     }
 
@@ -3679,7 +3679,7 @@ use the rust-update-structs tool to automate the replacement process.")
                 }
                 ty_param
             });
-            ast::Generics { lifetimes: lifetimes, ty_params: ty_params }
+            ast::Generics { lifetimes=lifetimes, ty_params=ty_params }
         } else {
             ast_util::empty_generics()
         }
@@ -3761,10 +3761,10 @@ use the rust-update-structs tool to automate the replacement process.")
         let (ret_style, ret_ty) = self.parse_ret_ty();
 
         P(FnDecl {
-            inputs: args,
-            output: ret_ty,
-            cf: ret_style,
-            variadic: variadic
+            inputs=args,
+            output=ret_ty,
+            cf=ret_style,
+            variadic=variadic
         })
     }
 
@@ -3939,10 +3939,10 @@ use the rust-update-structs tool to automate the replacement process.")
         let (ret_style, ret_ty) = self.parse_ret_ty();
 
         let fn_decl = P(FnDecl {
-            inputs: fn_inputs,
-            output: ret_ty,
-            cf: ret_style,
-            variadic: false
+            inputs=fn_inputs,
+            output=ret_ty,
+            cf=ret_style,
+            variadic=false
         });
 
         (spanned(lo, hi, explicit_self), fn_decl)
@@ -3966,17 +3966,17 @@ use the rust-update-structs tool to automate the replacement process.")
             self.parse_ty(true)
         } else {
             P(Ty {
-                id: ast::DUMMY_NODE_ID,
-                node: TyInfer,
-                span: self.span,
+                id=ast::DUMMY_NODE_ID,
+                node=TyInfer,
+                span=self.span,
             })
         };
 
         P(FnDecl {
-            inputs: inputs_captures,
-            output: output,
-            cf: Return,
-            variadic: false
+            inputs=inputs_captures,
+            output=output,
+            cf=Return,
+            variadic=false
         })
     }
 
@@ -3992,17 +3992,17 @@ use the rust-update-structs tool to automate the replacement process.")
             self.parse_ty(true)
         } else {
             P(Ty {
-                id: ast::DUMMY_NODE_ID,
-                node: TyInfer,
-                span: self.span,
+                id=ast::DUMMY_NODE_ID,
+                node=TyInfer,
+                span=self.span,
             })
         };
 
         P(FnDecl {
-            inputs: inputs,
-            output: output,
-            cf: Return,
-            variadic: false
+            inputs=inputs,
+            output=output,
+            cf=Return,
+            variadic=false
         })
     }
 
@@ -4017,12 +4017,12 @@ use the rust-update-structs tool to automate the replacement process.")
                node: Item_, vis: Visibility,
                attrs: Vec<Attribute>) -> Gc<Item> {
         box(GC) Item {
-            ident: ident,
-            attrs: attrs,
-            id: ast::DUMMY_NODE_ID,
-            node: node,
-            vis: vis,
-            span: mk_sp(lo, hi)
+            ident=ident,
+            attrs=attrs,
+            id=ast::DUMMY_NODE_ID,
+            node=node,
+            vis=vis,
+            span=mk_sp(lo, hi)
         }
     }
 
@@ -4057,16 +4057,16 @@ use the rust-update-structs tool to automate the replacement process.")
         let hi = body.span.hi;
         let attrs = attrs.append(inner_attrs.as_slice());
         box(GC) ast::Method {
-            ident: ident,
-            attrs: attrs,
-            generics: generics,
-            explicit_self: explicit_self,
-            fn_style: fn_style,
-            decl: decl,
-            body: body,
-            id: ast::DUMMY_NODE_ID,
-            span: mk_sp(lo, hi),
-            vis: visa,
+            ident=ident,
+            attrs=attrs,
+            generics=generics,
+            explicit_self=explicit_self,
+            fn_style=fn_style,
+            decl=decl,
+            body=body,
+            id=ast::DUMMY_NODE_ID,
+            span=mk_sp(lo, hi),
+            vis=visa,
         }
     }
 
@@ -4109,8 +4109,8 @@ use the rust-update-structs tool to automate the replacement process.")
             let opt_trait_ref = match ty.node {
                 TyPath(ref path, None, node_id) => {
                     Some(TraitRef {
-                        path: /* bad */ (*path).clone(),
-                        ref_id: node_id
+                        path=/* bad */ (*path).clone(),
+                        ref_id=node_id
                     })
                 }
                 TyPath(..) => {
@@ -4147,8 +4147,8 @@ use the rust-update-structs tool to automate the replacement process.")
     /// Parse a::B<String,int>
     fn parse_trait_ref(&mut self) -> TraitRef {
         ast::TraitRef {
-            path: self.parse_path(LifetimeAndTypesWithoutColons).path,
-            ref_id: ast::DUMMY_NODE_ID,
+            path=self.parse_path(LifetimeAndTypesWithoutColons).path,
+            ref_id=ast::DUMMY_NODE_ID,
         }
     }
 
@@ -4208,10 +4208,10 @@ use the rust-update-structs tool to automate the replacement process.")
                 let attrs = p.parse_outer_attributes();
                 let lo = p.span.lo;
                 let struct_field_ = ast::StructField_ {
-                    kind: UnnamedField(p.parse_visibility()),
-                    id: ast::DUMMY_NODE_ID,
-                    ty: p.parse_ty(true),
-                    attrs: attrs,
+                    kind=UnnamedField(p.parse_visibility()),
+                    id=ast::DUMMY_NODE_ID,
+                    ty=p.parse_ty(true),
+                    attrs=attrs,
                 };
                 spanned(lo, p.span.hi, struct_field_)
             });
@@ -4236,10 +4236,10 @@ use the rust-update-structs tool to automate the replacement process.")
         let new_id = ast::DUMMY_NODE_ID;
         (class_name,
          ItemStruct(box(GC) ast::StructDef {
-             fields: fields,
-             ctor_id: if is_tuple_like { Some(new_id) } else { None },
-             super_struct: super_struct,
-             is_virtual: is_virtual,
+             fields=fields,
+             ctor_id=if is_tuple_like { Some(new_id) } else { None },
+             super_struct=super_struct,
+             is_virtual=is_virtual,
          }, generics),
          None)
     }
@@ -4310,9 +4310,9 @@ use the rust-update-structs tool to automate the replacement process.")
         // parse all of the items up to closing or an attribute.
         // view items are legal here.
         let ParsedItemsAndViewItems {
-            attrs_remaining: attrs_remaining,
-            view_items: view_items,
-            items: starting_items,
+            attrs_remaining=attrs_remaining,
+            view_items=view_items,
+            items=starting_items,
             ..
         } = self.parse_items_and_view_items(first_item_attrs, true, true);
         let mut items: Vec<Gc<Item>> = starting_items;
@@ -4352,9 +4352,9 @@ use the rust-update-structs tool to automate the replacement process.")
         }
 
         ast::Mod {
-            inner: mk_sp(inner_lo, self.span.lo),
-            view_items: view_items,
-            items: items
+            inner=mk_sp(inner_lo, self.span.lo),
+            view_items=view_items,
+            items=items
         }
     }
 
@@ -4525,12 +4525,12 @@ use the rust-update-structs tool to automate the replacement process.")
         let decl = self.parse_fn_decl(true);
         let hi = self.span.hi;
         self.expect(&token::SEMI);
-        box(GC) ast::ForeignItem { ident: ident,
-                                   attrs: attrs,
-                                   node: ForeignItemFn(decl, generics),
-                                   id: ast::DUMMY_NODE_ID,
-                                   span: mk_sp(lo, hi),
-                                   vis: vis }
+        box(GC) ast::ForeignItem { ident=ident,
+                                   attrs=attrs,
+                                   node=ForeignItemFn(decl, generics),
+                                   id=ast::DUMMY_NODE_ID,
+                                   span=mk_sp(lo, hi),
+                                   vis=vis }
     }
 
     /// Parse a static item from a foreign module
@@ -4547,12 +4547,12 @@ use the rust-update-structs tool to automate the replacement process.")
         let hi = self.span.hi;
         self.expect(&token::SEMI);
         box(GC) ast::ForeignItem {
-            ident: ident,
-            attrs: attrs,
-            node: ForeignItemStatic(ty, mutbl),
-            id: ast::DUMMY_NODE_ID,
-            span: mk_sp(lo, hi),
-            vis: vis,
+            ident=ident,
+            attrs=attrs,
+            node=ForeignItemStatic(ty, mutbl),
+            id=ast::DUMMY_NODE_ID,
+            span=mk_sp(lo, hi),
+            vis=vis,
         }
     }
 
@@ -4574,10 +4574,10 @@ use the rust-update-structs tool to automate the replacement process.")
                                first_item_attrs: Vec<Attribute> )
                                -> ForeignMod {
         let ParsedItemsAndViewItems {
-            attrs_remaining: attrs_remaining,
-            view_items: view_items,
-            items: _,
-            foreign_items: foreign_items
+            attrs_remaining=attrs_remaining,
+            view_items=view_items,
+            items=_,
+            foreign_items=foreign_items
         } = self.parse_foreign_items(first_item_attrs, true);
         if ! attrs_remaining.is_empty() {
             let last_span = self.last_span;
@@ -4586,9 +4586,9 @@ use the rust-update-structs tool to automate the replacement process.")
         }
         assert!(self.token == token::RBRACE);
         ast::ForeignMod {
-            abi: abi,
-            view_items: view_items,
-            items: foreign_items
+            abi=abi,
+            view_items=view_items,
+            items=foreign_items
         }
     }
 
@@ -4627,10 +4627,10 @@ use the rust-update-structs tool to automate the replacement process.")
         };
 
         IoviViewItem(ast::ViewItem {
-                node: ViewItemExternCrate(ident, maybe_path, ast::DUMMY_NODE_ID),
-                attrs: attrs,
-                vis: visibility,
-                span: mk_sp(lo, self.last_span.hi)
+                node=ViewItemExternCrate(ident, maybe_path, ast::DUMMY_NODE_ID),
+                attrs=attrs,
+                vis=visibility,
+                span=mk_sp(lo, self.last_span.hi)
             })
     }
 
@@ -4689,10 +4689,10 @@ use the rust-update-structs tool to automate the replacement process.")
         self.bump();
 
         return box(GC) ast::StructDef {
-            fields: fields,
-            ctor_id: None,
-            super_struct: None,
-            is_virtual: false,
+            fields=fields,
+            ctor_id=None,
+            super_struct=None,
+            is_virtual=false,
         };
     }
 
@@ -4726,8 +4726,8 @@ use the rust-update-structs tool to automate the replacement process.")
                 );
                 for ty in arg_tys.move_iter() {
                     args.push(ast::VariantArg {
-                        ty: ty,
-                        id: ast::DUMMY_NODE_ID,
+                        ty=ty,
+                        id=ast::DUMMY_NODE_ID,
                     });
                 }
                 kind = TupleVariantKind(args);
@@ -4740,12 +4740,12 @@ use the rust-update-structs tool to automate the replacement process.")
             }
 
             let vr = ast::Variant_ {
-                name: ident,
-                attrs: variant_attrs,
-                kind: kind,
-                id: ast::DUMMY_NODE_ID,
-                disr_expr: disr_expr,
-                vis: vis,
+                name=ident,
+                attrs=variant_attrs,
+                kind=kind,
+                id=ast::DUMMY_NODE_ID,
+                disr_expr=disr_expr,
+                vis=vis,
             };
             variants.push(P(spanned(vlo, self.last_span.hi, vr)));
 
@@ -4757,7 +4757,7 @@ use the rust-update-structs tool to automate the replacement process.")
                         enum");
         }
 
-        ast::EnumDef { variants: variants }
+        ast::EnumDef { variants=variants }
     }
 
     /// Parse an "enum" declaration
@@ -4816,7 +4816,7 @@ use the rust-update-structs tool to automate the replacement process.")
                 self.bump();
                 let new_attrs = attrs.append(item.attrs.as_slice());
                 return IoviItem(box(GC) Item {
-                    attrs: new_attrs,
+                    attrs=new_attrs,
                     ..(*item).clone()
                 });
             }
@@ -4833,10 +4833,10 @@ use the rust-update-structs tool to automate the replacement process.")
             let view_item = self.parse_use();
             self.expect(&token::SEMI);
             return IoviViewItem(ast::ViewItem {
-                node: view_item,
-                attrs: attrs,
-                vis: visibility,
-                span: mk_sp(lo, self.last_span.hi)
+                node=view_item,
+                attrs=attrs,
+                vis=visibility,
+                span=mk_sp(lo, self.last_span.hi)
             });
         }
         // either a view item or an item:
@@ -5076,8 +5076,8 @@ use the rust-update-structs tool to automate the replacement process.")
             };
             // single-variant-enum... :
             let m = ast::MacInvocTT(pth, tts, EMPTY_CTXT);
-            let m: ast::Mac = codemap::Spanned { node: m,
-                                             span: mk_sp(self.span.lo,
+            let m: ast::Mac = codemap::Spanned { node=m,
+                                             span=mk_sp(self.span.lo,
                                                          self.span.hi) };
             let item_ = ItemMac(m);
             let last_span = self.last_span;
@@ -5142,9 +5142,9 @@ use the rust-update-structs tool to automate the replacement process.")
                 seq_sep_trailing_allowed(token::COMMA),
                 |p| p.parse_path_list_ident());
             let path = ast::Path {
-                span: mk_sp(lo, self.span.hi),
-                global: false,
-                segments: Vec::new()
+                span=mk_sp(lo, self.span.hi),
+                global=false,
+                segments=Vec::new()
             };
             return box(GC) spanned(lo, self.span.hi,
                             ViewPathList(path, idents, ast::DUMMY_NODE_ID));
@@ -5164,13 +5164,13 @@ use the rust-update-structs tool to automate the replacement process.")
                 path.push(id);
             }
             let path = ast::Path {
-                span: mk_sp(path_lo, self.span.hi),
-                global: false,
-                segments: path.move_iter().map(|identifier| {
+                span=mk_sp(path_lo, self.span.hi),
+                global=false,
+                segments=path.move_iter().map(|identifier| {
                     ast::PathSegment {
-                        identifier: identifier,
-                        lifetimes: Vec::new(),
-                        types: OwnedSlice::empty(),
+                        identifier=identifier,
+                        lifetimes=Vec::new(),
+                        types=OwnedSlice::empty(),
                     }
                 }).collect()
             };
@@ -5199,13 +5199,13 @@ use the rust-update-structs tool to automate the replacement process.")
                         |p| p.parse_path_list_ident()
                     );
                     let path = ast::Path {
-                        span: mk_sp(lo, self.span.hi),
-                        global: false,
-                        segments: path.move_iter().map(|identifier| {
+                        span=mk_sp(lo, self.span.hi),
+                        global=false,
+                        segments=path.move_iter().map(|identifier| {
                             ast::PathSegment {
-                                identifier: identifier,
-                                lifetimes: Vec::new(),
-                                types: OwnedSlice::empty(),
+                                identifier=identifier,
+                                lifetimes=Vec::new(),
+                                types=OwnedSlice::empty(),
                             }
                         }).collect()
                     };
@@ -5217,13 +5217,13 @@ use the rust-update-structs tool to automate the replacement process.")
                   token::BINOP(token::STAR) => {
                     self.bump();
                     let path = ast::Path {
-                        span: mk_sp(lo, self.span.hi),
-                        global: false,
-                        segments: path.move_iter().map(|identifier| {
+                        span=mk_sp(lo, self.span.hi),
+                        global=false,
+                        segments=path.move_iter().map(|identifier| {
                             ast::PathSegment {
-                                identifier: identifier,
-                                lifetimes: Vec::new(),
-                                types: OwnedSlice::empty(),
+                                identifier=identifier,
+                                lifetimes=Vec::new(),
+                                types=OwnedSlice::empty(),
                             }
                         }).collect()
                     };
@@ -5239,13 +5239,13 @@ use the rust-update-structs tool to automate the replacement process.")
         }
         let last = *path.get(path.len() - 1u);
         let path = ast::Path {
-            span: mk_sp(lo, self.span.hi),
-            global: false,
-            segments: path.move_iter().map(|identifier| {
+            span=mk_sp(lo, self.span.hi),
+            global=false,
+            segments=path.move_iter().map(|identifier| {
                 ast::PathSegment {
-                    identifier: identifier,
-                    lifetimes: Vec::new(),
-                    types: OwnedSlice::empty(),
+                    identifier=identifier,
+                    lifetimes=Vec::new(),
+                    types=OwnedSlice::empty(),
                 }
             }).collect()
         };
@@ -5276,10 +5276,10 @@ use the rust-update-structs tool to automate the replacement process.")
             match self.parse_item_or_view_item(attrs, macros_allowed) {
                 IoviNone(attrs) => {
                     return ParsedItemsAndViewItems {
-                        attrs_remaining: attrs,
-                        view_items: view_items,
-                        items: items,
-                        foreign_items: Vec::new()
+                        attrs_remaining=attrs,
+                        view_items=view_items,
+                        items=items,
+                        foreign_items=Vec::new()
                     }
                 }
                 IoviViewItem(view_item) => {
@@ -5332,10 +5332,10 @@ use the rust-update-structs tool to automate the replacement process.")
         }
 
         ParsedItemsAndViewItems {
-            attrs_remaining: attrs,
-            view_items: view_items,
-            items: items,
-            foreign_items: Vec::new()
+            attrs_remaining=attrs,
+            view_items=view_items,
+            items=items,
+            foreign_items=Vec::new()
         }
     }
 
@@ -5372,10 +5372,10 @@ use the rust-update-structs tool to automate the replacement process.")
         }
 
         ParsedItemsAndViewItems {
-            attrs_remaining: attrs,
-            view_items: Vec::new(),
-            items: Vec::new(),
-            foreign_items: foreign_items
+            attrs_remaining=attrs,
+            view_items=Vec::new(),
+            items=Vec::new(),
+            foreign_items=foreign_items
         }
     }
 
@@ -5391,10 +5391,10 @@ use the rust-update-structs tool to automate the replacement process.")
         let m = self.parse_mod_items(token::EOF, first_item_outer_attrs, lo);
 
         ast::Crate {
-            module: m,
-            attrs: inner,
-            config: self.cfg.clone(),
-            span: mk_sp(lo, self.span.lo)
+            module=m,
+            attrs=inner,
+            config=self.cfg.clone(),
+            span=mk_sp(lo, self.span.lo)
         }
     }
 

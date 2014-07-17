@@ -93,12 +93,12 @@ impl Clone for CString {
     /// clone.
     fn clone(&self) -> CString {
         if self.buf.is_null() {
-            CString { buf: self.buf, owns_buffer_: self.owns_buffer_ }
+            CString { buf=self.buf, owns_buffer_=self.owns_buffer_ }
         } else {
             let len = self.len() + 1;
             let buf = unsafe { malloc_raw(len) } as *mut libc::c_char;
             unsafe { ptr::copy_nonoverlapping_memory(buf, self.buf, len); }
-            CString { buf: buf as *const libc::c_char, owns_buffer_: true }
+            CString { buf=buf as *const libc::c_char, owns_buffer_=true }
         }
     }
 }
@@ -136,7 +136,7 @@ impl<S: hash::Writer> hash::Hash<S> for CString {
 impl CString {
     /// Create a C String from a pointer.
     pub unsafe fn new(buf: *const libc::c_char, owns_buffer: bool) -> CString {
-        CString { buf: buf, owns_buffer_: owns_buffer }
+        CString { buf=buf, owns_buffer_=owns_buffer }
     }
 
     /// Return a pointer to the NUL-terminated string data.
@@ -253,7 +253,7 @@ impl CString {
     pub fn as_bytes<'a>(&'a self) -> &'a [u8] {
         if self.buf.is_null() { fail!("CString is null!"); }
         unsafe {
-            mem::transmute(Slice { data: self.buf, len: self.len() + 1 })
+            mem::transmute(Slice { data=self.buf, len=self.len() + 1 })
         }
     }
 
@@ -267,7 +267,7 @@ impl CString {
     pub fn as_bytes_no_nul<'a>(&'a self) -> &'a [u8] {
         if self.buf.is_null() { fail!("CString is null!"); }
         unsafe {
-            mem::transmute(Slice { data: self.buf, len: self.len() })
+            mem::transmute(Slice { data=self.buf, len=self.len() })
         }
     }
 
@@ -291,8 +291,8 @@ impl CString {
     pub fn iter<'a>(&'a self) -> CChars<'a> {
         if self.buf.is_null() { fail!("CString is null!"); }
         CChars {
-            ptr: self.buf,
-            marker: marker::ContravariantLifetime,
+            ptr=self.buf,
+            marker=marker::ContravariantLifetime,
         }
     }
 

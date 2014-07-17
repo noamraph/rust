@@ -74,9 +74,9 @@ pub fn relate_nested_regions(tcx: &ty::ctxt,
      * Hence, in the second example above, `'r2` must be a subregion of `'r3`.
      */
 
-    let mut rr = RegionRelator { tcx: tcx,
-                                 stack: Vec::new(),
-                                 relate_op: relate_op };
+    let mut rr = RegionRelator { tcx=tcx,
+                                 stack=Vec::new(),
+                                 relate_op=relate_op };
     match opt_region {
         Some(o_r) => { rr.stack.push(o_r); }
         None => {}

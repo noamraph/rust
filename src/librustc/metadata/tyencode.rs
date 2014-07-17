@@ -67,7 +67,7 @@ pub fn enc_ty(w: &mut MemWriter, cx: &ctxt, t: ty::t) {
     if abbrev_len < len {
         // I.e. it's actually an abbreviation.
         cx.abbrevs.borrow_mut().insert(t, ty_abbrev {
-            s: format!("#{:x}:{:x}#", pos, len)
+            s=format!("#{:x}:{:x}#", pos, len)
         });
     }
 }
@@ -235,8 +235,8 @@ fn enc_sty(w: &mut MemWriter, cx: &ctxt, st: &ty::sty) {
             }) => {
             mywrite!(w, "x[{}|", (cx.ds)(def_id));
             enc_substs(w, cx, substs);
-            let bounds = ty::ParamBounds {builtin_bounds: bounds,
-                                          trait_bounds: Vec::new()};
+            let bounds = ty::ParamBounds {builtin_bounds=bounds,
+                                          trait_bounds=Vec::new()};
             enc_bounds(w, cx, &bounds);
             mywrite!(w, "]");
         }
@@ -276,7 +276,7 @@ fn enc_sty(w: &mut MemWriter, cx: &ctxt, st: &ty::sty) {
         ty::ty_infer(_) => {
             cx.diag.handler().bug("cannot encode inference variable types");
         }
-        ty::ty_param(ParamTy {space, idx: id, def_id: did}) => {
+        ty::ty_param(ParamTy {space, idx=id, def_id=did}) => {
             mywrite!(w, "p{}|{}|{}|", (cx.ds)(did), id, space.to_uint())
         }
         ty::ty_struct(def, ref substs) => {
@@ -320,8 +320,8 @@ fn enc_closure_ty(w: &mut MemWriter, cx: &ctxt, ft: &ty::ClosureTy) {
     enc_fn_style(w, ft.fn_style);
     enc_onceness(w, ft.onceness);
     enc_trait_store(w, cx, ft.store);
-    let bounds = ty::ParamBounds {builtin_bounds: ft.bounds,
-                                  trait_bounds: Vec::new()};
+    let bounds = ty::ParamBounds {builtin_bounds=ft.bounds,
+                                  trait_bounds=Vec::new()};
     enc_bounds(w, cx, &bounds);
     enc_fn_sig(w, cx, &ft.sig);
 }

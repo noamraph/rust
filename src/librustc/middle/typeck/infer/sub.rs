@@ -44,7 +44,7 @@ impl<'f> Combine for Sub<'f> {
 
     fn contratys(&self, a: ty::t, b: ty::t) -> cres<ty::t> {
         let opp = CombineFields {
-            a_is_expected: !self.get_ref().a_is_expected,
+            a_is_expected=!self.get_ref().a_is_expected,
             ..self.get_ref().clone()
         };
         Sub(opp).tys(b, a)
@@ -53,7 +53,7 @@ impl<'f> Combine for Sub<'f> {
     fn contraregions(&self, a: ty::Region, b: ty::Region)
                     -> cres<ty::Region> {
         let opp = CombineFields {
-            a_is_expected: !self.get_ref().a_is_expected,
+            a_is_expected=!self.get_ref().a_is_expected,
             ..self.get_ref().clone()
         };
         Sub(opp).regions(b, a)

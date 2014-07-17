@@ -191,8 +191,8 @@ impl Handler {
 
 pub fn mk_span_handler(handler: Handler, cm: codemap::CodeMap) -> SpanHandler {
     SpanHandler {
-        handler: handler,
-        cm: cm,
+        handler=handler,
+        cm=cm,
     }
 }
 
@@ -203,8 +203,8 @@ pub fn default_handler(color_config: ColorConfig,
 
 pub fn mk_handler(e: Box<Emitter + Send>) -> Handler {
     Handler {
-        err_count: Cell::new(0),
-        emit: RefCell::new(e),
+        err_count=Cell::new(0),
+        emit=RefCell::new(e),
     }
 }
 
@@ -334,15 +334,15 @@ impl EmitterWriter {
                 Some(t) => Terminal(t),
                 None    => Raw(box stderr),
             };
-            EmitterWriter { dst: dst, registry: registry }
+            EmitterWriter { dst=dst, registry=registry }
         } else {
-            EmitterWriter { dst: Raw(box stderr), registry: registry }
+            EmitterWriter { dst=Raw(box stderr), registry=registry }
         }
     }
 
     pub fn new(dst: Box<Writer + Send>,
                registry: Option<diagnostics::registry::Registry>) -> EmitterWriter {
-        EmitterWriter { dst: Raw(dst), registry: registry }
+        EmitterWriter { dst=Raw(dst), registry=registry }
     }
 }
 
@@ -388,7 +388,7 @@ fn emit(dst: &mut EmitterWriter, cm: &codemap::CodeMap, rsp: RenderSpan,
         // we want to tell compiletest/runtest to look at the last line of the
         // span (since `custom_highlight_lines` displays an arrow to the end of
         // the span)
-        let span_end = Span { lo: sp.hi, hi: sp.hi, expn_info: sp.expn_info};
+        let span_end = Span { lo=sp.hi, hi=sp.hi, expn_info=sp.expn_info};
         let ses = cm.span_to_string(span_end);
         try!(print_diagnostic(dst, ses.as_slice(), lvl, msg, code));
         if rsp.is_full_span() {

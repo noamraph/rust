@@ -181,9 +181,9 @@ pub trait Combine {
         let fn_style = if_ok!(self.fn_styles(a.fn_style, b.fn_style));
         let abi = if_ok!(self.abi(a.abi, b.abi));
         let sig = if_ok!(self.fn_sigs(&a.sig, &b.sig));
-        Ok(ty::BareFnTy {fn_style: fn_style,
-                abi: abi,
-                sig: sig})
+        Ok(ty::BareFnTy {fn_style=fn_style,
+                abi=abi,
+                sig=sig})
     }
 
     fn closure_tys(&self, a: &ty::ClosureTy,
@@ -209,11 +209,11 @@ pub trait Combine {
         let bounds = if_ok!(self.bounds(a.bounds, b.bounds));
         let sig = if_ok!(self.fn_sigs(&a.sig, &b.sig));
         Ok(ty::ClosureTy {
-            fn_style: fn_style,
-            onceness: onceness,
-            store: store,
-            bounds: bounds,
-            sig: sig
+            fn_style=fn_style,
+            onceness=onceness,
+            store=store,
+            bounds=bounds,
+            sig=sig
         })
     }
 
@@ -278,8 +278,8 @@ pub trait Combine {
                                 expected_found(self, a.def_id, b.def_id)))
         } else {
             let substs = if_ok!(self.substs(a.def_id, &a.substs, &b.substs));
-            Ok(ty::TraitRef { def_id: a.def_id,
-                              substs: substs })
+            Ok(ty::TraitRef { def_id=a.def_id,
+                              substs=substs })
         }
     }
 }
@@ -294,9 +294,9 @@ pub struct CombineFields<'a> {
 pub fn expected_found<C:Combine,T>(
         this: &C, a: T, b: T) -> ty::expected_found<T> {
     if this.a_is_expected() {
-        ty::expected_found {expected: a, found: b}
+        ty::expected_found {expected=a, found=b}
     } else {
-        ty::expected_found {expected: b, found: a}
+        ty::expected_found {expected=b, found=a}
     }
 }
 
@@ -347,10 +347,10 @@ pub fn super_fn_sigs<C:Combine>(this: &C, a: &ty::FnSig, b: &ty::FnSig) -> cres<
                                 a.inputs.as_slice(),
                                 b.inputs.as_slice()));
     let output = if_ok!(this.tys(a.output, b.output));
-    Ok(FnSig {binder_id: a.binder_id,
-              inputs: inputs,
-              output: output,
-              variadic: a.variadic})
+    Ok(FnSig {binder_id=a.binder_id,
+              inputs=inputs,
+              output=output,
+              variadic=a.variadic})
 }
 
 pub fn super_tys<C:Combine>(this: &C, a: ty::t, b: ty::t) -> cres<ty::t> {
@@ -498,7 +498,7 @@ pub fn super_tys<C:Combine>(this: &C, a: ty::t, b: ty::t) -> cres<ty::t> {
             let mt = match (&ty::get(a_mt.ty).sty, &ty::get(b_mt.ty).sty) {
                 (&ty::ty_trait(..), &ty::ty_trait(..)) if a_mt.mutbl == b_mt.mutbl => {
                     let ty = if_ok!(this.tys(a_mt.ty, b_mt.ty));
-                    ty::mt { ty: ty, mutbl: a_mt.mutbl }
+                    ty::mt { ty=ty, mutbl=a_mt.mutbl }
                 }
                 _ => if_ok!(this.mts(a_mt, b_mt))
             };

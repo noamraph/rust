@@ -40,10 +40,10 @@ struct Inner {
 impl Access {
     pub fn new() -> Access {
         Access {
-            inner: Arc::new(Unsafe::new(Inner {
-                queue: vec![],
-                held: false,
-                closed: false,
+            inner=Arc::new(Unsafe::new(Inner {
+                queue=vec![],
+                held=false,
+                closed=false,
             }))
         }
     }
@@ -66,7 +66,7 @@ impl Access {
             inner.held = true;
         }
 
-        Guard { access: self, missile: Some(missile) }
+        Guard { access=self, missile=Some(missile) }
     }
 
     pub fn close(&self, _missile: &HomingMissile) {
@@ -92,7 +92,7 @@ impl Access {
 
 impl Clone for Access {
     fn clone(&self) -> Access {
-        Access { inner: self.inner.clone() }
+        Access { inner=self.inner.clone() }
     }
 }
 

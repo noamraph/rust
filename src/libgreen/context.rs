@@ -32,8 +32,8 @@ pub type InitFn = extern "C" fn(uint, *mut (), *mut ()) -> !;
 impl Context {
     pub fn empty() -> Context {
         Context {
-            regs: new_regs(),
-            stack_bounds: None,
+            regs=new_regs(),
+            stack_bounds=None,
         }
     }
 
@@ -73,8 +73,8 @@ impl Context {
             Some((stack_base as uint, sp as uint))
         };
         return Context {
-            regs: regs,
-            stack_bounds: bounds,
+            regs=regs,
+            stack_bounds=bounds,
         }
     }
 
@@ -87,10 +87,10 @@ impl Context {
     pub fn swap(out_context: &mut Context, in_context: &Context) {
         rtdebug!("swapping contexts");
         let out_regs: &mut Registers = match out_context {
-            &Context { regs: box ref mut r, .. } => r
+            &Context { regs=box ref mut r, .. } => r
         };
         let in_regs: &Registers = match in_context {
-            &Context { regs: box ref r, .. } => r
+            &Context { regs=box ref r, .. } => r
         };
 
         rtdebug!("noting the stack limit and doing raw swap");
@@ -154,10 +154,10 @@ struct Registers {
 #[cfg(target_arch = "x86")]
 fn new_regs() -> Box<Registers> {
     box Registers {
-        eax: 0, ebx: 0, ecx: 0, edx: 0,
-        ebp: 0, esi: 0, edi: 0, esp: 0,
-        cs: 0, ds: 0, ss: 0, es: 0, fs: 0, gs: 0,
-        eflags: 0, eip: 0
+        eax=0, ebx=0, ecx=0, edx=0,
+        ebp=0, esi=0, edi=0, esp=0,
+        cs=0, ds=0, ss=0, es=0, fs=0, gs=0,
+        eflags=0, eip=0
     }
 }
 

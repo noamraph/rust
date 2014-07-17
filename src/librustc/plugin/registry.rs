@@ -42,9 +42,9 @@ impl Registry {
     #[doc(hidden)]
     pub fn new(krate: &ast::Crate) -> Registry {
         Registry {
-            krate_span: krate.span,
-            syntax_exts: vec!(),
-            lint_passes: vec!(),
+            krate_span=krate.span,
+            syntax_exts=vec!(),
+            lint_passes=vec!(),
         }
     }
 
@@ -71,8 +71,8 @@ impl Registry {
         self.register_syntax_extension(
             token::intern(name),
             NormalTT(box BasicMacroExpander {
-                expander: expander,
-                span: None,
+                expander=expander,
+                span=None,
             }, None));
     }
 

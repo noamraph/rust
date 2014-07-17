@@ -84,9 +84,9 @@ enum MyUpgrade<T> {
 impl<T: Send> Packet<T> {
     pub fn new() -> Packet<T> {
         Packet {
-            data: None,
-            upgrade: NothingSent,
-            state: atomics::AtomicUint::new(EMPTY),
+            data=None,
+            upgrade=NothingSent,
+            state=atomics::AtomicUint::new(EMPTY),
         }
     }
 

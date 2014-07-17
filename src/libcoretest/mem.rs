@@ -133,7 +133,7 @@ impl Trait for Struct {
 
 #[bench]
 fn trait_vtable_method_call(b: &mut Bencher) {
-    let s = Struct { field: 10 };
+    let s = Struct { field=10 };
     let t = &s as &Trait;
     b.iter(|| {
         t.method()
@@ -142,7 +142,7 @@ fn trait_vtable_method_call(b: &mut Bencher) {
 
 #[bench]
 fn trait_static_method_call(b: &mut Bencher) {
-    let s = Struct { field: 10 };
+    let s = Struct { field=10 };
     b.iter(|| {
         s.method()
     });

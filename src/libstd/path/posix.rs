@@ -148,7 +148,7 @@ impl GenericPathUnsafe for Path {
         let path = Path::normalize(path.container_as_bytes());
         assert!(!path.is_empty());
         let idx = path.as_slice().rposition_elem(&SEP_BYTE);
-        Path{ repr: path, sepidx: idx }
+        Path{ repr=path, sepidx=idx }
     }
 
     unsafe fn set_filename_unchecked<T: BytesContainer>(&mut self, filename: T) {

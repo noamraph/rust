@@ -148,9 +148,9 @@ pub fn strip_doc_comment_decoration(comment: &str) -> String {
 fn push_blank_line_comment(rdr: &StringReader, comments: &mut Vec<Comment>) {
     debug!(">>> blank-line comment");
     comments.push(Comment {
-        style: BlankLine,
-        lines: Vec::new(),
-        pos: rdr.last_pos,
+        style=BlankLine,
+        lines=Vec::new(),
+        pos=rdr.last_pos,
     });
 }
 
@@ -171,9 +171,9 @@ fn read_shebang_comment(rdr: &mut StringReader, code_to_the_left: bool,
     let p = rdr.last_pos;
     debug!("<<< shebang comment");
     comments.push(Comment {
-        style: if code_to_the_left { Trailing } else { Isolated },
-        lines: vec!(rdr.read_one_line_comment()),
-        pos: p
+        style=if code_to_the_left { Trailing } else { Isolated },
+        lines=vec!(rdr.read_one_line_comment()),
+        pos=p
     });
 }
 
@@ -195,9 +195,9 @@ fn read_line_comments(rdr: &mut StringReader, code_to_the_left: bool,
     debug!("<<< line comments");
     if !lines.is_empty() {
         comments.push(Comment {
-            style: if code_to_the_left { Trailing } else { Isolated },
-            lines: lines,
-            pos: p
+            style=if code_to_the_left { Trailing } else { Isolated },
+            lines=lines,
+            pos=p
         });
     }
 }
@@ -308,7 +308,7 @@ fn read_block_comment(rdr: &mut StringReader,
         style = Mixed;
     }
     debug!("<<< block comment");
-    comments.push(Comment {style: style, lines: lines, pos: p});
+    comments.push(Comment {style=style, lines=lines, pos=p});
 }
 
 
@@ -366,11 +366,11 @@ pub fn gather_comments_and_literals(span_diagnostic: &diagnostic::SpanHandler,
         let bstart = rdr.last_pos;
         rdr.next_token();
         //discard, and look ahead; we're working with internal state
-        let TokenAndSpan {tok: tok, sp: sp} = rdr.peek();
+        let TokenAndSpan {tok=tok, sp=sp} = rdr.peek();
         if token::is_lit(&tok) {
             rdr.with_str_from(bstart, |s| {
                 debug!("tok lit: {}", s);
-                literals.push(Literal {lit: s.to_string(), pos: sp.lo});
+                literals.push(Literal {lit=s.to_string(), pos=sp.lo});
             })
         } else {
             debug!("tok: {}", token::to_string(&tok));

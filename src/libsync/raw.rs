@@ -43,7 +43,7 @@ struct WaitQueue {
 impl WaitQueue {
     fn new() -> WaitQueue {
         let (block_tail, block_head) = channel();
-        WaitQueue { head: block_head, tail: block_tail }
+        WaitQueue { head=block_head, tail=block_tail }
     }
 
     // Signals one live task from the queue.
@@ -110,11 +110,11 @@ struct SemGuard<'a, Q> {
 impl<Q: Send> Sem<Q> {
     fn new(count: int, q: Q) -> Sem<Q> {
         Sem {
-            lock: mutex::Mutex::new(),
-            inner: Unsafe::new(SemInner {
-                waiters: WaitQueue::new(),
-                count: count,
-                blocked: q,
+            lock=mutex::Mutex::new(),
+            inner=Unsafe::new(SemInner {
+                waiters=WaitQueue::new(),
+                count=count,
+                blocked=q,
             })
         }
     }
@@ -159,7 +159,7 @@ impl<Q: Send> Sem<Q> {
 
     pub fn access<'a>(&'a self) -> SemGuard<'a, Q> {
         self.acquire();
-        SemGuard { sem: self }
+        SemGuard { sem=self }
     }
 }
 
@@ -181,8 +181,8 @@ impl Sem<Vec<WaitQueue>> {
     // and rwlock_write_mode.
     pub fn access_cond<'a>(&'a self) -> SemCondGuard<'a> {
         SemCondGuard {
-            guard: self.access(),
-            cvar: Condvar { sem: self, order: Nothing, nocopy: marker::NoCopy },
+            guard=self.access(),
+            cvar=Condvar { sem=self, order=Nothing, nocopy=marker::NoCopy },
         }
     }
 }
@@ -365,7 +365,7 @@ pub struct SemaphoreGuard<'a> {
 impl Semaphore {
     /// Create a new semaphore with the specified count.
     pub fn new(count: int) -> Semaphore {
-        Semaphore { sem: Sem::new(count, ()) }
+        Semaphore { sem=Sem::new(count, ()) }
     }
 
     /// Acquire a resource represented by the semaphore. Blocks if necessary
@@ -379,7 +379,7 @@ impl Semaphore {
     /// Acquire a resource of this semaphore, returning an RAII guard which will
     /// release the resource when dropped.
     pub fn access<'a>(&'a self) -> SemaphoreGuard<'a> {
-        SemaphoreGuard { _guard: self.sem.access() }
+        SemaphoreGuard { _guard=self.sem.access() }
     }
 }
 
@@ -417,7 +417,7 @@ impl Mutex {
     /// between 0 and num_condvars-1. (If num_condvars is 0, lock_cond will be
     /// allowed but any operations on the condvar will fail.)
     pub fn new_with_condvars(num_condvars: uint) -> Mutex {
-        Mutex { sem: Sem::new_and_signal(1, num_condvars) }
+        Mutex { sem=Sem::new_and_signal(1, num_condvars) }
     }
 
     /// Acquires ownership of this mutex, returning an RAII guard which will
@@ -425,7 +425,7 @@ impl Mutex {
     /// also be accessed through the returned guard.
     pub fn lock<'a>(&'a self) -> MutexGuard<'a> {
         let SemCondGuard { guard, cvar } = self.sem.access_cond();
-        MutexGuard { _guard: guard, cond: cvar }
+        MutexGuard { _guard=guard, cond=cvar }
     }
 }
 
@@ -482,9 +482,9 @@ impl RWLock {
     /// Similar to mutex_with_condvars.
     pub fn new_with_condvars(num_condvars: uint) -> RWLock {
         RWLock {
-            order_lock: Semaphore::new(1),
-            access_lock: Sem::new_and_signal(1, num_condvars),
-            read_count: atomics::AtomicUint::new(0),
+            order_lock=Semaphore::new(1),
+            access_lock=Sem::new_and_signal(1, num_condvars),
+            read_count=atomics::AtomicUint::new(0),
         }
     }
 
@@ -497,7 +497,7 @@ impl RWLock {
         if old_count == 0 {
             self.access_lock.acquire();
         }
-        RWLockReadGuard { lock: self }
+        RWLockReadGuard { lock=self }
     }
 
     /// Acquire a write-lock, returning an RAII guard that will unlock the lock
@@ -551,11 +551,11 @@ impl RWLock {
         // The astute reader will also note that making waking writers use the
         // order_lock is better for not starving readers.
         RWLockWriteGuard {
-            lock: self,
-            cond: Condvar {
-                sem: &self.access_lock,
-                order: Just(&self.order_lock),
-                nocopy: marker::NoCopy,
+            lock=self,
+            cond=Condvar {
+                sem=&self.access_lock,
+                order=Just(&self.order_lock),
+                nocopy=marker::NoCopy,
             }
         }
     }
@@ -580,7 +580,7 @@ impl<'a> RWLockWriteGuard<'a> {
             // the comment in write_cond for more justification.
             lock.access_lock.release();
         }
-        RWLockReadGuard { lock: lock }
+        RWLockReadGuard { lock=lock }
     }
 }
 

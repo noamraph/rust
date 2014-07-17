@@ -127,8 +127,8 @@ impl<T> RingBuf<T> {
 
     /// Create an empty RingBuf with space for at least `n` elements.
     pub fn with_capacity(n: uint) -> RingBuf<T> {
-        RingBuf{nelts: 0, lo: 0,
-              elts: Vec::from_fn(cmp::max(MINIMUM_CAPACITY, n), |_| None)}
+        RingBuf{nelts=0, lo=0,
+              elts=Vec::from_fn(cmp::max(MINIMUM_CAPACITY, n), |_| None)}
     }
 
     /// Retrieve an element in the RingBuf by index
@@ -198,7 +198,7 @@ impl<T> RingBuf<T> {
 
     /// Front-to-back iterator.
     pub fn iter<'a>(&'a self) -> Items<'a, T> {
-        Items{index: 0, rindex: self.nelts, lo: self.lo, elts: self.elts.as_slice()}
+        Items{index=0, rindex=self.nelts, lo=self.lo, elts=self.elts.as_slice()}
     }
 
     /// Front-to-back iterator which returns mutable values.
@@ -214,16 +214,16 @@ impl<T> RingBuf<T> {
             //    0 to end_index
             let (temp, remaining1) = self.elts.mut_split_at(start_index);
             let (remaining2, _) = temp.mut_split_at(end_index);
-            MutItems { remaining1: remaining1,
-                                 remaining2: remaining2,
-                                 nelts: self.nelts }
+            MutItems { remaining1=remaining1,
+                                 remaining2=remaining2,
+                                 nelts=self.nelts }
         } else {
             // Items to iterate goes from start_index to end_index:
             let (empty, elts) = self.elts.mut_split_at(0);
             let remaining1 = elts.mut_slice(start_index, end_index);
-            MutItems { remaining1: remaining1,
-                                 remaining2: empty,
-                                 nelts: self.nelts }
+            MutItems { remaining1=remaining1,
+                                 remaining2=empty,
+                                 nelts=self.nelts }
         }
     }
 }
@@ -641,10 +641,10 @@ mod tests {
 
     #[test]
     fn test_param_reccy() {
-        let reccy1 = RecCy { x: 1, y: 2, t: One(1) };
-        let reccy2 = RecCy { x: 345, y: 2, t: Two(1, 2) };
-        let reccy3 = RecCy { x: 1, y: 777, t: Three(1, 2, 3) };
-        let reccy4 = RecCy { x: 19, y: 252, t: Two(17, 42) };
+        let reccy1 = RecCy { x=1, y=2, t=One(1) };
+        let reccy2 = RecCy { x=345, y=2, t=Two(1, 2) };
+        let reccy3 = RecCy { x=1, y=777, t=Three(1, 2, 3) };
+        let reccy4 = RecCy { x=19, y=252, t=Two(17, 42) };
         test_parameterized::<RecCy>(reccy1, reccy2, reccy3, reccy4);
     }
 

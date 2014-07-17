@@ -91,7 +91,7 @@ impl<A> Future<A> {
          * not block.
          */
 
-        Future {state: Forced(val)}
+        Future {state=Forced(val)}
     }
 
     pub fn from_fn(f: proc():Send -> A) -> Future<A> {
@@ -103,7 +103,7 @@ impl<A> Future<A> {
          * function. It is not spawned into another task.
          */
 
-        Future {state: Pending(f)}
+        Future {state=Pending(f)}
     }
 }
 

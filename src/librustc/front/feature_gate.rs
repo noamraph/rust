@@ -101,10 +101,10 @@ pub struct Features {
 impl Features {
     pub fn new() -> Features {
         Features {
-            default_type_params: Cell::new(false),
-            issue_5723_bootstrap: Cell::new(false),
-            overloaded_calls: Cell::new(false),
-            rustc_diagnostic_macros: Cell::new(false)
+            default_type_params=Cell::new(false),
+            issue_5723_bootstrap=Cell::new(false),
+            overloaded_calls=Cell::new(false),
+            rustc_diagnostic_macros=Cell::new(false)
         }
     }
 }
@@ -375,8 +375,8 @@ impl<'a> Visitor<()> for Context<'a> {
 
 pub fn check_crate(sess: &Session, krate: &ast::Crate) {
     let mut cx = Context {
-        features: Vec::new(),
-        sess: sess,
+        features=Vec::new(),
+        sess=sess,
     };
 
     for attr in krate.attrs.iter() {

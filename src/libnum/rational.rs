@@ -47,7 +47,7 @@ impl<T: Clone + Integer + PartialOrd>
     /// Create a ratio without checking for `denom == 0` or reducing.
     #[inline]
     pub fn new_raw(numer: T, denom: T) -> Ratio<T> {
-        Ratio { numer: numer, denom: denom }
+        Ratio { numer=numer, denom=denom }
     }
 
     /// Create a new Ratio. Fails if `denom == 0`.
@@ -372,12 +372,12 @@ mod test {
     use std::from_str::FromStr;
     use std::num;
 
-    pub static _0 : Rational = Ratio { numer: 0, denom: 1};
-    pub static _1 : Rational = Ratio { numer: 1, denom: 1};
-    pub static _2: Rational = Ratio { numer: 2, denom: 1};
-    pub static _1_2: Rational = Ratio { numer: 1, denom: 2};
-    pub static _3_2: Rational = Ratio { numer: 3, denom: 2};
-    pub static _neg1_2: Rational =  Ratio { numer: -1, denom: 2};
+    pub static _0 : Rational = Ratio { numer=0, denom=1};
+    pub static _1 : Rational = Ratio { numer=1, denom=1};
+    pub static _2: Rational = Ratio { numer=2, denom=1};
+    pub static _1_2: Rational = Ratio { numer=1, denom=2};
+    pub static _3_2: Rational = Ratio { numer=3, denom=2};
+    pub static _neg1_2: Rational =  Ratio { numer=-1, denom=2};
 
     pub fn to_big(n: Rational) -> BigRational {
         Ratio::new(

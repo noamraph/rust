@@ -452,12 +452,12 @@ pub fn declare_tydesc(ccx: &CrateContext, t: ty::t) -> tydesc_info {
 
     debug!("--- declare_tydesc {}", ppaux::ty_to_string(ccx.tcx(), t));
     tydesc_info {
-        ty: t,
-        tydesc: gvar,
-        size: llsize,
-        align: llalign,
-        name: ty_name,
-        visit_glue: Cell::new(None),
+        ty=t,
+        tydesc=gvar,
+        size=llsize,
+        align=llalign,
+        name=ty_name,
+        visit_glue=Cell::new(None),
     }
 }
 

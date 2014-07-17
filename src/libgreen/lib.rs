@@ -350,8 +350,8 @@ impl PoolConfig {
     /// variables of this process.
     pub fn new() -> PoolConfig {
         PoolConfig {
-            threads: rt::default_sched_threads(),
-            event_loop_factory: basic::event_loop,
+            threads=rt::default_sched_threads(),
+            event_loop_factory=basic::event_loop,
         }
     }
 }
@@ -390,25 +390,25 @@ impl SchedPool {
         static mut POOL_ID: AtomicUint = INIT_ATOMIC_UINT;
 
         let PoolConfig {
-            threads: nscheds,
-            event_loop_factory: factory
+            threads=nscheds,
+            event_loop_factory=factory
         } = config;
         assert!(nscheds > 0);
 
         // The pool of schedulers that will be returned from this function
         let (p, state) = TaskState::new();
         let mut pool = SchedPool {
-            threads: vec![],
-            handles: vec![],
-            stealers: vec![],
-            id: unsafe { POOL_ID.fetch_add(1, SeqCst) },
-            sleepers: SleeperList::new(),
-            stack_pool: StackPool::new(),
-            deque_pool: deque::BufferPool::new(),
-            next_friend: 0,
-            factory: factory,
-            task_state: state,
-            tasks_done: p,
+            threads=vec![],
+            handles=vec![],
+            stealers=vec![],
+            id=unsafe { POOL_ID.fetch_add(1, SeqCst) },
+            sleepers=SleeperList::new(),
+            stack_pool=StackPool::new(),
+            deque_pool=deque::BufferPool::new(),
+            next_friend=0,
+            factory=factory,
+            task_state=state,
+            tasks_done=p,
         };
 
         // Create a work queue for each scheduler, ntimes. Create an extra
@@ -539,8 +539,8 @@ impl TaskState {
     fn new() -> (Receiver<()>, TaskState) {
         let (tx, rx) = channel();
         (rx, TaskState {
-            cnt: Arc::new(AtomicUint::new(0)),
-            done: tx,
+            cnt=Arc::new(AtomicUint::new(0)),
+            done=tx,
         })
     }
 
@@ -594,12 +594,12 @@ pub trait GreenTaskBuilder {
 
 impl<S: Spawner> GreenTaskBuilder for TaskBuilder<S> {
     fn green<'a>(self, pool: &'a mut SchedPool) -> TaskBuilder<GreenSpawner<'a>> {
-        self.spawner(GreenSpawner {pool: pool, handle: None})
+        self.spawner(GreenSpawner {pool=pool, handle=None})
     }
 
     fn green_pinned<'a>(self, pool: &'a mut SchedPool, handle: &'a mut SchedHandle)
                         -> TaskBuilder<GreenSpawner<'a>> {
-        self.spawner(GreenSpawner {pool: pool, handle: Some(handle)})
+        self.spawner(GreenSpawner {pool=pool, handle=Some(handle)})
     }
 }
 

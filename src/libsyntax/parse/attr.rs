@@ -104,12 +104,12 @@ impl<'a> ParserAttr for Parser<'a> {
         }
 
         return Spanned {
-            span: span,
-            node: ast::Attribute_ {
-                id: attr::mk_attr_id(),
-                style: style,
-                value: value,
-                is_sugared_doc: false
+            span=span,
+            node=ast::Attribute_ {
+                id=attr::mk_attr_id(),
+                style=style,
+                value=value,
+                is_sugared_doc=false
             }
         };
     }

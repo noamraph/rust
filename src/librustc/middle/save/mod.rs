@@ -123,9 +123,9 @@ impl <'l> DxrVisitor<'l> {
         let mut segs = vec!();
         for (seg, span) in path.segments.iter().zip(spans.iter()) {
             segs.push(seg.clone());
-            let sub_path = ast::Path{span: *span, // span for the last segment
-                                     global: path.global,
-                                     segments: segs};
+            let sub_path = ast::Path{span=*span, // span for the last segment
+                                     global=path.global,
+                                     segments=segs};
             let qualname = path_to_string(&sub_path);
             result.push((*span, qualname));
             segs = sub_path.segments;
@@ -1358,10 +1358,10 @@ struct DxrVisitorEnv {
 
 impl DxrVisitorEnv {
     fn new() -> DxrVisitorEnv {
-        DxrVisitorEnv{cur_scope: 0}
+        DxrVisitorEnv{cur_scope=0}
     }
     fn new_nested(new_mod: NodeId) -> DxrVisitorEnv {
-        DxrVisitorEnv{cur_scope: new_mod}
+        DxrVisitorEnv{cur_scope=new_mod}
     }
 }
 
@@ -1416,22 +1416,22 @@ pub fn process_crate(sess: &Session,
     };
     root_path.pop();
 
-    let mut visitor = DxrVisitor{ sess: sess,
-                                  analysis: analysis,
-                                  collected_paths: vec!(),
-                                  collecting: false,
-                                  fmt: FmtStrs::new(box Recorder {
-                                                        out: output_file as Box<Writer>,
-                                                        dump_spans: false,
+    let mut visitor = DxrVisitor{ sess=sess,
+                                  analysis=analysis,
+                                  collected_paths=vec!(),
+                                  collecting=false,
+                                  fmt=FmtStrs::new(box Recorder {
+                                                        out=output_file as Box<Writer>,
+                                                        dump_spans=false,
                                                     },
                                                     SpanUtils {
-                                                        sess: sess,
-                                                        err_count: Cell::new(0)
+                                                        sess=sess,
+                                                        err_count=Cell::new(0)
                                                     },
                                                     cratename.clone()),
-                                  span: SpanUtils {
-                                      sess: sess,
-                                      err_count: Cell::new(0)
+                                  span=SpanUtils {
+                                      sess=sess,
+                                      err_count=Cell::new(0)
                                   }};
 
     visitor.dump_crate_info(cratename.as_slice(), krate);

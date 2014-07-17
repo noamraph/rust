@@ -189,7 +189,7 @@ fn item_parent_item(d: ebml::Doc) -> Option<ast::DefId> {
 fn item_reqd_and_translated_parent_item(cnum: ast::CrateNum,
                                         d: ebml::Doc) -> ast::DefId {
     let trait_did = item_parent_item(d).expect("item without parent");
-    ast::DefId { krate: cnum, node: trait_did.node }
+    ast::DefId { krate=cnum, node=trait_did.node }
 }
 
 fn item_def_id(d: ebml::Doc, cdata: Cmd) -> ast::DefId {
@@ -275,10 +275,10 @@ fn item_region_param_defs(item_doc: ebml::Doc, cdata: Cmd)
         let doc = reader::get_doc(rp_doc, tag_region_param_def_index);
         let index = reader::doc_as_u64(doc) as uint;
 
-        v.push(space, ty::RegionParameterDef { name: ident.name,
-                                               def_id: def_id,
-                                               space: space,
-                                               index: index });
+        v.push(space, ty::RegionParameterDef { name=ident.name,
+                                               def_id=def_id,
+                                               space=space,
+                                               index=index });
         true
     });
     v
@@ -289,7 +289,7 @@ fn enum_variant_ids(item: ebml::Doc, cdata: Cmd) -> Vec<ast::DefId> {
     let v = tag_items_data_item_variant;
     reader::tagged_docs(item, v, |p| {
         let ext = reader::with_doc_data(p, parse_def_id);
-        ids.push(ast::DefId { krate: cdata.cnum, node: ext.node });
+        ids.push(ast::DefId { krate=cdata.cnum, node=ext.node });
         true
     });
     return ids;
@@ -393,10 +393,10 @@ pub fn get_trait_def(cdata: Cmd,
     });
 
     ty::TraitDef {
-        generics: ty::Generics {types: tp_defs,
-                                regions: rp_defs},
-        bounds: bounds,
-        trait_ref: Rc::new(item_trait_ref(item_doc, tcx, cdata))
+        generics=ty::Generics {types=tp_defs,
+                                regions=rp_defs},
+        bounds=bounds,
+        trait_ref=Rc::new(item_trait_ref(item_doc, tcx, cdata))
     }
 }
 
@@ -405,16 +405,16 @@ pub fn get_type(cdata: Cmd, id: ast::NodeId, tcx: &ty::ctxt)
 
     let item = lookup_item(id, cdata.data());
 
-    let t = item_type(ast::DefId { krate: cdata.cnum, node: id }, item, tcx,
+    let t = item_type(ast::DefId { krate=cdata.cnum, node=id }, item, tcx,
                       cdata);
 
     let tp_defs = item_ty_param_defs(item, tcx, cdata, tag_items_data_item_ty_param_bounds);
     let rp_defs = item_region_param_defs(item, cdata);
 
     ty::Polytype {
-        generics: ty::Generics {types: tp_defs,
-                                regions: rp_defs},
-        ty: t
+        generics=ty::Generics {types=tp_defs,
+                                regions=rp_defs},
+        ty=t
     }
 }
 
@@ -697,7 +697,7 @@ pub fn get_enum_variants(intr: Rc<IdentInterner>, cdata: Cmd, id: ast::NodeId,
     let mut disr_val = 0;
     enum_variant_ids(item, cdata).iter().map(|did| {
         let item = find_item(did.node, items);
-        let ctor_ty = item_type(ast::DefId { krate: cdata.cnum, node: id},
+        let ctor_ty = item_type(ast::DefId { krate=cdata.cnum, node=id},
                                 item, tcx, cdata);
         let name = item_name(&*intr, item);
         let arg_tys = match ty::get(ctor_ty).sty {
@@ -711,15 +711,15 @@ pub fn get_enum_variants(intr: Rc<IdentInterner>, cdata: Cmd, id: ast::NodeId,
         let old_disr_val = disr_val;
         disr_val += 1;
         Rc::new(ty::VariantInfo {
-            args: arg_tys,
-            arg_names: None,
-            ctor_ty: ctor_ty,
-            name: name,
+            args=arg_tys,
+            arg_names=None,
+            ctor_ty=ctor_ty,
+            name=name,
             // I'm not even sure if we encode visibility
             // for variants -- TEST -- tjc
-            id: *did,
-            disr_val: old_disr_val,
-            vis: ast::Inherited
+            id=*did,
+            disr_val=old_disr_val,
+            vis=ast::Inherited
         })
     }).collect()
 }
@@ -798,8 +798,8 @@ pub fn get_method(intr: Rc<IdentInterner>, cdata: Cmd, id: ast::NodeId,
     ty::Method::new(
         name,
         ty::Generics {
-            types: type_param_defs,
-            regions: rp_defs,
+            types=type_param_defs,
+            regions=rp_defs,
         },
         fty,
         explicit_self,
@@ -920,10 +920,10 @@ pub fn get_static_methods_if_impl(intr: Rc<IdentInterner>,
                 }
 
                 static_impl_methods.push(StaticMethodInfo {
-                    ident: item_name(&*intr, impl_method_doc),
-                    def_id: item_def_id(impl_method_doc, cdata),
-                    fn_style: fn_style,
-                    vis: item_visibility(impl_method_doc),
+                    ident=item_name(&*intr, impl_method_doc),
+                    def_id=item_def_id(impl_method_doc, cdata),
+                    fn_style=fn_style,
+                    vis=item_visibility(impl_method_doc),
                 });
             }
             _ => {}
@@ -982,10 +982,10 @@ pub fn get_struct_fields(intr: Rc<IdentInterner>, cdata: Cmd, id: ast::NodeId)
             let tagdoc = reader::get_doc(an_item, tag_item_field_origin);
             let origin_id =  translate_def_id(cdata, reader::with_doc_data(tagdoc, parse_def_id));
             result.push(ty::field_ty {
-                name: name.name,
-                id: did,
-                vis: struct_field_family_to_visibility(f),
-                origin: origin_id,
+                name=name.name,
+                id=did,
+                vis=struct_field_family_to_visibility(f),
+                origin=origin_id,
             });
         }
         true
@@ -996,10 +996,10 @@ pub fn get_struct_fields(intr: Rc<IdentInterner>, cdata: Cmd, id: ast::NodeId)
         let f = item_family(an_item);
         let origin_id =  translate_def_id(cdata, reader::with_doc_data(tagdoc, parse_def_id));
         result.push(ty::field_ty {
-            name: special_idents::unnamed_field.name,
-            id: did,
-            vis: struct_field_family_to_visibility(f),
-            origin: origin_id,
+            name=special_idents::unnamed_field.name,
+            id=did,
+            vis=struct_field_family_to_visibility(f),
+            origin=origin_id,
         });
         true
     });
@@ -1046,13 +1046,13 @@ fn get_attributes(md: ebml::Doc) -> Vec<ast::Attribute> {
             let meta_item = *meta_items.get(0);
             attrs.push(
                 codemap::Spanned {
-                    node: ast::Attribute_ {
-                        id: attr::mk_attr_id(),
-                        style: ast::AttrOuter,
-                        value: meta_item,
-                        is_sugared_doc: false,
+                    node=ast::Attribute_ {
+                        id=attr::mk_attr_id(),
+                        style=ast::AttrOuter,
+                        value=meta_item,
+                        is_sugared_doc=false,
                     },
-                    span: codemap::DUMMY_SP
+                    span=codemap::DUMMY_SP
                 });
             true
         });
@@ -1098,9 +1098,9 @@ pub fn get_crate_deps(data: &[u8]) -> Vec<CrateDep> {
         let name = docstr(depdoc, tag_crate_dep_crate_name);
         let hash = Svh::new(docstr(depdoc, tag_crate_dep_hash).as_slice());
         deps.push(CrateDep {
-            cnum: crate_num,
-            name: name,
-            hash: hash,
+            cnum=crate_num,
+            name=name,
+            hash=hash,
         });
         crate_num += 1;
         true
@@ -1161,14 +1161,14 @@ pub fn list_crate_metadata(bytes: &[u8], out: &mut io::Writer) -> io::IoResult<(
 // crate to the correct local crate number.
 pub fn translate_def_id(cdata: Cmd, did: ast::DefId) -> ast::DefId {
     if did.krate == ast::LOCAL_CRATE {
-        return ast::DefId { krate: cdata.cnum, node: did.node };
+        return ast::DefId { krate=cdata.cnum, node=did.node };
     }
 
     match cdata.cnum_map.find(&did.krate) {
         Some(&n) => {
             ast::DefId {
-                krate: n,
-                node: did.node,
+                krate=n,
+                node=did.node,
             }
         }
         None => fail!("didn't find a crate in the cnum_map")
@@ -1324,8 +1324,8 @@ pub fn get_reachable_extern_fns(cdata: Cmd) -> Vec<ast::DefId> {
                                 tag_reachable_extern_fns);
     reader::tagged_docs(items, tag_reachable_extern_fn_id, |doc| {
         ret.push(ast::DefId {
-            krate: cdata.cnum,
-            node: reader::doc_as_u32(doc),
+            krate=cdata.cnum,
+            node=reader::doc_as_u32(doc),
         });
         true
     });

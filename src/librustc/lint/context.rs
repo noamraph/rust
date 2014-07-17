@@ -86,10 +86,10 @@ impl LintStore {
 
     pub fn new() -> LintStore {
         LintStore {
-            lints: vec!(),
-            passes: Some(vec!()),
-            by_name: HashMap::new(),
-            levels: HashMap::new(),
+            lints=vec!(),
+            passes=Some(vec!()),
+            by_name=HashMap::new(),
+            levels=HashMap::new(),
         }
     }
 
@@ -303,12 +303,12 @@ impl<'a> Context<'a> {
                                       LintStore::new());
 
         Context {
-            tcx: tcx,
-            krate: krate,
-            exported_items: exported_items,
-            lints: lint_store,
-            level_stack: vec!(),
-            node_levels: RefCell::new(HashMap::new()),
+            tcx=tcx,
+            krate=krate,
+            exported_items=exported_items,
+            lints=lint_store,
+            level_stack=vec!(),
+            node_levels=RefCell::new(HashMap::new()),
         }
     }
 
@@ -400,9 +400,9 @@ impl<'a> Context<'a> {
 
     fn visit_ids(&self, f: |&mut ast_util::IdVisitor<Context>|) {
         let mut v = ast_util::IdVisitor {
-            operation: self,
-            pass_through_items: false,
-            visited_outermost: false,
+            operation=self,
+            pass_through_items=false,
+            visited_outermost=false,
         };
         f(&mut v);
     }

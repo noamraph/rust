@@ -43,12 +43,12 @@ pub fn expand_deriving_bound(cx: &mut ExtCtxt,
     };
 
     let trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: Path::new(vec!("std", "kinds", name)),
-        additional_bounds: Vec::new(),
-        generics: LifetimeBounds::empty(),
-        methods: vec!()
+        span=span,
+        attributes=Vec::new(),
+        path=Path::new(vec!("std", "kinds", name)),
+        additional_bounds=Vec::new(),
+        generics=LifetimeBounds::empty(),
+        methods=vec!()
     };
 
     trait_def.expand(cx, mitem, item, push)

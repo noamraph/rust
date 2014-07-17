@@ -240,7 +240,7 @@ impl<T: 'static> KeyValue<T> {
                                 as *const raw::TraitObject;
                 &mut *((*data).data as *mut T)
             };
-            Ref { _ptr: ptr, _index: pos, _nosend: marker::NoSend, _key: self }
+            Ref { _ptr=ptr, _index=pos, _nosend=marker::NoSend, _key=self }
         })
     }
 

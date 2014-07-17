@@ -157,9 +157,9 @@ impl Regex {
         let ast = try!(parse::parse(re));
         let (prog, names) = Program::new(ast);
         Ok(Dynamic(Dynamic {
-            original: re.to_string(),
-            names: names,
-            prog: prog,
+            original=re.to_string(),
+            names=names,
+            prog=prog,
         }))
     }
 
@@ -239,10 +239,10 @@ impl Regex {
     /// ```
     pub fn find_iter<'r, 't>(&'r self, text: &'t str) -> FindMatches<'r, 't> {
         FindMatches {
-            re: self,
-            search: text,
-            last_end: 0,
-            last_match: None,
+            re=self,
+            search=text,
+            last_end=0,
+            last_match=None,
         }
     }
 
@@ -330,10 +330,10 @@ impl Regex {
     pub fn captures_iter<'r, 't>(&'r self, text: &'t str)
                                 -> FindCaptures<'r, 't> {
         FindCaptures {
-            re: self,
-            search: text,
-            last_match: None,
-            last_end: 0,
+            re=self,
+            search=text,
+            last_match=None,
+            last_end=0,
         }
     }
 
@@ -359,8 +359,8 @@ impl Regex {
     /// ```
     pub fn split<'r, 't>(&'r self, text: &'t str) -> RegexSplits<'r, 't> {
         RegexSplits {
-            finder: self.find_iter(text),
-            last: 0,
+            finder=self.find_iter(text),
+            last=0,
         }
     }
 
@@ -390,9 +390,9 @@ impl Regex {
     pub fn splitn<'r, 't>(&'r self, text: &'t str, limit: uint)
                          -> RegexSplitsN<'r, 't> {
         RegexSplitsN {
-            splits: self.split(text),
-            cur: 0,
-            limit: limit,
+            splits=self.split(text),
+            cur=0,
+            limit=limit,
         }
     }
 
@@ -686,9 +686,9 @@ impl<'t> Captures<'t> {
                 Some(named)
             };
         Some(Captures {
-            text: search,
-            locs: locs,
-            named: named,
+            text=search,
+            locs=locs,
+            named=named,
         })
     }
 
@@ -736,14 +736,14 @@ impl<'t> Captures<'t> {
     /// Creates an iterator of all the capture groups in order of appearance
     /// in the regular expression.
     pub fn iter(&'t self) -> SubCaptures<'t> {
-        SubCaptures { idx: 0, caps: self, }
+        SubCaptures { idx=0, caps=self, }
     }
 
     /// Creates an iterator of all the capture group positions in order of
     /// appearance in the regular expression. Positions are byte indices
     /// in terms of the original string matched.
     pub fn iter_pos(&'t self) -> SubCapturesPos<'t> {
-        SubCapturesPos { idx: 0, caps: self, }
+        SubCapturesPos { idx=0, caps=self, }
     }
 
     /// Expands all instances of `$name` in `text` to the corresponding capture

@@ -153,7 +153,7 @@ pub struct NodeInfo {
 }
 
 pub fn expr_info(expr: &ast::Expr) -> NodeInfo {
-    NodeInfo { id: expr.id, span: expr.span }
+    NodeInfo { id=expr.id, span=expr.span }
 }
 
 pub struct BuilderRef_res {
@@ -170,7 +170,7 @@ impl Drop for BuilderRef_res {
 
 pub fn BuilderRef_res(b: BuilderRef) -> BuilderRef_res {
     BuilderRef_res {
-        b: b
+        b=b
     }
 }
 
@@ -186,8 +186,8 @@ pub struct param_substs {
 impl param_substs {
     pub fn empty() -> param_substs {
         param_substs {
-            substs: subst::Substs::trans_empty(),
-            vtables: subst::VecPerParamSpace::empty(),
+            substs=subst::Substs::trans_empty(),
+            vtables=subst::VecPerParamSpace::empty(),
         }
     }
 
@@ -417,12 +417,12 @@ impl<'a> Block<'a> {
                fcx: &'a FunctionContext<'a>)
                -> &'a Block<'a> {
         fcx.block_arena.alloc(Block {
-            llbb: llbb,
-            terminated: Cell::new(false),
-            unreachable: Cell::new(false),
-            is_lpad: is_lpad,
-            opt_node_id: opt_node_id,
-            fcx: fcx
+            llbb=llbb,
+            terminated=Cell::new(false),
+            unreachable=Cell::new(false),
+            is_lpad=is_lpad,
+            opt_node_id=opt_node_id,
+            fcx=fcx
         })
     }
 
@@ -480,8 +480,8 @@ pub struct Result<'a> {
 impl<'a> Result<'a> {
     pub fn new(bcx: &'a Block<'a>, val: ValueRef) -> Result<'a> {
         Result {
-            bcx: bcx,
-            val: val,
+            bcx=bcx,
+            val=val,
         }
     }
 }

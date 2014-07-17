@@ -389,9 +389,9 @@ impl IoError {
 
         let (kind, desc) = get_err(errno as i32);
         IoError {
-            kind: kind,
-            desc: desc,
-            detail: if detail && kind == OtherIoError {
+            kind=kind,
+            desc=desc,
+            detail=if detail && kind == OtherIoError {
                 Some(os::error_string(errno).as_slice().chars().map(|c| c.to_lowercase()).collect())
             } else {
                 None
@@ -424,11 +424,11 @@ impl IoError {
 impl fmt::Show for IoError {
     fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            IoError { kind: OtherIoError, desc: "unknown error", detail: Some(ref detail) } =>
+            IoError { kind=OtherIoError, desc="unknown error", detail=Some(ref detail) } =>
                 write!(fmt, "{}", detail),
-            IoError { detail: None, desc, .. } =>
+            IoError { detail=None, desc, .. } =>
                 write!(fmt, "{}", desc),
-            IoError { detail: Some(ref detail), desc, .. } =>
+            IoError { detail=Some(ref detail), desc, .. } =>
                 write!(fmt, "{} ({})", desc, detail)
         }
     }
@@ -567,7 +567,7 @@ pub trait Reader {
     fn read_at_least(&mut self, min: uint, buf: &mut [u8]) -> IoResult<uint> {
         if min > buf.len() {
             return Err(IoError {
-                detail: Some(String::from_str("the buffer is too short")),
+                detail=Some(String::from_str("the buffer is too short")),
                 ..standard_error(InvalidInput)
             });
         }
@@ -635,7 +635,7 @@ pub trait Reader {
     fn push_at_least(&mut self, min: uint, len: uint, buf: &mut Vec<u8>) -> IoResult<uint> {
         if min > len {
             return Err(IoError {
-                detail: Some(String::from_str("the buffer is too short")),
+                detail=Some(String::from_str("the buffer is too short")),
                 ..standard_error(InvalidInput)
             });
         }
@@ -938,7 +938,7 @@ pub trait Reader {
     /// This is useful to allow applying adaptors while still
     /// retaining ownership of the original value.
     fn by_ref<'a>(&'a mut self) -> RefReader<'a, Self> {
-        RefReader { inner: self }
+        RefReader { inner=self }
     }
 }
 
@@ -968,8 +968,8 @@ unsafe fn slice_vec_capacity<'a, T>(v: &'a mut Vec<T>, start: uint, end: uint) -
     assert!(start <= end);
     assert!(end <= v.capacity());
     transmute(Slice {
-        data: v.as_ptr().offset(start as int),
-        len: end - start
+        data=v.as_ptr().offset(start as int),
+        len=end - start
     })
 }
 
@@ -1073,7 +1073,7 @@ pub trait Writer {
             }
         }
 
-        let mut output = Adaptor { inner: self, error: Ok(()) };
+        let mut output = Adaptor { inner=self, error=Ok(()) };
         match fmt::write(&mut output, fmt) {
             Ok(()) => Ok(()),
             Err(..) => output.error
@@ -1271,7 +1271,7 @@ pub trait Writer {
     /// retaining ownership of the original value.
     #[inline]
     fn by_ref<'a>(&'a mut self) -> RefWriter<'a, Self> {
-        RefWriter { inner: self }
+        RefWriter { inner=self }
     }
 }
 
@@ -1356,7 +1356,7 @@ impl<'r, T: Buffer> Iterator<IoResult<String>> for Lines<'r, T> {
     fn next(&mut self) -> Option<IoResult<String>> {
         match self.buffer.read_line() {
             Ok(x) => Some(Ok(x)),
-            Err(IoError { kind: EndOfFile, ..}) => None,
+            Err(IoError { kind=EndOfFile, ..}) => None,
             Err(y) => Some(Err(y))
         }
     }
@@ -1383,7 +1383,7 @@ impl<'r, T: Buffer> Iterator<IoResult<char>> for Chars<'r, T> {
     fn next(&mut self) -> Option<IoResult<char>> {
         match self.buffer.read_char() {
             Ok(x) => Some(Ok(x)),
-            Err(IoError { kind: EndOfFile, ..}) => None,
+            Err(IoError { kind=EndOfFile, ..}) => None,
             Err(y) => Some(Err(y))
         }
     }
@@ -1454,7 +1454,7 @@ pub trait Buffer: Reader {
     /// Any error other than `EndOfFile` that is produced by the underlying Reader
     /// is returned by the iterator and should be handled by the caller.
     fn lines<'r>(&'r mut self) -> Lines<'r, Self> {
-        Lines { buffer: self }
+        Lines { buffer=self }
     }
 
     /// Reads a sequence of bytes leading up to a specified delimiter. Once the
@@ -1541,7 +1541,7 @@ pub trait Buffer: Reader {
     /// Any error other than `EndOfFile` that is produced by the underlying Reader
     /// is returned by the iterator and should be handled by the caller.
     fn chars<'r>(&'r mut self) -> Chars<'r, Self> {
-        Chars { buffer: self }
+        Chars { buffer=self }
     }
 }
 
@@ -1604,7 +1604,7 @@ pub trait Acceptor<T> {
     ///
     /// Note that I/O errors will be yielded by the iterator itself.
     fn incoming<'r>(&'r mut self) -> IncomingConnections<'r, Self> {
-        IncomingConnections { inc: self }
+        IncomingConnections { inc=self }
     }
 }
 
@@ -1660,9 +1660,9 @@ pub fn standard_error(kind: IoErrorKind) -> IoError {
         NoProgress => "no progress",
     };
     IoError {
-        kind: kind,
-        desc: desc,
-        detail: None,
+        kind=kind,
+        desc=desc,
+        detail=None,
     }
 }
 
@@ -1847,7 +1847,7 @@ mod tests {
 
     impl<T: Reader> BadReader<T> {
         fn new(r: T, behavior: Vec<BadReaderBehavior>) -> BadReader<T> {
-            BadReader { behavior: behavior, r: r }
+            BadReader { behavior=behavior, r=r }
         }
     }
 

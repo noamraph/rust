@@ -37,7 +37,7 @@ impl<R: Reader> ReaderRng<R> {
     /// Create a new `ReaderRng` from a `Reader`.
     pub fn new(r: R) -> ReaderRng<R> {
         ReaderRng {
-            reader: r
+            reader=r
         }
     }
 }

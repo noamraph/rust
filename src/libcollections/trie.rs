@@ -115,7 +115,7 @@ impl<T> TrieMap<T> {
     /// Create an empty TrieMap
     #[inline]
     pub fn new() -> TrieMap<T> {
-        TrieMap{root: TrieNode::new(), length: 0}
+        TrieMap{root=TrieNode::new(), length=0}
     }
 
     /// Visit all key-value pairs in reverse order
@@ -352,7 +352,7 @@ impl TrieSet {
     /// Create an empty TrieSet
     #[inline]
     pub fn new() -> TrieSet {
-        TrieSet{map: TrieMap::new()}
+        TrieSet{map=TrieMap::new()}
     }
 
     /// Visit all values in reverse order
@@ -364,19 +364,19 @@ impl TrieSet {
     /// Get an iterator over the values in the set
     #[inline]
     pub fn iter<'a>(&'a self) -> SetItems<'a> {
-        SetItems{iter: self.map.iter()}
+        SetItems{iter=self.map.iter()}
     }
 
     /// Get an iterator pointing to the first value that is not less than `val`.
     /// If all values in the set are less than `val` an empty iterator is returned.
     pub fn lower_bound<'a>(&'a self, val: uint) -> SetItems<'a> {
-        SetItems{iter: self.map.lower_bound(val)}
+        SetItems{iter=self.map.lower_bound(val)}
     }
 
     /// Get an iterator pointing to the first value that key is greater than `val`.
     /// If all values in the set are not greater than `val` an empty iterator is returned.
     pub fn upper_bound<'a>(&'a self, val: uint) -> SetItems<'a> {
-        SetItems{iter: self.map.upper_bound(val)}
+        SetItems{iter=self.map.upper_bound(val)}
     }
 }
 
@@ -406,8 +406,8 @@ impl<T> TrieNode<T> {
     fn new() -> TrieNode<T> {
         // FIXME: #5244: [Nothing, ..SIZE] should be possible without implicit
         // copyability
-        TrieNode{count: 0,
-                 children: [Nothing, Nothing, Nothing, Nothing,
+        TrieNode{count=0,
+                 children=[Nothing, Nothing, Nothing, Nothing,
                             Nothing, Nothing, Nothing, Nothing,
                             Nothing, Nothing, Nothing, Nothing,
                             Nothing, Nothing, Nothing, Nothing]}
@@ -539,11 +539,11 @@ macro_rules! iterator_impl {
             #[cfg(target_word_size="32")]
             unsafe fn new() -> $name<'a, T> {
                 $name {
-                    remaining_min: 0,
-                    remaining_max: 0,
-                    length: 0,
+                    remaining_min=0,
+                    remaining_max=0,
+                    length=0,
                     // ick :( ... at least the compiler will tell us if we screwed up.
-                    stack: [zeroed(), zeroed(), zeroed(), zeroed(), zeroed(),
+                    stack=[zeroed(), zeroed(), zeroed(), zeroed(), zeroed(),
                             zeroed(), zeroed(), zeroed()]
                 }
             }
@@ -551,10 +551,10 @@ macro_rules! iterator_impl {
             #[cfg(target_word_size="64")]
             unsafe fn new() -> $name<'a, T> {
                 $name {
-                    remaining_min: 0,
-                    remaining_max: 0,
-                    length: 0,
-                    stack: [zeroed(), zeroed(), zeroed(), zeroed(),
+                    remaining_min=0,
+                    remaining_max=0,
+                    length=0,
+                    stack=[zeroed(), zeroed(), zeroed(), zeroed(),
                             zeroed(), zeroed(), zeroed(), zeroed(),
                             zeroed(), zeroed(), zeroed(), zeroed(),
                             zeroed(), zeroed(), zeroed(), zeroed()]

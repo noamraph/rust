@@ -80,29 +80,29 @@ impl Process {
                     flags |= uvll::PROCESS_DETACHED;
                 }
                 let mut options = uvll::uv_process_options_t {
-                    exit_cb: on_exit,
-                    file: unsafe { *argv },
-                    args: argv,
-                    env: envp,
-                    cwd: match cfg.cwd {
+                    exit_cb=on_exit,
+                    file=unsafe { *argv },
+                    args=argv,
+                    env=envp,
+                    cwd=match cfg.cwd {
                         Some(cwd) => cwd.as_ptr(),
                         None => ptr::null(),
                     },
-                    flags: flags as libc::c_uint,
-                    stdio_count: stdio.len() as libc::c_int,
-                    stdio: stdio.as_mut_ptr(),
-                    uid: cfg.uid.unwrap_or(0) as uvll::uv_uid_t,
-                    gid: cfg.gid.unwrap_or(0) as uvll::uv_gid_t,
+                    flags=flags as libc::c_uint,
+                    stdio_count=stdio.len() as libc::c_int,
+                    stdio=stdio.as_mut_ptr(),
+                    uid=cfg.uid.unwrap_or(0) as uvll::uv_uid_t,
+                    gid=cfg.gid.unwrap_or(0) as uvll::uv_gid_t,
                 };
 
                 let handle = UvHandle::alloc(None::<Process>, uvll::UV_PROCESS);
                 let process = box Process {
-                    handle: handle,
-                    home: io_loop.make_handle(),
-                    to_wake: None,
-                    exit_status: None,
-                    timer: None,
-                    timeout_state: NoTimeout,
+                    handle=handle,
+                    home=io_loop.make_handle(),
+                    to_wake=None,
+                    exit_status=None,
+                    timer=None,
+                    timeout_state=NoTimeout,
                 };
                 match unsafe {
                     uvll::uv_spawn(io_loop.uv_loop(), handle, &mut options)

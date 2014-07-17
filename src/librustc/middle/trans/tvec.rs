@@ -164,8 +164,8 @@ pub fn trans_slice_vstore<'a>(
 
         // Arrange for the backing array to be cleaned up.
         let fixed_ty = ty::mk_vec(bcx.tcx(),
-                                  ty::mt {ty: vt.unit_ty,
-                                          mutbl: ast::MutMutable},
+                                  ty::mt {ty=vt.unit_ty,
+                                          mutbl=ast::MutMutable},
                                   Some(count));
         let llfixed_ty = type_of::type_of(bcx.ccx(), fixed_ty).ptr_to();
         let llfixed_casted = BitCast(bcx, llfixed, llfixed_ty);
@@ -281,7 +281,7 @@ pub fn trans_uniq_vstore<'a>(bcx: &'a Block<'a>,
 
     // ~[T] is not going to be changed to support alignment, since it's obsolete.
     let align = C_uint(ccx, 8);
-    let Result { bcx: bcx, val: val } = malloc_raw_dyn(bcx, vec_ty, vecsize, align);
+    let Result { bcx=bcx, val=val } = malloc_raw_dyn(bcx, vec_ty, vecsize, align);
     Store(bcx, fill, GEPi(bcx, val, [0u, abi::vec_elt_fill]));
     Store(bcx, alloc, GEPi(bcx, val, [0u, abi::vec_elt_alloc]));
 
@@ -422,10 +422,10 @@ pub fn vec_types(bcx: &Block, unit_ty: ty::t) -> VecTypes {
     let llunit_alloc_size = llsize_of_alloc(ccx, llunit_ty);
 
     VecTypes {
-        unit_ty: unit_ty,
-        llunit_ty: llunit_ty,
-        llunit_size: llunit_size,
-        llunit_alloc_size: llunit_alloc_size
+        unit_ty=unit_ty,
+        llunit_ty=llunit_ty,
+        llunit_size=llunit_size,
+        llunit_alloc_size=llunit_alloc_size
     }
 }
 

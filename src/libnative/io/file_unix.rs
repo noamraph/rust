@@ -42,9 +42,9 @@ impl FileDesc {
     /// Note that all I/O operations done on this object will be *blocking*, but
     /// they do not require the runtime to be active.
     pub fn new(fd: fd_t, close_on_drop: bool) -> FileDesc {
-        FileDesc { inner: Arc::new(Inner {
-            fd: fd,
-            close_on_drop: close_on_drop
+        FileDesc { inner=Arc::new(Inner {
+            fd=fd,
+            close_on_drop=close_on_drop
         }) }
     }
 
@@ -169,7 +169,7 @@ impl rtio::RtioPipe for FileDesc {
         self.inner_write(buf)
     }
     fn clone(&self) -> Box<rtio::RtioPipe + Send> {
-        box FileDesc { inner: self.inner.clone() } as Box<rtio::RtioPipe + Send>
+        box FileDesc { inner=self.inner.clone() } as Box<rtio::RtioPipe + Send>
     }
 
     // Only supported on named pipes currently. Note that this doesn't have an
@@ -233,8 +233,8 @@ impl CFile {
     /// destruction.
     pub fn new(file: *mut libc::FILE) -> CFile {
         CFile {
-            file: file,
-            fd: FileDesc::new(unsafe { libc::fileno(file) }, false)
+            file=file,
+            fd=FileDesc::new(unsafe { libc::fileno(file) }, false)
         }
     }
 
@@ -468,22 +468,22 @@ fn mkstat(stat: &libc::stat) -> rtio::FileStat {
     fn gen(_stat: &libc::stat) -> u64 { 0 }
 
     rtio::FileStat {
-        size: stat.st_size as u64,
-        kind: stat.st_mode as u64,
-        perm: stat.st_mode as u64,
-        created: mktime(stat.st_ctime as u64, stat.st_ctime_nsec as u64),
-        modified: mktime(stat.st_mtime as u64, stat.st_mtime_nsec as u64),
-        accessed: mktime(stat.st_atime as u64, stat.st_atime_nsec as u64),
-        device: stat.st_dev as u64,
-        inode: stat.st_ino as u64,
-        rdev: stat.st_rdev as u64,
-        nlink: stat.st_nlink as u64,
-        uid: stat.st_uid as u64,
-        gid: stat.st_gid as u64,
-        blksize: stat.st_blksize as u64,
-        blocks: stat.st_blocks as u64,
-        flags: flags(stat),
-        gen: gen(stat),
+        size=stat.st_size as u64,
+        kind=stat.st_mode as u64,
+        perm=stat.st_mode as u64,
+        created=mktime(stat.st_ctime as u64, stat.st_ctime_nsec as u64),
+        modified=mktime(stat.st_mtime as u64, stat.st_mtime_nsec as u64),
+        accessed=mktime(stat.st_atime as u64, stat.st_atime_nsec as u64),
+        device=stat.st_dev as u64,
+        inode=stat.st_ino as u64,
+        rdev=stat.st_rdev as u64,
+        nlink=stat.st_nlink as u64,
+        uid=stat.st_uid as u64,
+        gid=stat.st_gid as u64,
+        blksize=stat.st_blksize as u64,
+        blocks=stat.st_blocks as u64,
+        flags=flags(stat),
+        gen=gen(stat),
     }
 }
 
@@ -505,8 +505,8 @@ pub fn lstat(p: &CString) -> IoResult<rtio::FileStat> {
 
 pub fn utime(p: &CString, atime: u64, mtime: u64) -> IoResult<()> {
     let buf = libc::utimbuf {
-        actime: (atime / 1000) as libc::time_t,
-        modtime: (mtime / 1000) as libc::time_t,
+        actime=(atime / 1000) as libc::time_t,
+        modtime=(mtime / 1000) as libc::time_t,
     };
     super::mkerr_libc(retry(|| unsafe {
         libc::utime(p.as_ptr(), &buf)

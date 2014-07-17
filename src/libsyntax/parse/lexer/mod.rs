@@ -62,8 +62,8 @@ impl<'a> Reader for StringReader<'a> {
     /// Return the next token. EFFECT: advances the string_reader.
     fn next_token(&mut self) -> TokenAndSpan {
         let ret_val = TokenAndSpan {
-            tok: replace(&mut self.peek_tok, token::UNDERSCORE),
-            sp: self.peek_span,
+            tok=replace(&mut self.peek_tok, token::UNDERSCORE),
+            sp=self.peek_span,
         };
         self.advance_token();
         ret_val
@@ -77,8 +77,8 @@ impl<'a> Reader for StringReader<'a> {
     fn peek(&self) -> TokenAndSpan {
         // FIXME(pcwalton): Bad copy!
         TokenAndSpan {
-            tok: self.peek_tok.clone(),
-            sp: self.peek_span,
+            tok=self.peek_tok.clone(),
+            sp=self.peek_span,
         }
     }
 }
@@ -100,8 +100,8 @@ impl<'a> Reader for TtReader<'a> {
     }
     fn peek(&self) -> TokenAndSpan {
         TokenAndSpan {
-            tok: self.cur_tok.clone(),
-            sp: self.cur_span,
+            tok=self.cur_tok.clone(),
+            sp=self.cur_span,
         }
     }
 }
@@ -111,15 +111,15 @@ impl<'a> StringReader<'a> {
     pub fn new_raw<'b>(span_diagnostic: &'b SpanHandler,
                    filemap: Rc<codemap::FileMap>) -> StringReader<'b> {
         let mut sr = StringReader {
-            span_diagnostic: span_diagnostic,
-            pos: filemap.start_pos,
-            last_pos: filemap.start_pos,
-            col: CharPos(0),
-            curr: Some('\n'),
-            filemap: filemap,
+            span_diagnostic=span_diagnostic,
+            pos=filemap.start_pos,
+            last_pos=filemap.start_pos,
+            col=CharPos(0),
+            curr=Some('\n'),
+            filemap=filemap,
             /* dummy values; not read */
-            peek_tok: token::EOF,
-            peek_span: codemap::DUMMY_SP,
+            peek_tok=token::EOF,
+            peek_span=codemap::DUMMY_SP,
         };
         sr.bump();
         sr
@@ -383,16 +383,16 @@ impl<'a> StringReader<'a> {
                             };
 
                             return Some(TokenAndSpan{
-                                tok: tok,
-                                sp: codemap::mk_sp(start_bpos, self.last_pos)
+                                tok=tok,
+                                sp=codemap::mk_sp(start_bpos, self.last_pos)
                             });
                         });
                     } else {
                         let start_bpos = self.last_pos - BytePos(2);
                         while !self.curr_is('\n') && !self.is_eof() { self.bump(); }
                         return Some(TokenAndSpan {
-                            tok: token::COMMENT,
-                            sp: codemap::mk_sp(start_bpos, self.last_pos)
+                            tok=token::COMMENT,
+                            sp=codemap::mk_sp(start_bpos, self.last_pos)
                         });
                     }
                 }
@@ -421,8 +421,8 @@ impl<'a> StringReader<'a> {
                     let start = self.last_pos;
                     while !self.curr_is('\n') && !self.is_eof() { self.bump(); }
                     return Some(TokenAndSpan {
-                        tok: token::SHEBANG(self.name_from(start)),
-                        sp: codemap::mk_sp(start, self.last_pos)
+                        tok=token::SHEBANG(self.name_from(start)),
+                        sp=codemap::mk_sp(start, self.last_pos)
                     });
                 }
             }
@@ -447,8 +447,8 @@ impl<'a> StringReader<'a> {
                 let start_bpos = self.last_pos;
                 while is_whitespace(self.curr) { self.bump(); }
                 let c = Some(TokenAndSpan {
-                    tok: token::WS,
-                    sp: codemap::mk_sp(start_bpos, self.last_pos)
+                    tok=token::WS,
+                    sp=codemap::mk_sp(start_bpos, self.last_pos)
                 });
                 debug!("scanning whitespace: {}", c);
                 c
@@ -506,8 +506,8 @@ impl<'a> StringReader<'a> {
             };
 
             Some(TokenAndSpan{
-                tok: tok,
-                sp: codemap::mk_sp(start_bpos, self.last_pos)
+                tok=tok,
+                sp=codemap::mk_sp(start_bpos, self.last_pos)
             })
         })
     }
@@ -1330,8 +1330,8 @@ mod test {
         assert_eq!(string_reader.next_token().tok, token::WS);
         let tok1 = string_reader.next_token();
         let tok2 = TokenAndSpan{
-            tok:token::IDENT(id, false),
-            sp:Span {lo:BytePos(21),hi:BytePos(23),expn_info: None}};
+            tok=token::IDENT(id, false),
+            sp=Span {lo=BytePos(21),hi=BytePos(23),expn_info=None}};
         assert_eq!(tok1,tok2);
         assert_eq!(string_reader.next_token().tok, token::WS);
         // the 'main' id is already read:
@@ -1339,8 +1339,8 @@ mod test {
         // read another token:
         let tok3 = string_reader.next_token();
         let tok4 = TokenAndSpan{
-            tok:token::IDENT(str_to_ident("main"), false),
-            sp:Span {lo:BytePos(24),hi:BytePos(28),expn_info: None}};
+            tok=token::IDENT(str_to_ident("main"), false),
+            sp=Span {lo=BytePos(24),hi=BytePos(28),expn_info=None}};
         assert_eq!(tok3,tok4);
         // the lparen is already read:
         assert_eq!(string_reader.last_pos.clone(), BytePos(29))

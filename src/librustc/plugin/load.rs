@@ -55,11 +55,11 @@ struct PluginLoader<'a> {
 impl<'a> PluginLoader<'a> {
     fn new(sess: &'a Session) -> PluginLoader<'a> {
         PluginLoader {
-            sess: sess,
-            reader: PluginMetadataReader::new(sess),
-            plugins: Plugins {
-                macros: vec!(),
-                registrars: vec!(),
+            sess=sess,
+            reader=PluginMetadataReader::new(sess),
+            plugins=Plugins {
+                macros=vec!(),
+                registrars=vec!(),
             },
         }
     }
@@ -96,8 +96,8 @@ impl<'a> Visitor<()> for PluginLoader<'a> {
                     self.reader.read_plugin_metadata(vi);
 
                 self.plugins.macros.push(ExportedMacros {
-                    crate_name: name,
-                    macros: macros,
+                    crate_name=name,
+                    macros=macros,
                 });
 
                 match (lib, registrar_symbol) {

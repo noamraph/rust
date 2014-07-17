@@ -27,9 +27,9 @@ impl SignalWatcher {
     pub fn new(io: &mut UvIoFactory, signum: int, cb: Box<Callback + Send>)
                -> Result<Box<SignalWatcher>, UvError> {
         let s = box SignalWatcher {
-            handle: UvHandle::alloc(None::<SignalWatcher>, uvll::UV_SIGNAL),
-            home: io.make_handle(),
-            cb: cb,
+            handle=UvHandle::alloc(None::<SignalWatcher>, uvll::UV_SIGNAL),
+            home=io.make_handle(),
+            cb=cb,
         };
         assert_eq!(unsafe {
             uvll::uv_signal_init(io.uv_loop(), s.handle)

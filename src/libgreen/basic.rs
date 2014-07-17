@@ -41,12 +41,12 @@ enum Message { RunRemote(uint), RemoveRemote(uint) }
 impl BasicLoop {
     fn new() -> BasicLoop {
         BasicLoop {
-            work: vec![],
-            idle: None,
-            idle_active: None,
-            next_remote: 0,
-            remotes: vec![],
-            messages: Arc::new(Exclusive::new(Vec::new())),
+            work=vec![],
+            idle=None,
+            idle_active=None,
+            next_remote=0,
+            remotes=vec![],
+            messages=Arc::new(Exclusive::new(Vec::new())),
         }
     }
 
@@ -138,7 +138,7 @@ impl EventLoop for BasicLoop {
         self.idle = Some(cb);
         let a = Arc::new(atomics::AtomicBool::new(true));
         self.idle_active = Some(a.clone());
-        box BasicPausable { active: a } as Box<PausableIdleCallback + Send>
+        box BasicPausable { active=a } as Box<PausableIdleCallback + Send>
     }
 
     fn remote_callback(&mut self, f: Box<Callback + Send>)
@@ -162,7 +162,7 @@ struct BasicRemote {
 
 impl BasicRemote {
     fn new(queue: Arc<Exclusive<Vec<Message>>>, id: uint) -> BasicRemote {
-        BasicRemote { queue: queue, id: id }
+        BasicRemote { queue=queue, id=id }
     }
 }
 
@@ -211,8 +211,8 @@ mod test {
 
     fn pool() -> SchedPool {
         SchedPool::new(PoolConfig {
-            threads: 1,
-            event_loop_factory: basic::event_loop,
+            threads=1,
+            event_loop_factory=basic::event_loop,
         })
     }
 
@@ -241,8 +241,8 @@ mod test {
     #[test]
     fn multi_thread() {
         let mut pool = SchedPool::new(PoolConfig {
-            threads: 2,
-            event_loop_factory: basic::event_loop,
+            threads=2,
+            event_loop_factory=basic::event_loop,
         });
 
         for _ in range(0u, 20) {

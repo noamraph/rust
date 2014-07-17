@@ -132,14 +132,14 @@ pub fn initial_matcher_pos(ms: Vec<Matcher> , sep: Option<Token>, lo: BytePos)
     }
     let matches = Vec::from_fn(count_names(ms.as_slice()), |_i| Vec::new());
     box MatcherPos {
-        elts: ms,
-        sep: sep,
-        idx: 0u,
-        up: None,
-        matches: matches,
-        match_lo: 0u,
-        match_hi: match_idx_hi,
-        sp_lo: lo
+        elts=ms,
+        sep=sep,
+        idx=0u,
+        up=None,
+        matches=matches,
+        match_lo=0u,
+        match_hi=match_idx_hi,
+        sp_lo=lo
     }
 }
 
@@ -172,14 +172,14 @@ pub fn nameize(p_s: &ParseSess, ms: &[Matcher], res: &[Rc<NamedMatch>])
     fn n_rec(p_s: &ParseSess, m: &Matcher, res: &[Rc<NamedMatch>],
              ret_val: &mut HashMap<Ident, Rc<NamedMatch>>) {
         match *m {
-          codemap::Spanned {node: MatchTok(_), .. } => (),
-          codemap::Spanned {node: MatchSeq(ref more_ms, _, _, _, _), .. } => {
+          codemap::Spanned {node=MatchTok(_), .. } => (),
+          codemap::Spanned {node=MatchSeq(ref more_ms, _, _, _, _), .. } => {
             for next_m in more_ms.iter() {
                 n_rec(p_s, next_m, res, ret_val)
             };
           }
           codemap::Spanned {
-                node: MatchNonterminal(bind_name, _, idx),
+                node=MatchNonterminal(bind_name, _, idx),
                 span
           } => {
             if ret_val.contains_key(&bind_name) {
@@ -248,7 +248,7 @@ pub fn parse(sess: &ParseSess,
         let mut next_eis = Vec::new(); // or proceed normally
         let mut eof_eis = Vec::new();
 
-        let TokenAndSpan {tok: tok, sp: sp} = rdr.peek();
+        let TokenAndSpan {tok=tok, sp=sp} = rdr.peek();
 
         /* we append new items to this while we go */
         loop {
@@ -339,13 +339,13 @@ pub fn parse(sess: &ParseSess,
                     let matches = Vec::from_elem(ei.matches.len(), Vec::new());
                     let ei_t = ei;
                     cur_eis.push(box MatcherPos {
-                        elts: (*matchers).clone(),
-                        sep: (*sep).clone(),
-                        idx: 0u,
-                        up: Some(ei_t),
-                        matches: matches,
-                        match_lo: match_idx_lo, match_hi: match_idx_hi,
-                        sp_lo: sp.lo
+                        elts=(*matchers).clone(),
+                        sep=(*sep).clone(),
+                        idx=0u,
+                        up=Some(ei_t),
+                        matches=matches,
+                        match_lo=match_idx_lo, match_hi=match_idx_hi,
+                        sp_lo=sp.lo
                     });
                   }
                   MatchNonterminal(_,_,_) => { bb_eis.push(ei) }

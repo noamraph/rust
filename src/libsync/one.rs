@@ -46,9 +46,9 @@ pub struct Once {
 
 /// Initialization value for static `Once` values.
 pub static ONCE_INIT: Once = Once {
-    mutex: MUTEX_INIT,
-    cnt: atomics::INIT_ATOMIC_INT,
-    lock_cnt: atomics::INIT_ATOMIC_INT,
+    mutex=MUTEX_INIT,
+    cnt=atomics::INIT_ATOMIC_INT,
+    lock_cnt=atomics::INIT_ATOMIC_INT,
 };
 
 impl Once {

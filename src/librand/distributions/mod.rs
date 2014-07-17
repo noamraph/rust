@@ -139,10 +139,10 @@ impl<'a, T: Clone> WeightedChoice<'a, T> {
         assert!(running_total != 0, "WeightedChoice::new called with a total weight of 0");
 
         WeightedChoice {
-            items: items,
+            items=items,
             // we're likely to be generating numbers in this range
             // relatively often, so might as well cache it
-            weight_range: Range::new(0, running_total)
+            weight_range=Range::new(0, running_total)
         }
     }
 }
@@ -300,7 +300,7 @@ mod tests {
                 let wc = WeightedChoice::new(items.as_mut_slice());
                 let expected = $expected;
 
-                let mut rng = CountingRng { i: 0 };
+                let mut rng = CountingRng { i=0 };
 
                 for &val in expected.iter() {
                     assert_eq!(wc.ind_sample(&mut rng), val)
@@ -308,36 +308,36 @@ mod tests {
             }}
         );
 
-        t!(vec!(Weighted { weight: 1, item: 10i}), [10]);
+        t!(vec!(Weighted { weight=1, item=10i}), [10]);
 
         // skip some
-        t!(vec!(Weighted { weight: 0, item: 20i},
-                Weighted { weight: 2, item: 21i},
-                Weighted { weight: 0, item: 22i},
-                Weighted { weight: 1, item: 23i}),
+        t!(vec!(Weighted { weight=0, item=20i},
+                Weighted { weight=2, item=21i},
+                Weighted { weight=0, item=22i},
+                Weighted { weight=1, item=23i}),
            [21,21, 23]);
 
         // different weights
-        t!(vec!(Weighted { weight: 4, item: 30i},
-                Weighted { weight: 3, item: 31i}),
+        t!(vec!(Weighted { weight=4, item=30i},
+                Weighted { weight=3, item=31i}),
            [30,30,30,30, 31,31,31]);
 
         // check that we're binary searching
         // correctly with some vectors of odd
         // length.
-        t!(vec!(Weighted { weight: 1, item: 40i},
-                Weighted { weight: 1, item: 41i},
-                Weighted { weight: 1, item: 42i},
-                Weighted { weight: 1, item: 43i},
-                Weighted { weight: 1, item: 44i}),
+        t!(vec!(Weighted { weight=1, item=40i},
+                Weighted { weight=1, item=41i},
+                Weighted { weight=1, item=42i},
+                Weighted { weight=1, item=43i},
+                Weighted { weight=1, item=44i}),
            [40, 41, 42, 43, 44]);
-        t!(vec!(Weighted { weight: 1, item: 50i},
-                Weighted { weight: 1, item: 51i},
-                Weighted { weight: 1, item: 52i},
-                Weighted { weight: 1, item: 53i},
-                Weighted { weight: 1, item: 54i},
-                Weighted { weight: 1, item: 55i},
-                Weighted { weight: 1, item: 56i}),
+        t!(vec!(Weighted { weight=1, item=50i},
+                Weighted { weight=1, item=51i},
+                Weighted { weight=1, item=52i},
+                Weighted { weight=1, item=53i},
+                Weighted { weight=1, item=54i},
+                Weighted { weight=1, item=55i},
+                Weighted { weight=1, item=56i}),
            [50, 51, 52, 53, 54, 55, 56]);
     }
 
@@ -347,15 +347,15 @@ mod tests {
     }
     #[test] #[should_fail]
     fn test_weighted_choice_zero_weight() {
-        WeightedChoice::new(&mut [Weighted { weight: 0, item: 0i},
-                                  Weighted { weight: 0, item: 1i}]);
+        WeightedChoice::new(&mut [Weighted { weight=0, item=0i},
+                                  Weighted { weight=0, item=1i}]);
     }
     #[test] #[should_fail]
     fn test_weighted_choice_weight_overflows() {
         let x = (-1) as uint / 2; // x + x + 2 is the overflow
-        WeightedChoice::new(&mut [Weighted { weight: x, item: 0i },
-                                  Weighted { weight: 1, item: 1i },
-                                  Weighted { weight: x, item: 2i },
-                                  Weighted { weight: 1, item: 3i }]);
+        WeightedChoice::new(&mut [Weighted { weight=x, item=0i },
+                                  Weighted { weight=1, item=1i },
+                                  Weighted { weight=x, item=2i },
+                                  Weighted { weight=1, item=3i }]);
     }
 }

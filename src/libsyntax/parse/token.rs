@@ -381,7 +381,7 @@ macro_rules! declare_special_idents_and_keywords {(
 
     pub mod special_idents {
         use ast::{Ident, Name};
-        $( pub static $si_static: Ident = Ident { name: Name($si_name), ctxt: 0 }; )*
+        $( pub static $si_static: Ident = Ident { name=Name($si_name), ctxt=0 }; )*
     }
 
     pub mod special_names {
@@ -576,14 +576,14 @@ impl InternedString {
     #[inline]
     pub fn new(string: &'static str) -> InternedString {
         InternedString {
-            string: RcStr::new(string),
+            string=RcStr::new(string),
         }
     }
 
     #[inline]
     fn new_from_rc_str(string: RcStr) -> InternedString {
         InternedString {
-            string: string,
+            string=string,
         }
     }
 
@@ -758,7 +758,7 @@ mod test {
     use ext::mtwt;
 
     fn mark_ident(id : ast::Ident, m : ast::Mrk) -> ast::Ident {
-        ast::Ident { name: id.name, ctxt:mtwt::apply_mark(m, id.ctxt) }
+        ast::Ident { name=id.name, ctxt=mtwt::apply_mark(m, id.ctxt) }
     }
 
     #[test] fn mtwt_token_eq_test() {

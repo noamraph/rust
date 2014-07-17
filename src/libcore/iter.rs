@@ -121,7 +121,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn chain<U: Iterator<A>>(self, other: U) -> Chain<Self, U> {
-        Chain{a: self, b: other, flag: false}
+        Chain{a=self, b=other, flag=false}
     }
 
     /// Creates an iterator which iterates over both this and the specified
@@ -141,7 +141,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn zip<B, U: Iterator<B>>(self, other: U) -> Zip<Self, U> {
-        Zip{a: self, b: other}
+        Zip{a=self, b=other}
     }
 
     /// Creates a new iterator which will apply the specified function to each
@@ -158,7 +158,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn map<'r, B>(self, f: |A|: 'r -> B) -> Map<'r, A, B, Self> {
-        Map{iter: self, f: f}
+        Map{iter=self, f=f}
     }
 
     /// Creates an iterator which applies the predicate to each element returned
@@ -175,7 +175,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn filter<'r>(self, predicate: |&A|: 'r -> bool) -> Filter<'r, A, Self> {
-        Filter{iter: self, predicate: predicate}
+        Filter{iter=self, predicate=predicate}
     }
 
     /// Creates an iterator which both filters and maps elements.
@@ -192,7 +192,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn filter_map<'r, B>(self, f: |A|: 'r -> Option<B>) -> FilterMap<'r, A, B, Self> {
-        FilterMap { iter: self, f: f }
+        FilterMap { iter=self, f=f }
     }
 
     /// Creates an iterator which yields a pair of the value returned by this
@@ -210,7 +210,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn enumerate(self) -> Enumerate<Self> {
-        Enumerate{iter: self, count: 0}
+        Enumerate{iter=self, count=0}
     }
 
 
@@ -233,7 +233,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn peekable(self) -> Peekable<A, Self> {
-        Peekable{iter: self, peeked: None}
+        Peekable{iter=self, peeked=None}
     }
 
     /// Creates an iterator which invokes the predicate on elements until it
@@ -252,7 +252,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn skip_while<'r>(self, predicate: |&A|: 'r -> bool) -> SkipWhile<'r, A, Self> {
-        SkipWhile{iter: self, flag: false, predicate: predicate}
+        SkipWhile{iter=self, flag=false, predicate=predicate}
     }
 
     /// Creates an iterator which yields elements so long as the predicate
@@ -270,7 +270,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn take_while<'r>(self, predicate: |&A|: 'r -> bool) -> TakeWhile<'r, A, Self> {
-        TakeWhile{iter: self, flag: false, predicate: predicate}
+        TakeWhile{iter=self, flag=false, predicate=predicate}
     }
 
     /// Creates an iterator which skips the first `n` elements of this iterator,
@@ -287,7 +287,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn skip(self, n: uint) -> Skip<Self> {
-        Skip{iter: self, n: n}
+        Skip{iter=self, n=n}
     }
 
     /// Creates an iterator which yields the first `n` elements of this
@@ -305,7 +305,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn take(self, n: uint) -> Take<Self> {
-        Take{iter: self, n: n}
+        Take{iter=self, n=n}
     }
 
     /// Creates a new iterator which behaves in a similar fashion to fold.
@@ -331,7 +331,7 @@ pub trait Iterator<A> {
     #[inline]
     fn scan<'r, St, B>(self, initial_state: St, f: |&mut St, A|: 'r -> Option<B>)
         -> Scan<'r, A, B, Self, St> {
-        Scan{iter: self, f: f, state: initial_state}
+        Scan{iter=self, f=f, state=initial_state}
     }
 
     /// Creates an iterator that maps each element to an iterator,
@@ -355,7 +355,7 @@ pub trait Iterator<A> {
     #[inline]
     fn flat_map<'r, B, U: Iterator<B>>(self, f: |A|: 'r -> U)
         -> FlatMap<'r, A, Self, U> {
-        FlatMap{iter: self, f: f, frontiter: None, backiter: None }
+        FlatMap{iter=self, f=f, frontiter=None, backiter=None }
     }
 
     /// Creates an iterator that yields `None` forever after the underlying
@@ -385,7 +385,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn fuse(self) -> Fuse<Self> {
-        Fuse{iter: self, done: false}
+        Fuse{iter=self, done=false}
     }
 
     /// Creates an iterator that calls a function with a reference to each
@@ -408,7 +408,7 @@ pub trait Iterator<A> {
     /// ```
     #[inline]
     fn inspect<'r>(self, f: |&A|: 'r) -> Inspect<'r, A, Self> {
-        Inspect{iter: self, f: f}
+        Inspect{iter=self, f=f}
     }
 
     /// Creates a wrapper around a mutable reference to the iterator.
@@ -427,7 +427,7 @@ pub trait Iterator<A> {
     /// assert!(xs.next() == Some(5));
     /// ```
     fn by_ref<'r>(&'r mut self) -> ByRef<'r, Self> {
-        ByRef{iter: self}
+        ByRef{iter=self}
     }
 
     /// Apply a function to each element, or stop iterating if the
@@ -662,7 +662,7 @@ pub trait DoubleEndedIterator<A>: Iterator<A> {
     /// `uint::MAX` elements of the original iterator.
     #[inline]
     fn rev(self) -> Rev<Self> {
-        Rev{iter: self}
+        Rev{iter=self}
     }
 }
 
@@ -1035,7 +1035,7 @@ pub trait CloneableIterator {
 impl<A, T: Clone + Iterator<A>> CloneableIterator for T {
     #[inline]
     fn cycle(self) -> Cycle<T> {
-        Cycle{orig: self.clone(), iter: self}
+        Cycle{orig=self.clone(), iter=self}
     }
 }
 
@@ -1905,8 +1905,8 @@ impl<'a, A, St> Unfold<'a, A, St> {
     pub fn new<'a>(initial_state: St, f: |&mut St|: 'a -> Option<A>)
                -> Unfold<'a, A, St> {
         Unfold {
-            f: f,
-            state: initial_state
+            f=f,
+            state=initial_state
         }
     }
 }
@@ -1937,7 +1937,7 @@ pub struct Counter<A> {
 /// Creates a new counter with the specified start/step
 #[inline]
 pub fn count<A>(start: A, step: A) -> Counter<A> {
-    Counter{state: start, step: step}
+    Counter{state=start, step=step}
 }
 
 impl<A: Add<A, A> + Clone> Iterator<A> for Counter<A> {
@@ -1965,7 +1965,7 @@ pub struct Range<A> {
 /// Return an iterator over the range [start, stop)
 #[inline]
 pub fn range<A: Add<A, A> + PartialOrd + Clone + One>(start: A, stop: A) -> Range<A> {
-    Range{state: start, stop: stop, one: One::one()}
+    Range{state=start, stop=stop, one=One::one()}
 }
 
 // FIXME: #10414: Unfortunate type bound
@@ -2039,7 +2039,7 @@ pub struct RangeInclusive<A> {
 #[inline]
 pub fn range_inclusive<A: Add<A, A> + PartialOrd + Clone + One>(start: A, stop: A)
     -> RangeInclusive<A> {
-    RangeInclusive{range: range(start, stop), done: false}
+    RangeInclusive{range=range(start, stop), done=false}
 }
 
 impl<A: Add<A, A> + PartialOrd + Clone + ToPrimitive> Iterator<A> for RangeInclusive<A> {
@@ -2105,7 +2105,7 @@ pub struct RangeStep<A> {
 pub fn range_step<A: CheckedAdd + PartialOrd +
                   Clone + Zero>(start: A, stop: A, step: A) -> RangeStep<A> {
     let rev = step < Zero::zero();
-    RangeStep{state: start, stop: stop, step: step, rev: rev}
+    RangeStep{state=start, stop=stop, step=step, rev=rev}
 }
 
 impl<A: CheckedAdd + PartialOrd + Clone> Iterator<A> for RangeStep<A> {
@@ -2139,7 +2139,7 @@ pub struct RangeStepInclusive<A> {
 pub fn range_step_inclusive<A: CheckedAdd + PartialOrd + Clone + Zero>(start: A, stop: A,
                                                                 step: A) -> RangeStepInclusive<A> {
     let rev = step < Zero::zero();
-    RangeStepInclusive{state: start, stop: stop, step: step, rev: rev, done: false}
+    RangeStepInclusive{state=start, stop=stop, step=step, rev=rev, done=false}
 }
 
 impl<A: CheckedAdd + PartialOrd + Clone + PartialEq> Iterator<A> for RangeStepInclusive<A> {
@@ -2169,7 +2169,7 @@ impl<A: Clone> Repeat<A> {
     /// Create a new `Repeat` that endlessly repeats the element `elt`.
     #[inline]
     pub fn new(elt: A) -> Repeat<A> {
-        Repeat{element: elt}
+        Repeat{element=elt}
     }
 }
 

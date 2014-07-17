@@ -92,7 +92,7 @@ pub enum Home {
 extern fn bootstrap_green_task(task: uint, code: *mut (), env: *mut ()) -> ! {
     // Acquire ownership of the `proc()`
     let start: proc() = unsafe {
-        mem::transmute(raw::Procedure { code: code, env: env })
+        mem::transmute(raw::Procedure { code=code, env=env })
     };
 
     // Acquire ownership of the `Box<GreenTask>`
@@ -148,8 +148,8 @@ impl GreenTask {
 
         // Package everything up in a coroutine and return
         ops.coroutine = Some(Coroutine {
-            current_stack_segment: stack,
-            saved_context: context,
+            current_stack_segment=stack,
+            saved_context=context,
         });
         return ops;
     }
@@ -159,13 +159,13 @@ impl GreenTask {
     pub fn new_typed(coroutine: Option<Coroutine>,
                      task_type: TaskType) -> Box<GreenTask> {
         box GreenTask {
-            pool_id: 0,
-            coroutine: coroutine,
-            task_type: task_type,
-            sched: None,
-            handle: None,
-            nasty_deschedule_lock: unsafe { NativeMutex::new() },
-            task: Some(box Task::new()),
+            pool_id=0,
+            coroutine=coroutine,
+            task_type=task_type,
+            sched=None,
+            handle=None,
+            nasty_deschedule_lock=unsafe { NativeMutex::new() },
+            task=Some(box Task::new()),
         }
     }
 
@@ -222,7 +222,7 @@ impl GreenTask {
     pub fn is_home_no_tls(&self, sched: &Scheduler) -> bool {
         match self.task_type {
             TypeGreen(Some(AnySched)) => { false }
-            TypeGreen(Some(HomeSched(SchedHandle { sched_id: ref id, .. }))) => {
+            TypeGreen(Some(HomeSched(SchedHandle { sched_id=ref id, .. }))) => {
                 *id == sched.sched_id()
             }
             TypeGreen(None) => { rtabort!("task without home"); }
@@ -486,8 +486,8 @@ mod tests {
 
     fn spawn_opts(opts: TaskOpts, f: proc():Send) {
         let mut pool = SchedPool::new(PoolConfig {
-            threads: 1,
-            event_loop_factory: ::rustuv::event_loop,
+            threads=1,
+            event_loop_factory=::rustuv::event_loop,
         });
         pool.spawn(opts, f);
         pool.shutdown();

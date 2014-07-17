@@ -159,8 +159,8 @@ impl<'a, 'b> Reflector<'a, 'b> {
           // Should remove mt from box and uniq.
           ty::ty_box(typ) => {
               let extra = self.c_mt(&ty::mt {
-                  ty: typ,
-                  mutbl: ast::MutImmutable,
+                  ty=typ,
+                  mutbl=ast::MutImmutable,
               });
               self.visit("box", extra.as_slice())
           }
@@ -181,8 +181,8 @@ impl<'a, 'b> Reflector<'a, 'b> {
                   }
                   _ => {
                       let extra = self.c_mt(&ty::mt {
-                          ty: typ,
-                          mutbl: ast::MutImmutable,
+                          ty=typ,
+                          mutbl=ast::MutImmutable,
                       });
                       self.visit("uniq", extra.as_slice())
                   }
@@ -296,8 +296,8 @@ impl<'a, 'b> Reflector<'a, 'b> {
             let variants = ty::substd_enum_variants(ccx.tcx(), did, substs);
             let llptrty = type_of(ccx, t).ptr_to();
             let opaquety = ty::get_opaque_ty(ccx.tcx()).unwrap();
-            let opaqueptrty = ty::mk_ptr(ccx.tcx(), ty::mt { ty: opaquety,
-                                                           mutbl: ast::MutImmutable });
+            let opaqueptrty = ty::mk_ptr(ccx.tcx(), ty::mt { ty=opaquety,
+                                                           mutbl=ast::MutImmutable });
 
             let make_get_disr = || {
                 let sym = mangle_internal_name_by_path_and_seq(
@@ -400,11 +400,11 @@ pub fn emit_calls_to_trait_visit_ty<'a>(
     let tydesc_ty = type_of(bcx.ccx(), tydesc_ty);
     let visitor_methods = ty::trait_methods(bcx.tcx(), visitor_trait_id);
     let mut r = Reflector {
-        visitor_val: visitor_val,
-        visitor_methods: visitor_methods.as_slice(),
-        final_bcx: final,
-        tydesc_ty: tydesc_ty,
-        bcx: bcx
+        visitor_val=visitor_val,
+        visitor_methods=visitor_methods.as_slice(),
+        final_bcx=final,
+        tydesc_ty=tydesc_ty,
+        bcx=bcx
     };
     r.visit_ty(t);
     Br(r.bcx, final.llbb);

@@ -46,9 +46,9 @@ pub fn run(input: &str,
     let input = driver::FileInput(input_path.clone());
 
     let sessopts = config::Options {
-        maybe_sysroot: Some(os::self_exe_path().unwrap().dir_path()),
-        addl_lib_search_paths: RefCell::new(libs.clone()),
-        crate_types: vec!(config::CrateTypeDylib),
+        maybe_sysroot=Some(os::self_exe_path().unwrap().dir_path()),
+        addl_lib_search_paths=RefCell::new(libs.clone()),
+        crate_types=vec!(config::CrateTypeDylib),
         ..config::basic_options().clone()
     };
 
@@ -73,14 +73,14 @@ pub fn run(input: &str,
         .expect("phase_2_configure_and_expand aborted in rustdoc!");
 
     let ctx = box(GC) core::DocContext {
-        krate: krate,
-        maybe_typed: core::NotTyped(sess),
-        src: input_path,
-        external_paths: RefCell::new(Some(HashMap::new())),
-        external_traits: RefCell::new(None),
-        external_typarams: RefCell::new(None),
-        inlined: RefCell::new(None),
-        populated_crate_impls: RefCell::new(HashSet::new()),
+        krate=krate,
+        maybe_typed=core::NotTyped(sess),
+        src=input_path,
+        external_paths=RefCell::new(Some(HashMap::new())),
+        external_traits=RefCell::new(None),
+        external_typarams=RefCell::new(None),
+        inlined=RefCell::new(None),
+        populated_crate_impls=RefCell::new(HashSet::new()),
     };
     super::ctxtkey.replace(Some(ctx));
 
@@ -110,16 +110,16 @@ fn runtest(test: &str, cratename: &str, libs: HashSet<Path>, should_fail: bool,
     let input = driver::StrInput(test.to_string());
 
     let sessopts = config::Options {
-        maybe_sysroot: Some(os::self_exe_path().unwrap().dir_path()),
-        addl_lib_search_paths: RefCell::new(libs),
-        crate_types: vec!(config::CrateTypeExecutable),
-        output_types: vec!(link::OutputTypeExe),
-        no_trans: no_run,
-        cg: config::CodegenOptions {
-            prefer_dynamic: true,
+        maybe_sysroot=Some(os::self_exe_path().unwrap().dir_path()),
+        addl_lib_search_paths=RefCell::new(libs),
+        crate_types=vec!(config::CrateTypeExecutable),
+        output_types=vec!(link::OutputTypeExe),
+        no_trans=no_run,
+        cg=config::CodegenOptions {
+            prefer_dynamic=true,
             .. config::basic_codegen_options()
         },
-        test: as_test_harness,
+        test=as_test_harness,
         ..config::basic_options().clone()
     };
 
@@ -247,13 +247,13 @@ impl Collector {
     pub fn new(cratename: String, libs: HashSet<Path>,
                use_headers: bool) -> Collector {
         Collector {
-            tests: Vec::new(),
-            names: Vec::new(),
-            libs: libs,
-            cnt: 0,
-            use_headers: use_headers,
-            current_header: None,
-            cratename: cratename,
+            tests=Vec::new(),
+            names=Vec::new(),
+            libs=libs,
+            cnt=0,
+            use_headers=use_headers,
+            current_header=None,
+            cratename=cratename,
         }
     }
 
@@ -270,12 +270,12 @@ impl Collector {
         let cratename = self.cratename.to_string();
         debug!("Creating test {}: {}", name, test);
         self.tests.push(testing::TestDescAndFn {
-            desc: testing::TestDesc {
-                name: testing::DynTestName(name),
-                ignore: should_ignore,
-                should_fail: false, // compiler failures are test failures
+            desc=testing::TestDesc {
+                name=testing::DynTestName(name),
+                ignore=should_ignore,
+                should_fail=false, // compiler failures are test failures
             },
-            testfn: testing::DynTestFn(proc() {
+            testfn=testing::DynTestFn(proc() {
                 runtest(test.as_slice(),
                         cratename.as_slice(),
                         libs,

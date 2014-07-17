@@ -108,9 +108,9 @@ macro_rules! integer_impl {
                 let zone = unsigned_max - unsigned_max % range;
 
                 Range {
-                    low: low,
-                    range: range as $ty,
-                    accept_zone: zone as $ty
+                    low=low,
+                    range=range as $ty,
+                    accept_zone=zone as $ty
                 }
             }
             #[inline]
@@ -147,9 +147,9 @@ macro_rules! float_impl {
         impl SampleRange for $ty {
             fn construct_range(low: $ty, high: $ty) -> Range<$ty> {
                 Range {
-                    low: low,
-                    range: high - low,
-                    accept_zone: 0.0 // unused
+                    low=low,
+                    range=high - low,
+                    accept_zone=0.0 // unused
                 }
             }
             fn sample_range<R: Rng>(r: &Range<$ty>, rng: &mut R) -> $ty {

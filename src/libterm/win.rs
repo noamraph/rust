@@ -91,7 +91,7 @@ impl<T: Writer> Writer for WinConsole<T> {
 
 impl<T: Writer> Terminal<T> for WinConsole<T> {
     fn new(out: T) -> Option<WinConsole<T>> {
-        Some(WinConsole { buf: out, foreground: color::WHITE, background: color::BLACK })
+        Some(WinConsole { buf=out, foreground=color::WHITE, background=color::BLACK })
     }
 
     fn fg(&mut self, color: color::Color) -> IoResult<bool> {

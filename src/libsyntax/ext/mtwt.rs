@@ -117,9 +117,9 @@ pub fn with_sctable<T>(op: |&SCTable| -> T) -> T {
 // and IllegalCtxt in slot one.
 fn new_sctable_internal() -> SCTable {
     SCTable {
-        table: RefCell::new(vec!(EmptyCtxt, IllegalCtxt)),
-        mark_memo: RefCell::new(HashMap::new()),
-        rename_memo: RefCell::new(HashMap::new()),
+        table=RefCell::new(vec!(EmptyCtxt, IllegalCtxt)),
+        mark_memo=RefCell::new(HashMap::new()),
+        rename_memo=RefCell::new(HashMap::new()),
     }
 }
 
@@ -191,15 +191,15 @@ fn resolve_internal(id: Ident,
             EmptyCtxt => id.name,
             // ignore marks here:
             Mark(_,subctxt) =>
-                resolve_internal(Ident{name:id.name, ctxt: subctxt},
+                resolve_internal(Ident{name=id.name, ctxt=subctxt},
                                  table, resolve_table),
             // do the rename if necessary:
             Rename(Ident{name, ctxt}, toname, subctxt) => {
                 let resolvedfrom =
-                    resolve_internal(Ident{name:name, ctxt:ctxt},
+                    resolve_internal(Ident{name=name, ctxt=ctxt},
                                      table, resolve_table);
                 let resolvedthis =
-                    resolve_internal(Ident{name:id.name, ctxt:subctxt},
+                    resolve_internal(Ident{name=id.name, ctxt=subctxt},
                                      table, resolve_table);
                 if (resolvedthis == resolvedfrom)
                     && (marksof_internal(ctxt, resolvedthis, table)
@@ -302,7 +302,7 @@ mod tests {
     }
 
     fn id(n: u32, s: SyntaxContext) -> Ident {
-        Ident {name: Name(n), ctxt: s}
+        Ident {name=Name(n), ctxt=s}
     }
 
     // because of the SCTable, I now need a tidy way of
@@ -496,10 +496,10 @@ mod tests {
 
     #[test]
     fn new_resolves_test() {
-        let renames = vec!((Ident{name:Name(23),ctxt:EMPTY_CTXT},Name(24)),
-                           (Ident{name:Name(29),ctxt:EMPTY_CTXT},Name(29)));
+        let renames = vec!((Ident{name=Name(23),ctxt=EMPTY_CTXT},Name(24)),
+                           (Ident{name=Name(29),ctxt=EMPTY_CTXT},Name(29)));
         let new_ctxt1 = apply_renames(&renames,EMPTY_CTXT);
-        assert_eq!(resolve(Ident{name:Name(23),ctxt:new_ctxt1}),Name(24));
-        assert_eq!(resolve(Ident{name:Name(29),ctxt:new_ctxt1}),Name(29));
+        assert_eq!(resolve(Ident{name=Name(23),ctxt=new_ctxt1}),Name(24));
+        assert_eq!(resolve(Ident{name=Name(29),ctxt=new_ctxt1}),Name(29));
     }
 }

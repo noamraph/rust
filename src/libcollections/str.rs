@@ -717,8 +717,8 @@ pub mod raw {
     pub unsafe fn from_buf_len(buf: *const u8, len: uint) -> String {
         let mut result = String::new();
         result.push_bytes(mem::transmute(Slice {
-            data: buf,
-            len: len,
+            data=buf,
+            len=len,
         }));
         result
     }
@@ -731,8 +731,8 @@ pub mod raw {
             len += 1;
         }
         buf.push_bytes(mem::transmute(Slice {
-            data: c_string,
-            len: len as uint,
+            data=c_string,
+            len=len as uint,
         }));
         buf
     }
@@ -905,10 +905,10 @@ pub trait StrAllocating: Str {
     #[inline]
     fn nfd_chars<'a>(&'a self) -> Decompositions<'a> {
         Decompositions {
-            iter: self.as_slice().chars(),
-            buffer: Vec::new(),
-            sorted: false,
-            kind: Canonical
+            iter=self.as_slice().chars(),
+            buffer=Vec::new(),
+            sorted=false,
+            kind=Canonical
         }
     }
 
@@ -917,10 +917,10 @@ pub trait StrAllocating: Str {
     #[inline]
     fn nfkd_chars<'a>(&'a self) -> Decompositions<'a> {
         Decompositions {
-            iter: self.as_slice().chars(),
-            buffer: Vec::new(),
-            sorted: false,
-            kind: Compatible
+            iter=self.as_slice().chars(),
+            buffer=Vec::new(),
+            sorted=false,
+            kind=Compatible
         }
     }
 }

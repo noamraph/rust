@@ -63,9 +63,9 @@ impl<'a> MarkSymbolVisitor<'a> {
     fn new(tcx: &'a ty::ctxt,
            worklist: Vec<ast::NodeId>) -> MarkSymbolVisitor<'a> {
         MarkSymbolVisitor {
-            worklist: worklist,
-            tcx: tcx,
-            live_symbols: box HashSet::new(),
+            worklist=worklist,
+            tcx=tcx,
+            live_symbols=box HashSet::new(),
         }
     }
 
@@ -105,13 +105,13 @@ impl<'a> MarkSymbolVisitor<'a> {
                         }
                     }
                     typeck::MethodParam(typeck::MethodParam {
-                        trait_id: trait_id,
-                        method_num: index,
+                        trait_id=trait_id,
+                        method_num=index,
                         ..
                     })
                     | typeck::MethodObject(typeck::MethodObject {
-                        trait_id: trait_id,
-                        method_num: index,
+                        trait_id=trait_id,
+                        method_num=index,
                         ..
                     }) => {
                         let def_id = ty::trait_method(self.tcx,
@@ -184,7 +184,7 @@ impl<'a> MarkSymbolVisitor<'a> {
 
     fn visit_node(&mut self, node: &ast_map::Node) {
         let ctxt = MarkSymbolVisitorContext {
-            struct_has_extern_repr: false
+            struct_has_extern_repr=false
         };
         match *node {
             ast_map::NodeItem(item) => {
@@ -195,7 +195,7 @@ impl<'a> MarkSymbolVisitor<'a> {
                         }) == attr::ReprExtern;
 
                         visit::walk_item(self, &*item, MarkSymbolVisitorContext {
-                            struct_has_extern_repr: has_extern_repr,
+                            struct_has_extern_repr=has_extern_repr,
                             ..(ctxt)
                         });
                     }
@@ -368,7 +368,7 @@ fn create_and_seed_worklist(tcx: &ty::ctxt,
 
     // Seed implemented trait methods
     let mut life_seeder = LifeSeeder {
-        worklist: worklist
+        worklist=worklist
     };
     visit::walk_crate(&mut life_seeder, krate, ());
 
@@ -532,6 +532,6 @@ pub fn check_crate(tcx: &ty::ctxt,
                    krate: &ast::Crate) {
     let live_symbols = find_live(tcx, exported_items,
                                  reachable_symbols, krate);
-    let mut visitor = DeadVisitor { tcx: tcx, live_symbols: live_symbols };
+    let mut visitor = DeadVisitor { tcx=tcx, live_symbols=live_symbols };
     visit::walk_crate(&mut visitor, krate, ());
 }

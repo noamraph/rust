@@ -360,8 +360,8 @@ impl Map {
             }
         } else {
             self.with_path_next(parent, Some(&LinkedPathNode {
-                node: self.get_path_elem(id),
-                next: next
+                node=self.get_path_elem(id),
+                next=next
             }), f)
         }
     }
@@ -587,12 +587,12 @@ impl<'a, F: FoldOps> Folder for Ctx<'a, F> {
 }
 
 pub fn map_crate<F: FoldOps>(krate: Crate, fold_ops: F) -> (Crate, Map) {
-    let map = Map { map: RefCell::new(Vec::new()) };
+    let map = Map { map=RefCell::new(Vec::new()) };
     let krate = {
         let mut cx = Ctx {
-            map: &map,
-            parent: CRATE_NODE_ID,
-            fold_ops: fold_ops
+            map=&map,
+            parent=CRATE_NODE_ID,
+            fold_ops=fold_ops
         };
         cx.insert(CRATE_NODE_ID, RootCrate);
         cx.fold_crate(krate)
@@ -627,9 +627,9 @@ pub fn map_decoded_item<F: FoldOps>(map: &Map,
                                     fold: |&mut Ctx<F>| -> InlinedItem)
                                     -> InlinedItem {
     let mut cx = Ctx {
-        map: map,
-        parent: DUMMY_NODE_ID,
-        fold_ops: fold_ops
+        map=map,
+        parent=DUMMY_NODE_ID,
+        fold_ops=fold_ops
     };
 
     // Generate a NodeId for the RootInlinedParent inserted below.
@@ -638,7 +638,7 @@ pub fn map_decoded_item<F: FoldOps>(map: &Map,
     // Methods get added to the AST map when their impl is visited.  Since we
     // don't decode and instantiate the impl, but just the method, we have to
     // add it to the table now. Likewise with foreign items.
-    let mut def_id = DefId { krate: LOCAL_CRATE, node: DUMMY_NODE_ID };
+    let mut def_id = DefId { krate=LOCAL_CRATE, node=DUMMY_NODE_ID };
     let ii = fold(&mut cx);
     match ii {
         IIItem(_) => {}
@@ -657,8 +657,8 @@ pub fn map_decoded_item<F: FoldOps>(map: &Map,
     }
 
     cx.insert(cx.parent, RootInlinedParent(P(InlinedParent {
-        path: path,
-        def_id: def_id
+        path=path,
+        def_id=def_id
     })));
 
     ii

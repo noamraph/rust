@@ -96,9 +96,9 @@ impl FromStr for CrateId {
         };
 
         Some(CrateId {
-            path: path.to_string(),
-            name: name,
-            version: version,
+            path=path.to_string(),
+            name=name,
+            version=version,
         })
     }
 }

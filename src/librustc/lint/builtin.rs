@@ -119,7 +119,7 @@ pub struct TypeLimits {
 impl TypeLimits {
     pub fn new() -> TypeLimits {
         TypeLimits {
-            negated_expr_id: -1,
+            negated_expr_id=-1,
         }
     }
 }
@@ -414,7 +414,7 @@ impl HeapMemory {
                 }
                 ty::ty_uniq(_) |
                 ty::ty_closure(box ty::ClosureTy {
-                    store: ty::UniqTraitStore,
+                    store=ty::UniqTraitStore,
                     ..
                 }) => {
                     n_uniq += 1;
@@ -503,7 +503,7 @@ pub struct RawPointerDeriving {
 impl RawPointerDeriving {
     pub fn new() -> RawPointerDeriving {
         RawPointerDeriving {
-            checked_raw_pointers: NodeSet::new(),
+            checked_raw_pointers=NodeSet::new(),
         }
     }
 }
@@ -535,7 +535,7 @@ impl LintPass for RawPointerDeriving {
         if !self.checked_raw_pointers.insert(item.id) { return }
         match item.node {
             ast::ItemStruct(..) | ast::ItemEnum(..) => {
-                let mut visitor = RawPtrDerivingVisitor { cx: cx };
+                let mut visitor = RawPtrDerivingVisitor { cx=cx };
                 visit::walk_item(&mut visitor, &*item, ());
             }
             _ => {}
@@ -785,8 +785,8 @@ enum MethodContext {
 
 fn method_context(cx: &Context, m: &ast::Method) -> MethodContext {
     let did = ast::DefId {
-        krate: ast::LOCAL_CRATE,
-        node: m.id
+        krate=ast::LOCAL_CRATE,
+        node=m.id
     };
 
     match cx.tcx.methods.borrow().find_copy(&did) {
@@ -975,7 +975,7 @@ impl LintPass for UppercaseVariables {
             _: ast::Ident, _: &ast::Generics, _: ast::NodeId) {
         for sf in s.fields.iter() {
             match sf.node {
-                ast::StructField_ { kind: ast::NamedField(ident, _), .. } => {
+                ast::StructField_ { kind=ast::NamedField(ident, _), .. } => {
                     let s = token::get_ident(ident);
                     if s.get().char_at(0).is_uppercase() {
                         cx.span_lint(UPPERCASE_VARIABLES, sf.span,
@@ -1276,8 +1276,8 @@ pub struct MissingDoc {
 impl MissingDoc {
     pub fn new() -> MissingDoc {
         MissingDoc {
-            struct_def_stack: vec!(),
-            doc_hidden_stack: vec!(false),
+            struct_def_stack=vec!(),
+            doc_hidden_stack=vec!(false),
         }
     }
 
@@ -1444,13 +1444,13 @@ impl LintPass for Stability {
                                 def_id
                             }
                             typeck::MethodParam(typeck::MethodParam {
-                                trait_id: trait_id,
-                                method_num: index,
+                                trait_id=trait_id,
+                                method_num=index,
                                 ..
                             })
                             | typeck::MethodObject(typeck::MethodObject {
-                                trait_id: trait_id,
-                                method_num: index,
+                                trait_id=trait_id,
+                                method_num=index,
                                 ..
                             }) => ty::trait_method(cx.tcx, trait_id, index).def_id
                         }
@@ -1469,17 +1469,17 @@ impl LintPass for Stability {
         let (lint, label) = match stability {
             // no stability attributes == Unstable
             None => (UNSTABLE, "unmarked"),
-            Some(attr::Stability { level: attr::Unstable, .. }) =>
+            Some(attr::Stability { level=attr::Unstable, .. }) =>
                     (UNSTABLE, "unstable"),
-            Some(attr::Stability { level: attr::Experimental, .. }) =>
+            Some(attr::Stability { level=attr::Experimental, .. }) =>
                     (EXPERIMENTAL, "experimental"),
-            Some(attr::Stability { level: attr::Deprecated, .. }) =>
+            Some(attr::Stability { level=attr::Deprecated, .. }) =>
                     (DEPRECATED, "deprecated"),
             _ => return
         };
 
         let msg = match stability {
-            Some(attr::Stability { text: Some(ref s), .. }) => {
+            Some(attr::Stability { text=Some(ref s), .. }) => {
                 format!("use of {} item: {}", label, *s)
             }
             _ => format!("use of {} item", label)

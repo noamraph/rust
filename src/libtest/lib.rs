@@ -203,7 +203,7 @@ pub struct Metric {
 
 impl Metric {
     pub fn new(value: f64, noise: f64) -> Metric {
-        Metric {value: value, noise: noise}
+        Metric {value=value, noise=noise}
     }
 }
 
@@ -255,8 +255,8 @@ pub fn test_main(args: &[String], tests: Vec<TestDescAndFn> ) {
 pub fn test_main_static(args: &[String], tests: &[TestDescAndFn]) {
     let owned_tests = tests.iter().map(|t| {
         match t.testfn {
-            StaticTestFn(f) => TestDescAndFn { testfn: StaticTestFn(f), desc: t.desc.clone() },
-            StaticBenchFn(f) => TestDescAndFn { testfn: StaticBenchFn(f), desc: t.desc.clone() },
+            StaticTestFn(f) => TestDescAndFn { testfn=StaticTestFn(f), desc=t.desc.clone() },
+            StaticBenchFn(f) => TestDescAndFn { testfn=StaticBenchFn(f), desc=t.desc.clone() },
             _ => fail!("non-static tests passed to test::test_main_static")
         }
     }).collect();
@@ -287,17 +287,17 @@ impl TestOpts {
     #[cfg(test)]
     fn new() -> TestOpts {
         TestOpts {
-            filter: None,
-            run_ignored: false,
-            run_tests: false,
-            run_benchmarks: false,
-            ratchet_metrics: None,
-            ratchet_noise_percent: None,
-            save_metrics: None,
-            test_shard: None,
-            logfile: None,
-            nocapture: false,
-            color: AutoColor,
+            filter=None,
+            run_ignored=false,
+            run_tests=false,
+            run_benchmarks=false,
+            ratchet_metrics=None,
+            ratchet_noise_percent=None,
+            save_metrics=None,
+            test_shard=None,
+            logfile=None,
+            nocapture=false,
+            color=AutoColor,
         }
     }
 }
@@ -421,17 +421,17 @@ pub fn parse_opts(args: &[String]) -> Option<OptRes> {
     };
 
     let test_opts = TestOpts {
-        filter: filter,
-        run_ignored: run_ignored,
-        run_tests: run_tests,
-        run_benchmarks: run_benchmarks,
-        ratchet_metrics: ratchet_metrics,
-        ratchet_noise_percent: ratchet_noise_percent,
-        save_metrics: save_metrics,
-        test_shard: test_shard,
-        logfile: logfile,
-        nocapture: nocapture,
-        color: color,
+        filter=filter,
+        run_ignored=run_ignored,
+        run_tests=run_tests,
+        run_benchmarks=run_benchmarks,
+        ratchet_metrics=ratchet_metrics,
+        ratchet_noise_percent=ratchet_noise_percent,
+        save_metrics=save_metrics,
+        test_shard=test_shard,
+        logfile=logfile,
+        nocapture=nocapture,
+        color=color,
     };
 
     Some(Ok(test_opts))
@@ -505,17 +505,17 @@ impl<T: Writer> ConsoleTestState<T> {
         };
 
         Ok(ConsoleTestState {
-            out: out,
-            log_out: log_out,
-            use_color: use_color(opts),
-            total: 0u,
-            passed: 0u,
-            failed: 0u,
-            ignored: 0u,
-            measured: 0u,
-            metrics: MetricMap::new(),
-            failures: Vec::new(),
-            max_name_len: 0u,
+            out=out,
+            log_out=log_out,
+            use_color=use_color(opts),
+            total=0u,
+            passed=0u,
+            failed=0u,
+            ignored=0u,
+            measured=0u,
+            metrics=MetricMap::new(),
+            failures=Vec::new(),
+            max_name_len=0u,
         })
     }
 
@@ -846,29 +846,29 @@ fn should_sort_failures_before_printing_them() {
     use std::str;
 
     let test_a = TestDesc {
-        name: StaticTestName("a"),
-        ignore: false,
-        should_fail: false
+        name=StaticTestName("a"),
+        ignore=false,
+        should_fail=false
     };
 
     let test_b = TestDesc {
-        name: StaticTestName("b"),
-        ignore: false,
-        should_fail: false
+        name=StaticTestName("b"),
+        ignore=false,
+        should_fail=false
     };
 
     let mut st = ConsoleTestState {
-        log_out: None,
-        out: Raw(MemWriter::new()),
-        use_color: false,
-        total: 0u,
-        passed: 0u,
-        failed: 0u,
-        ignored: 0u,
-        measured: 0u,
-        max_name_len: 10u,
-        metrics: MetricMap::new(),
-        failures: vec!((test_b, Vec::new()), (test_a, Vec::new()))
+        log_out=None,
+        out=Raw(MemWriter::new()),
+        use_color=false,
+        total=0u,
+        passed=0u,
+        failed=0u,
+        ignored=0u,
+        measured=0u,
+        max_name_len=10u,
+        metrics=MetricMap::new(),
+        failures=vec!((test_b, Vec::new()), (test_a, Vec::new()))
     };
 
     st.write_failures().unwrap();
@@ -995,8 +995,8 @@ pub fn filter_tests(opts: &TestOpts, tests: Vec<TestDescAndFn>) -> Vec<TestDescA
             if test.desc.ignore {
                 let TestDescAndFn {desc, testfn} = test;
                 Some(TestDescAndFn {
-                    desc: TestDesc {ignore: false, ..desc},
-                    testfn: testfn
+                    desc=TestDesc {ignore=false, ..desc},
+                    testfn=testfn
                 })
             } else {
                 None
@@ -1221,8 +1221,8 @@ impl MetricMap {
     /// negative direction represents a regression.
     pub fn insert_metric(&mut self, name: &str, value: f64, noise: f64) {
         let m = Metric {
-            value: value,
-            noise: noise
+            value=value,
+            noise=noise
         };
         let MetricMap(ref mut map) = *self;
         map.insert(name.to_string(), m);
@@ -1373,10 +1373,10 @@ pub mod bench {
 
     pub fn benchmark(f: |&mut Bencher|) -> BenchSamples {
         let mut bs = Bencher {
-            iterations: 0,
-            ns_start: 0,
-            ns_end: 0,
-            bytes: 0
+            iterations=0,
+            ns_start=0,
+            ns_end=0,
+            bytes=0
         };
 
         let ns_iter_summ = bs.auto_bench(f);
@@ -1386,8 +1386,8 @@ pub mod bench {
         let mb_s = (bs.bytes * iter_s) / 1_000_000;
 
         BenchSamples {
-            ns_iter_summ: ns_iter_summ,
-            mb_s: mb_s as uint
+            ns_iter_summ=ns_iter_summ,
+            mb_s=mb_s as uint
         }
     }
 }
@@ -1405,12 +1405,12 @@ mod tests {
     pub fn do_not_run_ignored_tests() {
         fn f() { fail!(); }
         let desc = TestDescAndFn {
-            desc: TestDesc {
-                name: StaticTestName("whatever"),
-                ignore: true,
-                should_fail: false
+            desc=TestDesc {
+                name=StaticTestName("whatever"),
+                ignore=true,
+                should_fail=false
             },
-            testfn: DynTestFn(proc() f()),
+            testfn=DynTestFn(proc() f()),
         };
         let (tx, rx) = channel();
         run_test(&TestOpts::new(), false, desc, tx);
@@ -1422,12 +1422,12 @@ mod tests {
     pub fn ignored_tests_result_in_ignored() {
         fn f() { }
         let desc = TestDescAndFn {
-            desc: TestDesc {
-                name: StaticTestName("whatever"),
-                ignore: true,
-                should_fail: false
+            desc=TestDesc {
+                name=StaticTestName("whatever"),
+                ignore=true,
+                should_fail=false
             },
-            testfn: DynTestFn(proc() f()),
+            testfn=DynTestFn(proc() f()),
         };
         let (tx, rx) = channel();
         run_test(&TestOpts::new(), false, desc, tx);
@@ -1439,12 +1439,12 @@ mod tests {
     fn test_should_fail() {
         fn f() { fail!(); }
         let desc = TestDescAndFn {
-            desc: TestDesc {
-                name: StaticTestName("whatever"),
-                ignore: false,
-                should_fail: true
+            desc=TestDesc {
+                name=StaticTestName("whatever"),
+                ignore=false,
+                should_fail=true
             },
-            testfn: DynTestFn(proc() f()),
+            testfn=DynTestFn(proc() f()),
         };
         let (tx, rx) = channel();
         run_test(&TestOpts::new(), false, desc, tx);
@@ -1456,12 +1456,12 @@ mod tests {
     fn test_should_fail_but_succeeds() {
         fn f() { }
         let desc = TestDescAndFn {
-            desc: TestDesc {
-                name: StaticTestName("whatever"),
-                ignore: false,
-                should_fail: true
+            desc=TestDesc {
+                name=StaticTestName("whatever"),
+                ignore=false,
+                should_fail=true
             },
-            testfn: DynTestFn(proc() f()),
+            testfn=DynTestFn(proc() f()),
         };
         let (tx, rx) = channel();
         run_test(&TestOpts::new(), false, desc, tx);
@@ -1502,20 +1502,20 @@ mod tests {
 
         let tests = vec!(
             TestDescAndFn {
-                desc: TestDesc {
-                    name: StaticTestName("1"),
-                    ignore: true,
-                    should_fail: false,
+                desc=TestDesc {
+                    name=StaticTestName("1"),
+                    ignore=true,
+                    should_fail=false,
                 },
-                testfn: DynTestFn(proc() {}),
+                testfn=DynTestFn(proc() {}),
             },
             TestDescAndFn {
-                desc: TestDesc {
-                    name: StaticTestName("2"),
-                    ignore: false,
-                    should_fail: false
+                desc=TestDesc {
+                    name=StaticTestName("2"),
+                    ignore=false,
+                    should_fail=false
                 },
-                testfn: DynTestFn(proc() {}),
+                testfn=DynTestFn(proc() {}),
             });
         let filtered = filter_tests(&opts, tests);
 
@@ -1546,12 +1546,12 @@ mod tests {
             let mut tests = Vec::new();
             for name in names.iter() {
                 let test = TestDescAndFn {
-                    desc: TestDesc {
-                        name: DynTestName((*name).clone()),
-                        ignore: false,
-                        should_fail: false
+                    desc=TestDesc {
+                        name=DynTestName((*name).clone()),
+                        ignore=false,
+                        should_fail=false
                     },
-                    testfn: DynTestFn(testfn),
+                    testfn=DynTestFn(testfn),
                 };
                 tests.push(test);
             }
@@ -1587,12 +1587,12 @@ mod tests {
         fn test_fn() {}
         let tests = names.iter().map(|name| {
             TestDescAndFn {
-                desc: TestDesc {
-                    name: DynTestName(name.to_string()),
-                    ignore: false,
-                    should_fail: false
+                desc=TestDesc {
+                    name=DynTestName(name.to_string()),
+                    ignore=false,
+                    should_fail=false
                 },
-                testfn: DynTestFn(test_fn)
+                testfn=DynTestFn(test_fn)
             }
         }).collect();
         let filtered = filter_tests(&opts, tests);

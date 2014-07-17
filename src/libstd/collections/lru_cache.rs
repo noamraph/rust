@@ -82,10 +82,10 @@ impl<K: Eq> Eq for KeyRef<K> {}
 impl<K, V> LruEntry<K, V> {
     fn new(k: K, v: V) -> LruEntry<K, V> {
         LruEntry {
-            key: k,
-            value: v,
-            next: ptr::mut_null(),
-            prev: ptr::mut_null(),
+            key=k,
+            value=v,
+            next=ptr::mut_null(),
+            prev=ptr::mut_null(),
         }
     }
 }
@@ -94,9 +94,9 @@ impl<K: Hash + Eq, V> LruCache<K, V> {
     /// Create an LRU Cache that holds at most `capacity` items.
     pub fn new(capacity: uint) -> LruCache<K, V> {
         let cache = LruCache {
-            map: HashMap::new(),
-            max_size: capacity,
-            head: unsafe{ mem::transmute(box mem::uninitialized::<LruEntry<K, V>>()) },
+            map=HashMap::new(),
+            max_size=capacity,
+            head=unsafe{ mem::transmute(box mem::uninitialized::<LruEntry<K, V>>()) },
         };
         unsafe {
             (*cache.head).next = cache.head;
@@ -107,7 +107,7 @@ impl<K: Hash + Eq, V> LruCache<K, V> {
 
     /// Put a key-value pair into cache.
     pub fn put(&mut self, k: K, v: V) {
-        let (node_ptr, node_opt) = match self.map.find_mut(&KeyRef{k: &k}) {
+        let (node_ptr, node_opt) = match self.map.find_mut(&KeyRef{k=&k}) {
             Some(node) => {
                 node.value = v;
                 let node_ptr: *mut LruEntry<K, V> = &mut **node;
@@ -127,7 +127,7 @@ impl<K: Hash + Eq, V> LruCache<K, V> {
             }
             Some(node) => {
                 let keyref = unsafe { &(*node_ptr).key };
-                self.map.swap(KeyRef{k: keyref}, node);
+                self.map.swap(KeyRef{k=keyref}, node);
                 self.attach(node_ptr);
                 if self.len() > self.capacity() {
                     self.remove_lru();
@@ -138,7 +138,7 @@ impl<K: Hash + Eq, V> LruCache<K, V> {
 
     /// Return a value corresponding to the key in the cache.
     pub fn get<'a>(&'a mut self, k: &K) -> Option<&'a V> {
-        let (value, node_ptr_opt) = match self.map.find_mut(&KeyRef{k: k}) {
+        let (value, node_ptr_opt) = match self.map.find_mut(&KeyRef{k=k}) {
             None => (None, None),
             Some(node) => {
                 let node_ptr: *mut LruEntry<K, V> = &mut **node;
@@ -157,7 +157,7 @@ impl<K: Hash + Eq, V> LruCache<K, V> {
 
     /// Remove and return a value corresponding to the key from the cache.
     pub fn pop(&mut self, k: &K) -> Option<V> {
-        match self.map.pop(&KeyRef{k: k}) {
+        match self.map.pop(&KeyRef{k=k}) {
             None => None,
             Some(lru_entry) => Some(lru_entry.value)
         }
@@ -182,7 +182,7 @@ impl<K: Hash + Eq, V> LruCache<K, V> {
         if self.len() > 0 {
             let lru = unsafe { (*self.head).prev };
             self.detach(lru);
-            self.map.pop(&KeyRef{k: unsafe { &(*lru).key }});
+            self.map.pop(&KeyRef{k=unsafe { &(*lru).key }});
         }
     }
 
@@ -246,7 +246,7 @@ impl<K, V> Drop for LruCache<K, V> {
         unsafe {
             let node: Box<LruEntry<K, V>> = mem::transmute(self.head);
             // Prevent compiler from trying to drop the un-initialized field in the sigil node.
-            let box LruEntry { key: k, value: v, .. } = node;
+            let box LruEntry { key=k, value=v, .. } = node;
             mem::forget(k);
             mem::forget(v);
         }

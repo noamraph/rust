@@ -160,13 +160,13 @@ impl<'a> Clean<Crate> for visit_ast::RustdocVisitor<'a> {
                 };
                 primitives.push(prim);
                 let mut i = Item {
-                    source: Span::empty(),
-                    name: Some(prim.to_url_str().to_string()),
-                    attrs: Vec::new(),
-                    visibility: None,
-                    stability: None,
-                    def_id: ast_util::local_def(prim.to_node_id()),
-                    inner: PrimitiveItem(prim),
+                    source=Span::empty(),
+                    name=Some(prim.to_url_str().to_string()),
+                    attrs=Vec::new(),
+                    visibility=None,
+                    stability=None,
+                    def_id=ast_util::local_def(prim.to_node_id()),
+                    inner=PrimitiveItem(prim),
                 };
                 // Push one copy to get indexed for the whole crate, and push a
                 // another copy in the proper location which will actually get
@@ -182,10 +182,10 @@ impl<'a> Clean<Crate> for visit_ast::RustdocVisitor<'a> {
         }
 
         Crate {
-            name: name.to_string(),
-            module: Some(module),
-            externs: externs,
-            primitives: primitives,
+            name=name.to_string(),
+            module=Some(module),
+            externs=externs,
+            primitives=primitives,
         }
     }
 }
@@ -213,9 +213,9 @@ impl Clean<ExternalCrate> for cstore::crate_metadata {
             })
         });
         ExternalCrate {
-            name: self.name.to_string(),
-            attrs: decoder::get_crate_attributes(self.data()).clean(),
-            primitives: primitives,
+            name=self.name.to_string(),
+            attrs=decoder::get_crate_attributes(self.data()).clean(),
+            primitives=primitives,
         }
     }
 }
@@ -377,15 +377,15 @@ impl Clean<Item> for doctree::Module {
         };
 
         Item {
-            name: Some(name),
-            attrs: self.attrs.clean(),
-            source: where.clean(),
-            visibility: self.vis.clean(),
-            stability: self.stab.clean(),
-            def_id: ast_util::local_def(self.id),
-            inner: ModuleItem(Module {
-               is_crate: self.is_crate,
-               items: items.iter()
+            name=Some(name),
+            attrs=self.attrs.clean(),
+            source=where.clean(),
+            visibility=self.vis.clean(),
+            stability=self.stab.clean(),
+            def_id=ast_util::local_def(self.id),
+            inner=ModuleItem(Module {
+               is_crate=self.is_crate,
+               items=items.iter()
                            .flat_map(|x| x.iter().map(|x| (*x).clone()))
                            .collect(),
             })
@@ -457,10 +457,10 @@ pub struct TyParam {
 impl Clean<TyParam> for ast::TyParam {
     fn clean(&self) -> TyParam {
         TyParam {
-            name: self.ident.clean(),
-            did: ast::DefId { krate: ast::LOCAL_CRATE, node: self.id },
-            bounds: self.bounds.clean().move_iter().collect(),
-            default: self.default.clean()
+            name=self.ident.clean(),
+            did=ast::DefId { krate=ast::LOCAL_CRATE, node=self.id },
+            bounds=self.bounds.clean().move_iter().collect(),
+            default=self.default.clean()
         }
     }
 }
@@ -470,10 +470,10 @@ impl Clean<TyParam> for ty::TypeParameterDef {
         get_cx().external_typarams.borrow_mut().get_mut_ref()
                 .insert(self.def_id, self.ident.clean());
         TyParam {
-            name: self.ident.clean(),
-            did: self.def_id,
-            bounds: self.bounds.clean(),
-            default: self.default.clean()
+            name=self.ident.clean(),
+            did=self.def_id,
+            bounds=self.bounds.clean(),
+            default=self.default.clean()
         }
     }
 }
@@ -506,11 +506,11 @@ fn external_path(name: &str, substs: &subst::Substs) -> Path {
     let types = Vec::from_slice(substs.types.get_slice(subst::TypeSpace));
     let types = types.clean();
     Path {
-        global: false,
-        segments: vec![PathSegment {
-            name: name.to_string(),
-            lifetimes: lifetimes,
-            types: types,
+        global=false,
+        segments=vec![PathSegment {
+            name=name.to_string(),
+            lifetimes=lifetimes,
+            types=types,
         }],
     }
 }
@@ -543,9 +543,9 @@ impl Clean<TyParamBound> for ty::BuiltinBound {
         cx.external_paths.borrow_mut().get_mut_ref().insert(did,
                                                             (fqn, TypeTrait));
         TraitBound(ResolvedPath {
-            path: path,
-            typarams: None,
-            did: did,
+            path=path,
+            typarams=None,
+            did=did,
         })
     }
 }
@@ -565,9 +565,9 @@ impl Clean<TyParamBound> for ty::TraitRef {
         cx.external_paths.borrow_mut().get_mut_ref().insert(self.def_id,
                                                             (fqn, TypeTrait));
         TraitBound(ResolvedPath {
-            path: path,
-            typarams: None,
-            did: self.def_id,
+            path=path,
+            typarams=None,
+            did=self.def_id,
         })
     }
 }
@@ -646,8 +646,8 @@ pub struct Generics {
 impl Clean<Generics> for ast::Generics {
     fn clean(&self) -> Generics {
         Generics {
-            lifetimes: self.lifetimes.clean(),
-            type_params: self.ty_params.clean(),
+            lifetimes=self.lifetimes.clean(),
+            type_params=self.ty_params.clean(),
         }
     }
 }
@@ -679,8 +679,8 @@ impl Clean<Generics> for ty::Generics {
         };
 
         Generics {
-            type_params: Vec::from_slice(self.types.get_slice(space)).clean(),
-            lifetimes: Vec::from_slice(self.regions.get_slice(space)).clean(),
+            type_params=Vec::from_slice(self.types.get_slice(space)).clean(),
+            lifetimes=Vec::from_slice(self.regions.get_slice(space)).clean(),
         }
     }
 }
@@ -700,25 +700,25 @@ impl Clean<Item> for ast::Method {
             _ => self.decl.inputs.slice_from(1)
         };
         let decl = FnDecl {
-            inputs: Arguments {
-                values: inputs.iter().map(|x| x.clean()).collect(),
+            inputs=Arguments {
+                values=inputs.iter().map(|x| x.clean()).collect(),
             },
-            output: (self.decl.output.clean()),
-            cf: self.decl.cf.clean(),
-            attrs: Vec::new()
+            output=(self.decl.output.clean()),
+            cf=self.decl.cf.clean(),
+            attrs=Vec::new()
         };
         Item {
-            name: Some(self.ident.clean()),
-            attrs: self.attrs.clean().move_iter().collect(),
-            source: self.span.clean(),
-            def_id: ast_util::local_def(self.id),
-            visibility: self.vis.clean(),
-            stability: get_stability(ast_util::local_def(self.id)),
-            inner: MethodItem(Method {
-                generics: self.generics.clean(),
-                self_: self.explicit_self.node.clean(),
-                fn_style: self.fn_style.clone(),
-                decl: decl,
+            name=Some(self.ident.clean()),
+            attrs=self.attrs.clean().move_iter().collect(),
+            source=self.span.clean(),
+            def_id=ast_util::local_def(self.id),
+            visibility=self.vis.clean(),
+            stability=get_stability(ast_util::local_def(self.id)),
+            inner=MethodItem(Method {
+                generics=self.generics.clean(),
+                self_=self.explicit_self.node.clean(),
+                fn_style=self.fn_style.clone(),
+                decl=decl,
             }),
         }
     }
@@ -739,25 +739,25 @@ impl Clean<Item> for ast::TypeMethod {
             _ => self.decl.inputs.slice_from(1)
         };
         let decl = FnDecl {
-            inputs: Arguments {
-                values: inputs.iter().map(|x| x.clean()).collect(),
+            inputs=Arguments {
+                values=inputs.iter().map(|x| x.clean()).collect(),
             },
-            output: (self.decl.output.clean()),
-            cf: self.decl.cf.clean(),
-            attrs: Vec::new()
+            output=(self.decl.output.clean()),
+            cf=self.decl.cf.clean(),
+            attrs=Vec::new()
         };
         Item {
-            name: Some(self.ident.clean()),
-            attrs: self.attrs.clean().move_iter().collect(),
-            source: self.span.clean(),
-            def_id: ast_util::local_def(self.id),
-            visibility: None,
-            stability: get_stability(ast_util::local_def(self.id)),
-            inner: TyMethodItem(TyMethod {
-                fn_style: self.fn_style.clone(),
-                decl: decl,
-                self_: self.explicit_self.node.clean(),
-                generics: self.generics.clean(),
+            name=Some(self.ident.clean()),
+            attrs=self.attrs.clean().move_iter().collect(),
+            source=self.span.clean(),
+            def_id=ast_util::local_def(self.id),
+            visibility=None,
+            stability=get_stability(ast_util::local_def(self.id)),
+            inner=TyMethodItem(TyMethod {
+                fn_style=self.fn_style.clone(),
+                decl=decl,
+                self_=self.explicit_self.node.clean(),
+                generics=self.generics.clean(),
             }),
         }
     }
@@ -792,16 +792,16 @@ pub struct Function {
 impl Clean<Item> for doctree::Function {
     fn clean(&self) -> Item {
         Item {
-            name: Some(self.name.clean()),
-            attrs: self.attrs.clean(),
-            source: self.where.clean(),
-            visibility: self.vis.clean(),
-            stability: self.stab.clean(),
-            def_id: ast_util::local_def(self.id),
-            inner: FunctionItem(Function {
-                decl: self.decl.clean(),
-                generics: self.generics.clean(),
-                fn_style: self.fn_style,
+            name=Some(self.name.clean()),
+            attrs=self.attrs.clean(),
+            source=self.where.clean(),
+            visibility=self.vis.clean(),
+            stability=self.stab.clean(),
+            def_id=ast_util::local_def(self.id),
+            inner=FunctionItem(Function {
+                decl=self.decl.clean(),
+                generics=self.generics.clean(),
+                fn_style=self.fn_style,
             }),
         }
     }
@@ -819,11 +819,11 @@ pub struct ClosureDecl {
 impl Clean<ClosureDecl> for ast::ClosureTy {
     fn clean(&self) -> ClosureDecl {
         ClosureDecl {
-            lifetimes: self.lifetimes.clean(),
-            decl: self.decl.clean(),
-            onceness: self.onceness,
-            fn_style: self.fn_style,
-            bounds: match self.bounds {
+            lifetimes=self.lifetimes.clean(),
+            decl=self.decl.clean(),
+            onceness=self.onceness,
+            fn_style=self.fn_style,
+            bounds=match self.bounds {
                 Some(ref x) => x.clean().move_iter().collect(),
                 None        => Vec::new()
             },
@@ -847,12 +847,12 @@ pub struct Arguments {
 impl Clean<FnDecl> for ast::FnDecl {
     fn clean(&self) -> FnDecl {
         FnDecl {
-            inputs: Arguments {
-                values: self.inputs.iter().map(|x| x.clean()).collect(),
+            inputs=Arguments {
+                values=self.inputs.iter().map(|x| x.clean()).collect(),
             },
-            output: (self.output.clean()),
-            cf: self.cf.clean(),
-            attrs: Vec::new()
+            output=(self.output.clean()),
+            cf=self.cf.clean(),
+            attrs=Vec::new()
         }
     }
 }
@@ -870,15 +870,15 @@ impl<'a> Clean<FnDecl> for (ast::DefId, &'a ty::FnSig) {
             let _ = names.next();
         }
         FnDecl {
-            output: sig.output.clean(),
-            cf: Return,
-            attrs: Vec::new(),
-            inputs: Arguments {
-                values: sig.inputs.iter().map(|t| {
+            output=sig.output.clean(),
+            cf=Return,
+            attrs=Vec::new(),
+            inputs=Arguments {
+                values=sig.inputs.iter().map(|t| {
                     Argument {
-                        type_: t.clean(),
-                        id: 0,
-                        name: names.next().unwrap_or("".to_string()),
+                        type_=t.clean(),
+                        id=0,
+                        name=names.next().unwrap_or("".to_string()),
                     }
                 }).collect(),
             },
@@ -896,9 +896,9 @@ pub struct Argument {
 impl Clean<Argument> for ast::Arg {
     fn clean(&self) -> Argument {
         Argument {
-            name: name_from_pat(&*self.pat),
-            type_: (self.ty.clean()),
-            id: self.id
+            name=name_from_pat(&*self.pat),
+            type_=(self.ty.clean()),
+            id=self.id
         }
     }
 }
@@ -928,16 +928,16 @@ pub struct Trait {
 impl Clean<Item> for doctree::Trait {
     fn clean(&self) -> Item {
         Item {
-            name: Some(self.name.clean()),
-            attrs: self.attrs.clean(),
-            source: self.where.clean(),
-            def_id: ast_util::local_def(self.id),
-            visibility: self.vis.clean(),
-            stability: self.stab.clean(),
-            inner: TraitItem(Trait {
-                methods: self.methods.clean(),
-                generics: self.generics.clean(),
-                parents: self.parents.clean(),
+            name=Some(self.name.clean()),
+            attrs=self.attrs.clean(),
+            source=self.where.clean(),
+            def_id=ast_util::local_def(self.id),
+            visibility=self.vis.clean(),
+            stability=self.stab.clean(),
+            inner=TraitItem(Trait {
+                methods=self.methods.clean(),
+                generics=self.generics.clean(),
+                parents=self.parents.clean(),
             }),
         }
     }
@@ -992,7 +992,7 @@ impl Clean<Item> for ty::Method {
             ast::SelfStatic => (ast::SelfStatic.clean(), self.fty.sig.clone()),
             s => {
                 let sig = ty::FnSig {
-                    inputs: Vec::from_slice(self.fty.sig.inputs.slice_from(1)),
+                    inputs=Vec::from_slice(self.fty.sig.inputs.slice_from(1)),
                     ..self.fty.sig.clone()
                 };
                 let s = match s {
@@ -1011,17 +1011,17 @@ impl Clean<Item> for ty::Method {
         };
 
         Item {
-            name: Some(self.ident.clean()),
-            visibility: Some(ast::Inherited),
-            stability: get_stability(self.def_id),
-            def_id: self.def_id,
-            attrs: inline::load_attrs(cx.tcx(), self.def_id),
-            source: Span::empty(),
-            inner: TyMethodItem(TyMethod {
-                fn_style: self.fty.fn_style,
-                generics: self.generics.clean(),
-                self_: self_,
-                decl: (self.def_id, &sig).clean(),
+            name=Some(self.ident.clean()),
+            visibility=Some(ast::Inherited),
+            stability=get_stability(self.def_id),
+            def_id=self.def_id,
+            attrs=inline::load_attrs(cx.tcx(), self.def_id),
+            source=Span::empty(),
+            inner=TyMethodItem(TyMethod {
+                fn_style=self.fty.fn_style,
+                generics=self.generics.clean(),
+                self_=self_,
+                decl=(self.def_id, &sig).clean(),
             })
         }
     }
@@ -1182,8 +1182,8 @@ impl Clean<Type> for ast::Ty {
             TyNil => Primitive(Unit),
             TyPtr(ref m) => RawPointer(m.mutbl.clean(), box m.ty.clean()),
             TyRptr(ref l, ref m) =>
-                BorrowedRef {lifetime: l.clean(), mutability: m.mutbl.clean(),
-                             type_: box m.ty.clean()},
+                BorrowedRef {lifetime=l.clean(), mutability=m.mutbl.clean(),
+                             type_=box m.ty.clean()},
             TyBox(ty) => Managed(box ty.clean()),
             TyUniq(ty) => Unique(box ty.clean()),
             TyVec(ty) => Vector(box ty.clean()),
@@ -1232,25 +1232,25 @@ impl Clean<Type> for ty::t {
                                                    format!("{}", i)),
             ty::ty_ptr(mt) => RawPointer(mt.mutbl.clean(), box mt.ty.clean()),
             ty::ty_rptr(r, mt) => BorrowedRef {
-                lifetime: r.clean(),
-                mutability: mt.mutbl.clean(),
-                type_: box mt.ty.clean(),
+                lifetime=r.clean(),
+                mutability=mt.mutbl.clean(),
+                type_=box mt.ty.clean(),
             },
             ty::ty_bare_fn(ref fty) => BareFunction(box BareFunctionDecl {
-                fn_style: fty.fn_style,
-                generics: Generics {
-                    lifetimes: Vec::new(), type_params: Vec::new()
+                fn_style=fty.fn_style,
+                generics=Generics {
+                    lifetimes=Vec::new(), type_params=Vec::new()
                 },
-                decl: (ast_util::local_def(0), &fty.sig).clean(),
-                abi: fty.abi.to_string(),
+                decl=(ast_util::local_def(0), &fty.sig).clean(),
+                abi=fty.abi.to_string(),
             }),
             ty::ty_closure(ref fty) => {
                 let decl = box ClosureDecl {
-                    lifetimes: Vec::new(), // FIXME: this looks wrong...
-                    decl: (ast_util::local_def(0), &fty.sig).clean(),
-                    onceness: fty.onceness,
-                    fn_style: fty.fn_style,
-                    bounds: fty.bounds.iter().map(|i| i.clean()).collect(),
+                    lifetimes=Vec::new(), // FIXME: this looks wrong...
+                    decl=(ast_util::local_def(0), &fty.sig).clean(),
+                    onceness=fty.onceness,
+                    fn_style=fty.fn_style,
+                    bounds=fty.bounds.iter().map(|i| i.clean()).collect(),
                 };
                 match fty.store {
                     ty::UniqTraitStore => Proc(decl),
@@ -1259,7 +1259,7 @@ impl Clean<Type> for ty::t {
             }
             ty::ty_struct(did, ref substs) |
             ty::ty_enum(did, ref substs) |
-            ty::ty_trait(box ty::TyTrait { def_id: did, ref substs, .. }) => {
+            ty::ty_trait(box ty::TyTrait { def_id=did, ref substs, .. }) => {
                 let fqn = csearch::get_item_path(get_cx().tcx(), did);
                 let fqn: Vec<String> = fqn.move_iter().map(|i| {
                     i.to_string()
@@ -1274,9 +1274,9 @@ impl Clean<Type> for ty::t {
                 get_cx().external_paths.borrow_mut().get_mut_ref()
                                        .insert(did, (fqn, kind));
                 ResolvedPath {
-                    path: path,
-                    typarams: None,
-                    did: did,
+                    path=path,
+                    typarams=None,
+                    did=did,
                 }
             }
             ty::ty_tup(ref t) => Tuple(t.iter().map(|t| t.clean()).collect()),
@@ -1308,13 +1308,13 @@ impl Clean<Item> for ast::StructField {
             ast::UnnamedField(vis) => (None, vis)
         };
         Item {
-            name: name.clean(),
-            attrs: self.node.attrs.clean().move_iter().collect(),
-            source: self.span.clean(),
-            visibility: Some(vis),
-            stability: get_stability(ast_util::local_def(self.node.id)),
-            def_id: ast_util::local_def(self.node.id),
-            inner: StructFieldItem(TypedStructField(self.node.ty.clean())),
+            name=name.clean(),
+            attrs=self.node.attrs.clean().move_iter().collect(),
+            source=self.span.clean(),
+            visibility=Some(vis),
+            stability=get_stability(ast_util::local_def(self.node.id)),
+            def_id=ast_util::local_def(self.node.id),
+            inner=StructFieldItem(TypedStructField(self.node.ty.clean())),
         }
     }
 }
@@ -1330,13 +1330,13 @@ impl Clean<Item> for ty::field_ty {
         let cx = get_cx();
         let ty = ty::lookup_item_type(cx.tcx(), self.id);
         Item {
-            name: name.clean(),
-            attrs: inline::load_attrs(cx.tcx(), self.id),
-            source: Span::empty(),
-            visibility: Some(self.vis),
-            stability: get_stability(self.id),
-            def_id: self.id,
-            inner: StructFieldItem(TypedStructField(ty.ty.clean())),
+            name=name.clean(),
+            attrs=inline::load_attrs(cx.tcx(), self.id),
+            source=Span::empty(),
+            visibility=Some(self.vis),
+            stability=get_stability(self.id),
+            def_id=self.id,
+            inner=StructFieldItem(TypedStructField(ty.ty.clean())),
         }
     }
 }
@@ -1360,17 +1360,17 @@ pub struct Struct {
 impl Clean<Item> for doctree::Struct {
     fn clean(&self) -> Item {
         Item {
-            name: Some(self.name.clean()),
-            attrs: self.attrs.clean(),
-            source: self.where.clean(),
-            def_id: ast_util::local_def(self.id),
-            visibility: self.vis.clean(),
-            stability: self.stab.clean(),
-            inner: StructItem(Struct {
-                struct_type: self.struct_type,
-                generics: self.generics.clean(),
-                fields: self.fields.clean(),
-                fields_stripped: false,
+            name=Some(self.name.clean()),
+            attrs=self.attrs.clean(),
+            source=self.where.clean(),
+            def_id=ast_util::local_def(self.id),
+            visibility=self.vis.clean(),
+            stability=self.stab.clean(),
+            inner=StructItem(Struct {
+                struct_type=self.struct_type,
+                generics=self.generics.clean(),
+                fields=self.fields.clean(),
+                fields_stripped=false,
             }),
         }
     }
@@ -1389,9 +1389,9 @@ pub struct VariantStruct {
 impl Clean<VariantStruct> for syntax::ast::StructDef {
     fn clean(&self) -> VariantStruct {
         VariantStruct {
-            struct_type: doctree::struct_type_from_def(self),
-            fields: self.fields.clean().move_iter().collect(),
-            fields_stripped: false,
+            struct_type=doctree::struct_type_from_def(self),
+            fields=self.fields.clean().move_iter().collect(),
+            fields_stripped=false,
         }
     }
 }
@@ -1406,16 +1406,16 @@ pub struct Enum {
 impl Clean<Item> for doctree::Enum {
     fn clean(&self) -> Item {
         Item {
-            name: Some(self.name.clean()),
-            attrs: self.attrs.clean(),
-            source: self.where.clean(),
-            def_id: ast_util::local_def(self.id),
-            visibility: self.vis.clean(),
-            stability: self.stab.clean(),
-            inner: EnumItem(Enum {
-                variants: self.variants.clean(),
-                generics: self.generics.clean(),
-                variants_stripped: false,
+            name=Some(self.name.clean()),
+            attrs=self.attrs.clean(),
+            source=self.where.clean(),
+            def_id=ast_util::local_def(self.id),
+            visibility=self.vis.clean(),
+            stability=self.stab.clean(),
+            inner=EnumItem(Enum {
+                variants=self.variants.clean(),
+                generics=self.generics.clean(),
+                variants_stripped=false,
             }),
         }
     }
@@ -1429,14 +1429,14 @@ pub struct Variant {
 impl Clean<Item> for doctree::Variant {
     fn clean(&self) -> Item {
         Item {
-            name: Some(self.name.clean()),
-            attrs: self.attrs.clean(),
-            source: self.where.clean(),
-            visibility: self.vis.clean(),
-            stability: self.stab.clean(),
-            def_id: ast_util::local_def(self.id),
-            inner: VariantItem(Variant {
-                kind: self.kind.clean(),
+            name=Some(self.name.clean()),
+            attrs=self.attrs.clean(),
+            source=self.where.clean(),
+            visibility=self.vis.clean(),
+            stability=self.stab.clean(),
+            def_id=ast_util::local_def(self.id),
+            inner=VariantItem(Variant {
+                kind=self.kind.clean(),
             }),
         }
     }
@@ -1453,21 +1453,21 @@ impl Clean<Item> for ty::VariantInfo {
             }
             Some(s) => {
                 StructVariant(VariantStruct {
-                    struct_type: doctree::Plain,
-                    fields_stripped: false,
-                    fields: s.iter().zip(self.args.iter()).map(|(name, ty)| {
+                    struct_type=doctree::Plain,
+                    fields_stripped=false,
+                    fields=s.iter().zip(self.args.iter()).map(|(name, ty)| {
                         Item {
-                            source: Span::empty(),
-                            name: Some(name.clean()),
-                            attrs: Vec::new(),
-                            visibility: Some(ast::Public),
-                            stability: get_stability(self.id),
+                            source=Span::empty(),
+                            name=Some(name.clean()),
+                            attrs=Vec::new(),
+                            visibility=Some(ast::Public),
+                            stability=get_stability(self.id),
                             // FIXME: this is not accurate, we need an id for
                             //        the specific field but we're using the id
                             //        for the whole variant. Nothing currently
                             //        uses this so we should be good for now.
-                            def_id: self.id,
-                            inner: StructFieldItem(
+                            def_id=self.id,
+                            inner=StructFieldItem(
                                 TypedStructField(ty.clean())
                             )
                         }
@@ -1476,13 +1476,13 @@ impl Clean<Item> for ty::VariantInfo {
             }
         };
         Item {
-            name: Some(self.name.clean()),
-            attrs: inline::load_attrs(cx.tcx(), self.id),
-            source: Span::empty(),
-            visibility: Some(ast::Public),
-            def_id: self.id,
-            inner: VariantItem(Variant { kind: kind }),
-            stability: None,
+            name=Some(self.name.clean()),
+            attrs=inline::load_attrs(cx.tcx(), self.id),
+            source=Span::empty(),
+            visibility=Some(ast::Public),
+            def_id=self.id,
+            inner=VariantItem(Variant { kind=kind }),
+            stability=None,
         }
     }
 }
@@ -1521,9 +1521,9 @@ pub struct Span {
 impl Span {
     fn empty() -> Span {
         Span {
-            filename: "".to_string(),
-            loline: 0, locol: 0,
-            hiline: 0, hicol: 0,
+            filename="".to_string(),
+            loline=0, locol=0,
+            hiline=0, hicol=0,
         }
     }
 }
@@ -1536,11 +1536,11 @@ impl Clean<Span> for syntax::codemap::Span {
         let lo = cm.lookup_char_pos(self.lo);
         let hi = cm.lookup_char_pos(self.hi);
         Span {
-            filename: filename.to_string(),
-            loline: lo.line,
-            locol: lo.col.to_uint(),
-            hiline: hi.line,
-            hicol: hi.col.to_uint(),
+            filename=filename.to_string(),
+            loline=lo.line,
+            locol=lo.col.to_uint(),
+            hiline=hi.line,
+            hicol=hi.col.to_uint(),
         }
     }
 }
@@ -1554,8 +1554,8 @@ pub struct Path {
 impl Clean<Path> for ast::Path {
     fn clean(&self) -> Path {
         Path {
-            global: self.global,
-            segments: self.segments.clean().move_iter().collect(),
+            global=self.global,
+            segments=self.segments.clean().move_iter().collect(),
         }
     }
 }
@@ -1570,9 +1570,9 @@ pub struct PathSegment {
 impl Clean<PathSegment> for ast::PathSegment {
     fn clean(&self) -> PathSegment {
         PathSegment {
-            name: self.identifier.clean(),
-            lifetimes: self.lifetimes.clean().move_iter().collect(),
-            types: self.types.clean().move_iter().collect()
+            name=self.identifier.clean(),
+            lifetimes=self.lifetimes.clean().move_iter().collect(),
+            types=self.types.clean().move_iter().collect()
         }
     }
 }
@@ -1612,15 +1612,15 @@ pub struct Typedef {
 impl Clean<Item> for doctree::Typedef {
     fn clean(&self) -> Item {
         Item {
-            name: Some(self.name.clean()),
-            attrs: self.attrs.clean(),
-            source: self.where.clean(),
-            def_id: ast_util::local_def(self.id.clone()),
-            visibility: self.vis.clean(),
-            stability: self.stab.clean(),
-            inner: TypedefItem(Typedef {
-                type_: self.ty.clean(),
-                generics: self.gen.clean(),
+            name=Some(self.name.clean()),
+            attrs=self.attrs.clean(),
+            source=self.where.clean(),
+            def_id=ast_util::local_def(self.id.clone()),
+            visibility=self.vis.clean(),
+            stability=self.stab.clean(),
+            inner=TypedefItem(Typedef {
+                type_=self.ty.clean(),
+                generics=self.gen.clean(),
             }),
         }
     }
@@ -1637,13 +1637,13 @@ pub struct BareFunctionDecl {
 impl Clean<BareFunctionDecl> for ast::BareFnTy {
     fn clean(&self) -> BareFunctionDecl {
         BareFunctionDecl {
-            fn_style: self.fn_style,
-            generics: Generics {
-                lifetimes: self.lifetimes.clean().move_iter().collect(),
-                type_params: Vec::new(),
+            fn_style=self.fn_style,
+            generics=Generics {
+                lifetimes=self.lifetimes.clean().move_iter().collect(),
+                type_params=Vec::new(),
             },
-            decl: self.decl.clean(),
-            abi: self.abi.to_string(),
+            decl=self.decl.clean(),
+            abi=self.abi.to_string(),
         }
     }
 }
@@ -1662,16 +1662,16 @@ impl Clean<Item> for doctree::Static {
     fn clean(&self) -> Item {
         debug!("claning static {}: {:?}", self.name.clean(), self);
         Item {
-            name: Some(self.name.clean()),
-            attrs: self.attrs.clean(),
-            source: self.where.clean(),
-            def_id: ast_util::local_def(self.id),
-            visibility: self.vis.clean(),
-            stability: self.stab.clean(),
-            inner: StaticItem(Static {
-                type_: self.type_.clean(),
-                mutability: self.mutability.clean(),
-                expr: self.expr.span.to_src(),
+            name=Some(self.name.clean()),
+            attrs=self.attrs.clean(),
+            source=self.where.clean(),
+            def_id=ast_util::local_def(self.id),
+            visibility=self.vis.clean(),
+            stability=self.stab.clean(),
+            inner=StaticItem(Static {
+                type_=self.type_.clean(),
+                mutability=self.mutability.clean(),
+                expr=self.expr.span.to_src(),
             }),
         }
     }
@@ -1708,18 +1708,18 @@ fn detect_derived<M: AttrMetaMethods>(attrs: &[M]) -> bool {
 impl Clean<Item> for doctree::Impl {
     fn clean(&self) -> Item {
         Item {
-            name: None,
-            attrs: self.attrs.clean(),
-            source: self.where.clean(),
-            def_id: ast_util::local_def(self.id),
-            visibility: self.vis.clean(),
-            stability: self.stab.clean(),
-            inner: ImplItem(Impl {
-                generics: self.generics.clean(),
-                trait_: self.trait_.clean(),
-                for_: self.for_.clean(),
-                methods: self.methods.clean(),
-                derived: detect_derived(self.attrs.as_slice()),
+            name=None,
+            attrs=self.attrs.clean(),
+            source=self.where.clean(),
+            def_id=ast_util::local_def(self.id),
+            visibility=self.vis.clean(),
+            stability=self.stab.clean(),
+            inner=ImplItem(Impl {
+                generics=self.generics.clean(),
+                trait_=self.trait_.clean(),
+                for_=self.for_.clean(),
+                methods=self.methods.clean(),
+                derived=detect_derived(self.attrs.as_slice()),
             }),
         }
     }
@@ -1743,13 +1743,13 @@ impl Clean<Vec<Item>> for ast::ViewItem {
         });
         let convert = |node: &ast::ViewItem_| {
             Item {
-                name: None,
-                attrs: self.attrs.clean().move_iter().collect(),
-                source: self.span.clean(),
-                def_id: ast_util::local_def(0),
-                visibility: self.vis.clean(),
-                stability: None,
-                inner: ViewItemItem(ViewItem { inner: node.clean() }),
+                name=None,
+                attrs=self.attrs.clean().move_iter().collect(),
+                source=self.span.clean(),
+                def_id=ast_util::local_def(0),
+                visibility=self.vis.clean(),
+                stability=None,
+                inner=ViewItemItem(ViewItem { inner=node.clean() }),
             }
         };
         let mut ret = Vec::new();
@@ -1854,8 +1854,8 @@ pub struct ViewListIdent {
 impl Clean<ViewListIdent> for ast::PathListIdent {
     fn clean(&self) -> ViewListIdent {
         ViewListIdent {
-            name: self.node.name.clean(),
-            source: resolve_def(self.node.id),
+            name=self.node.name.clean(),
+            source=resolve_def(self.node.id),
         }
     }
 }
@@ -1871,27 +1871,27 @@ impl Clean<Item> for ast::ForeignItem {
         let inner = match self.node {
             ast::ForeignItemFn(ref decl, ref generics) => {
                 ForeignFunctionItem(Function {
-                    decl: decl.clean(),
-                    generics: generics.clean(),
-                    fn_style: ast::UnsafeFn,
+                    decl=decl.clean(),
+                    generics=generics.clean(),
+                    fn_style=ast::UnsafeFn,
                 })
             }
             ast::ForeignItemStatic(ref ty, mutbl) => {
                 ForeignStaticItem(Static {
-                    type_: ty.clean(),
-                    mutability: if mutbl {Mutable} else {Immutable},
-                    expr: "".to_string(),
+                    type_=ty.clean(),
+                    mutability=if mutbl {Mutable} else {Immutable},
+                    expr="".to_string(),
                 })
             }
         };
         Item {
-            name: Some(self.ident.clean()),
-            attrs: self.attrs.clean().move_iter().collect(),
-            source: self.span.clean(),
-            def_id: ast_util::local_def(self.id),
-            visibility: self.vis.clean(),
-            stability: None,
-            inner: inner,
+            name=Some(self.ident.clean()),
+            attrs=self.attrs.clean().move_iter().collect(),
+            source=self.span.clean(),
+            def_id=ast_util::local_def(self.id),
+            visibility=self.vis.clean(),
+            stability=None,
+            inner=inner,
         }
     }
 }
@@ -2009,7 +2009,7 @@ fn resolve_type(path: Path, tpbs: Option<Vec<TyParamBound>>,
         _ => {}
     };
     let did = register_def(&*cx, def);
-    ResolvedPath { path: path, typarams: tpbs, did: did }
+    ResolvedPath { path=path, typarams=tpbs, did=did }
 }
 
 fn register_def(cx: &core::DocContext, def: def::Def) -> ast::DefId {
@@ -2041,8 +2041,8 @@ fn register_def(cx: &core::DocContext, def: def::Def) -> ast::DefId {
 
 fn resolve_use_source(path: Path, id: ast::NodeId) -> ImportSource {
     ImportSource {
-        path: path,
-        did: resolve_def(id),
+        path=path,
+        did=resolve_def(id),
     }
 }
 
@@ -2060,14 +2060,14 @@ pub struct Macro {
 impl Clean<Item> for doctree::Macro {
     fn clean(&self) -> Item {
         Item {
-            name: Some(format!("{}!", self.name.clean())),
-            attrs: self.attrs.clean(),
-            source: self.where.clean(),
-            visibility: ast::Public.clean(),
-            stability: self.stab.clean(),
-            def_id: ast_util::local_def(self.id),
-            inner: MacroItem(Macro {
-                source: self.where.to_src(),
+            name=Some(format!("{}!", self.name.clean())),
+            attrs=self.attrs.clean(),
+            source=self.where.clean(),
+            visibility=ast::Public.clean(),
+            stability=self.stab.clean(),
+            def_id=ast_util::local_def(self.id),
+            inner=MacroItem(Macro {
+                source=self.where.to_src(),
             }),
         }
     }
@@ -2082,8 +2082,8 @@ pub struct Stability {
 impl Clean<Stability> for attr::Stability {
     fn clean(&self) -> Stability {
         Stability {
-            level: self.level,
-            text: self.text.as_ref().map_or("".to_string(),
+            level=self.level,
+            text=self.text.as_ref().map_or("".to_string(),
                                             |interned| interned.get().to_string()),
         }
     }

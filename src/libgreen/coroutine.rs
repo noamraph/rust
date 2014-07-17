@@ -31,8 +31,8 @@ pub struct Coroutine {
 impl Coroutine {
     pub fn empty() -> Coroutine {
         Coroutine {
-            current_stack_segment: unsafe { Stack::dummy_stack() },
-            saved_context: Context::empty()
+            current_stack_segment=unsafe { Stack::dummy_stack() },
+            saved_context=Context::empty()
         }
     }
 

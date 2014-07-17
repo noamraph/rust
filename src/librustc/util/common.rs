@@ -52,7 +52,7 @@ impl Drop for Indenter {
 
 pub fn indenter() -> Indenter {
     debug!(">>");
-    Indenter { _cannot_construct_outside_of_this_module: () }
+    Indenter { _cannot_construct_outside_of_this_module=() }
 }
 
 struct LoopQueryVisitor<'a> {
@@ -76,8 +76,8 @@ impl<'a> Visitor<()> for LoopQueryVisitor<'a> {
 // of b -- skipping any inner loops (loop, while, loop_body)
 pub fn loop_query(b: &ast::Block, p: |&ast::Expr_| -> bool) -> bool {
     let mut v = LoopQueryVisitor {
-        p: p,
-        flag: false,
+        p=p,
+        flag=false,
     };
     visit::walk_block(&mut v, b, ());
     return v.flag;
@@ -99,8 +99,8 @@ impl<'a> Visitor<()> for BlockQueryVisitor<'a> {
 // of b -- skipping any inner loops (loop, while, loop_body)
 pub fn block_query(b: ast::P<ast::Block>, p: |&ast::Expr| -> bool) -> bool {
     let mut v = BlockQueryVisitor {
-        p: p,
-        flag: false,
+        p=p,
+        flag=false,
     };
     visit::walk_block(&mut v, &*b, ());
     return v.flag;

@@ -76,7 +76,7 @@ impl Exp {
     /// `lambda`. Fails if `lambda <= 0`.
     pub fn new(lambda: f64) -> Exp {
         assert!(lambda > 0.0, "Exp::new called with `lambda` <= 0");
-        Exp { lambda_inverse: 1.0 / lambda }
+        Exp { lambda_inverse=1.0 / lambda }
     }
 }
 

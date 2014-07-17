@@ -32,21 +32,21 @@ pub fn expand_deriving_show(cx: &mut ExtCtxt,
                    Borrowed(None, ast::MutMutable));
 
     let trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: Path::new(vec!("std", "fmt", "Show")),
-        additional_bounds: Vec::new(),
-        generics: LifetimeBounds::empty(),
-        methods: vec!(
+        span=span,
+        attributes=Vec::new(),
+        path=Path::new(vec!("std", "fmt", "Show")),
+        additional_bounds=Vec::new(),
+        generics=LifetimeBounds::empty(),
+        methods=vec!(
             MethodDef {
-                name: "fmt",
-                generics: LifetimeBounds::empty(),
-                explicit_self: borrowed_explicit_self(),
-                args: vec!(fmtr),
-                ret_ty: Literal(Path::new(vec!("std", "fmt", "Result"))),
-                attributes: Vec::new(),
-                const_nonmatching: false,
-                combine_substructure: combine_substructure(|a, b, c| {
+                name="fmt",
+                generics=LifetimeBounds::empty(),
+                explicit_self=borrowed_explicit_self(),
+                args=vec!(fmtr),
+                ret_ty=Literal(Path::new(vec!("std", "fmt", "Result"))),
+                attributes=Vec::new(),
+                const_nonmatching=false,
+                combine_substructure=combine_substructure(|a, b, c| {
                     show_substructure(a, b, c)
                 })
             }

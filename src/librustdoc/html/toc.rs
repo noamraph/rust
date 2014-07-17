@@ -62,7 +62,7 @@ pub struct TocBuilder {
 
 impl TocBuilder {
     pub fn new() -> TocBuilder {
-        TocBuilder { top_level: Toc { entries: Vec::new() }, chain: Vec::new() }
+        TocBuilder { top_level=Toc { entries=Vec::new() }, chain=Vec::new() }
     }
 
 
@@ -158,11 +158,11 @@ impl TocBuilder {
         }
 
         self.chain.push(TocEntry {
-            level: level,
-            name: name,
-            sec_number: sec_number,
-            id: id,
-            children: Toc { entries: Vec::new() }
+            level=level,
+            name=name,
+            sec_number=sec_number,
+            id=id,
+            children=Toc { entries=Vec::new() }
         });
 
         // get the thing we just pushed, so we can borrow the string
@@ -238,14 +238,14 @@ mod test {
         macro_rules! toc {
             ($(($level: expr, $name: expr, $(($sub: tt))* )),*) => {
                 Toc {
-                    entries: vec!(
+                    entries=vec!(
                         $(
                             TocEntry {
-                                level: $level,
-                                name: $name.to_string(),
-                                sec_number: $name.to_string(),
-                                id: "".to_string(),
-                                children: toc!($($sub),*)
+                                level=$level,
+                                name=$name.to_string(),
+                                sec_number=$name.to_string(),
+                                id="".to_string(),
+                                children=toc!($($sub),*)
                             }
                             ),*
                         )

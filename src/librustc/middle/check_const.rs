@@ -38,7 +38,7 @@ impl<'a> Visitor<bool> for CheckCrateVisitor<'a> {
 }
 
 pub fn check_crate(krate: &Crate, tcx: &ty::ctxt) {
-    visit::walk_crate(&mut CheckCrateVisitor { tcx: tcx }, krate, false);
+    visit::walk_crate(&mut CheckCrateVisitor { tcx=tcx }, krate, false);
     tcx.sess.abort_if_errors();
 }
 
@@ -220,11 +220,11 @@ pub fn check_item_recursion<'a>(sess: &'a Session,
                                 it: &'a Item) {
 
     let mut visitor = CheckItemRecursionVisitor {
-        root_it: it,
-        sess: sess,
-        ast_map: ast_map,
-        def_map: def_map,
-        idstack: Vec::new()
+        root_it=it,
+        sess=sess,
+        ast_map=ast_map,
+        def_map=def_map,
+        idstack=Vec::new()
     };
     visitor.visit_item(it, ());
 }

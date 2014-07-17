@@ -82,7 +82,7 @@ impl RandomSipHasher {
         let r0 = r.gen();
         let r1 = r.gen();
         RandomSipHasher {
-            hasher: sip::SipHasher::new_with_keys(r0, r1),
+            hasher=sip::SipHasher::new_with_keys(r0, r1),
         }
     }
 }

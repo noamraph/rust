@@ -93,16 +93,16 @@ fn trans<'a>(bcx: &'a Block<'a>, expr: &ast::Expr) -> Callee<'a> {
     return datum_callee(bcx, expr);
 
     fn datum_callee<'a>(bcx: &'a Block<'a>, expr: &ast::Expr) -> Callee<'a> {
-        let DatumBlock {bcx: mut bcx, datum} = expr::trans(bcx, expr);
+        let DatumBlock {bcx=mut bcx, datum} = expr::trans(bcx, expr);
         match ty::get(datum.ty).sty {
             ty::ty_bare_fn(..) => {
                 let llval = datum.to_llscalarish(bcx);
-                return Callee {bcx: bcx, data: Fn(llval)};
+                return Callee {bcx=bcx, data=Fn(llval)};
             }
             ty::ty_closure(..) => {
                 let datum = unpack_datum!(
                     bcx, datum.to_lvalue_datum(bcx, "callee", expr.id));
-                return Callee {bcx: bcx, data: Closure(datum)};
+                return Callee {bcx=bcx, data=Closure(datum)};
             }
             _ => {
                 bcx.tcx().sess.span_bug(
@@ -115,7 +115,7 @@ fn trans<'a>(bcx: &'a Block<'a>, expr: &ast::Expr) -> Callee<'a> {
     }
 
     fn fn_callee<'a>(bcx: &'a Block<'a>, llfn: ValueRef) -> Callee<'a> {
-        return Callee {bcx: bcx, data: Fn(llfn)};
+        return Callee {bcx=bcx, data=Fn(llfn)};
     }
 
     fn trans_def<'a>(bcx: &'a Block<'a>, def: def::Def, ref_expr: &ast::Expr)
@@ -133,7 +133,7 @@ fn trans<'a>(bcx: &'a Block<'a>, expr: &ast::Expr) -> Callee<'a> {
                 } else {
                     did
                 };
-                Callee { bcx: bcx, data: Intrinsic(def_id.node, substs) }
+                Callee { bcx=bcx, data=Intrinsic(def_id.node, substs) }
             }
             def::DefFn(did, _) |
             def::DefStaticMethod(did, def::FromImpl(_), _) => {
@@ -206,8 +206,8 @@ fn trans_fn_ref_with_vtables_to_callee<'a>(bcx: &'a Block<'a>,
                                            substs: subst::Substs,
                                            vtables: typeck::vtable_res)
                                            -> Callee<'a> {
-    Callee {bcx: bcx,
-            data: Fn(trans_fn_ref_with_vtables(bcx, def_id, ExprId(ref_id),
+    Callee {bcx=bcx,
+            data=Fn(trans_fn_ref_with_vtables(bcx, def_id, ExprId(ref_id),
                                                substs, vtables))}
 }
 
@@ -223,8 +223,8 @@ fn resolve_default_method_vtables(bcx: &Block,
     // Build up a param_substs that we are going to resolve the
     // trait_vtables under.
     let param_substs = param_substs {
-        substs: (*substs).clone(),
-        vtables: impl_vtables.clone()
+        substs=(*substs).clone(),
+        vtables=impl_vtables.clone()
     };
 
     let mut param_vtables = resolve_vtables_under_param_substs(
@@ -253,21 +253,21 @@ pub fn trans_unboxing_shim(bcx: &Block,
     let self_type = *method.fty.sig.inputs.get(0);
     let boxed_self_type = ty::mk_uniq(tcx, self_type);
     let boxed_function_type = ty::FnSig {
-        binder_id: method.fty.sig.binder_id,
-        inputs: method.fty.sig.inputs.iter().enumerate().map(|(i, typ)| {
+        binder_id=method.fty.sig.binder_id,
+        inputs=method.fty.sig.inputs.iter().enumerate().map(|(i, typ)| {
             if i == 0 {
                 boxed_self_type
             } else {
                 *typ
             }
         }).collect(),
-        output: method.fty.sig.output,
-        variadic: false,
+        output=method.fty.sig.output,
+        variadic=false,
     };
     let boxed_function_type = ty::BareFnTy {
-        fn_style: method.fty.fn_style,
-        abi: method.fty.abi,
-        sig: boxed_function_type,
+        fn_style=method.fty.fn_style,
+        abi=method.fty.abi,
+        sig=boxed_function_type,
     };
     let boxed_function_type =
         ty::mk_bare_fn(tcx, boxed_function_type).subst(tcx, &substs);
@@ -349,8 +349,8 @@ pub fn trans_unboxing_shim(bcx: &Block,
                            function_type,
                            |bcx, _| {
                                Callee {
-                                   bcx: bcx,
-                                   data: Fn(llshimmedfn),
+                                   bcx=bcx,
+                                   data=Fn(llshimmedfn),
                                }
                            },
                            ArgVals(llshimmedargs.as_slice()),

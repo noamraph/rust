@@ -238,9 +238,9 @@ pub fn trans_intrinsic_call<'a>(mut bcx: &'a Block<'a>, node: ast::NodeId,
             let tp_ty = *substs.types.get(FnSpace, 0);
             let mode = appropriate_rvalue_mode(ccx, tp_ty);
             let src = Datum {
-                val: *llargs.get(1),
-                ty: tp_ty,
-                kind: Rvalue::new(mode)
+                val=*llargs.get(1),
+                ty=tp_ty,
+                kind=Rvalue::new(mode)
             };
             bcx = src.store_to(bcx, *llargs.get(0));
             C_nil(ccx)

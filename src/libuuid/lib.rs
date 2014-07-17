@@ -176,7 +176,7 @@ static UuidGroupLens: [uint, ..5] = [8u, 4u, 4u, 4u, 12u];
 impl Uuid {
     /// Returns a nil or empty UUID (containing all zeroes)
     pub fn nil() -> Uuid {
-        let uuid = Uuid{ bytes: [0, .. 16] };
+        let uuid = Uuid{ bytes=[0, .. 16] };
         uuid
     }
 
@@ -195,7 +195,7 @@ impl Uuid {
     /// a custom generator if required.
     pub fn new_v4() -> Uuid {
         let ub = rand::task_rng().gen_iter::<u8>().take(16).collect::<Vec<_>>();
-        let mut uuid = Uuid{ bytes: [0, .. 16] };
+        let mut uuid = Uuid{ bytes=[0, .. 16] };
         slice::bytes::copy_memory(uuid.bytes, ub.as_slice());
         uuid.set_variant(VariantRFC4122);
         uuid.set_version(Version4Random);
@@ -212,10 +212,10 @@ impl Uuid {
     pub fn from_fields(d1: u32, d2: u16, d3: u16, d4: &[u8]) -> Uuid {
         // First construct a temporary field-based struct
         let mut fields = UuidFields {
-                data1: 0,
-                data2: 0,
-                data3: 0,
-                data4: [0, ..8]
+                data1=0,
+                data2=0,
+                data3=0,
+                data4=[0, ..8]
         };
 
         fields.data1 = d1.to_be();
@@ -237,7 +237,7 @@ impl Uuid {
             return None
         }
 
-        let mut uuid = Uuid{ bytes: [0, .. 16] };
+        let mut uuid = Uuid{ bytes=[0, .. 16] };
         slice::bytes::copy_memory(uuid.bytes, b);
         Some(uuid)
     }
@@ -508,7 +508,7 @@ impl rand::Rand for Uuid {
     #[inline]
     fn rand<R: rand::Rng>(rng: &mut R) -> Uuid {
         let ub = rng.gen_iter::<u8>().take(16).collect::<Vec<_>>();
-        let mut uuid = Uuid{ bytes: [0, .. 16] };
+        let mut uuid = Uuid{ bytes=[0, .. 16] };
         slice::bytes::copy_memory(uuid.bytes, ub.as_slice());
         uuid.set_variant(VariantRFC4122);
         uuid.set_version(Version4Random);

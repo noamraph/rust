@@ -72,17 +72,17 @@ impl<T: Send> State<T> {
             capacity
         };
         let buffer = Vec::from_fn(capacity, |i| {
-            Unsafe::new(Node { sequence:AtomicUint::new(i), value: None })
+            Unsafe::new(Node { sequence=AtomicUint::new(i), value=None })
         });
         State{
-            pad0: [0, ..64],
-            buffer: buffer,
-            mask: capacity-1,
-            pad1: [0, ..64],
-            enqueue_pos: AtomicUint::new(0),
-            pad2: [0, ..64],
-            dequeue_pos: AtomicUint::new(0),
-            pad3: [0, ..64],
+            pad0=[0, ..64],
+            buffer=buffer,
+            mask=capacity-1,
+            pad1=[0, ..64],
+            enqueue_pos=AtomicUint::new(0),
+            pad2=[0, ..64],
+            dequeue_pos=AtomicUint::new(0),
+            pad3=[0, ..64],
         }
     }
 
@@ -144,7 +144,7 @@ impl<T: Send> State<T> {
 impl<T: Send> Queue<T> {
     pub fn with_capacity(capacity: uint) -> Queue<T> {
         Queue{
-            state: Arc::new(State::with_capacity(capacity))
+            state=Arc::new(State::with_capacity(capacity))
         }
     }
 
@@ -159,7 +159,7 @@ impl<T: Send> Queue<T> {
 
 impl<T: Send> Clone for Queue<T> {
     fn clone(&self) -> Queue<T> {
-        Queue { state: self.state.clone() }
+        Queue { state=self.state.clone() }
     }
 }
 

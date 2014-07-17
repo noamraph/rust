@@ -137,10 +137,10 @@ pub fn check_loans(bccx: &BorrowckCtxt,
     debug!("check_loans(body id={:?})", body.id);
 
     let mut clcx = CheckLoanCtxt {
-        bccx: bccx,
-        dfcx_loans: dfcx_loans,
-        move_data: move_data,
-        all_loans: all_loans,
+        bccx=bccx,
+        dfcx_loans=dfcx_loans,
+        move_data=move_data,
+        all_loans=all_loans,
     };
 
     {

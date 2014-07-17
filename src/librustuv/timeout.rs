@@ -57,9 +57,9 @@ struct TimerContext {
 impl AccessTimeout {
     pub fn new() -> AccessTimeout {
         AccessTimeout {
-            state: NoTimeout,
-            timer: None,
-            access: access::Access::new(),
+            state=NoTimeout,
+            timer=None,
+            access=access::Access::new(),
         }
     }
 
@@ -88,9 +88,9 @@ impl AccessTimeout {
         };
 
         Ok(Guard {
-            access: access,
-            state: &mut self.state,
-            can_timeout: can_timeout
+            access=access,
+            state=&mut self.state,
+            can_timeout=can_timeout
         })
     }
 
@@ -120,9 +120,9 @@ impl AccessTimeout {
         if self.timer.is_none() {
             let mut timer = box TimerWatcher::new_home(loop_, home.clone());
             let mut cx = box TimerContext {
-                timeout: self as *mut _,
-                callback: cb,
-                payload: data,
+                timeout=self as *mut _,
+                callback=cb,
+                payload=data,
             };
             unsafe {
                 timer.set_data(&mut *cx);
@@ -171,9 +171,9 @@ impl AccessTimeout {
 impl Clone for AccessTimeout {
     fn clone(&self) -> AccessTimeout {
         AccessTimeout {
-            access: self.access.clone(),
-            state: NoTimeout,
-            timer: None,
+            access=self.access.clone(),
+            state=NoTimeout,
+            timer=None,
         }
     }
 }
@@ -308,7 +308,7 @@ impl ConnectCtx {
 
 impl AcceptTimeout {
     pub fn new() -> AcceptTimeout {
-        AcceptTimeout { timer: None, timeout_tx: None, timeout_rx: None }
+        AcceptTimeout { timer=None, timeout_tx=None, timeout_rx=None }
     }
 
     pub fn accept<T: Send>(&mut self, c: &Receiver<IoResult<T>>) -> IoResult<T> {

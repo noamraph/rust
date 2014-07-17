@@ -138,7 +138,7 @@ pub fn trans_if<'a>(bcx: &'a Block<'a>,
         if const_to_uint(cond_val) == 1 {
             match els {
                 Some(elexpr) => {
-                    let mut trans = TransItemVisitor { ccx: bcx.fcx.ccx };
+                    let mut trans = TransItemVisitor { ccx=bcx.fcx.ccx };
                     trans.visit_expr(&*elexpr, ());
                 }
                 None => {}
@@ -147,7 +147,7 @@ pub fn trans_if<'a>(bcx: &'a Block<'a>,
             bcx = trans_block(bcx, &*thn, dest);
             debuginfo::clear_source_location(bcx.fcx);
         } else {
-            let mut trans = TransItemVisitor { ccx: bcx.fcx.ccx } ;
+            let mut trans = TransItemVisitor { ccx=bcx.fcx.ccx } ;
             trans.visit_block(&*thn, ());
 
             match els {
@@ -225,7 +225,7 @@ pub fn trans_while<'a>(bcx: &'a Block<'a>,
     let cleanup_llbb = fcx.normal_exit_block(loop_id, cleanup::EXIT_BREAK);
 
     // compile the condition
-    let Result {bcx: cond_bcx_out, val: cond_val} =
+    let Result {bcx=cond_bcx_out, val=cond_val} =
         expr::trans(cond_bcx_in, cond).to_llbool();
     CondBr(cond_bcx_out, cond_val, body_bcx_in.llbb, cleanup_llbb);
 

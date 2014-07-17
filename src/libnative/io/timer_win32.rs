@@ -112,7 +112,7 @@ impl Timer {
         if obj.is_null() {
             Err(super::last_error())
         } else {
-            Ok(Timer { obj: obj, on_worker: false, })
+            Ok(Timer { obj=obj, on_worker=false, })
         }
     }
 

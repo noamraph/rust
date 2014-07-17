@@ -69,13 +69,13 @@ pub enum MatchKind {
 pub fn run<'r, 't>(which: MatchKind, prog: &'r Program, input: &'t str,
                    start: uint, end: uint) -> CaptureLocs {
     Nfa {
-        which: which,
-        prog: prog,
-        input: input,
-        start: start,
-        end: end,
-        ic: 0,
-        chars: CharReader::new(input),
+        which=which,
+        prog=prog,
+        input=input,
+        start=start,
+        end=end,
+        ic=0,
+        chars=CharReader::new(input),
     }.run()
 }
 
@@ -356,10 +356,10 @@ impl<'t> CharReader<'t> {
     /// the input.
     pub fn new(input: &'t str) -> CharReader<'t> {
         CharReader {
-            prev: None,
-            cur: None,
-            input: input,
-            next: 0,
+            prev=None,
+            cur=None,
+            input=input,
+            next=0,
        }
     }
 
@@ -451,12 +451,12 @@ impl Threads {
     // See http://research.swtch.com/sparse for the deets.
     fn new(which: MatchKind, num_insts: uint, ncaps: uint) -> Threads {
         Threads {
-            which: which,
-            queue: Vec::from_fn(num_insts, |_| {
-                Thread { pc: 0, groups: Vec::from_elem(ncaps * 2, None) }
+            which=which,
+            queue=Vec::from_fn(num_insts, |_| {
+                Thread { pc=0, groups=Vec::from_elem(ncaps * 2, None) }
             }),
-            sparse: Vec::from_elem(num_insts, 0u),
-            size: 0,
+            sparse=Vec::from_elem(num_insts, 0u),
+            size=0,
         }
     }
 

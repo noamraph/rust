@@ -41,10 +41,10 @@ impl<K: Ord, V> BTree<K, V> {
     ///The lower bound applies to every node except the root node.
     pub fn new(k: K, v: V, lb: uint) -> BTree<K, V> {
         BTree {
-            root: Node::new_leaf(vec!(LeafElt::new(k, v))),
-            len: 1,
-            lower_bound: lb,
-            upper_bound: 2 * lb
+            root=Node::new_leaf(vec!(LeafElt::new(k, v))),
+            len=1,
+            lower_bound=lb,
+            upper_bound=2 * lb
         }
     }
 
@@ -54,10 +54,10 @@ impl<K: Ord, V> BTree<K, V> {
                          length: uint,
                          lb: uint) -> BTree<K, V> {
         BTree {
-            root: n,
-            len: length,
-            lower_bound: lb,
-            upper_bound: 2 * lb
+            root=n,
+            len=length,
+            lower_bound=lb,
+            upper_bound=2 * lb
         }
     }
 }
@@ -285,7 +285,7 @@ impl<K: Ord, V> Leaf<K, V> {
     ///Creates a new Leaf from a vector of LeafElts.
     fn new(vec: Vec<LeafElt<K, V>>) -> Leaf<K, V> {
         Leaf {
-            elts: vec
+            elts=vec
         }
     }
 
@@ -444,8 +444,8 @@ impl<K: Ord, V> Branch<K, V> {
     fn new(vec: Vec<BranchElt<K, V>>, right: Box<Node<K, V>>)
            -> Branch<K, V> {
         Branch {
-            elts: vec,
-            rightmost_child: right
+            elts=vec,
+            rightmost_child=right
         }
     }
 
@@ -684,8 +684,8 @@ impl<K: Ord, V> LeafElt<K, V> {
     ///Creates a new LeafElt from a supplied key-value pair.
     fn new(k: K, v: V) -> LeafElt<K, V> {
         LeafElt {
-            key: k,
-            value: v
+            key=k,
+            value=v
         }
     }
 }
@@ -729,9 +729,9 @@ impl<K: Ord, V> BranchElt<K, V> {
     ///Creates a new BranchElt from a supplied key, value, and left child.
     fn new(k: K, v: V, n: Box<Node<K, V>>) -> BranchElt<K, V> {
         BranchElt {
-            left: n,
-            key: k,
-            value: v
+            left=n,
+            key=k,
+            value=v
         }
     }
 }

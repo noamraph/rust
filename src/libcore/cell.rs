@@ -172,8 +172,8 @@ impl<T:Copy> Cell<T> {
     /// Creates a new `Cell` containing the given value.
     pub fn new(value: T) -> Cell<T> {
         Cell {
-            value: Unsafe::new(value),
-            noshare: marker::NoShare,
+            value=Unsafe::new(value),
+            noshare=marker::NoShare,
         }
     }
 
@@ -223,10 +223,10 @@ impl<T> RefCell<T> {
     /// Create a new `RefCell` containing `value`
     pub fn new(value: T) -> RefCell<T> {
         RefCell {
-            value: Unsafe::new(value),
-            borrow: Cell::new(UNUSED),
-            nocopy: marker::NoCopy,
-            noshare: marker::NoShare,
+            value=Unsafe::new(value),
+            borrow=Cell::new(UNUSED),
+            nocopy=marker::NoCopy,
+            noshare=marker::NoShare,
         }
     }
 
@@ -247,7 +247,7 @@ impl<T> RefCell<T> {
             WRITING => None,
             borrow => {
                 self.borrow.set(borrow + 1);
-                Some(Ref { _parent: self })
+                Some(Ref { _parent=self })
             }
         }
     }
@@ -277,7 +277,7 @@ impl<T> RefCell<T> {
         match self.borrow.get() {
             UNUSED => {
                 self.borrow.set(WRITING);
-                Some(RefMut { _parent: self })
+                Some(RefMut { _parent=self })
             },
             _ => None
         }
@@ -350,7 +350,7 @@ pub fn clone_ref<'b, T>(orig: &Ref<'b, T>) -> Ref<'b, T> {
     orig._parent.borrow.set(borrow + 1);
 
     Ref {
-        _parent: orig._parent,
+        _parent=orig._parent,
     }
 }
 

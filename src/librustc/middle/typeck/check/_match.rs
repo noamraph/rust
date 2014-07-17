@@ -43,8 +43,8 @@ pub fn check_match(fcx: &FnCtxt,
     // bindings.
     for arm in arms.iter() {
         let mut pcx = pat_ctxt {
-            fcx: fcx,
-            map: pat_id_map(&tcx.def_map, &**arm.pats.get(0)),
+            fcx=fcx,
+            map=pat_id_map(&tcx.def_map, &**arm.pats.get(0)),
         };
 
         for p in arm.pats.iter() { check_pat(&mut pcx, &**p, discrim_ty);}
@@ -192,7 +192,7 @@ pub fn check_pat_variant(pcx: &pat_ctxt, pat: &ast::Pat, path: &ast::Path,
             // Assign the pattern the type of the struct.
             let ctor_pty = ty::lookup_item_type(tcx, s_def_id);
             let struct_pty = if ty::is_fn_ty(ctor_pty.ty) {
-                ty::Polytype {ty: ty::ty_fn_ret(ctor_pty.ty),
+                ty::Polytype {ty=ty::ty_fn_ret(ctor_pty.ty),
                               ..ctor_pty}
             } else {
                 ctor_pty
@@ -477,7 +477,7 @@ pub fn check_pat(pcx: &pat_ctxt, pat: &ast::Pat, expected: ty::t) {
             let region_var =
                 fcx.infcx().next_region_var(
                     infer::PatternRegion(pat.span));
-            let mt = ty::mt {ty: expected, mutbl: mutbl};
+            let mt = ty::mt {ty=expected, mutbl=mutbl};
             let region_ty = ty::mk_rptr(tcx, region_var, mt);
             demand::eqtype(fcx, pat.span, region_ty, typ);
           }
@@ -603,8 +603,8 @@ pub fn check_pat(pcx: &pat_ctxt, pat: &ast::Pat, expected: ty::t) {
                 let type_error = match *s {
                     ty::ty_tup(ref ex_elts) => {
                         ty::terr_tuple_size(ty::expected_found {
-                            expected: ex_elts.len(),
-                            found: e_count
+                            expected=ex_elts.len(),
+                            found=e_count
                         })
                     }
                     _ => ty::terr_mismatch
@@ -714,7 +714,7 @@ pub fn check_pat(pcx: &pat_ctxt, pat: &ast::Pat, expected: ty::t) {
             Some(ref slice_pat) => {
                 let slice_ty = ty::mk_slice(tcx,
                                             region_var,
-                                            ty::mt {ty: elt_type, mutbl: mutbl});
+                                            ty::mt {ty=elt_type, mutbl=mutbl});
                 check_pat(pcx, &**slice_pat, slice_ty);
             }
             None => ()

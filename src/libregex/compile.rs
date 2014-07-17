@@ -90,8 +90,8 @@ impl Program {
     /// Compiles a Regex given its AST.
     pub fn new(ast: parse::Ast) -> (Program, Vec<Option<String>>) {
         let mut c = Compiler {
-            insts: Vec::with_capacity(100),
-            names: Vec::with_capacity(10),
+            insts=Vec::with_capacity(100),
+            names=Vec::with_capacity(10),
         };
 
         c.insts.push(Save(0));
@@ -112,8 +112,8 @@ impl Program {
 
         let Compiler { insts, names } = c;
         let prog = Program {
-            insts: insts,
-            prefix: pre,
+            insts=insts,
+            prefix=pre,
         };
         (prog, names)
     }

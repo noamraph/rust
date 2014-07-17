@@ -226,14 +226,14 @@ pub fn log(level: u32, loc: &'static LogLocation, args: &fmt::Arguments) {
     // frob the slot while we're doing the logging. This will destroy any logger
     // set during logging.
     let mut logger = local_logger.replace(None).unwrap_or_else(|| {
-        box DefaultLogger { handle: io::stderr() } as Box<Logger + Send>
+        box DefaultLogger { handle=io::stderr() } as Box<Logger + Send>
     });
     logger.log(&LogRecord {
-        level: LogLevel(level),
-        args: args,
-        file: loc.file,
-        module_path: loc.module_path,
-        line: loc.line,
+        level=LogLevel(level),
+        args=args,
+        file=loc.file,
+        module_path=loc.module_path,
+        line=loc.line,
     });
     local_logger.replace(Some(logger));
 }
@@ -364,12 +364,12 @@ mod tests {
     fn match_full_path() {
         let dirs = [
             LogDirective {
-                name: Some("crate2".to_string()),
-                level: 3
+                name=Some("crate2".to_string()),
+                level=3
             },
             LogDirective {
-                name: Some("crate1::mod1".to_string()),
-                level: 2
+                name=Some("crate1::mod1".to_string()),
+                level=2
             }
         ];
         assert!(enabled(2, "crate1::mod1", dirs.iter()));
@@ -381,8 +381,8 @@ mod tests {
     #[test]
     fn no_match() {
         let dirs = [
-            LogDirective { name: Some("crate2".to_string()), level: 3 },
-            LogDirective { name: Some("crate1::mod1".to_string()), level: 2 }
+            LogDirective { name=Some("crate2".to_string()), level=3 },
+            LogDirective { name=Some("crate1::mod1".to_string()), level=2 }
         ];
         assert!(!enabled(2, "crate3", dirs.iter()));
     }
@@ -390,8 +390,8 @@ mod tests {
     #[test]
     fn match_beginning() {
         let dirs = [
-            LogDirective { name: Some("crate2".to_string()), level: 3 },
-            LogDirective { name: Some("crate1::mod1".to_string()), level: 2 }
+            LogDirective { name=Some("crate2".to_string()), level=3 },
+            LogDirective { name=Some("crate1::mod1".to_string()), level=2 }
         ];
         assert!(enabled(3, "crate2::mod1", dirs.iter()));
     }
@@ -399,9 +399,9 @@ mod tests {
     #[test]
     fn match_beginning_longest_match() {
         let dirs = [
-            LogDirective { name: Some("crate2".to_string()), level: 3 },
-            LogDirective { name: Some("crate2::mod".to_string()), level: 4 },
-            LogDirective { name: Some("crate1::mod1".to_string()), level: 2 }
+            LogDirective { name=Some("crate2".to_string()), level=3 },
+            LogDirective { name=Some("crate2::mod".to_string()), level=4 },
+            LogDirective { name=Some("crate1::mod1".to_string()), level=2 }
         ];
         assert!(enabled(4, "crate2::mod1", dirs.iter()));
         assert!(!enabled(4, "crate2", dirs.iter()));
@@ -410,8 +410,8 @@ mod tests {
     #[test]
     fn match_default() {
         let dirs = [
-            LogDirective { name: None, level: 3 },
-            LogDirective { name: Some("crate1::mod1".to_string()), level: 2 }
+            LogDirective { name=None, level=3 },
+            LogDirective { name=Some("crate1::mod1".to_string()), level=2 }
         ];
         assert!(enabled(2, "crate1::mod1", dirs.iter()));
         assert!(enabled(3, "crate2::mod2", dirs.iter()));
@@ -420,8 +420,8 @@ mod tests {
     #[test]
     fn zero_level() {
         let dirs = [
-            LogDirective { name: None, level: 3 },
-            LogDirective { name: Some("crate1::mod1".to_string()), level: 0 }
+            LogDirective { name=None, level=3 },
+            LogDirective { name=Some("crate1::mod1".to_string()), level=0 }
         ];
         assert!(!enabled(1, "crate1::mod1", dirs.iter()));
         assert!(enabled(3, "crate2::mod2", dirs.iter()));

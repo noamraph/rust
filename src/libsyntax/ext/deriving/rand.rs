@@ -24,29 +24,29 @@ pub fn expand_deriving_rand(cx: &mut ExtCtxt,
                             item: Gc<Item>,
                             push: |Gc<Item>|) {
     let trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: Path::new(vec!("std", "rand", "Rand")),
-        additional_bounds: Vec::new(),
-        generics: LifetimeBounds::empty(),
-        methods: vec!(
+        span=span,
+        attributes=Vec::new(),
+        path=Path::new(vec!("std", "rand", "Rand")),
+        additional_bounds=Vec::new(),
+        generics=LifetimeBounds::empty(),
+        methods=vec!(
             MethodDef {
-                name: "rand",
-                generics: LifetimeBounds {
-                    lifetimes: Vec::new(),
-                    bounds: vec!(("R",
+                name="rand",
+                generics=LifetimeBounds {
+                    lifetimes=Vec::new(),
+                    bounds=vec!(("R",
                                   None,
                                   vec!( Path::new(vec!("std", "rand", "Rng")) )))
                 },
-                explicit_self: None,
-                args: vec!(
+                explicit_self=None,
+                args=vec!(
                     Ptr(box Literal(Path::new_local("R")),
                         Borrowed(None, ast::MutMutable))
                 ),
-                ret_ty: Self,
-                attributes: Vec::new(),
-                const_nonmatching: false,
-                combine_substructure: combine_substructure(|a, b, c| {
+                ret_ty=Self,
+                attributes=Vec::new(),
+                const_nonmatching=false,
+                combine_substructure=combine_substructure(|a, b, c| {
                     rand_substructure(a, b, c)
                 })
             }

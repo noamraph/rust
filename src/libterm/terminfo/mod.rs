@@ -87,7 +87,7 @@ impl<T: Writer> Terminal<T> for TerminfoTerminal<T> {
                     "mintty.exe" == s.as_slice()
                 }) {
                 // msys terminal
-                return Some(TerminfoTerminal {out: out, ti: msys_terminfo(), num_colors: 8});
+                return Some(TerminfoTerminal {out=out, ti=msys_terminfo(), num_colors=8});
             }
             debug!("error finding terminfo entry: {}", entry.err().unwrap());
             return None;
@@ -106,7 +106,7 @@ impl<T: Writer> Terminal<T> for TerminfoTerminal<T> {
                      inf.numbers.find_equiv(&("colors")).map_or(0, |&n| n)
                  } else { 0 };
 
-        return Some(TerminfoTerminal {out: out, ti: inf, num_colors: nc});
+        return Some(TerminfoTerminal {out=out, ti=inf, num_colors=nc});
     }
 
     fn fg(&mut self, color: color::Color) -> IoResult<bool> {

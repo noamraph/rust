@@ -104,17 +104,17 @@ pub fn load_props(testfile: &Path) -> TestProps {
     });
 
     TestProps {
-        error_patterns: error_patterns,
-        compile_flags: compile_flags,
-        run_flags: run_flags,
-        pp_exact: pp_exact,
-        aux_builds: aux_builds,
-        exec_env: exec_env,
-        check_lines: check_lines,
-        force_host: force_host,
-        check_stdout: check_stdout,
-        no_prefer_dynamic: no_prefer_dynamic,
-        no_pretty_expanded: no_pretty_expanded,
+        error_patterns=error_patterns,
+        compile_flags=compile_flags,
+        run_flags=run_flags,
+        pp_exact=pp_exact,
+        aux_builds=aux_builds,
+        exec_env=exec_env,
+        check_lines=check_lines,
+        force_host=force_host,
+        check_stdout=check_stdout,
+        no_prefer_dynamic=no_prefer_dynamic,
+        no_pretty_expanded=no_pretty_expanded,
     }
 }
 

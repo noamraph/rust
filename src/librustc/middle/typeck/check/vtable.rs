@@ -245,13 +245,13 @@ fn lookup_vtable(vcx: &VtableContext,
     // If the type is self or a param, we look at the trait/supertrait
     // bounds to see if they include the trait we are looking for.
     let vtable_opt = match ty::get(ty).sty {
-        ty::ty_param(ParamTy {space, idx: n, ..}) => {
+        ty::ty_param(ParamTy {space, idx=n, ..}) => {
             let env_bounds = &vcx.param_env.bounds;
             let type_param_bounds = &env_bounds.get(space, n).trait_bounds;
             lookup_vtable_from_bounds(vcx, span,
                                       type_param_bounds.as_slice(),
-                                      param_index { space: space,
-                                                    index: n },
+                                      param_index { space=space,
+                                                    index=n },
                                       trait_ref.clone())
         }
 
@@ -353,8 +353,8 @@ fn search_for_vtable(vcx: &VtableContext,
         //
         // FIXME: document a bit more what this means
         let TypeAndSubsts {
-            substs: substs,
-            ty: for_ty
+            substs=substs,
+            ty=for_ty
         } = impl_self_ty(vcx, span, impl_did);
         match infer::mk_eqty(vcx.infcx,
                              false,
@@ -556,7 +556,7 @@ pub fn early_resolve_expr(ex: &ast::Expr, fcx: &FnCtxt, is_early: bool) {
           (&ty::ty_rptr(_, ty::mt{ty, ..}), &ty::ty_rptr(..)) => {
               match ty::get(ty).sty {
                   ty::ty_trait(box ty::TyTrait {
-                      def_id: target_def_id, substs: ref target_substs, ..
+                      def_id=target_def_id, substs=ref target_substs, ..
                   }) => {
                       debug!("nrc correct path");
                       let typ = match &ty::get(src_ty).sty {
@@ -576,16 +576,16 @@ pub fn early_resolve_expr(ex: &ast::Expr, fcx: &FnCtxt, is_early: bool) {
                       target_types.push(subst::SelfSpace, typ);
 
                       let target_trait_ref = Rc::new(ty::TraitRef {
-                          def_id: target_def_id,
-                          substs: subst::Substs {
-                              regions: target_substs.regions.clone(),
-                              types: target_types
+                          def_id=target_def_id,
+                          substs=subst::Substs {
+                              regions=target_substs.regions.clone(),
+                              types=target_types
                           }
                       });
 
                       let param_bounds = ty::ParamBounds {
-                          builtin_bounds: ty::empty_builtin_bounds(),
-                          trait_bounds: vec!(target_trait_ref)
+                          builtin_bounds=ty::empty_builtin_bounds(),
+                          trait_bounds=vec!(target_trait_ref)
                       };
                       let vtables =
                             lookup_vtables_for_param(&vcx,
@@ -744,7 +744,7 @@ pub fn early_resolve_expr(ex: &ast::Expr, fcx: &FnCtxt, is_early: bool) {
                     let object_ty = match store {
                         ty::UniqTraitStore => ty::mk_uniq(cx.tcx, trait_ty),
                         ty::RegionTraitStore(r, m) => {
-                            ty::mk_rptr(cx.tcx, r, ty::mt {ty: trait_ty, mutbl: m})
+                            ty::mk_rptr(cx.tcx, r, ty::mt {ty=trait_ty, mutbl=m})
                         }
                     };
 
@@ -799,7 +799,7 @@ pub fn resolve_impl(tcx: &ty::ctxt,
     debug!("impl_trait_ref={}", impl_trait_ref.repr(tcx));
 
     let infcx = &infer::new_infer_ctxt(tcx);
-    let vcx = VtableContext { infcx: infcx, param_env: &param_env };
+    let vcx = VtableContext { infcx=infcx, param_env=&param_env };
 
     // Resolve the vtables for the trait reference on the impl.  This
     // serves many purposes, best explained by example. Imagine we have:
@@ -848,8 +848,8 @@ pub fn trans_resolve_method(tcx: &ty::ctxt, id: ast::NodeId,
                             substs: &subst::Substs) -> vtable_res {
     let generics = ty::lookup_item_type(tcx, ast_util::local_def(id)).generics;
     let vcx = VtableContext {
-        infcx: &infer::new_infer_ctxt(tcx),
-        param_env: &ty::construct_parameter_environment(tcx, &ty::Generics::empty(), id)
+        infcx=&infer::new_infer_ctxt(tcx),
+        param_env=&ty::construct_parameter_environment(tcx, &ty::Generics::empty(), id)
     };
 
     lookup_vtables(&vcx,

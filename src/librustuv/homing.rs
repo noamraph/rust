@@ -54,7 +54,7 @@ pub struct HomeHandle {
 
 impl HomeHandle {
     pub fn new(id: uint, pool: &mut QueuePool) -> HomeHandle {
-        HomeHandle { queue: pool.queue(), id: id }
+        HomeHandle { queue=pool.queue(), id=id }
     }
 
     fn send(&mut self, task: BlockedTask) {
@@ -65,8 +65,8 @@ impl HomeHandle {
 impl Clone for HomeHandle {
     fn clone(&self) -> HomeHandle {
         HomeHandle {
-            queue: self.queue.clone(),
-            id: self.id,
+            queue=self.queue.clone(),
+            id=self.id,
         }
     }
 }
@@ -119,7 +119,7 @@ pub trait HomingIO {
     /// move the local task to its I/O scheduler and then return an RAII wrapper
     /// which will return the task home.
     fn fire_homing_missile(&mut self) -> HomingMissile {
-        HomingMissile { io_home: self.go_to_io_home() }
+        HomingMissile { io_home=self.go_to_io_home() }
     }
 }
 
@@ -166,8 +166,8 @@ mod test {
     fn test_homing_closes_correctly() {
         let (tx, rx) = channel();
         let mut pool = SchedPool::new(PoolConfig {
-            threads: 1,
-            event_loop_factory: ::event_loop,
+            threads=1,
+            event_loop_factory=::event_loop,
         });
 
         pool.spawn(TaskOpts::new(), proc() {
@@ -187,8 +187,8 @@ mod test {
     fn test_homing_read() {
         let (tx, rx) = channel();
         let mut pool = SchedPool::new(PoolConfig {
-            threads: 1,
-            event_loop_factory: ::event_loop,
+            threads=1,
+            event_loop_factory=::event_loop,
         });
 
         pool.spawn(TaskOpts::new(), proc() {

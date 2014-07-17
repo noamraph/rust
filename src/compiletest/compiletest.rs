@@ -129,46 +129,46 @@ pub fn parse_config(args: Vec<String> ) -> Config {
     };
 
     Config {
-        compile_lib_path: matches.opt_str("compile-lib-path").unwrap(),
-        run_lib_path: matches.opt_str("run-lib-path").unwrap(),
-        rustc_path: opt_path(matches, "rustc-path"),
-        clang_path: matches.opt_str("clang-path").map(|s| Path::new(s)),
-        llvm_bin_path: matches.opt_str("llvm-bin-path").map(|s| Path::new(s)),
-        src_base: opt_path(matches, "src-base"),
-        build_base: opt_path(matches, "build-base"),
-        aux_base: opt_path(matches, "aux-base"),
-        stage_id: matches.opt_str("stage-id").unwrap(),
-        mode: FromStr::from_str(matches.opt_str("mode")
+        compile_lib_path=matches.opt_str("compile-lib-path").unwrap(),
+        run_lib_path=matches.opt_str("run-lib-path").unwrap(),
+        rustc_path=opt_path(matches, "rustc-path"),
+        clang_path=matches.opt_str("clang-path").map(|s| Path::new(s)),
+        llvm_bin_path=matches.opt_str("llvm-bin-path").map(|s| Path::new(s)),
+        src_base=opt_path(matches, "src-base"),
+        build_base=opt_path(matches, "build-base"),
+        aux_base=opt_path(matches, "aux-base"),
+        stage_id=matches.opt_str("stage-id").unwrap(),
+        mode=FromStr::from_str(matches.opt_str("mode")
                                        .unwrap()
                                        .as_slice()).expect("invalid mode"),
-        run_ignored: matches.opt_present("ignored"),
-        filter: filter,
-        cfail_regex: Regex::new(errors::EXPECTED_PATTERN).unwrap(),
-        logfile: matches.opt_str("logfile").map(|s| Path::new(s)),
-        save_metrics: matches.opt_str("save-metrics").map(|s| Path::new(s)),
-        ratchet_metrics:
+        run_ignored=matches.opt_present("ignored"),
+        filter=filter,
+        cfail_regex=Regex::new(errors::EXPECTED_PATTERN).unwrap(),
+        logfile=matches.opt_str("logfile").map(|s| Path::new(s)),
+        save_metrics=matches.opt_str("save-metrics").map(|s| Path::new(s)),
+        ratchet_metrics=
             matches.opt_str("ratchet-metrics").map(|s| Path::new(s)),
-        ratchet_noise_percent:
+        ratchet_noise_percent=
             matches.opt_str("ratchet-noise-percent")
                    .and_then(|s| from_str::<f64>(s.as_slice())),
-        runtool: matches.opt_str("runtool"),
-        host_rustcflags: matches.opt_str("host-rustcflags"),
-        target_rustcflags: matches.opt_str("target-rustcflags"),
-        jit: matches.opt_present("jit"),
-        target: opt_str2(matches.opt_str("target")),
-        host: opt_str2(matches.opt_str("host")),
-        android_cross_path: opt_path(matches, "android-cross-path"),
-        adb_path: opt_str2(matches.opt_str("adb-path")),
-        adb_test_dir: opt_str2(matches.opt_str("adb-test-dir")),
-        adb_device_status:
+        runtool=matches.opt_str("runtool"),
+        host_rustcflags=matches.opt_str("host-rustcflags"),
+        target_rustcflags=matches.opt_str("target-rustcflags"),
+        jit=matches.opt_present("jit"),
+        target=opt_str2(matches.opt_str("target")),
+        host=opt_str2(matches.opt_str("host")),
+        android_cross_path=opt_path(matches, "android-cross-path"),
+        adb_path=opt_str2(matches.opt_str("adb-path")),
+        adb_test_dir=opt_str2(matches.opt_str("adb-test-dir")),
+        adb_device_status=
             "arm-linux-androideabi" ==
                 opt_str2(matches.opt_str("target")).as_slice() &&
             "(none)" !=
                 opt_str2(matches.opt_str("adb-test-dir")).as_slice() &&
             !opt_str2(matches.opt_str("adb-test-dir")).is_empty(),
-        lldb_python_dir: matches.opt_str("lldb-python-dir"),
-        test_shard: test::opt_shard(matches.opt_str("test-shard")),
-        verbose: matches.opt_present("verbose")
+        lldb_python_dir=matches.opt_str("lldb-python-dir"),
+        test_shard=test::opt_shard(matches.opt_str("test-shard")),
+        verbose=matches.opt_present("verbose")
     }
 }
 
@@ -259,20 +259,20 @@ pub fn run_tests(config: &Config) {
 
 pub fn test_opts(config: &Config) -> test::TestOpts {
     test::TestOpts {
-        filter: match config.filter {
+        filter=match config.filter {
             None => None,
             Some(ref filter) => Some(filter.clone()),
         },
-        run_ignored: config.run_ignored,
-        logfile: config.logfile.clone(),
-        run_tests: true,
-        run_benchmarks: true,
-        ratchet_metrics: config.ratchet_metrics.clone(),
-        ratchet_noise_percent: config.ratchet_noise_percent.clone(),
-        save_metrics: config.save_metrics.clone(),
-        test_shard: config.test_shard.clone(),
-        nocapture: false,
-        color: test::AutoColor,
+        run_ignored=config.run_ignored,
+        logfile=config.logfile.clone(),
+        run_tests=true,
+        run_benchmarks=true,
+        ratchet_metrics=config.ratchet_metrics.clone(),
+        ratchet_noise_percent=config.ratchet_noise_percent.clone(),
+        save_metrics=config.save_metrics.clone(),
+        test_shard=config.test_shard.clone(),
+        nocapture=false,
+        color=test::AutoColor,
     }
 }
 
@@ -327,12 +327,12 @@ pub fn is_test(config: &Config, testfile: &Path) -> bool {
 pub fn make_test(config: &Config, testfile: &Path, f: || -> test::TestFn)
                  -> test::TestDescAndFn {
     test::TestDescAndFn {
-        desc: test::TestDesc {
-            name: make_test_name(config, testfile),
-            ignore: header::is_test_ignored(config, testfile),
-            should_fail: false
+        desc=test::TestDesc {
+            name=make_test_name(config, testfile),
+            ignore=header::is_test_ignored(config, testfile),
+            should_fail=false
         },
-        testfn: f(),
+        testfn=f(),
     }
 }
 

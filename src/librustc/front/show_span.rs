@@ -31,6 +31,6 @@ impl<'a> Visitor<()> for ShowSpanVisitor<'a> {
 }
 
 pub fn run(sess: &Session, krate: &ast::Crate) {
-    let mut v = ShowSpanVisitor { sess: sess };
+    let mut v = ShowSpanVisitor { sess=sess };
     visit::walk_crate(&mut v, krate, ());
 }

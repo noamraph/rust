@@ -233,37 +233,37 @@ impl OptGroup {
     /// (Both short and long names correspond to different Opts).
     pub fn long_to_short(&self) -> Opt {
         let OptGroup {
-            short_name: short_name,
-            long_name: long_name,
-            hasarg: hasarg,
-            occur: occur,
+            short_name=short_name,
+            long_name=long_name,
+            hasarg=hasarg,
+            occur=occur,
             ..
         } = (*self).clone();
 
         match (short_name.len(), long_name.len()) {
             (0,0) => fail!("this long-format option was given no name"),
             (0,_) => Opt {
-                name: Long((long_name)),
-                hasarg: hasarg,
-                occur: occur,
-                aliases: Vec::new()
+                name=Long((long_name)),
+                hasarg=hasarg,
+                occur=occur,
+                aliases=Vec::new()
             },
             (1,0) => Opt {
-                name: Short(short_name.as_slice().char_at(0)),
-                hasarg: hasarg,
-                occur: occur,
-                aliases: Vec::new()
+                name=Short(short_name.as_slice().char_at(0)),
+                hasarg=hasarg,
+                occur=occur,
+                aliases=Vec::new()
             },
             (1,_) => Opt {
-                name: Long((long_name)),
-                hasarg: hasarg,
-                occur:  occur,
-                aliases: vec!(
+                name=Long((long_name)),
+                hasarg=hasarg,
+                occur= occur,
+                aliases=vec!(
                     Opt {
-                        name: Short(short_name.as_slice().char_at(0)),
-                        hasarg: hasarg,
-                        occur:  occur,
-                        aliases: Vec::new()
+                        name=Short(short_name.as_slice().char_at(0)),
+                        hasarg=hasarg,
+                        occur= occur,
+                        aliases=Vec::new()
                     }
                 )
             },
@@ -395,12 +395,12 @@ pub fn reqopt(short_name: &str, long_name: &str, desc: &str, hint: &str) -> OptG
     let len = short_name.len();
     assert!(len == 1 || len == 0);
     OptGroup {
-        short_name: short_name.to_string(),
-        long_name: long_name.to_string(),
-        hint: hint.to_string(),
-        desc: desc.to_string(),
-        hasarg: Yes,
-        occur: Req
+        short_name=short_name.to_string(),
+        long_name=long_name.to_string(),
+        hint=hint.to_string(),
+        desc=desc.to_string(),
+        hasarg=Yes,
+        occur=Req
     }
 }
 
@@ -409,12 +409,12 @@ pub fn optopt(short_name: &str, long_name: &str, desc: &str, hint: &str) -> OptG
     let len = short_name.len();
     assert!(len == 1 || len == 0);
     OptGroup {
-        short_name: short_name.to_string(),
-        long_name: long_name.to_string(),
-        hint: hint.to_string(),
-        desc: desc.to_string(),
-        hasarg: Yes,
-        occur: Optional
+        short_name=short_name.to_string(),
+        long_name=long_name.to_string(),
+        hint=hint.to_string(),
+        desc=desc.to_string(),
+        hasarg=Yes,
+        occur=Optional
     }
 }
 
@@ -423,12 +423,12 @@ pub fn optflag(short_name: &str, long_name: &str, desc: &str) -> OptGroup {
     let len = short_name.len();
     assert!(len == 1 || len == 0);
     OptGroup {
-        short_name: short_name.to_string(),
-        long_name: long_name.to_string(),
-        hint: "".to_string(),
-        desc: desc.to_string(),
-        hasarg: No,
-        occur: Optional
+        short_name=short_name.to_string(),
+        long_name=long_name.to_string(),
+        hint="".to_string(),
+        desc=desc.to_string(),
+        hasarg=No,
+        occur=Optional
     }
 }
 
@@ -438,12 +438,12 @@ pub fn optflagmulti(short_name: &str, long_name: &str, desc: &str) -> OptGroup {
     let len = short_name.len();
     assert!(len == 1 || len == 0);
     OptGroup {
-        short_name: short_name.to_string(),
-        long_name: long_name.to_string(),
-        hint: "".to_string(),
-        desc: desc.to_string(),
-        hasarg: No,
-        occur: Multi
+        short_name=short_name.to_string(),
+        long_name=long_name.to_string(),
+        hint="".to_string(),
+        desc=desc.to_string(),
+        hasarg=No,
+        occur=Multi
     }
 }
 
@@ -452,12 +452,12 @@ pub fn optflagopt(short_name: &str, long_name: &str, desc: &str, hint: &str) -> 
     let len = short_name.len();
     assert!(len == 1 || len == 0);
     OptGroup {
-        short_name: short_name.to_string(),
-        long_name: long_name.to_string(),
-        hint: hint.to_string(),
-        desc: desc.to_string(),
-        hasarg: Maybe,
-        occur: Optional
+        short_name=short_name.to_string(),
+        long_name=long_name.to_string(),
+        hint=hint.to_string(),
+        desc=desc.to_string(),
+        hasarg=Maybe,
+        occur=Optional
     }
 }
 
@@ -467,12 +467,12 @@ pub fn optmulti(short_name: &str, long_name: &str, desc: &str, hint: &str) -> Op
     let len = short_name.len();
     assert!(len == 1 || len == 0);
     OptGroup {
-        short_name: short_name.to_string(),
-        long_name: long_name.to_string(),
-        hint: hint.to_string(),
-        desc: desc.to_string(),
-        hasarg: Yes,
-        occur: Multi
+        short_name=short_name.to_string(),
+        long_name=long_name.to_string(),
+        hint=hint.to_string(),
+        desc=desc.to_string(),
+        hasarg=Yes,
+        occur=Multi
     }
 }
 
@@ -486,12 +486,12 @@ pub fn opt(short_name: &str,
     let len = short_name.len();
     assert!(len == 1 || len == 0);
     OptGroup {
-        short_name: short_name.to_string(),
-        long_name: long_name.to_string(),
-        hint: hint.to_string(),
-        desc: desc.to_string(),
-        hasarg: hasarg,
-        occur: occur
+        short_name=short_name.to_string(),
+        long_name=long_name.to_string(),
+        hint=hint.to_string(),
+        desc=desc.to_string(),
+        hasarg=hasarg,
+        occur=occur
     }
 }
 
@@ -661,9 +661,9 @@ pub fn getopts(args: &[String], optgrps: &[OptGroup]) -> Result {
         i += 1;
     }
     Ok(Matches {
-        opts: opts,
-        vals: vals,
-        free: free
+        opts=opts,
+        vals=vals,
+        free=free
     })
 }
 
@@ -673,11 +673,11 @@ pub fn usage(brief: &str, opts: &[OptGroup]) -> String {
     let desc_sep = format!("\n{}", " ".repeat(24));
 
     let mut rows = opts.iter().map(|optref| {
-        let OptGroup{short_name: short_name,
-                     long_name: long_name,
-                     hint: hint,
-                     desc: desc,
-                     hasarg: hasarg,
+        let OptGroup{short_name=short_name,
+                     long_name=long_name,
+                     hint=hint,
+                     desc=desc,
+                     hasarg=hasarg,
                      ..} = (*optref).clone();
 
         let mut row = " ".repeat(4);
@@ -1438,15 +1438,15 @@ mod tests {
     #[test]
     fn test_long_to_short() {
         let mut short = Opt {
-            name: Long("banana".to_string()),
-            hasarg: Yes,
-            occur: Req,
-            aliases: Vec::new(),
+            name=Long("banana".to_string()),
+            hasarg=Yes,
+            occur=Req,
+            aliases=Vec::new(),
         };
-        short.aliases = vec!(Opt { name: Short('b'),
-                                hasarg: Yes,
-                                occur: Req,
-                                aliases: Vec::new() });
+        short.aliases = vec!(Opt { name=Short('b'),
+                                hasarg=Yes,
+                                occur=Req,
+                                aliases=Vec::new() });
         let verbose = reqopt("b", "banana", "some bananas", "VAL");
 
         assert!(verbose.long_to_short() == short);

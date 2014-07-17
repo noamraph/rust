@@ -534,7 +534,7 @@ pub fn sync_channel<T: Send>(bound: uint) -> (SyncSender<T>, Receiver<T>) {
 
 impl<T: Send> Sender<T> {
     fn new(inner: Flavor<T>) -> Sender<T> {
-        Sender { inner: Unsafe::new(inner), sends: Cell::new(0), marker: marker::NoShare }
+        Sender { inner=Unsafe::new(inner), sends=Cell::new(0), marker=marker::NoShare }
     }
 
     /// Sends a value along this channel to be received by the corresponding
@@ -709,7 +709,7 @@ impl<T: Send> Drop for Sender<T> {
 
 impl<T: Send> SyncSender<T> {
     fn new(inner: Arc<Unsafe<sync::Packet<T>>>) -> SyncSender<T> {
-        SyncSender { inner: inner, marker: marker::NoShare }
+        SyncSender { inner=inner, marker=marker::NoShare }
     }
 
     /// Sends a value on this synchronous channel.
@@ -797,7 +797,7 @@ impl<T: Send> Drop for SyncSender<T> {
 
 impl<T: Send> Receiver<T> {
     fn new(inner: Flavor<T>) -> Receiver<T> {
-        Receiver { inner: Unsafe::new(inner), receives: Cell::new(0), marker: marker::NoShare }
+        Receiver { inner=Unsafe::new(inner), receives=Cell::new(0), marker=marker::NoShare }
     }
 
     /// Blocks waiting for a value on this receiver
@@ -942,7 +942,7 @@ impl<T: Send> Receiver<T> {
     /// `fail!`. It will return `None` when the channel has hung up.
     #[unstable]
     pub fn iter<'a>(&'a self) -> Messages<'a, T> {
-        Messages { rx: self }
+        Messages { rx=self }
     }
 }
 

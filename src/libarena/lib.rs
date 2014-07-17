@@ -98,18 +98,18 @@ impl Arena {
     /// Allocate a new Arena with `initial_size` bytes preallocated.
     pub fn new_with_size(initial_size: uint) -> Arena {
         Arena {
-            head: RefCell::new(chunk(initial_size, false)),
-            copy_head: RefCell::new(chunk(initial_size, true)),
-            chunks: RefCell::new(Vec::new()),
+            head=RefCell::new(chunk(initial_size, false)),
+            copy_head=RefCell::new(chunk(initial_size, true)),
+            chunks=RefCell::new(Vec::new()),
         }
     }
 }
 
 fn chunk(size: uint, is_copy: bool) -> Chunk {
     Chunk {
-        data: Rc::new(RefCell::new(Vec::with_capacity(size))),
-        fill: Cell::new(0u),
-        is_copy: Cell::new(is_copy),
+        data=Rc::new(RefCell::new(Vec::with_capacity(size))),
+        fill=Cell::new(0u),
+        is_copy=Cell::new(is_copy),
     }
 }
 
@@ -317,7 +317,7 @@ fn test_arena_alloc_nested() {
     let arena = Arena::new();
 
     let result = arena.alloc(|| Outer {
-        inner: arena.alloc(|| Inner { value: 10 })
+        inner=arena.alloc(|| Inner { value=10 })
     });
 
     assert_eq!(result.inner.value, 10);
@@ -450,9 +450,9 @@ impl<T> TypedArena<T> {
     pub fn with_capacity(capacity: uint) -> TypedArena<T> {
         let chunk = TypedArenaChunk::<T>::new(None, capacity);
         TypedArena {
-            ptr: Cell::new(chunk.start() as *const T),
-            end: Cell::new(chunk.end() as *const T),
-            first: RefCell::new(Some(chunk)),
+            ptr=Cell::new(chunk.start() as *const T),
+            end=Cell::new(chunk.end() as *const T),
+            first=RefCell::new(Some(chunk)),
         }
     }
 
@@ -517,9 +517,9 @@ mod tests {
         let arena = TypedArena::new();
         for _ in range(0u, 100000) {
             arena.alloc(Point {
-                x: 1,
-                y: 2,
-                z: 3,
+                x=1,
+                y=2,
+                z=3,
             });
         }
     }
@@ -529,9 +529,9 @@ mod tests {
         let arena = TypedArena::new();
         b.iter(|| {
             arena.alloc(Point {
-                x: 1,
-                y: 2,
-                z: 3,
+                x=1,
+                y=2,
+                z=3,
             })
         })
     }
@@ -540,9 +540,9 @@ mod tests {
     pub fn bench_copy_nonarena(b: &mut Bencher) {
         b.iter(|| {
             box Point {
-                x: 1,
-                y: 2,
-                z: 3,
+                x=1,
+                y=2,
+                z=3,
             }
         })
     }
@@ -553,9 +553,9 @@ mod tests {
         b.iter(|| {
             arena.alloc(|| {
                 Point {
-                    x: 1,
-                    y: 2,
-                    z: 3,
+                    x=1,
+                    y=2,
+                    z=3,
                 }
             })
         })
@@ -571,8 +571,8 @@ mod tests {
         let arena = TypedArena::new();
         for _ in range(0u, 100000) {
             arena.alloc(Noncopy {
-                string: "hello world".to_string(),
-                array: vec!( 1, 2, 3, 4, 5 ),
+                string="hello world".to_string(),
+                array=vec!( 1, 2, 3, 4, 5 ),
             });
         }
     }
@@ -582,8 +582,8 @@ mod tests {
         let arena = TypedArena::new();
         b.iter(|| {
             arena.alloc(Noncopy {
-                string: "hello world".to_string(),
-                array: vec!( 1, 2, 3, 4, 5 ),
+                string="hello world".to_string(),
+                array=vec!( 1, 2, 3, 4, 5 ),
             })
         })
     }
@@ -592,8 +592,8 @@ mod tests {
     pub fn bench_noncopy_nonarena(b: &mut Bencher) {
         b.iter(|| {
             box Noncopy {
-                string: "hello world".to_string(),
-                array: vec!( 1, 2, 3, 4, 5 ),
+                string="hello world".to_string(),
+                array=vec!( 1, 2, 3, 4, 5 ),
             }
         })
     }
@@ -603,8 +603,8 @@ mod tests {
         let arena = Arena::new();
         b.iter(|| {
             arena.alloc(|| Noncopy {
-                string: "hello world".to_string(),
-                array: vec!( 1, 2, 3, 4, 5 ),
+                string="hello world".to_string(),
+                array=vec!( 1, 2, 3, 4, 5 ),
             })
         })
     }

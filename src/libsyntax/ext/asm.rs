@@ -210,17 +210,17 @@ pub fn expand_asm(cx: &mut ExtCtxt, sp: Span, tts: &[ast::TokenTree])
     }
 
     MacExpr::new(box(GC) ast::Expr {
-        id: ast::DUMMY_NODE_ID,
-        node: ast::ExprInlineAsm(ast::InlineAsm {
-            asm: token::intern_and_get_ident(asm.get()),
-            asm_str_style: asm_str_style.unwrap(),
-            clobbers: token::intern_and_get_ident(cons.as_slice()),
-            inputs: inputs,
-            outputs: outputs,
-            volatile: volatile,
-            alignstack: alignstack,
-            dialect: dialect
+        id=ast::DUMMY_NODE_ID,
+        node=ast::ExprInlineAsm(ast::InlineAsm {
+            asm=token::intern_and_get_ident(asm.get()),
+            asm_str_style=asm_str_style.unwrap(),
+            clobbers=token::intern_and_get_ident(cons.as_slice()),
+            inputs=inputs,
+            outputs=outputs,
+            volatile=volatile,
+            alignstack=alignstack,
+            dialect=dialect
         }),
-        span: sp
+        span=sp
     })
 }

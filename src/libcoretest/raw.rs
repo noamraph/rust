@@ -25,8 +25,8 @@ fn synthesize_closure() {
         let environment = original_closure.env;
 
         let new_closure = Closure {
-            code: actual_function_pointer,
-            env: environment
+            code=actual_function_pointer,
+            env=environment
         };
 
         let new_f: |int| -> int = mem::transmute(new_closure);

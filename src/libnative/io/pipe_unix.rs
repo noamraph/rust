@@ -41,9 +41,9 @@ fn addr_to_sockaddr_un(addr: &CString) -> IoResult<(libc::sockaddr_storage, uint
         #[cfg(unix)] use ERROR = libc::EINVAL;
         #[cfg(windows)] use ERROR = libc::WSAEINVAL;
         return Err(IoError {
-            code: ERROR as uint,
-            extra: 0,
-            detail: Some("path must be smaller than SUN_LEN".to_string()),
+            code=ERROR as uint,
+            extra=0,
+            detail=Some("path must be smaller than SUN_LEN".to_string()),
         })
     }
     s.sun_family = libc::AF_UNIX as libc::sa_family_t;
@@ -66,7 +66,7 @@ struct Inner {
 
 impl Inner {
     fn new(fd: fd_t) -> Inner {
-        Inner { fd: fd, lock: unsafe { mutex::NativeMutex::new() } }
+        Inner { fd=fd, lock=unsafe { mutex::NativeMutex::new() } }
     }
 }
 
@@ -127,9 +127,9 @@ impl UnixStream {
 
     fn new(inner: Arc<Inner>) -> UnixStream {
         UnixStream {
-            inner: inner,
-            read_deadline: 0,
-            write_deadline: 0,
+            inner=inner,
+            read_deadline=0,
+            write_deadline=0,
         }
     }
 
@@ -141,8 +141,8 @@ impl UnixStream {
     #[cfg(not(target_os = "linux"))]
     fn lock_nonblocking<'a>(&'a self) -> net::Guard<'a> {
         let ret = net::Guard {
-            fd: self.fd(),
-            guard: unsafe { self.inner.lock.lock() },
+            fd=self.fd(),
+            guard=unsafe { self.inner.lock.lock() },
         };
         assert!(util::set_nonblocking(self.fd(), true).is_ok());
         ret
@@ -214,7 +214,7 @@ pub struct UnixListener {
 impl UnixListener {
     pub fn bind(addr: &CString) -> IoResult<UnixListener> {
         bind(addr, libc::SOCK_STREAM).map(|fd| {
-            UnixListener { inner: fd, path: addr.clone() }
+            UnixListener { inner=fd, path=addr.clone() }
         })
     }
 
@@ -223,7 +223,7 @@ impl UnixListener {
     pub fn native_listen(self, backlog: int) -> IoResult<UnixAcceptor> {
         match unsafe { libc::listen(self.fd(), backlog as libc::c_int) } {
             -1 => Err(super::last_error()),
-            _ => Ok(UnixAcceptor { listener: self, deadline: 0 })
+            _ => Ok(UnixAcceptor { listener=self, deadline=0 })
         }
     }
 }

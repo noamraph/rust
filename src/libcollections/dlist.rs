@@ -78,12 +78,12 @@ pub struct MoveItems<T> {
 impl<T> Rawlink<T> {
     /// Like Option::None for Rawlink
     fn none() -> Rawlink<T> {
-        Rawlink{p: ptr::mut_null()}
+        Rawlink{p=ptr::mut_null()}
     }
 
     /// Like Option::Some for Rawlink
     fn some(n: &mut T) -> Rawlink<T> {
-        Rawlink{p: n}
+        Rawlink{p=n}
     }
 
     /// Convert the `Rawlink` into an Option value
@@ -109,13 +109,13 @@ impl<T> Rawlink<T> {
 impl<T> Clone for Rawlink<T> {
     #[inline]
     fn clone(&self) -> Rawlink<T> {
-        Rawlink{p: self.p}
+        Rawlink{p=self.p}
     }
 }
 
 impl<T> Node<T> {
     fn new(v: T) -> Node<T> {
-        Node{value: v, next: None, prev: Rawlink::none()}
+        Node{value=v, next=None, prev=Rawlink::none()}
     }
 }
 
@@ -272,7 +272,7 @@ impl<T> DList<T> {
     /// Create an empty DList
     #[inline]
     pub fn new() -> DList<T> {
-        DList{list_head: None, list_tail: Rawlink::none(), length: 0}
+        DList{list_head=None, list_tail=Rawlink::none(), length=0}
     }
 
     /// Move the last element to the front of the list.
@@ -372,7 +372,7 @@ impl<T> DList<T> {
     /// Provide a forward iterator
     #[inline]
     pub fn iter<'a>(&'a self) -> Items<'a, T> {
-        Items{nelem: self.len(), head: &self.list_head, tail: self.list_tail}
+        Items{nelem=self.len(), head=&self.list_head, tail=self.list_tail}
     }
 
     /// Provide a forward iterator with mutable references
@@ -383,10 +383,10 @@ impl<T> DList<T> {
             None => Rawlink::none(),
         };
         MutItems{
-            nelem: self.len(),
-            head: head_raw,
-            tail: self.list_tail,
-            list: self
+            nelem=self.len(),
+            head=head_raw,
+            tail=self.list_tail,
+            list=self
         }
     }
 
@@ -394,7 +394,7 @@ impl<T> DList<T> {
     /// Consume the list into an iterator yielding elements by value
     #[inline]
     pub fn move_iter(self) -> MoveItems<T> {
-        MoveItems{list: self}
+        MoveItems{list=self}
     }
 }
 

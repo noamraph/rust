@@ -81,11 +81,11 @@ impl<T: Share + Send> Arc<T> {
         // Start the weak pointer count as 1 which is the weak pointer that's
         // held by all the strong pointers (kinda), see std/rc.rs for more info
         let x = box ArcInner {
-            strong: atomics::AtomicUint::new(1),
-            weak: atomics::AtomicUint::new(1),
-            data: data,
+            strong=atomics::AtomicUint::new(1),
+            weak=atomics::AtomicUint::new(1),
+            data=data,
         };
-        Arc { _ptr: unsafe { mem::transmute(x) } }
+        Arc { _ptr=unsafe { mem::transmute(x) } }
     }
 
     #[inline]
@@ -106,7 +106,7 @@ impl<T: Share + Send> Arc<T> {
     pub fn downgrade(&self) -> Weak<T> {
         // See the clone() impl for why this is relaxed
         self.inner().weak.fetch_add(1, atomics::Relaxed);
-        Weak { _ptr: self._ptr }
+        Weak { _ptr=self._ptr }
     }
 }
 
@@ -131,7 +131,7 @@ impl<T: Share + Send> Clone for Arc<T> {
         //
         // [1]: (www.boost.org/doc/libs/1_55_0/doc/html/atomic/usage_examples.html)
         self.inner().strong.fetch_add(1, atomics::Relaxed);
-        Arc { _ptr: self._ptr }
+        Arc { _ptr=self._ptr }
     }
 }
 
@@ -226,7 +226,7 @@ impl<T: Share + Send> Weak<T> {
             let n = inner.strong.load(atomics::SeqCst);
             if n == 0 { return None }
             let old = inner.strong.compare_and_swap(n, n + 1, atomics::SeqCst);
-            if old == n { return Some(Arc { _ptr: self._ptr }) }
+            if old == n { return Some(Arc { _ptr=self._ptr }) }
         }
     }
 
@@ -243,7 +243,7 @@ impl<T: Share + Send> Clone for Weak<T> {
     fn clone(&self) -> Weak<T> {
         // See comments in Arc::clone() for why this is relaxed
         self.inner().weak.fetch_add(1, atomics::Relaxed);
-        Weak { _ptr: self._ptr }
+        Weak { _ptr=self._ptr }
     }
 }
 
@@ -395,7 +395,7 @@ mod tests {
             x: Mutex<Option<Weak<Cycle>>>
         }
 
-        let a = Arc::new(Cycle { x: Mutex::new(None) });
+        let a = Arc::new(Cycle { x=Mutex::new(None) });
         let b = a.clone().downgrade();
         *a.x.lock() = Some(b);
 

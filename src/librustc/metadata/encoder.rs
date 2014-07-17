@@ -115,10 +115,10 @@ fn encode_trait_ref(ebml_w: &mut Encoder,
                     trait_ref: &ty::TraitRef,
                     tag: uint) {
     let ty_str_ctxt = &tyencode::ctxt {
-        diag: ecx.diag,
-        ds: def_to_string,
-        tcx: ecx.tcx,
-        abbrevs: &ecx.type_abbrevs
+        diag=ecx.diag,
+        ds=def_to_string,
+        tcx=ecx.tcx,
+        abbrevs=&ecx.type_abbrevs
     };
 
     ebml_w.start_tag(tag);
@@ -150,10 +150,10 @@ fn encode_ty_type_param_defs(ebml_w: &mut Encoder,
                              params: &VecPerParamSpace<ty::TypeParameterDef>,
                              tag: uint) {
     let ty_str_ctxt = &tyencode::ctxt {
-        diag: ecx.diag,
-        ds: def_to_string,
-        tcx: ecx.tcx,
-        abbrevs: &ecx.type_abbrevs
+        diag=ecx.diag,
+        ds=def_to_string,
+        tcx=ecx.tcx,
+        abbrevs=&ecx.type_abbrevs
     };
     for param in params.iter() {
         ebml_w.start_tag(tag);
@@ -213,10 +213,10 @@ pub fn write_type(ecx: &EncodeContext,
                   ebml_w: &mut Encoder,
                   typ: ty::t) {
     let ty_str_ctxt = &tyencode::ctxt {
-        diag: ecx.diag,
-        ds: def_to_string,
-        tcx: ecx.tcx,
-        abbrevs: &ecx.type_abbrevs
+        diag=ecx.diag,
+        ds=def_to_string,
+        tcx=ecx.tcx,
+        abbrevs=&ecx.type_abbrevs
     };
     tyencode::enc_ty(ebml_w.writer, ty_str_ctxt, typ);
 }
@@ -235,10 +235,10 @@ fn encode_method_fty(ecx: &EncodeContext,
     ebml_w.start_tag(tag_item_method_fty);
 
     let ty_str_ctxt = &tyencode::ctxt {
-        diag: ecx.diag,
-        ds: def_to_string,
-        tcx: ecx.tcx,
-        abbrevs: &ecx.type_abbrevs
+        diag=ecx.diag,
+        ds=def_to_string,
+        tcx=ecx.tcx,
+        abbrevs=&ecx.type_abbrevs
     };
     tyencode::enc_bare_fn_ty(ebml_w.writer, ty_str_ctxt, typ);
 
@@ -309,12 +309,12 @@ fn encode_enum_variant_info(ecx: &EncodeContext,
     let mut disr_val = 0;
     let mut i = 0;
     let vi = ty::enum_variants(ecx.tcx,
-                               ast::DefId { krate: LOCAL_CRATE, node: id });
+                               ast::DefId { krate=LOCAL_CRATE, node=id });
     for variant in variants.iter() {
         let def_id = local_def(variant.node.id);
         index.push(entry {
-            val: variant.node.id as i64,
-            pos: ebml_w.writer.tell().unwrap(),
+            val=variant.node.id as i64,
+            pos=ebml_w.writer.tell().unwrap(),
         });
         ebml_w.start_tag(tag_items_data_item);
         encode_def_id(ebml_w, def_id);
@@ -681,10 +681,10 @@ fn encode_info_for_struct(ecx: &EncodeContext,
         let nm = field.name;
         let id = field.id.node;
 
-        index.push(entry {val: id as i64, pos: ebml_w.writer.tell().unwrap()});
+        index.push(entry {val=id as i64, pos=ebml_w.writer.tell().unwrap()});
         global_index.push(entry {
-            val: id as i64,
-            pos: ebml_w.writer.tell().unwrap(),
+            val=id as i64,
+            pos=ebml_w.writer.tell().unwrap(),
         });
         ebml_w.start_tag(tag_items_data_item);
         debug!("encode_info_for_struct: doing {} {}",
@@ -705,8 +705,8 @@ fn encode_info_for_struct_ctor(ecx: &EncodeContext,
                                index: &mut Vec<entry<i64>>,
                                struct_id: NodeId) {
     index.push(entry {
-        val: ctor_id as i64,
-        pos: ebml_w.writer.tell().unwrap(),
+        val=ctor_id as i64,
+        pos=ebml_w.writer.tell().unwrap(),
     });
 
     ebml_w.start_tag(tag_items_data_item);
@@ -900,8 +900,8 @@ fn encode_info_for_item(ecx: &EncodeContext,
     fn add_to_index(item: &Item, ebml_w: &Encoder,
                     index: &mut Vec<entry<i64>>) {
         index.push(entry {
-            val: item.id as i64,
-            pos: ebml_w.writer.tell().unwrap(),
+            val=item.id as i64,
+            pos=ebml_w.writer.tell().unwrap(),
         });
     }
 
@@ -1127,8 +1127,8 @@ fn encode_info_for_item(ecx: &EncodeContext,
             } else { None };
 
             index.push(entry {
-                val: method_def_id.node as i64,
-                pos: ebml_w.writer.tell().unwrap(),
+                val=method_def_id.node as i64,
+                pos=ebml_w.writer.tell().unwrap(),
             });
             encode_info_for_method(ecx,
                                    ebml_w,
@@ -1186,8 +1186,8 @@ fn encode_info_for_item(ecx: &EncodeContext,
             let method_ty = ty::method(tcx, method_def_id);
 
             index.push(entry {
-                val: method_def_id.node as i64,
-                pos: ebml_w.writer.tell().unwrap(),
+                val=method_def_id.node as i64,
+                pos=ebml_w.writer.tell().unwrap(),
             });
 
             ebml_w.start_tag(tag_items_data_item);
@@ -1260,8 +1260,8 @@ fn encode_info_for_foreign_item(ecx: &EncodeContext,
                                 path: PathElems,
                                 abi: abi::Abi) {
     index.push(entry {
-        val: nitem.id as i64,
-        pos: ebml_w.writer.tell().unwrap(),
+        val=nitem.id as i64,
+        pos=ebml_w.writer.tell().unwrap(),
     });
 
     ebml_w.start_tag(tag_items_data_item);
@@ -1362,8 +1362,8 @@ fn encode_info_for_items(ecx: &EncodeContext,
     let mut index = Vec::new();
     ebml_w.start_tag(tag_items_data);
     index.push(entry {
-        val: CRATE_NODE_ID as i64,
-        pos: ebml_w.writer.tell().unwrap(),
+        val=CRATE_NODE_ID as i64,
+        pos=ebml_w.writer.tell().unwrap(),
     });
     encode_info_for_mod(ecx,
                         ebml_w,
@@ -1377,9 +1377,9 @@ fn encode_info_for_items(ecx: &EncodeContext,
     // See comment in `encode_side_tables_for_ii` in astencode
     let ecx_ptr: *const int = unsafe { mem::transmute(ecx) };
     visit::walk_crate(&mut EncodeVisitor {
-        index: &mut index,
-        ecx_ptr: ecx_ptr,
-        ebml_w_for_visit_item: &mut *ebml_w,
+        index=&mut index,
+        ecx_ptr=ecx_ptr,
+        ebml_w_for_visit_item=&mut *ebml_w,
     }, krate, ());
 
     ebml_w.end_tag();
@@ -1485,9 +1485,9 @@ fn encode_crate_deps(ebml_w: &mut Encoder, cstore: &cstore::CStore) {
         let mut deps = Vec::new();
         cstore.iter_crate_data(|key, val| {
             let dep = decoder::CrateDep {
-                cnum: key,
-                name: decoder::get_crate_name(val.data()),
-                hash: decoder::get_crate_hash(val.data()),
+                cnum=key,
+                name=decoder::get_crate_name(val.data()),
+                hash=decoder::get_crate_hash(val.data()),
             };
             deps.push(dep);
         });
@@ -1611,8 +1611,8 @@ fn encode_macro_defs<'a>(ecx: &'a EncodeContext,
     ebml_w.start_tag(tag_exported_macros);
     {
         let mut visitor = MacroDefVisitor {
-            ecx: ecx,
-            ebml_w: ebml_w,
+            ecx=ecx,
+            ebml_w=ebml_w,
         };
         visit::walk_crate(&mut visitor, krate, ());
     }
@@ -1664,8 +1664,8 @@ fn encode_impls<'a>(ecx: &'a EncodeContext,
 
     {
         let mut visitor = ImplVisitor {
-            ecx: ecx,
-            ebml_w: ebml_w,
+            ecx=ecx,
+            ebml_w=ebml_w,
         };
         visit::walk_crate(&mut visitor, krate, ());
     }
@@ -1796,18 +1796,18 @@ fn encode_metadata_inner(wr: &mut MemWriter, parms: EncodeParams, krate: &Crate)
         total_bytes: u64,
     }
     let mut stats = Stats {
-        attr_bytes: 0,
-        dep_bytes: 0,
-        lang_item_bytes: 0,
-        native_lib_bytes: 0,
-        plugin_registrar_fn_bytes: 0,
-        macro_defs_bytes: 0,
-        impl_bytes: 0,
-        misc_bytes: 0,
-        item_bytes: 0,
-        index_bytes: 0,
-        zero_bytes: 0,
-        total_bytes: 0,
+        attr_bytes=0,
+        dep_bytes=0,
+        lang_item_bytes=0,
+        native_lib_bytes=0,
+        plugin_registrar_fn_bytes=0,
+        macro_defs_bytes=0,
+        impl_bytes=0,
+        misc_bytes=0,
+        item_bytes=0,
+        index_bytes=0,
+        zero_bytes=0,
+        total_bytes=0,
     };
     let EncodeParams {
         item_symbols,
@@ -1822,16 +1822,16 @@ fn encode_metadata_inner(wr: &mut MemWriter, parms: EncodeParams, krate: &Crate)
         ..
     } = parms;
     let ecx = EncodeContext {
-        diag: diag,
-        tcx: tcx,
-        reexports2: reexports2,
-        item_symbols: item_symbols,
-        non_inlineable_statics: non_inlineable_statics,
-        link_meta: link_meta,
-        cstore: cstore,
-        encode_inlined_item: RefCell::new(encode_inlined_item),
-        type_abbrevs: RefCell::new(HashMap::new()),
-        reachable: reachable,
+        diag=diag,
+        tcx=tcx,
+        reexports2=reexports2,
+        item_symbols=item_symbols,
+        non_inlineable_statics=non_inlineable_statics,
+        link_meta=link_meta,
+        cstore=cstore,
+        encode_inlined_item=RefCell::new(encode_inlined_item),
+        type_abbrevs=RefCell::new(HashMap::new()),
+        reachable=reachable,
      };
 
     let mut ebml_w = writer::Encoder::new(wr);
@@ -1925,10 +1925,10 @@ fn encode_metadata_inner(wr: &mut MemWriter, parms: EncodeParams, krate: &Crate)
 pub fn encoded_ty(tcx: &ty::ctxt, t: ty::t) -> String {
     let mut wr = MemWriter::new();
     tyencode::enc_ty(&mut wr, &tyencode::ctxt {
-        diag: tcx.sess.diagnostic(),
-        ds: def_to_string,
-        tcx: tcx,
-        abbrevs: &RefCell::new(HashMap::new())
+        diag=tcx.sess.diagnostic(),
+        ds=def_to_string,
+        tcx=tcx,
+        abbrevs=&RefCell::new(HashMap::new())
     }, t);
     str::from_utf8_owned(Vec::from_slice(wr.get_ref())).unwrap().to_string()
 }

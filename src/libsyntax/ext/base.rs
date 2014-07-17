@@ -135,7 +135,7 @@ pub struct MacExpr {
 }
 impl MacExpr {
     pub fn new(e: Gc<ast::Expr>) -> Box<MacResult> {
-        box MacExpr { e: e } as Box<MacResult>
+        box MacExpr { e=e } as Box<MacResult>
     }
 }
 impl MacResult for MacExpr {
@@ -149,7 +149,7 @@ pub struct MacPat {
 }
 impl MacPat {
     pub fn new(p: Gc<ast::Pat>) -> Box<MacResult> {
-        box MacPat { p: p } as Box<MacResult>
+        box MacPat { p=p } as Box<MacResult>
     }
 }
 impl MacResult for MacPat {
@@ -163,7 +163,7 @@ pub struct MacItem {
 }
 impl MacItem {
     pub fn new(i: Gc<ast::Item>) -> Box<MacResult> {
-        box MacItem { i: i } as Box<MacResult>
+        box MacItem { i=i } as Box<MacResult>
     }
 }
 impl MacResult for MacItem {
@@ -192,7 +192,7 @@ impl DummyResult {
     /// Use this as a return value after hitting any errors and
     /// calling `span_err`.
     pub fn any(sp: Span) -> Box<MacResult> {
-        box DummyResult { expr_only: false, span: sp } as Box<MacResult>
+        box DummyResult { expr_only=false, span=sp } as Box<MacResult>
     }
 
     /// Create a default MacResult that can only be an expression.
@@ -201,24 +201,24 @@ impl DummyResult {
     /// if an error is encountered internally, the user will receive
     /// an error that they also used it in the wrong place.
     pub fn expr(sp: Span) -> Box<MacResult> {
-        box DummyResult { expr_only: true, span: sp } as Box<MacResult>
+        box DummyResult { expr_only=true, span=sp } as Box<MacResult>
     }
 
     /// A plain dummy expression.
     pub fn raw_expr(sp: Span) -> Gc<ast::Expr> {
         box(GC) ast::Expr {
-            id: ast::DUMMY_NODE_ID,
-            node: ast::ExprLit(box(GC) codemap::respan(sp, ast::LitNil)),
-            span: sp,
+            id=ast::DUMMY_NODE_ID,
+            node=ast::ExprLit(box(GC) codemap::respan(sp, ast::LitNil)),
+            span=sp,
         }
     }
 
     /// A plain dummy pattern.
     pub fn raw_pat(sp: Span) -> Gc<ast::Pat> {
         box(GC) ast::Pat {
-            id: ast::DUMMY_NODE_ID,
-            node: ast::PatWild,
-            span: sp,
+            id=ast::DUMMY_NODE_ID,
+            node=ast::PatWild,
+            span=sp,
         }
     }
 }
@@ -287,8 +287,8 @@ pub struct BlockInfo {
 impl BlockInfo {
     pub fn new() -> BlockInfo {
         BlockInfo {
-            macros_escape: false,
-            pending_renames: Vec::new(),
+            macros_escape=false,
+            pending_renames=Vec::new(),
         }
     }
 }
@@ -299,8 +299,8 @@ pub fn syntax_expander_table() -> SyntaxEnv {
     // utility function to simplify creating NormalTT syntax extensions
     fn builtin_normal_expander(f: MacroExpanderFn) -> SyntaxExtension {
         NormalTT(box BasicMacroExpander {
-                expander: f,
-                span: None,
+                expander=f,
+                span=None,
             },
             None)
     }
@@ -308,8 +308,8 @@ pub fn syntax_expander_table() -> SyntaxEnv {
     let mut syntax_expanders = SyntaxEnv::new();
     syntax_expanders.insert(intern("macro_rules"),
                             LetSyntaxTT(box BasicIdentMacroExpander {
-                                expander: ext::tt::macro_rules::add_new_extension,
-                                span: None,
+                                expander=ext::tt::macro_rules::add_new_extension,
+                                span=None,
                             },
                             None));
     syntax_expanders.insert(intern("fmt"),
@@ -415,12 +415,12 @@ impl<'a> ExtCtxt<'a> {
     pub fn new<'a>(parse_sess: &'a parse::ParseSess, cfg: ast::CrateConfig,
                    ecfg: expand::ExpansionConfig) -> ExtCtxt<'a> {
         ExtCtxt {
-            parse_sess: parse_sess,
-            cfg: cfg,
-            backtrace: None,
-            mod_path: Vec::new(),
-            ecfg: ecfg,
-            trace_mac: false
+            parse_sess=parse_sess,
+            cfg=cfg,
+            backtrace=None,
+            mod_path=Vec::new(),
+            ecfg=ecfg,
+            trace_mac=false
         }
     }
 
@@ -429,8 +429,8 @@ impl<'a> ExtCtxt<'a> {
             match e.node {
                 ast::ExprMac(..) => {
                     let mut expander = expand::MacroExpander {
-                        extsbox: syntax_expander_table(),
-                        cx: self,
+                        extsbox=syntax_expander_table(),
+                        cx=self,
                     };
                     e = expand::expand_expr(e, &mut expander);
                 }
@@ -465,12 +465,12 @@ impl<'a> ExtCtxt<'a> {
     }
     pub fn bt_push(&mut self, ei: codemap::ExpnInfo) {
         match ei {
-            ExpnInfo {call_site: cs, callee: ref callee} => {
+            ExpnInfo {call_site=cs, callee=ref callee} => {
                 self.backtrace =
                     Some(box(GC) ExpnInfo {
-                        call_site: Span {lo: cs.lo, hi: cs.hi,
-                                         expn_info: self.backtrace.clone()},
-                        callee: (*callee).clone()
+                        call_site=Span {lo=cs.lo, hi=cs.hi,
+                                         expn_info=self.backtrace.clone()},
+                        callee=(*callee).clone()
                     });
             }
         }
@@ -642,15 +642,15 @@ pub struct SyntaxEnv {
 
 impl SyntaxEnv {
     pub fn new() -> SyntaxEnv {
-        let mut map = SyntaxEnv { chain: Vec::new() };
+        let mut map = SyntaxEnv { chain=Vec::new() };
         map.push_frame();
         map
     }
 
     pub fn push_frame(&mut self) {
         self.chain.push(MapChainFrame {
-            info: BlockInfo::new(),
-            map: HashMap::new(),
+            info=BlockInfo::new(),
+            map=HashMap::new(),
         });
     }
 

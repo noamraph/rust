@@ -74,7 +74,7 @@ impl<T> DerefMut<T> for Borrowed<T> {
 pub unsafe fn borrow<T>() -> Borrowed<T> {
     let val: *const () = mem::transmute(take::<T>());
     Borrowed {
-        val: val,
+        val=val,
     }
 }
 

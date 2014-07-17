@@ -57,13 +57,13 @@ impl PipeStream {
     /// ```
     pub fn open(fd: libc::c_int) -> IoResult<PipeStream> {
         LocalIo::maybe_raise(|io| {
-            io.pipe_open(fd).map(|obj| PipeStream { obj: obj })
+            io.pipe_open(fd).map(|obj| PipeStream { obj=obj })
         }).map_err(IoError::from_rtio_error)
     }
 
     #[doc(hidden)]
     pub fn new(inner: Box<RtioPipe + Send>) -> PipeStream {
-        PipeStream { obj: inner }
+        PipeStream { obj=inner }
     }
 
     /// Creates a pair of in-memory OS pipes for a unidirectional communication
@@ -80,14 +80,14 @@ impl PipeStream {
         struct Closer { fd: libc::c_int }
 
         let os::Pipe { reader, writer } = try!(unsafe { os::pipe() });
-        let mut reader = Closer { fd: reader };
-        let mut writer = Closer { fd: writer };
+        let mut reader = Closer { fd=reader };
+        let mut writer = Closer { fd=writer };
 
         let io_reader = try!(PipeStream::open(reader.fd));
         reader.fd = -1;
         let io_writer = try!(PipeStream::open(writer.fd));
         writer.fd = -1;
-        return Ok(PipePair { reader: io_reader, writer: io_writer });
+        return Ok(PipePair { reader=io_reader, writer=io_writer });
 
         impl Drop for Closer {
             fn drop(&mut self) {
@@ -101,7 +101,7 @@ impl PipeStream {
 
 impl Clone for PipeStream {
     fn clone(&self) -> PipeStream {
-        PipeStream { obj: self.obj.clone() }
+        PipeStream { obj=self.obj.clone() }
     }
 }
 

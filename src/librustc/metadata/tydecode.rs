@@ -108,10 +108,10 @@ fn parse_ident_(st: &mut PState, is_last: |char| -> bool) -> ast::Ident {
 pub fn parse_state_from_data<'a>(data: &'a [u8], crate_num: ast::CrateNum,
                              pos: uint, tcx: &'a ty::ctxt) -> PState<'a> {
     PState {
-        data: data,
-        krate: crate_num,
-        pos: pos,
-        tcx: tcx
+        data=data,
+        krate=crate_num,
+        pos=pos,
+        tcx=tcx
     }
 }
 
@@ -204,8 +204,8 @@ fn parse_substs(st: &mut PState, conv: conv_did) -> subst::Substs {
     let types =
         parse_vec_per_param_space(st, |st| parse_ty(st, |x,y| conv(x,y)));
 
-    return subst::Substs { types: types,
-                           regions: regions };
+    return subst::Substs { types=types,
+                           regions=regions };
 }
 
 fn parse_region_substs(st: &mut PState, conv: conv_did) -> subst::RegionSubsts {
@@ -268,8 +268,8 @@ fn parse_region(st: &mut PState, conv: conv_did) -> ty::Region {
         assert_eq!(next(st), '|');
         let br = parse_bound_region(st, |x,y| conv(x,y));
         assert_eq!(next(st), ']');
-        ty::ReFree(ty::FreeRegion {scope_id: id,
-                                    bound_region: br})
+        ty::ReFree(ty::FreeRegion {scope_id=id,
+                                    bound_region=br})
       }
       's' => {
         let id = parse_uint(st) as ast::NodeId;
@@ -308,7 +308,7 @@ fn parse_str(st: &mut PState, term: char) -> String {
 fn parse_trait_ref(st: &mut PState, conv: conv_did) -> ty::TraitRef {
     let def = parse_def(st, NominalType, |x,y| conv(x,y));
     let substs = parse_substs(st, |x,y| conv(x,y));
-    ty::TraitRef {def_id: def, substs: substs}
+    ty::TraitRef {def_id=def, substs=substs}
 }
 
 fn parse_ty(st: &mut PState, conv: conv_did) -> ty::t {
@@ -392,16 +392,16 @@ fn parse_ty(st: &mut PState, conv: conv_did) -> ty::t {
         assert_eq!(next(st), ':');
         let len = parse_hex(st);
         assert_eq!(next(st), '#');
-        let key = ty::creader_cache_key {cnum: st.krate,
-                                         pos: pos,
-                                         len: len };
+        let key = ty::creader_cache_key {cnum=st.krate,
+                                         pos=pos,
+                                         len=len };
 
         match st.tcx.rcache.borrow().find_copy(&key) {
           Some(tt) => return tt,
           None => {}
         }
         let mut ps = PState {
-            pos: pos,
+            pos=pos,
             .. *st
         };
         let tt = parse_ty(&mut ps, |x,y| conv(x,y));
@@ -436,7 +436,7 @@ fn parse_mutability(st: &mut PState) -> ast::Mutability {
 
 fn parse_mt(st: &mut PState, conv: conv_did) -> ty::mt {
     let m = parse_mutability(st);
-    ty::mt { ty: parse_ty(st, |x,y| conv(x,y)), mutbl: m }
+    ty::mt { ty=parse_ty(st, |x,y| conv(x,y)), mutbl=m }
 }
 
 fn parse_def(st: &mut PState, source: DefIdSource,
@@ -503,11 +503,11 @@ fn parse_closure_ty(st: &mut PState, conv: conv_did) -> ty::ClosureTy {
     let bounds = parse_bounds(st, |x,y| conv(x,y));
     let sig = parse_sig(st, |x,y| conv(x,y));
     ty::ClosureTy {
-        fn_style: fn_style,
-        onceness: onceness,
-        store: store,
-        bounds: bounds.builtin_bounds,
-        sig: sig
+        fn_style=fn_style,
+        onceness=onceness,
+        store=store,
+        bounds=bounds.builtin_bounds,
+        sig=sig
     }
 }
 
@@ -516,9 +516,9 @@ fn parse_bare_fn_ty(st: &mut PState, conv: conv_did) -> ty::BareFnTy {
     let abi = parse_abi_set(st);
     let sig = parse_sig(st, |x,y| conv(x,y));
     ty::BareFnTy {
-        fn_style: fn_style,
-        abi: abi,
-        sig: sig
+        fn_style=fn_style,
+        abi=abi,
+        sig=sig
     }
 }
 
@@ -537,10 +537,10 @@ fn parse_sig(st: &mut PState, conv: conv_did) -> ty::FnSig {
         r => fail!(format!("bad variadic: {}", r)),
     };
     let ret_ty = parse_ty(st, |x,y| conv(x,y));
-    ty::FnSig {binder_id: id,
-               inputs: inputs,
-               output: ret_ty,
-               variadic: variadic}
+    ty::FnSig {binder_id=id,
+               inputs=inputs,
+               output=ret_ty,
+               variadic=variadic}
 }
 
 // Rust metadata parsing
@@ -566,7 +566,7 @@ pub fn parse_def_id(buf: &[u8]) -> ast::DefId {
        None => fail!("internal error: parse_def_id: id expected, but found {:?}",
                      def_part)
     };
-    ast::DefId { krate: crate_num, node: def_num }
+    ast::DefId { krate=crate_num, node=def_num }
 }
 
 pub fn parse_type_param_def_data(data: &[u8], start: uint,
@@ -588,19 +588,19 @@ fn parse_type_param_def(st: &mut PState, conv: conv_did) -> ty::TypeParameterDef
     let default = parse_opt(st, |st| parse_ty(st, |x,y| conv(x,y)));
 
     ty::TypeParameterDef {
-        ident: ident,
-        def_id: def_id,
-        space: space,
-        index: index,
-        bounds: bounds,
-        default: default
+        ident=ident,
+        def_id=def_id,
+        space=space,
+        index=index,
+        bounds=bounds,
+        default=default
     }
 }
 
 fn parse_bounds(st: &mut PState, conv: conv_did) -> ty::ParamBounds {
     let mut param_bounds = ty::ParamBounds {
-        builtin_bounds: ty::empty_builtin_bounds(),
-        trait_bounds: Vec::new()
+        builtin_bounds=ty::empty_builtin_bounds(),
+        trait_bounds=Vec::new()
     };
     loop {
         match next(st) {

@@ -71,16 +71,16 @@ pub fn rust_printer(writer: Box<io::Writer>) -> State<'static> {
 pub fn rust_printer_annotated<'a>(writer: Box<io::Writer>,
                                   ann: &'a PpAnn) -> State<'a> {
     State {
-        s: pp::mk_printer(writer, default_columns),
-        cm: None,
-        comments: None,
-        literals: None,
-        cur_cmnt_and_lit: CurrentCommentAndLiteral {
-            cur_cmnt: 0,
-            cur_lit: 0
+        s=pp::mk_printer(writer, default_columns),
+        cm=None,
+        comments=None,
+        literals=None,
+        cur_cmnt_and_lit=CurrentCommentAndLiteral {
+            cur_cmnt=0,
+            cur_lit=0
         },
-        boxes: Vec::new(),
-        ann: ann
+        boxes=Vec::new(),
+        ann=ann
     }
 }
 
@@ -105,23 +105,23 @@ pub fn print_crate<'a>(cm: &'a CodeMap,
         input
     );
     let mut s = State {
-        s: pp::mk_printer(out, default_columns),
-        cm: Some(cm),
-        comments: Some(cmnts),
+        s=pp::mk_printer(out, default_columns),
+        cm=Some(cm),
+        comments=Some(cmnts),
         // If the code is post expansion, don't use the table of
         // literals, since it doesn't correspond with the literals
         // in the AST anymore.
-        literals: if is_expanded {
+        literals=if is_expanded {
             None
         } else {
             Some(lits)
         },
-        cur_cmnt_and_lit: CurrentCommentAndLiteral {
-            cur_cmnt: 0,
-            cur_lit: 0
+        cur_cmnt_and_lit=CurrentCommentAndLiteral {
+            cur_cmnt=0,
+            cur_lit=0
         },
-        boxes: Vec::new(),
-        ann: ann
+        boxes=Vec::new(),
+        ann=ann
     };
     try!(s.print_mod(&krate.module, krate.attrs.as_slice()));
     try!(s.print_remaining_comments());
@@ -510,8 +510,8 @@ impl<'a> State<'a> {
             }
             ast::TyBareFn(f) => {
                 let generics = ast::Generics {
-                    lifetimes: f.lifetimes.clone(),
-                    ty_params: OwnedSlice::empty()
+                    lifetimes=f.lifetimes.clone(),
+                    ty_params=OwnedSlice::empty()
                 };
                 try!(self.print_ty_fn(Some(f.abi),
                                       None,
@@ -527,8 +527,8 @@ impl<'a> State<'a> {
             }
             ast::TyClosure(f, ref region) => {
                 let generics = ast::Generics {
-                    lifetimes: f.lifetimes.clone(),
-                    ty_params: OwnedSlice::empty()
+                    lifetimes=f.lifetimes.clone(),
+                    ty_params=OwnedSlice::empty()
                 };
                 try!(self.print_ty_fn(None,
                                       Some('&'),
@@ -544,8 +544,8 @@ impl<'a> State<'a> {
             }
             ast::TyProc(ref f) => {
                 let generics = ast::Generics {
-                    lifetimes: f.lifetimes.clone(),
-                    ty_params: OwnedSlice::empty()
+                    lifetimes=f.lifetimes.clone(),
+                    ty_params=OwnedSlice::empty()
                 };
                 try!(self.print_ty_fn(None,
                                       Some('~'),
@@ -772,7 +772,7 @@ impl<'a> State<'a> {
                 try!(self.bclose(item.span));
             }
             // I think it's reasonable to hide the context here:
-            ast::ItemMac(codemap::Spanned { node: ast::MacInvocTT(ref pth, ref tts, _),
+            ast::ItemMac(codemap::Spanned { node=ast::MacInvocTT(ref pth, ref tts, _),
                                             ..}) => {
                 try!(self.print_visibility(item.vis));
                 try!(self.print_path(pth, false));
@@ -1802,7 +1802,7 @@ impl<'a> State<'a> {
                 for p in slice.iter() {
                     if !before.is_empty() { try!(self.word_space(",")); }
                     match **p {
-                        ast::Pat { node: ast::PatWildMulti, .. } => {
+                        ast::Pat { node=ast::PatWildMulti, .. } => {
                             // this case is handled by print_pat
                         }
                         _ => try!(word(&mut self.s, "..")),
@@ -2551,12 +2551,12 @@ mod test {
         let abba_ident = token::str_to_ident("abba");
 
         let decl = ast::FnDecl {
-            inputs: Vec::new(),
-            output: ast::P(ast::Ty {id: 0,
-                                    node: ast::TyNil,
-                                    span: codemap::DUMMY_SP}),
-            cf: ast::Return,
-            variadic: false
+            inputs=Vec::new(),
+            output=ast::P(ast::Ty {id=0,
+                                    node=ast::TyNil,
+                                    span=codemap::DUMMY_SP}),
+            cf=ast::Return,
+            variadic=false
         };
         let generics = ast_util::empty_generics();
         assert_eq!(&fun_to_string(&decl, ast::NormalFn, abba_ident,
@@ -2569,13 +2569,13 @@ mod test {
         let ident = token::str_to_ident("principal_skinner");
 
         let var = codemap::respan(codemap::DUMMY_SP, ast::Variant_ {
-            name: ident,
-            attrs: Vec::new(),
+            name=ident,
+            attrs=Vec::new(),
             // making this up as I go.... ?
-            kind: ast::TupleVariantKind(Vec::new()),
-            id: 0,
-            disr_expr: None,
-            vis: ast::Public,
+            kind=ast::TupleVariantKind(Vec::new()),
+            id=0,
+            disr_expr=None,
+            vis=ast::Public,
         });
 
         let varstr = variant_to_string(&var);

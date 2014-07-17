@@ -32,15 +32,15 @@ pub struct Config {
 
 /// Configuration for RFC 4648 standard base64 encoding
 pub static STANDARD: Config =
-    Config {char_set: Standard, pad: true, line_length: None};
+    Config {char_set=Standard, pad=true, line_length=None};
 
 /// Configuration for RFC 4648 base64url encoding
 pub static URL_SAFE: Config =
-    Config {char_set: UrlSafe, pad: false, line_length: None};
+    Config {char_set=UrlSafe, pad=false, line_length=None};
 
 /// Configuration for RFC 2045 MIME base64 encoding
 pub static MIME: Config =
-    Config {char_set: Standard, pad: true, line_length: Some(76)};
+    Config {char_set=Standard, pad=true, line_length=Some(76)};
 
 static STANDARD_CHARS: &'static[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZ\
                                         abcdefghijklmnopqrstuvwxyz\
@@ -277,18 +277,18 @@ mod tests {
 
     #[test]
     fn test_to_base64_line_break() {
-        assert!(![0u8, ..1000].to_base64(Config {line_length: None, ..STANDARD})
+        assert!(![0u8, ..1000].to_base64(Config {line_length=None, ..STANDARD})
                               .as_slice()
                               .contains("\r\n"));
-        assert_eq!("foobar".as_bytes().to_base64(Config {line_length: Some(4),
+        assert_eq!("foobar".as_bytes().to_base64(Config {line_length=Some(4),
                                                          ..STANDARD}),
                    "Zm9v\r\nYmFy".to_string());
     }
 
     #[test]
     fn test_to_base64_padding() {
-        assert_eq!("f".as_bytes().to_base64(Config {pad: false, ..STANDARD}), "Zg".to_string());
-        assert_eq!("fo".as_bytes().to_base64(Config {pad: false, ..STANDARD}), "Zm8".to_string());
+        assert_eq!("f".as_bytes().to_base64(Config {pad=false, ..STANDARD}), "Zg".to_string());
+        assert_eq!("fo".as_bytes().to_base64(Config {pad=false, ..STANDARD}), "Zm8".to_string());
     }
 
     #[test]

@@ -73,8 +73,8 @@ type Scope<'a> = &'a ScopeChain<'a>;
 
 pub fn krate(sess: &Session, krate: &ast::Crate) -> NamedRegionMap {
     let mut ctxt = LifetimeContext {
-        sess: sess,
-        named_region_map: NodeMap::new()
+        sess=sess,
+        named_region_map=NodeMap::new()
     };
     visit::walk_crate(&mut ctxt, krate, &RootScope);
     sess.abort_if_errors();
@@ -412,7 +412,7 @@ pub fn free_lifetimes(ty_params: &OwnedSlice<ast::TyParam>) -> Vec<ast::Name> {
      * declarations; just being forwards compatible with future extensions.
      */
 
-    let mut collector = FreeLifetimeCollector { names: vec!() };
+    let mut collector = FreeLifetimeCollector { names=vec!() };
     for ty_param in ty_params.iter() {
         visit::walk_ty_param_bounds(&mut collector, &ty_param.bounds, ());
     }

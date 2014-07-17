@@ -42,11 +42,11 @@ impl TimerWatcher {
         let handle = UvHandle::alloc(None::<TimerWatcher>, uvll::UV_TIMER);
         assert_eq!(unsafe { uvll::uv_timer_init(loop_.handle, handle) }, 0);
         TimerWatcher {
-            handle: handle,
-            action: None,
-            blocker: None,
-            home: home,
-            id: 0,
+            handle=handle,
+            action=None,
+            blocker=None,
+            home=home,
+            id=0,
         }
     }
 

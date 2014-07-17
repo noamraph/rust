@@ -198,7 +198,7 @@ impl TypeFoldable for subst::Substs {
 impl TypeFoldable for ty::ItemSubsts {
     fn fold_with<F:TypeFolder>(&self, folder: &mut F) -> ty::ItemSubsts {
         ty::ItemSubsts {
-            substs: self.substs.fold_with(folder),
+            substs=self.substs.fold_with(folder),
         }
     }
 }
@@ -236,8 +236,8 @@ impl TypeFoldable for ty::BuiltinBounds {
 impl TypeFoldable for ty::ParamBounds {
     fn fold_with<F:TypeFolder>(&self, folder: &mut F) -> ty::ParamBounds {
         ty::ParamBounds {
-            builtin_bounds: self.builtin_bounds.fold_with(folder),
-            trait_bounds: self.trait_bounds.fold_with(folder),
+            builtin_bounds=self.builtin_bounds.fold_with(folder),
+            trait_bounds=self.trait_bounds.fold_with(folder),
         }
     }
 }
@@ -245,12 +245,12 @@ impl TypeFoldable for ty::ParamBounds {
 impl TypeFoldable for ty::TypeParameterDef {
     fn fold_with<F:TypeFolder>(&self, folder: &mut F) -> ty::TypeParameterDef {
         ty::TypeParameterDef {
-            ident: self.ident,
-            def_id: self.def_id,
-            space: self.space,
-            index: self.index,
-            bounds: self.bounds.fold_with(folder),
-            default: self.default.fold_with(folder),
+            ident=self.ident,
+            def_id=self.def_id,
+            space=self.space,
+            index=self.index,
+            bounds=self.bounds.fold_with(folder),
+            default=self.default.fold_with(folder),
         }
     }
 }
@@ -264,8 +264,8 @@ impl TypeFoldable for ty::RegionParameterDef {
 impl TypeFoldable for ty::Generics {
     fn fold_with<F:TypeFolder>(&self, folder: &mut F) -> ty::Generics {
         ty::Generics {
-            types: self.types.fold_with(folder),
-            regions: self.regions.fold_with(folder),
+            types=self.types.fold_with(folder),
+            regions=self.regions.fold_with(folder),
         }
     }
 }
@@ -294,26 +294,26 @@ pub fn super_fold_substs<T:TypeFolder>(this: &mut T,
         }
     };
 
-    subst::Substs { regions: regions,
-                    types: substs.types.fold_with(this) }
+    subst::Substs { regions=regions,
+                    types=substs.types.fold_with(this) }
 }
 
 pub fn super_fold_sig<T:TypeFolder>(this: &mut T,
                                     sig: &ty::FnSig)
                                     -> ty::FnSig {
-    ty::FnSig { binder_id: sig.binder_id,
-                inputs: sig.inputs.fold_with(this),
-                output: sig.output.fold_with(this),
-                variadic: sig.variadic }
+    ty::FnSig { binder_id=sig.binder_id,
+                inputs=sig.inputs.fold_with(this),
+                output=sig.output.fold_with(this),
+                variadic=sig.variadic }
 }
 
 pub fn super_fold_bare_fn_ty<T:TypeFolder>(this: &mut T,
                                            fty: &ty::BareFnTy)
                                            -> ty::BareFnTy
 {
-    ty::BareFnTy { sig: fty.sig.fold_with(this),
-                   abi: fty.abi,
-                   fn_style: fty.fn_style }
+    ty::BareFnTy { sig=fty.sig.fold_with(this),
+                   abi=fty.abi,
+                   fn_style=fty.fn_style }
 }
 
 pub fn super_fold_closure_ty<T:TypeFolder>(this: &mut T,
@@ -321,11 +321,11 @@ pub fn super_fold_closure_ty<T:TypeFolder>(this: &mut T,
                                            -> ty::ClosureTy
 {
     ty::ClosureTy {
-        store: fty.store.fold_with(this),
-        sig: fty.sig.fold_with(this),
-        fn_style: fty.fn_style,
-        onceness: fty.onceness,
-        bounds: fty.bounds,
+        store=fty.store.fold_with(this),
+        sig=fty.sig.fold_with(this),
+        fn_style=fty.fn_style,
+        onceness=fty.onceness,
+        bounds=fty.bounds,
     }
 }
 
@@ -333,15 +333,15 @@ pub fn super_fold_trait_ref<T:TypeFolder>(this: &mut T,
                                           t: &ty::TraitRef)
                                           -> ty::TraitRef {
     ty::TraitRef {
-        def_id: t.def_id,
-        substs: t.substs.fold_with(this),
+        def_id=t.def_id,
+        substs=t.substs.fold_with(this),
     }
 }
 
 pub fn super_fold_mt<T:TypeFolder>(this: &mut T,
                                    mt: &ty::mt) -> ty::mt {
-    ty::mt {ty: mt.ty.fold_with(this),
-            mutbl: mt.mutbl}
+    ty::mt {ty=mt.ty.fold_with(this),
+            mutbl=mt.mutbl}
 }
 
 pub fn super_fold_sty<T:TypeFolder>(this: &mut T,
@@ -368,9 +368,9 @@ pub fn super_fold_sty<T:TypeFolder>(this: &mut T,
                 bounds
             }) => {
             ty::ty_trait(box ty::TyTrait {
-                def_id: def_id,
-                substs: substs.fold_with(this),
-                bounds: bounds
+                def_id=def_id,
+                substs=substs.fold_with(this),
+                bounds=bounds
             })
         }
         ty::ty_tup(ref ts) => {
@@ -426,7 +426,7 @@ pub fn super_fold_item_substs<T:TypeFolder>(this: &mut T,
                                             -> ty::ItemSubsts
 {
     ty::ItemSubsts {
-        substs: substs.substs.fold_with(this),
+        substs=substs.substs.fold_with(this),
     }
 }
 
@@ -475,10 +475,10 @@ impl<'a> RegionFolder<'a> {
                    fld_t: |ty::t|: 'a -> ty::t)
                    -> RegionFolder<'a> {
         RegionFolder {
-            tcx: tcx,
-            fld_t: fld_t,
-            fld_r: fld_r,
-            within_binder_ids: vec![],
+            tcx=tcx,
+            fld_t=fld_t,
+            fld_r=fld_r,
+            within_binder_ids=vec![],
         }
     }
 
@@ -487,10 +487,10 @@ impl<'a> RegionFolder<'a> {
         fn noop(t: ty::t) -> ty::t { t }
 
         RegionFolder {
-            tcx: tcx,
-            fld_t: noop,
-            fld_r: fld_r,
-            within_binder_ids: vec![],
+            tcx=tcx,
+            fld_t=noop,
+            fld_r=fld_r,
+            within_binder_ids=vec![],
         }
     }
 }

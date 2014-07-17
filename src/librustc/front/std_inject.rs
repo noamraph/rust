@@ -61,18 +61,18 @@ struct StandardLibraryInjector<'a> {
 impl<'a> fold::Folder for StandardLibraryInjector<'a> {
     fn fold_crate(&mut self, mut krate: ast::Crate) -> ast::Crate {
         let mut vis = vec!(ast::ViewItem {
-            node: ast::ViewItemExternCrate(token::str_to_ident("std"),
+            node=ast::ViewItemExternCrate(token::str_to_ident("std"),
                                            None,
                                            ast::DUMMY_NODE_ID),
-            attrs: vec!(
+            attrs=vec!(
                 attr::mk_attr_outer(attr::mk_attr_id(), attr::mk_list_item(
                         InternedString::new("phase"),
                         vec!(
                             attr::mk_word_item(InternedString::new("plugin")),
                             attr::mk_word_item(InternedString::new("link")
                         ))))),
-            vis: ast::Inherited,
-            span: DUMMY_SP
+            vis=ast::Inherited,
+            span=DUMMY_SP
         });
 
         let any_exe = self.sess.crate_types.borrow().iter().any(|ty| {
@@ -80,12 +80,12 @@ impl<'a> fold::Folder for StandardLibraryInjector<'a> {
         });
         if use_start(&krate) && any_exe {
             vis.push(ast::ViewItem {
-                node: ast::ViewItemExternCrate(token::str_to_ident("native"),
+                node=ast::ViewItemExternCrate(token::str_to_ident("native"),
                                                None,
                                                ast::DUMMY_NODE_ID),
-                attrs: Vec::new(),
-                vis: ast::Inherited,
-                span: DUMMY_SP
+                attrs=Vec::new(),
+                vis=ast::Inherited,
+                span=DUMMY_SP
             });
         }
 
@@ -112,7 +112,7 @@ impl<'a> fold::Folder for StandardLibraryInjector<'a> {
 
 fn inject_crates_ref(sess: &Session, krate: ast::Crate) -> ast::Crate {
     let mut fold = StandardLibraryInjector {
-        sess: sess,
+        sess=sess,
     };
     fold.fold_crate(krate)
 }
@@ -165,28 +165,28 @@ impl<'a> fold::Folder for PreludeInjector<'a> {
 
     fn fold_mod(&mut self, module: &ast::Mod) -> ast::Mod {
         let prelude_path = ast::Path {
-            span: DUMMY_SP,
-            global: false,
-            segments: vec!(
+            span=DUMMY_SP,
+            global=false,
+            segments=vec!(
                 ast::PathSegment {
-                    identifier: token::str_to_ident("std"),
-                    lifetimes: Vec::new(),
-                    types: OwnedSlice::empty(),
+                    identifier=token::str_to_ident("std"),
+                    lifetimes=Vec::new(),
+                    types=OwnedSlice::empty(),
                 },
                 ast::PathSegment {
-                    identifier: token::str_to_ident("prelude"),
-                    lifetimes: Vec::new(),
-                    types: OwnedSlice::empty(),
+                    identifier=token::str_to_ident("prelude"),
+                    lifetimes=Vec::new(),
+                    types=OwnedSlice::empty(),
                 }),
         };
 
         let vp = box(GC) codemap::dummy_spanned(ast::ViewPathGlob(prelude_path,
                                                                   ast::DUMMY_NODE_ID));
         let vi2 = ast::ViewItem {
-            node: ast::ViewItemUse(vp),
-            attrs: Vec::new(),
-            vis: ast::Inherited,
-            span: DUMMY_SP,
+            node=ast::ViewItemUse(vp),
+            attrs=Vec::new(),
+            vis=ast::Inherited,
+            span=DUMMY_SP,
         };
 
         let (crates, uses) = module.view_items.partitioned(|x| {
@@ -202,7 +202,7 @@ impl<'a> fold::Folder for PreludeInjector<'a> {
         view_items.push_all_move(uses);
 
         let new_module = ast::Mod {
-            view_items: view_items,
+            view_items=view_items,
             ..(*module).clone()
         };
         fold::noop_fold_mod(&new_module, self)

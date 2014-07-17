@@ -164,10 +164,10 @@ pub fn render(w: &mut fmt::Formatter, s: &str, print_toc: bool) -> fmt::Result {
                 let text = lines.collect::<Vec<&str>>().connect("\n");
 
                 let buf = hoedown_buffer {
-                    data: text.as_bytes().as_ptr(),
-                    size: text.len() as libc::size_t,
-                    asize: text.len() as libc::size_t,
-                    unit: 0,
+                    data=text.as_bytes().as_ptr(),
+                    size=text.len() as libc::size_t,
+                    asize=text.len() as libc::size_t,
+                    unit=0,
                 };
                 let rendered = if lang.is_null() {
                     false
@@ -273,8 +273,8 @@ pub fn render(w: &mut fmt::Formatter, s: &str, print_toc: bool) -> fmt::Result {
         let ob = hoedown_buffer_new(DEF_OUNIT);
         let renderer = hoedown_html_renderer_new(0, 0);
         let mut opaque = MyOpaque {
-            dfltblk: (*renderer).blockcode.unwrap(),
-            toc_builder: if print_toc {Some(TocBuilder::new())} else {None}
+            dfltblk=(*renderer).blockcode.unwrap(),
+            toc_builder=if print_toc {Some(TocBuilder::new())} else {None}
         };
         (*(*renderer).opaque).opaque = &mut opaque as *mut _ as *mut libc::c_void;
         (*renderer).blockcode = Some(block);
@@ -380,11 +380,11 @@ struct LangString {
 impl LangString {
     fn all_false() -> LangString {
         LangString {
-            should_fail: false,
-            no_run: false,
-            ignore: false,
-            notrust: false,
-            test_harness: false,
+            should_fail=false,
+            no_run=false,
+            ignore=false,
+            notrust=false,
+            test_harness=false,
         }
     }
 
@@ -454,11 +454,11 @@ mod tests {
         fn t(s: &str,
              should_fail: bool, no_run: bool, ignore: bool, notrust: bool, test_harness: bool) {
             assert_eq!(LangString::parse(s), LangString {
-                should_fail: should_fail,
-                no_run: no_run,
-                ignore: ignore,
-                notrust: notrust,
-                test_harness: test_harness,
+                should_fail=should_fail,
+                no_run=no_run,
+                ignore=ignore,
+                notrust=notrust,
+                test_harness=test_harness,
             })
         }
 

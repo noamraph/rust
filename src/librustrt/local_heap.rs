@@ -38,8 +38,8 @@ pub struct LocalHeap {
 impl LocalHeap {
     pub fn new() -> LocalHeap {
         LocalHeap {
-            memory_region: MemoryRegion { live_allocations: 0 },
-            live_allocs: ptr::mut_null(),
+            memory_region=MemoryRegion { live_allocations=0 },
+            live_allocs=ptr::mut_null(),
         }
     }
 

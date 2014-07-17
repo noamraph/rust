@@ -184,22 +184,22 @@ pub struct TypeAndSubsts {
 impl MethodCall {
     pub fn expr(id: ast::NodeId) -> MethodCall {
         MethodCall {
-            expr_id: id,
-            adjustment: NoAdjustment
+            expr_id=id,
+            adjustment=NoAdjustment
         }
     }
 
     pub fn autoobject(id: ast::NodeId) -> MethodCall {
         MethodCall {
-            expr_id: id,
-            adjustment: AutoObject
+            expr_id=id,
+            adjustment=AutoObject
         }
     }
 
     pub fn autoderef(expr_id: ast::NodeId, autoderef: uint) -> MethodCall {
         MethodCall {
-            expr_id: expr_id,
-            adjustment: AutoDeref(1 + autoderef)
+            expr_id=expr_id,
+            adjustment=AutoDeref(1 + autoderef)
         }
     }
 }
@@ -309,9 +309,9 @@ pub fn lookup_def_ccx(ccx: &CrateCtxt, sp: Span, id: ast::NodeId)
 
 pub fn no_params(t: ty::t) -> ty::Polytype {
     ty::Polytype {
-        generics: ty::Generics {types: VecPerParamSpace::empty(),
-                                regions: VecPerParamSpace::empty()},
-        ty: t
+        generics=ty::Generics {types=VecPerParamSpace::empty(),
+                                regions=VecPerParamSpace::empty()},
+        ty=t
     }
 }
 
@@ -370,13 +370,13 @@ fn check_main_fn_ty(ccx: &CrateCtxt,
                 _ => ()
             }
             let se_ty = ty::mk_bare_fn(tcx, ty::BareFnTy {
-                fn_style: ast::NormalFn,
-                abi: abi::Rust,
-                sig: ty::FnSig {
-                    binder_id: main_id,
-                    inputs: Vec::new(),
-                    output: ty::mk_nil(),
-                    variadic: false
+                fn_style=ast::NormalFn,
+                abi=abi::Rust,
+                sig=ty::FnSig {
+                    binder_id=main_id,
+                    inputs=Vec::new(),
+                    output=ty::mk_nil(),
+                    variadic=false
                 }
             });
 
@@ -420,16 +420,16 @@ fn check_start_fn_ty(ccx: &CrateCtxt,
             }
 
             let se_ty = ty::mk_bare_fn(tcx, ty::BareFnTy {
-                fn_style: ast::NormalFn,
-                abi: abi::Rust,
-                sig: ty::FnSig {
-                    binder_id: start_id,
-                    inputs: vec!(
+                fn_style=ast::NormalFn,
+                abi=abi::Rust,
+                sig=ty::FnSig {
+                    binder_id=start_id,
+                    inputs=vec!(
                         ty::mk_int(),
                         ty::mk_imm_ptr(tcx, ty::mk_imm_ptr(tcx, ty::mk_u8()))
                     ),
-                    output: ty::mk_int(),
-                    variadic: false
+                    output=ty::mk_int(),
+                    variadic=false
                 }
             });
 
@@ -468,8 +468,8 @@ pub fn check_crate(tcx: &ty::ctxt,
                    krate: &ast::Crate) {
     let time_passes = tcx.sess.time_passes();
     let ccx = CrateCtxt {
-        trait_map: trait_map,
-        tcx: tcx
+        trait_map=trait_map,
+        tcx=tcx
     };
 
     time(time_passes, "type collecting", (), |_|

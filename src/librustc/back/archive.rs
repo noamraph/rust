@@ -85,13 +85,13 @@ impl<'a> Archive<'a> {
     pub fn create<'b>(sess: &'a Session, dst: &'b Path,
                       initial_object: &'b Path) -> Archive<'a> {
         run_ar(sess, "crus", None, [dst, initial_object]);
-        Archive { sess: sess, dst: dst.clone() }
+        Archive { sess=sess, dst=dst.clone() }
     }
 
     /// Opens an existing static archive
     pub fn open(sess: &'a Session, dst: Path) -> Archive<'a> {
         assert!(dst.exists());
-        Archive { sess: sess, dst: dst }
+        Archive { sess=sess, dst=dst }
     }
 
     /// Adds all of the contents of a native library to this archive. This will
@@ -230,7 +230,7 @@ impl ArchiveRO {
             if ar.is_null() {
                 None
             } else {
-                Some(ArchiveRO { ptr: ar })
+                Some(ArchiveRO { ptr=ar })
             }
         }
     }
@@ -246,8 +246,8 @@ impl ArchiveRO {
                 None
             } else {
                 Some(mem::transmute(raw::Slice {
-                    data: ptr,
-                    len: size as uint,
+                    data=ptr,
+                    len=size as uint,
                 }))
             }
         }

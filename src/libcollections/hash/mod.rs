@@ -296,7 +296,7 @@ mod tests {
 
     impl Hasher<MyWriter> for MyWriterHasher {
         fn hash<T: Hash<MyWriter>>(&self, value: &T) -> u64 {
-            let mut state = MyWriter { hash: 0 };
+            let mut state = MyWriter { hash=0 };
             value.hash(&mut state);
             state.hash
         }
@@ -364,7 +364,7 @@ mod tests {
 
     #[test]
     fn test_custom_state() {
-        let custom = Custom { hash: 5 };
+        let custom = Custom { hash=5 };
         let mut state = 0;
         custom.hash(&mut state);
         assert_eq!(state, 5);

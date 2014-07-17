@@ -97,15 +97,15 @@ impl SipState {
     #[inline]
     pub fn new_with_keys(key0: u64, key1: u64) -> SipState {
         let mut state = SipState {
-            k0: key0,
-            k1: key1,
-            length: 0,
-            v0: 0,
-            v1: 0,
-            v2: 0,
-            v3: 0,
-            tail: 0,
-            ntail: 0,
+            k0=key0,
+            k1=key1,
+            length=0,
+            v0=0,
+            v1=0,
+            v2=0,
+            v3=0,
+            tail=0,
+            ntail=0,
         };
         state.reset();
         state
@@ -227,8 +227,8 @@ impl SipHasher {
     #[inline]
     pub fn new_with_keys(key0: u64, key1: u64) -> SipHasher {
         SipHasher {
-            k0: key0,
-            k1: key1,
+            k0=key0,
+            k1=key1,
         }
     }
 }

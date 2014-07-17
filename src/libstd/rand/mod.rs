@@ -115,7 +115,7 @@ impl StdRng {
     /// Reading the randomness from the OS may fail, and any error is
     /// propagated via the `IoResult` return value.
     pub fn new() -> IoResult<StdRng> {
-        OsRng::new().map(|mut r| StdRng { rng: r.gen() })
+        OsRng::new().map(|mut r| StdRng { rng=r.gen() })
     }
 }
 
@@ -139,7 +139,7 @@ impl<'a> SeedableRng<&'a [uint]> for StdRng {
     }
 
     fn from_seed(seed: &'a [uint]) -> StdRng {
-        StdRng { rng: SeedableRng::from_seed(unsafe {mem::transmute(seed)}) }
+        StdRng { rng=SeedableRng::from_seed(unsafe {mem::transmute(seed)}) }
     }
 }
 
@@ -205,9 +205,9 @@ pub fn task_rng() -> TaskRng {
             let rng = Rc::new(RefCell::new(rng));
             TASK_RNG_KEY.replace(Some(rng.clone()));
 
-            TaskRng { rng: rng }
+            TaskRng { rng=rng }
         }
-        Some(rng) => TaskRng { rng: rng.clone() }
+        Some(rng) => TaskRng { rng=rng.clone() }
     }
 }
 
@@ -286,7 +286,7 @@ mod test {
 
     #[test]
     fn test_fill_bytes_default() {
-        let mut r = ConstRng { i: 0x11_22_33_44_55_66_77_88 };
+        let mut r = ConstRng { i=0x11_22_33_44_55_66_77_88 };
 
         // check every remainder mod 8, both in small and big vectors.
         let lengths = [0, 1, 2, 3, 4, 5, 6, 7,

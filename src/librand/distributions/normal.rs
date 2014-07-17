@@ -94,8 +94,8 @@ impl Normal {
     pub fn new(mean: f64, std_dev: f64) -> Normal {
         assert!(std_dev >= 0.0, "Normal::new called with `std_dev` < 0");
         Normal {
-            mean: mean,
-            std_dev: std_dev
+            mean=mean,
+            std_dev=std_dev
         }
     }
 }
@@ -135,7 +135,7 @@ impl LogNormal {
     /// and standard deviation. Fails if `std_dev < 0`.
     pub fn new(mean: f64, std_dev: f64) -> LogNormal {
         assert!(std_dev >= 0.0, "LogNormal::new called with `std_dev` < 0");
-        LogNormal { norm: Normal::new(mean, std_dev) }
+        LogNormal { norm=Normal::new(mean, std_dev) }
     }
 }
 impl Sample<f64> for LogNormal {

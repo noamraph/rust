@@ -80,7 +80,7 @@ impl<'a> fold::Folder for TestHarnessGenerator<'a> {
         // Add a special __test module to the crate that will contain code
         // generated for the test harness
         ast::Crate {
-            module: add_test_module(&self.cx, &folded.module),
+            module=add_test_module(&self.cx, &folded.module),
             .. folded
         }
     }
@@ -101,11 +101,11 @@ impl<'a> fold::Folder for TestHarnessGenerator<'a> {
                 _ => {
                     debug!("this is a test function");
                     let test = Test {
-                        span: i.span,
-                        path: self.cx.path.borrow().clone(),
-                        bench: is_bench_fn(&self.cx, i),
-                        ignore: is_ignored(&self.cx, i),
-                        should_fail: should_fail(i)
+                        span=i.span,
+                        path=self.cx.path.borrow().clone(),
+                        bench=is_bench_fn(&self.cx, i),
+                        ignore=is_ignored(&self.cx, i),
+                        should_fail=should_fail(i)
                     };
                     self.cx.testfns.borrow_mut().push(test);
                     // debug!("have {} test/bench functions",
@@ -125,7 +125,7 @@ impl<'a> fold::Folder for TestHarnessGenerator<'a> {
 
         fn nomain(item: Gc<ast::Item>) -> Gc<ast::Item> {
             box(GC) ast::Item {
-                attrs: item.attrs.iter().filter_map(|attr| {
+                attrs=item.attrs.iter().filter_map(|attr| {
                     if !attr.name().equiv(&("main")) {
                         Some(*attr)
                     } else {
@@ -137,9 +137,9 @@ impl<'a> fold::Folder for TestHarnessGenerator<'a> {
         }
 
         let mod_nomain = ast::Mod {
-            inner: m.inner,
-            view_items: m.view_items.clone(),
-            items: m.items.iter().map(|i| nomain(*i)).collect(),
+            inner=m.inner,
+            view_items=m.view_items.clone(),
+            items=m.items.iter().map(|i| nomain(*i)).collect(),
         };
 
         fold::noop_fold_mod(&mod_nomain, self)
@@ -149,29 +149,29 @@ impl<'a> fold::Folder for TestHarnessGenerator<'a> {
 fn generate_test_harness(sess: &Session, krate: ast::Crate)
                          -> ast::Crate {
     let mut cx: TestCtxt = TestCtxt {
-        sess: sess,
-        ext_cx: ExtCtxt::new(&sess.parse_sess, sess.opts.cfg.clone(),
+        sess=sess,
+        ext_cx=ExtCtxt::new(&sess.parse_sess, sess.opts.cfg.clone(),
                              ExpansionConfig {
-                                 deriving_hash_type_parameter: false,
-                                 crate_name: "test".to_string(),
+                                 deriving_hash_type_parameter=false,
+                                 crate_name="test".to_string(),
                              }),
-        path: RefCell::new(Vec::new()),
-        testfns: RefCell::new(Vec::new()),
-        is_test_crate: is_test_crate(&krate),
-        config: krate.config.clone(),
+        path=RefCell::new(Vec::new()),
+        testfns=RefCell::new(Vec::new()),
+        is_test_crate=is_test_crate(&krate),
+        config=krate.config.clone(),
     };
 
     cx.ext_cx.bt_push(ExpnInfo {
-        call_site: DUMMY_SP,
-        callee: NameAndSpan {
-            name: "test".to_string(),
-            format: MacroAttribute,
-            span: None
+        call_site=DUMMY_SP,
+        callee=NameAndSpan {
+            name="test".to_string(),
+            format=MacroAttribute,
+            span=None
         }
     });
 
     let mut fold = TestHarnessGenerator {
-        cx: cx
+        cx=cx
     };
     let res = fold.fold_crate(krate);
     fold.cx.ext_cx.bt_pop();
@@ -265,7 +265,7 @@ fn should_fail(i: Gc<ast::Item>) -> bool {
 fn add_test_module(cx: &TestCtxt, m: &ast::Mod) -> ast::Mod {
     let testmod = mk_test_module(cx);
     ast::Mod {
-        items: m.items.clone().append_one(testmod),
+        items=m.items.clone().append_one(testmod),
         ..(*m).clone()
     }
 }
@@ -301,10 +301,10 @@ fn mk_std(cx: &TestCtxt) -> ast::ViewItem {
          ast::Inherited)
     };
     ast::ViewItem {
-        node: vi,
-        attrs: Vec::new(),
-        vis: vis,
-        span: DUMMY_SP
+        node=vi,
+        attrs=Vec::new(),
+        vis=vis,
+        span=DUMMY_SP
     }
 }
 
@@ -326,9 +326,9 @@ fn mk_test_module(cx: &TestCtxt) -> Gc<ast::Item> {
     )).unwrap();
 
     let testmod = ast::Mod {
-        inner: DUMMY_SP,
-        view_items: view_items,
-        items: vec!(mainfn, tests),
+        inner=DUMMY_SP,
+        view_items=view_items,
+        items=vec!(mainfn, tests),
     };
     let item_ = ast::ItemMod(testmod);
 
@@ -339,12 +339,12 @@ fn mk_test_module(cx: &TestCtxt) -> Gc<ast::Item> {
                             attr::mk_word_item(resolve_unexported_str));
 
     let item = ast::Item {
-        ident: token::str_to_ident("__test"),
-        attrs: vec!(resolve_unexported_attr),
-        id: ast::DUMMY_NODE_ID,
-        node: item_,
-        vis: ast::Public,
-        span: DUMMY_SP,
+        ident=token::str_to_ident("__test"),
+        attrs=vec!(resolve_unexported_attr),
+        id=ast::DUMMY_NODE_ID,
+        node=item_,
+        vis=ast::Public,
+        span=DUMMY_SP,
      };
 
     debug!("Synthetic test module:\n{}\n", pprust::item_to_string(&item));
@@ -353,29 +353,29 @@ fn mk_test_module(cx: &TestCtxt) -> Gc<ast::Item> {
 }
 
 fn nospan<T>(t: T) -> codemap::Spanned<T> {
-    codemap::Spanned { node: t, span: DUMMY_SP }
+    codemap::Spanned { node=t, span=DUMMY_SP }
 }
 
 fn path_node(ids: Vec<ast::Ident> ) -> ast::Path {
     ast::Path {
-        span: DUMMY_SP,
-        global: false,
-        segments: ids.move_iter().map(|identifier| ast::PathSegment {
-            identifier: identifier,
-            lifetimes: Vec::new(),
-            types: OwnedSlice::empty(),
+        span=DUMMY_SP,
+        global=false,
+        segments=ids.move_iter().map(|identifier| ast::PathSegment {
+            identifier=identifier,
+            lifetimes=Vec::new(),
+            types=OwnedSlice::empty(),
         }).collect()
     }
 }
 
 fn path_node_global(ids: Vec<ast::Ident> ) -> ast::Path {
     ast::Path {
-        span: DUMMY_SP,
-        global: true,
-        segments: ids.move_iter().map(|identifier| ast::PathSegment {
-            identifier: identifier,
-            lifetimes: Vec::new(),
-            types: OwnedSlice::empty(),
+        span=DUMMY_SP,
+        global=true,
+        segments=ids.move_iter().map(|identifier| ast::PathSegment {
+            identifier=identifier,
+            lifetimes=Vec::new(),
+            types=OwnedSlice::empty(),
         }).collect()
     }
 }
@@ -402,15 +402,15 @@ fn mk_test_descs(cx: &TestCtxt) -> Gc<ast::Expr> {
     debug!("building test vector from {} tests", cx.testfns.borrow().len());
 
     box(GC) ast::Expr {
-        id: ast::DUMMY_NODE_ID,
-        node: ast::ExprVstore(box(GC) ast::Expr {
-            id: ast::DUMMY_NODE_ID,
-            node: ast::ExprVec(cx.testfns.borrow().iter().map(|test| {
+        id=ast::DUMMY_NODE_ID,
+        node=ast::ExprVstore(box(GC) ast::Expr {
+            id=ast::DUMMY_NODE_ID,
+            node=ast::ExprVec(cx.testfns.borrow().iter().map(|test| {
                 mk_test_desc_and_fn_rec(cx, test)
             }).collect()),
-            span: DUMMY_SP,
+            span=DUMMY_SP,
         }, ast::ExprVstoreSlice),
-        span: DUMMY_SP,
+        span=DUMMY_SP,
     }
 }
 
@@ -426,17 +426,17 @@ fn mk_test_desc_and_fn_rec(cx: &TestCtxt, test: &Test) -> Gc<ast::Expr> {
                     ast::CookedStr));
 
     let name_expr = box(GC) ast::Expr {
-          id: ast::DUMMY_NODE_ID,
-          node: ast::ExprLit(box(GC) name_lit),
-          span: span
+          id=ast::DUMMY_NODE_ID,
+          node=ast::ExprLit(box(GC) name_lit),
+          span=span
     };
 
     let fn_path = path_node_global(path);
 
     let fn_expr = box(GC) ast::Expr {
-        id: ast::DUMMY_NODE_ID,
-        node: ast::ExprPath(fn_path),
-        span: span,
+        id=ast::DUMMY_NODE_ID,
+        node=ast::ExprPath(fn_path),
+        span=span,
     };
 
     let t_expr = if test.bench {

@@ -51,15 +51,15 @@ impl<T> Extendable<T> for SmallVector<T> {
 
 impl<T> SmallVector<T> {
     pub fn zero() -> SmallVector<T> {
-        SmallVector { repr: Zero }
+        SmallVector { repr=Zero }
     }
 
     pub fn one(v: T) -> SmallVector<T> {
-        SmallVector { repr: One(v) }
+        SmallVector { repr=One(v) }
     }
 
     pub fn many(vs: Vec<T>) -> SmallVector<T> {
-        SmallVector { repr: Many(vs) }
+        SmallVector { repr=Many(vs) }
     }
 
     pub fn as_slice<'a>(&'a self) -> &'a [T] {
@@ -118,7 +118,7 @@ impl<T> SmallVector<T> {
             One(v) => OneIterator(v),
             Many(vs) => ManyIterator(vs.move_iter())
         };
-        MoveItems { repr: repr }
+        MoveItems { repr=repr }
     }
 }
 

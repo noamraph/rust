@@ -305,7 +305,7 @@ mod imp {
 
         try!(writeln!(w, "stack backtrace:"));
 
-        let mut cx = Context { writer: w, last_error: None, idx: 0 };
+        let mut cx = Context { writer=w, last_error=None, idx=0 };
         return match unsafe {
             uw::_Unwind_Backtrace(trace_fn,
                                   &mut cx as *mut Context as *mut libc::c_void)
@@ -947,7 +947,7 @@ mod imp {
         // Initialize this process's symbols
         let ret = SymInitialize(process, 0 as *mut libc::c_void, libc::TRUE);
         if ret != libc::TRUE { return Ok(()) }
-        let _c = Cleanup { handle: process, SymCleanup: SymCleanup };
+        let _c = Cleanup { handle=process, SymCleanup=SymCleanup };
 
         // And now that we're done with all the setup, do the stack walking!
         let mut i = 0i;

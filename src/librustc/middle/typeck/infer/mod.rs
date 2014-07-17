@@ -267,11 +267,11 @@ pub fn fixup_err_to_string(f: fixup_err) -> String {
 
 pub fn new_infer_ctxt<'a>(tcx: &'a ty::ctxt) -> InferCtxt<'a> {
     InferCtxt {
-        tcx: tcx,
-        type_unification_table: RefCell::new(UnificationTable::new()),
-        int_unification_table: RefCell::new(UnificationTable::new()),
-        float_unification_table: RefCell::new(UnificationTable::new()),
-        region_vars: RegionVarBindings::new(tcx),
+        tcx=tcx,
+        type_unification_table=RefCell::new(UnificationTable::new()),
+        int_unification_table=RefCell::new(UnificationTable::new()),
+        float_unification_table=RefCell::new(UnificationTable::new()),
+        region_vars=RegionVarBindings::new(tcx),
     }
 }
 
@@ -291,8 +291,8 @@ pub fn common_supertype(cx: &InferCtxt,
            a.repr(cx.tcx), b.repr(cx.tcx));
 
     let trace = TypeTrace {
-        origin: origin,
-        values: Types(expected_found(a_is_expected, a, b))
+        origin=origin,
+        values=Types(expected_found(a_is_expected, a, b))
     };
 
     let result =
@@ -316,8 +316,8 @@ pub fn mk_subty(cx: &InferCtxt,
     indent(|| {
         cx.commit_if_ok(|| {
             let trace = TypeTrace {
-                origin: origin,
-                values: Types(expected_found(a_is_expected, a, b))
+                origin=origin,
+                values=Types(expected_found(a_is_expected, a, b))
             };
             cx.sub(a_is_expected, trace).tys(a, b)
         })
@@ -328,8 +328,8 @@ pub fn can_mk_subty(cx: &InferCtxt, a: ty::t, b: ty::t) -> ures {
     debug!("can_mk_subty({} <: {})", a.repr(cx.tcx), b.repr(cx.tcx));
     cx.probe(|| {
         let trace = TypeTrace {
-            origin: Misc(codemap::DUMMY_SP),
-            values: Types(expected_found(true, a, b))
+            origin=Misc(codemap::DUMMY_SP),
+            values=Types(expected_found(true, a, b))
         };
         cx.sub(true, trace).tys(a, b)
     }).to_ures()
@@ -356,8 +356,8 @@ pub fn mk_eqty(cx: &InferCtxt,
     debug!("mk_eqty({} <: {})", a.repr(cx.tcx), b.repr(cx.tcx));
     cx.commit_if_ok(|| {
         let trace = TypeTrace {
-            origin: origin,
-            values: Types(expected_found(a_is_expected, a, b))
+            origin=origin,
+            values=Types(expected_found(a_is_expected, a, b))
         };
         let suber = cx.sub(a_is_expected, trace);
         eq_tys(&suber, a, b)
@@ -376,8 +376,8 @@ pub fn mk_sub_trait_refs(cx: &InferCtxt,
     indent(|| {
         cx.commit_if_ok(|| {
             let trace = TypeTrace {
-                origin: origin,
-                values: TraitRefs(expected_found(a_is_expected, a.clone(), b.clone()))
+                origin=origin,
+                values=TraitRefs(expected_found(a_is_expected, a.clone(), b.clone()))
             };
             let suber = cx.sub(a_is_expected, trace);
             suber.trait_refs(&*a, &*b)
@@ -389,9 +389,9 @@ fn expected_found<T>(a_is_expected: bool,
                      a: T,
                      b: T) -> ty::expected_found<T> {
     if a_is_expected {
-        ty::expected_found {expected: a, found: b}
+        ty::expected_found {expected=a, found=b}
     } else {
-        ty::expected_found {expected: b, found: a}
+        ty::expected_found {expected=b, found=a}
     }
 }
 
@@ -405,8 +405,8 @@ pub fn mk_coercety(cx: &InferCtxt,
     indent(|| {
         cx.commit_if_ok(|| {
             let trace = TypeTrace {
-                origin: origin,
-                values: Types(expected_found(a_is_expected, a, b))
+                origin=origin,
+                values=Types(expected_found(a_is_expected, a, b))
             };
             Coerce(cx.combine_fields(a_is_expected, trace)).tys(a, b)
         })
@@ -484,9 +484,9 @@ pub struct CombinedSnapshot {
 impl<'a> InferCtxt<'a> {
     pub fn combine_fields<'a>(&'a self, a_is_expected: bool, trace: TypeTrace)
                               -> CombineFields<'a> {
-        CombineFields {infcx: self,
-                       a_is_expected: a_is_expected,
-                       trace: trace}
+        CombineFields {infcx=self,
+                       a_is_expected=a_is_expected,
+                       trace=trace}
     }
 
     pub fn sub<'a>(&'a self, a_is_expected: bool, trace: TypeTrace) -> Sub<'a> {
@@ -503,10 +503,10 @@ impl<'a> InferCtxt<'a> {
 
     fn start_snapshot(&self) -> CombinedSnapshot {
         CombinedSnapshot {
-            type_snapshot: self.type_unification_table.borrow_mut().snapshot(),
-            int_snapshot: self.int_unification_table.borrow_mut().snapshot(),
-            float_snapshot: self.float_unification_table.borrow_mut().snapshot(),
-            region_vars_snapshot: self.region_vars.start_snapshot(),
+            type_snapshot=self.type_unification_table.borrow_mut().snapshot(),
+            int_snapshot=self.int_unification_table.borrow_mut().snapshot(),
+            float_snapshot=self.float_unification_table.borrow_mut().snapshot(),
+            region_vars_snapshot=self.region_vars.start_snapshot(),
         }
     }
 
@@ -595,7 +595,7 @@ impl<'a> InferCtxt<'a> {
     pub fn next_ty_var_id(&self) -> TyVid {
         self.type_unification_table
             .borrow_mut()
-            .new_key(Bounds { lb: None, ub: None })
+            .new_key(Bounds { lb=None, ub=None })
     }
 
     pub fn next_ty_var(&self) -> ty::t {
@@ -699,8 +699,8 @@ impl<'a> InferCtxt<'a> {
         match ty::get(dummy1).sty {
             ty::ty_trait(box ty::TyTrait { ref def_id, ref substs, .. }) => {
                 ty::TraitRef {
-                    def_id: *def_id,
-                    substs: (*substs).clone(),
+                    def_id=*def_id,
+                    substs=(*substs).clone(),
                 }
             }
             _ => {

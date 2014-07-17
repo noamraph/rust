@@ -49,7 +49,7 @@ pub struct Ident {
 
 impl Ident {
     /// Construct an identifier with the given name and an empty context:
-    pub fn new(name: Name) -> Ident { Ident {name: name, ctxt: EMPTY_CTXT}}
+    pub fn new(name: Name) -> Ident { Ident {name=name, ctxt=EMPTY_CTXT}}
 
     pub fn as_str<'a>(&'a self) -> &'a str {
         self.name.as_str()
@@ -123,7 +123,7 @@ impl Name {
     }
 
     pub fn ident(&self) -> Ident {
-        Ident { name: *self, ctxt: 0 }
+        Ident { name=*self, ctxt=0 }
     }
 }
 
@@ -881,20 +881,20 @@ pub struct Arg {
 
 impl Arg {
     pub fn new_self(span: Span, mutability: Mutability, self_ident: Ident) -> Arg {
-        let path = Spanned{span:span,node:self_ident};
+        let path = Spanned{span=span,node=self_ident};
         Arg {
             // HACK(eddyb) fake type for the self argument.
-            ty: P(Ty {
-                id: DUMMY_NODE_ID,
-                node: TyInfer,
-                span: DUMMY_SP,
+            ty=P(Ty {
+                id=DUMMY_NODE_ID,
+                node=TyInfer,
+                span=DUMMY_SP,
             }),
-            pat: box(GC) Pat {
-                id: DUMMY_NODE_ID,
-                node: PatIdent(BindByValue(mutability), path, None),
-                span: span
+            pat=box(GC) Pat {
+                id=DUMMY_NODE_ID,
+                node=PatIdent(BindByValue(mutability), path, None),
+                span=span
             },
-            id: DUMMY_NODE_ID
+            id=DUMMY_NODE_ID
         }
     }
 }
@@ -1229,21 +1229,21 @@ mod test {
     fn check_asts_encodable() {
         use std::io;
         let e = Crate {
-            module: Mod {
-                inner: Span {
-                    lo: BytePos(11),
-                    hi: BytePos(19),
-                    expn_info: None,
+            module=Mod {
+                inner=Span {
+                    lo=BytePos(11),
+                    hi=BytePos(19),
+                    expn_info=None,
                 },
-                view_items: Vec::new(),
-                items: Vec::new(),
+                view_items=Vec::new(),
+                items=Vec::new(),
             },
-            attrs: Vec::new(),
-            config: Vec::new(),
-            span: Span {
-                lo: BytePos(10),
-                hi: BytePos(20),
-                expn_info: None,
+            attrs=Vec::new(),
+            config=Vec::new(),
+            span=Span {
+                lo=BytePos(10),
+                hi=BytePos(20),
+                expn_info=None,
             },
         };
         // doesn't matter which encoder we use....

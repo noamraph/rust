@@ -606,8 +606,8 @@ pub fn find_crate_name(sess: Option<&Session>,
 pub fn build_link_meta(sess: &Session, krate: &ast::Crate,
                        name: String) -> LinkMeta {
     let r = LinkMeta {
-        crate_name: name,
-        crate_hash: Svh::calculate(sess, krate),
+        crate_name=name,
+        crate_hash=Svh::calculate(sess, krate),
     };
     info!("{}", r);
     return r;

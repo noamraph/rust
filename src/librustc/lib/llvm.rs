@@ -1870,7 +1870,7 @@ pub struct TypeNames {
 impl TypeNames {
     pub fn new() -> TypeNames {
         TypeNames {
-            named_types: RefCell::new(HashMap::new())
+            named_types=RefCell::new(HashMap::new())
         }
     }
 
@@ -1923,7 +1923,7 @@ impl Drop for TargetData {
 
 pub fn mk_target_data(string_rep: &str) -> TargetData {
     TargetData {
-        lltd: string_rep.with_c_str(|buf| {
+        lltd=string_rep.with_c_str(|buf| {
             unsafe { llvm::LLVMCreateTargetData(buf) }
         })
     }
@@ -1946,7 +1946,7 @@ impl ObjectFile {
             }
 
             Some(ObjectFile {
-                llof: llof,
+                llof=llof,
             })
         }
     }
@@ -1977,7 +1977,7 @@ impl Drop for SectionIter {
 pub fn mk_section_iter(llof: ObjectFileRef) -> SectionIter {
     unsafe {
         SectionIter {
-            llsi: llvm::LLVMGetSections(llof)
+            llsi=llvm::LLVMGetSections(llof)
         }
     }
 }

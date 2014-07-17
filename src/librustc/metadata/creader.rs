@@ -44,8 +44,8 @@ struct Env<'a> {
 pub fn read_crates(sess: &Session,
                    krate: &ast::Crate) {
     let mut e = Env {
-        sess: sess,
-        next_crate_num: sess.cstore.next_crate_num(),
+        sess=sess,
+        next_crate_num=sess.cstore.next_crate_num(),
     };
     visit_crate(&e, krate);
     visit::walk_crate(&mut e, krate, ());
@@ -71,7 +71,7 @@ fn dump_crates(cstore: &CStore) {
         debug!("  cnum: {}", data.cnum);
         debug!("  hash: {}", data.hash());
         opt_source.map(|cs| {
-            let CrateSource { dylib, rlib, cnum: _ } = cs;
+            let CrateSource { dylib, rlib, cnum=_ } = cs;
             dylib.map(|dl| debug!("  dylib: {}", dl.display()));
             rlib.map(|rl|  debug!("   rlib: {}", rl.display()));
         });
@@ -156,10 +156,10 @@ fn extract_crate_info(e: &Env, i: &ast::ViewItem) -> Option<CrateInfo> {
                 None => ident.get().to_string(),
             };
             Some(CrateInfo {
-                ident: ident.get().to_string(),
-                name: name,
-                id: id,
-                should_link: should_link(i),
+                ident=ident.get().to_string(),
+                name=name,
+                id=id,
+                should_link=should_link(i),
             })
         }
         _ => None
@@ -326,9 +326,9 @@ fn register_crate<'a>(e: &mut Env,
     // Stash paths for top-most crate locally if necessary.
     let crate_paths = if root.is_none() {
         Some(CratePaths {
-            ident: ident.to_string(),
-            dylib: lib.dylib.clone(),
-            rlib:  lib.rlib.clone(),
+            ident=ident.to_string(),
+            dylib=lib.dylib.clone(),
+            rlib= lib.rlib.clone(),
         })
     } else {
         None
@@ -341,17 +341,17 @@ fn register_crate<'a>(e: &mut Env,
     let loader::Library{ dylib, rlib, metadata } = lib;
 
     let cmeta = Rc::new( cstore::crate_metadata {
-        name: name.to_string(),
-        data: metadata,
-        cnum_map: cnum_map,
-        cnum: cnum,
-        span: span,
+        name=name.to_string(),
+        data=metadata,
+        cnum_map=cnum_map,
+        cnum=cnum,
+        span=span,
     });
 
     let source = cstore::CrateSource {
-        dylib: dylib,
-        rlib: rlib,
-        cnum: cnum,
+        dylib=dylib,
+        rlib=rlib,
+        cnum=cnum,
     };
 
     e.sess.cstore.set_crate_data(cnum, cmeta.clone());
@@ -370,18 +370,18 @@ fn resolve_crate<'a>(e: &mut Env,
     match existing_match(e, name, hash) {
         None => {
             let mut load_ctxt = loader::Context {
-                sess: e.sess,
-                span: span,
-                ident: ident,
-                crate_name: name,
-                hash: hash.map(|a| &*a),
-                filesearch: e.sess.target_filesearch(),
-                os: e.sess.targ_cfg.os,
-                triple: e.sess.targ_cfg.target_strs.target_triple.as_slice(),
-                root: root,
-                rejected_via_hash: vec!(),
-                rejected_via_triple: vec!(),
-                should_match_name: true,
+                sess=e.sess,
+                span=span,
+                ident=ident,
+                crate_name=name,
+                hash=hash.map(|a| &*a),
+                filesearch=e.sess.target_filesearch(),
+                os=e.sess.targ_cfg.os,
+                triple=e.sess.targ_cfg.target_strs.target_triple.as_slice(),
+                root=root,
+                rejected_via_hash=vec!(),
+                rejected_via_triple=vec!(),
+                should_match_name=true,
             };
             let library = load_ctxt.load_library_crate();
             register_crate(e, root, ident, name, span, library)
@@ -418,9 +418,9 @@ pub struct PluginMetadataReader<'a> {
 impl<'a> PluginMetadataReader<'a> {
     pub fn new(sess: &'a Session) -> PluginMetadataReader<'a> {
         PluginMetadataReader {
-            env: Env {
-                sess: sess,
-                next_crate_num: sess.cstore.next_crate_num(),
+            env=Env {
+                sess=sess,
+                next_crate_num=sess.cstore.next_crate_num(),
             }
         }
     }
@@ -432,18 +432,18 @@ impl<'a> PluginMetadataReader<'a> {
         let mut should_link = info.should_link && !is_cross;
         let os = config::get_os(driver::host_triple()).unwrap();
         let mut load_ctxt = loader::Context {
-            sess: self.env.sess,
-            span: krate.span,
-            ident: info.ident.as_slice(),
-            crate_name: info.name.as_slice(),
-            hash: None,
-            filesearch: self.env.sess.host_filesearch(),
-            triple: driver::host_triple(),
-            os: os,
-            root: &None,
-            rejected_via_hash: vec!(),
-            rejected_via_triple: vec!(),
-            should_match_name: true,
+            sess=self.env.sess,
+            span=krate.span,
+            ident=info.ident.as_slice(),
+            crate_name=info.name.as_slice(),
+            hash=None,
+            filesearch=self.env.sess.host_filesearch(),
+            triple=driver::host_triple(),
+            os=os,
+            root=&None,
+            rejected_via_hash=vec!(),
+            rejected_via_triple=vec!(),
+            should_match_name=true,
         };
         let library = match load_ctxt.maybe_load_library_crate() {
             Some (l) => l,
@@ -474,9 +474,9 @@ impl<'a> PluginMetadataReader<'a> {
             decoder::get_symbol(library.metadata.as_slice(), id)
         });
         let pc = PluginMetadata {
-            lib: library.dylib.clone(),
-            macros: macros,
-            registrar_symbol: registrar,
+            lib=library.dylib.clone(),
+            macros=macros,
+            registrar_symbol=registrar,
         };
         if should_link && existing_match(&self.env, info.name.as_slice(),
                                          None).is_none() {

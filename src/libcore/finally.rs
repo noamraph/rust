@@ -96,8 +96,8 @@ pub fn try_finally<T,U,R>(mutate: &mut T,
                           finally_fn: |&mut T|)
                           -> R {
     let f = Finallyalizer {
-        mutate: mutate,
-        dtor: finally_fn,
+        mutate=mutate,
+        dtor=finally_fn,
     };
     try_fn(&mut *f.mutate, drop)
 }

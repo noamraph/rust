@@ -28,8 +28,8 @@ pub fn expand_deriving_hash(cx: &mut ExtCtxt,
         (Path::new_(vec!("std", "hash", "Hash"), None,
                     vec!(box Literal(Path::new_local("__S"))), true),
          LifetimeBounds {
-             lifetimes: Vec::new(),
-             bounds: vec!(("__S", None,
+             lifetimes=Vec::new(),
+             bounds=vec!(("__S", None,
                            vec!(Path::new(vec!("std", "hash", "Writer"))))),
          },
          Path::new_local("__S"))
@@ -41,21 +41,21 @@ pub fn expand_deriving_hash(cx: &mut ExtCtxt,
     let inline = cx.meta_word(span, InternedString::new("inline"));
     let attrs = vec!(cx.attribute(span, inline));
     let hash_trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: path,
-        additional_bounds: Vec::new(),
-        generics: generics,
-        methods: vec!(
+        span=span,
+        attributes=Vec::new(),
+        path=path,
+        additional_bounds=Vec::new(),
+        generics=generics,
+        methods=vec!(
             MethodDef {
-                name: "hash",
-                generics: LifetimeBounds::empty(),
-                explicit_self: borrowed_explicit_self(),
-                args: vec!(Ptr(box Literal(args), Borrowed(None, MutMutable))),
-                ret_ty: nil_ty(),
-                attributes: attrs,
-                const_nonmatching: false,
-                combine_substructure: combine_substructure(|a, b, c| {
+                name="hash",
+                generics=LifetimeBounds::empty(),
+                explicit_self=borrowed_explicit_self(),
+                args=vec!(Ptr(box Literal(args), Borrowed(None, MutMutable))),
+                ret_ty=nil_ty(),
+                attributes=attrs,
+                const_nonmatching=false,
+                combine_substructure=combine_substructure(|a, b, c| {
                     hash_substructure(a, b, c)
                 })
             }

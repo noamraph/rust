@@ -25,7 +25,7 @@ pub struct MoveErrorCollector {
 impl MoveErrorCollector {
     pub fn new() -> MoveErrorCollector {
         MoveErrorCollector {
-            errors: RefCell::new(Vec::new())
+            errors=RefCell::new(Vec::new())
         }
     }
 
@@ -48,8 +48,8 @@ impl MoveError {
                           move_to: Option<MoveSpanAndPath>)
                           -> MoveError {
         MoveError {
-            move_from: move_from,
-            move_to: move_to,
+            move_from=move_from,
+            move_to=move_to,
         }
     }
 }
@@ -104,8 +104,8 @@ fn group_errors_with_same_origin(errors: &Vec<MoveError>)
         }
         debug!("found a new move from location");
         grouped_errors.push(GroupedMoveErrors {
-            move_from: error.move_from.clone(),
-            move_to_places: move_to
+            move_from=error.move_from.clone(),
+            move_to_places=move_to
         })
     }
 }
@@ -116,7 +116,7 @@ fn report_cannot_move_out_of(bccx: &BorrowckCtxt, move_from: mc::cmt) {
         mc::cat_deref(_, _, mc::GcPtr) |
         mc::cat_deref(_, _, mc::UnsafePtr(..)) |
         mc::cat_upvar(..) | mc::cat_static_item |
-        mc::cat_copied_upvar(mc::CopiedUpvar { onceness: ast::Many, .. }) => {
+        mc::cat_copied_upvar(mc::CopiedUpvar { onceness=ast::Many, .. }) => {
             bccx.span_err(
                 move_from.span,
                 format!("cannot move out of {}",

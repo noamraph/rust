@@ -40,15 +40,15 @@ pub struct ParseSess {
 
 pub fn new_parse_sess() -> ParseSess {
     ParseSess {
-        span_diagnostic: mk_span_handler(default_handler(Auto, None), CodeMap::new()),
-        included_mod_stack: RefCell::new(Vec::new()),
+        span_diagnostic=mk_span_handler(default_handler(Auto, None), CodeMap::new()),
+        included_mod_stack=RefCell::new(Vec::new()),
     }
 }
 
 pub fn new_parse_sess_special_handler(sh: SpanHandler) -> ParseSess {
     ParseSess {
-        span_diagnostic: sh,
-        included_mod_stack: RefCell::new(Vec::new()),
+        span_diagnostic=sh,
+        included_mod_stack=RefCell::new(Vec::new()),
     }
 }
 
@@ -634,49 +634,49 @@ mod test {
 
     // produce a codemap::span
     fn sp(a: u32, b: u32) -> Span {
-        Span{lo:BytePos(a),hi:BytePos(b),expn_info:None}
+        Span{lo=BytePos(a),hi=BytePos(b),expn_info=None}
     }
 
     #[test] fn path_exprs_1() {
         assert!(string_to_expr("a".to_string()) ==
                    box(GC) ast::Expr{
-                    id: ast::DUMMY_NODE_ID,
-                    node: ast::ExprPath(ast::Path {
-                        span: sp(0, 1),
-                        global: false,
-                        segments: vec!(
+                    id=ast::DUMMY_NODE_ID,
+                    node=ast::ExprPath(ast::Path {
+                        span=sp(0, 1),
+                        global=false,
+                        segments=vec!(
                             ast::PathSegment {
-                                identifier: str_to_ident("a"),
-                                lifetimes: Vec::new(),
-                                types: OwnedSlice::empty(),
+                                identifier=str_to_ident("a"),
+                                lifetimes=Vec::new(),
+                                types=OwnedSlice::empty(),
                             }
                         ),
                     }),
-                    span: sp(0, 1)
+                    span=sp(0, 1)
                    })
     }
 
     #[test] fn path_exprs_2 () {
         assert!(string_to_expr("::a::b".to_string()) ==
                    box(GC) ast::Expr {
-                    id: ast::DUMMY_NODE_ID,
-                    node: ast::ExprPath(ast::Path {
-                            span: sp(0, 6),
-                            global: true,
-                            segments: vec!(
+                    id=ast::DUMMY_NODE_ID,
+                    node=ast::ExprPath(ast::Path {
+                            span=sp(0, 6),
+                            global=true,
+                            segments=vec!(
                                 ast::PathSegment {
-                                    identifier: str_to_ident("a"),
-                                    lifetimes: Vec::new(),
-                                    types: OwnedSlice::empty(),
+                                    identifier=str_to_ident("a"),
+                                    lifetimes=Vec::new(),
+                                    types=OwnedSlice::empty(),
                                 },
                                 ast::PathSegment {
-                                    identifier: str_to_ident("b"),
-                                    lifetimes: Vec::new(),
-                                    types: OwnedSlice::empty(),
+                                    identifier=str_to_ident("b"),
+                                    lifetimes=Vec::new(),
+                                    types=OwnedSlice::empty(),
                                 }
                             )
                         }),
-                    span: sp(0, 6)
+                    span=sp(0, 6)
                    })
     }
 
@@ -871,45 +871,45 @@ mod test {
     #[test] fn ret_expr() {
         assert!(string_to_expr("return d".to_string()) ==
                    box(GC) ast::Expr{
-                    id: ast::DUMMY_NODE_ID,
-                    node:ast::ExprRet(Some(box(GC) ast::Expr{
-                        id: ast::DUMMY_NODE_ID,
-                        node:ast::ExprPath(ast::Path{
-                            span: sp(7, 8),
-                            global: false,
-                            segments: vec!(
+                    id=ast::DUMMY_NODE_ID,
+                    node=ast::ExprRet(Some(box(GC) ast::Expr{
+                        id=ast::DUMMY_NODE_ID,
+                        node=ast::ExprPath(ast::Path{
+                            span=sp(7, 8),
+                            global=false,
+                            segments=vec!(
                                 ast::PathSegment {
-                                    identifier: str_to_ident("d"),
-                                    lifetimes: Vec::new(),
-                                    types: OwnedSlice::empty(),
+                                    identifier=str_to_ident("d"),
+                                    lifetimes=Vec::new(),
+                                    types=OwnedSlice::empty(),
                                 }
                             ),
                         }),
-                        span:sp(7,8)
+                        span=sp(7,8)
                     })),
-                    span:sp(0,8)
+                    span=sp(0,8)
                    })
     }
 
     #[test] fn parse_stmt_1 () {
         assert!(string_to_stmt("b;".to_string()) ==
                    box(GC) Spanned{
-                       node: ast::StmtExpr(box(GC) ast::Expr {
-                           id: ast::DUMMY_NODE_ID,
-                           node: ast::ExprPath(ast::Path {
-                               span:sp(0,1),
-                               global:false,
-                               segments: vec!(
+                       node=ast::StmtExpr(box(GC) ast::Expr {
+                           id=ast::DUMMY_NODE_ID,
+                           node=ast::ExprPath(ast::Path {
+                               span=sp(0,1),
+                               global=false,
+                               segments=vec!(
                                 ast::PathSegment {
-                                    identifier: str_to_ident("b"),
-                                    lifetimes: Vec::new(),
-                                    types: OwnedSlice::empty(),
+                                    identifier=str_to_ident("b"),
+                                    lifetimes=Vec::new(),
+                                    types=OwnedSlice::empty(),
                                 }
                                ),
                             }),
-                           span: sp(0,1)},
+                           span=sp(0,1)},
                                            ast::DUMMY_NODE_ID),
-                       span: sp(0,1)})
+                       span=sp(0,1)})
 
     }
 
@@ -922,13 +922,13 @@ mod test {
         let mut parser = string_to_parser(&sess, "b".to_string());
         assert!(parser.parse_pat()
                 == box(GC) ast::Pat{
-                id: ast::DUMMY_NODE_ID,
-                node: ast::PatIdent(ast::BindByValue(ast::MutImmutable),
-                                    Spanned{ span:sp(0, 1),
-                                             node: str_to_ident("b")
+                id=ast::DUMMY_NODE_ID,
+                node=ast::PatIdent(ast::BindByValue(ast::MutImmutable),
+                                    Spanned{ span=sp(0, 1),
+                                             node=str_to_ident("b")
                     },
                                     None),
-                span: sp(0,1)});
+                span=sp(0,1)});
         parser_done(parser);
     }
 
@@ -937,82 +937,82 @@ mod test {
         // this test depends on the intern order of "fn" and "int"
         assert!(string_to_item("fn a (b : int) { b; }".to_string()) ==
                   Some(
-                      box(GC) ast::Item{ident:str_to_ident("a"),
-                            attrs:Vec::new(),
-                            id: ast::DUMMY_NODE_ID,
-                            node: ast::ItemFn(ast::P(ast::FnDecl {
-                                inputs: vec!(ast::Arg{
-                                    ty: ast::P(ast::Ty{id: ast::DUMMY_NODE_ID,
-                                                       node: ast::TyPath(ast::Path{
-                                        span:sp(10,13),
-                                        global:false,
-                                        segments: vec!(
+                      box(GC) ast::Item{ident=str_to_ident("a"),
+                            attrs=Vec::new(),
+                            id=ast::DUMMY_NODE_ID,
+                            node=ast::ItemFn(ast::P(ast::FnDecl {
+                                inputs=vec!(ast::Arg{
+                                    ty=ast::P(ast::Ty{id=ast::DUMMY_NODE_ID,
+                                                       node=ast::TyPath(ast::Path{
+                                        span=sp(10,13),
+                                        global=false,
+                                        segments=vec!(
                                             ast::PathSegment {
-                                                identifier:
+                                                identifier=
                                                     str_to_ident("int"),
-                                                lifetimes: Vec::new(),
-                                                types: OwnedSlice::empty(),
+                                                lifetimes=Vec::new(),
+                                                types=OwnedSlice::empty(),
                                             }
                                         ),
                                         }, None, ast::DUMMY_NODE_ID),
-                                        span:sp(10,13)
+                                        span=sp(10,13)
                                     }),
-                                    pat: box(GC) ast::Pat {
-                                        id: ast::DUMMY_NODE_ID,
-                                        node: ast::PatIdent(
+                                    pat=box(GC) ast::Pat {
+                                        id=ast::DUMMY_NODE_ID,
+                                        node=ast::PatIdent(
                                             ast::BindByValue(ast::MutImmutable),
                                                 Spanned{
-                                                    span: sp(6,7),
-                                                    node: str_to_ident("b")},
+                                                    span=sp(6,7),
+                                                    node=str_to_ident("b")},
                                                 None
                                                     ),
-                                            span: sp(6,7)
+                                            span=sp(6,7)
                                         },
-                                        id: ast::DUMMY_NODE_ID
+                                        id=ast::DUMMY_NODE_ID
                                     }),
-                                output: ast::P(ast::Ty{id: ast::DUMMY_NODE_ID,
-                                                       node: ast::TyNil,
-                                                       span:sp(15,15)}), // not sure
-                                cf: ast::Return,
-                                variadic: false
+                                output=ast::P(ast::Ty{id=ast::DUMMY_NODE_ID,
+                                                       node=ast::TyNil,
+                                                       span=sp(15,15)}), // not sure
+                                cf=ast::Return,
+                                variadic=false
                             }),
                                     ast::NormalFn,
                                     abi::Rust,
                                     ast::Generics{ // no idea on either of these:
-                                        lifetimes: Vec::new(),
-                                        ty_params: OwnedSlice::empty(),
+                                        lifetimes=Vec::new(),
+                                        ty_params=OwnedSlice::empty(),
                                     },
                                     ast::P(ast::Block {
-                                        view_items: Vec::new(),
-                                        stmts: vec!(box(GC) Spanned{
-                                            node: ast::StmtSemi(box(GC) ast::Expr{
-                                                id: ast::DUMMY_NODE_ID,
-                                                node: ast::ExprPath(
+                                        view_items=Vec::new(),
+                                        stmts=vec!(box(GC) Spanned{
+                                            node=ast::StmtSemi(box(GC) ast::Expr{
+                                                id=ast::DUMMY_NODE_ID,
+                                                node=ast::ExprPath(
                                                       ast::Path{
-                                                        span:sp(17,18),
-                                                        global:false,
-                                                        segments: vec!(
+                                                        span=sp(17,18),
+                                                        global=false,
+                                                        segments=vec!(
                                                             ast::PathSegment {
-                                                                identifier:
+                                                                identifier=
                                                                 str_to_ident(
                                                                     "b"),
-                                                                lifetimes:
+                                                                lifetimes=
                                                                 Vec::new(),
-                                                                types:
+                                                                types=
                                                                 OwnedSlice::empty()
                                                             }
                                                         ),
                                                       }),
-                                                span: sp(17,18)},
+                                                span=sp(17,18)},
                                                 ast::DUMMY_NODE_ID),
-                                            span: sp(17,19)}),
-                                        expr: None,
-                                        id: ast::DUMMY_NODE_ID,
-                                        rules: ast::DefaultBlock, // no idea
-                                        span: sp(15,21),
+                                            span=sp(17,19)}),
+                                        expr=None,
+                                        id=ast::DUMMY_NODE_ID,
+                                        rules=ast::DefaultBlock, // no idea
+                                        span=sp(15,21),
                                     })),
-                            vis: ast::Inherited,
-                            span: sp(0,21)}));
+                            vis=ast::Inherited,
+                            span=sp(0,21)}));
     }
 
 

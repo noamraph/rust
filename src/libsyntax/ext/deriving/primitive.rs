@@ -27,43 +27,43 @@ pub fn expand_deriving_from_primitive(cx: &mut ExtCtxt,
     let inline = cx.meta_word(span, InternedString::new("inline"));
     let attrs = vec!(cx.attribute(span, inline));
     let trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: Path::new(vec!("std", "num", "FromPrimitive")),
-        additional_bounds: Vec::new(),
-        generics: LifetimeBounds::empty(),
-        methods: vec!(
+        span=span,
+        attributes=Vec::new(),
+        path=Path::new(vec!("std", "num", "FromPrimitive")),
+        additional_bounds=Vec::new(),
+        generics=LifetimeBounds::empty(),
+        methods=vec!(
             MethodDef {
-                name: "from_i64",
-                generics: LifetimeBounds::empty(),
-                explicit_self: None,
-                args: vec!(
+                name="from_i64",
+                generics=LifetimeBounds::empty(),
+                explicit_self=None,
+                args=vec!(
                     Literal(Path::new(vec!("i64")))),
-                ret_ty: Literal(Path::new_(vec!("std", "option", "Option"),
+                ret_ty=Literal(Path::new_(vec!("std", "option", "Option"),
                                            None,
                                            vec!(box Self),
                                            true)),
                 // #[inline] liable to cause code-bloat
-                attributes: attrs.clone(),
-                const_nonmatching: false,
-                combine_substructure: combine_substructure(|c, s, sub| {
+                attributes=attrs.clone(),
+                const_nonmatching=false,
+                combine_substructure=combine_substructure(|c, s, sub| {
                     cs_from("i64", c, s, sub)
                 }),
             },
             MethodDef {
-                name: "from_u64",
-                generics: LifetimeBounds::empty(),
-                explicit_self: None,
-                args: vec!(
+                name="from_u64",
+                generics=LifetimeBounds::empty(),
+                explicit_self=None,
+                args=vec!(
                     Literal(Path::new(vec!("u64")))),
-                ret_ty: Literal(Path::new_(vec!("std", "option", "Option"),
+                ret_ty=Literal(Path::new_(vec!("std", "option", "Option"),
                                            None,
                                            vec!(box Self),
                                            true)),
                 // #[inline] liable to cause code-bloat
-                attributes: attrs,
-                const_nonmatching: false,
-                combine_substructure: combine_substructure(|c, s, sub| {
+                attributes=attrs,
+                const_nonmatching=false,
+                combine_substructure=combine_substructure(|c, s, sub| {
                     cs_from("u64", c, s, sub)
                 }),
             })
@@ -116,10 +116,10 @@ fn cs_from(name: &str, cx: &mut ExtCtxt, trait_span: Span,
 
                         // arm for `_ if $guard => $body`
                         let arm = ast::Arm {
-                            attrs: vec!(),
-                            pats: vec!(cx.pat_wild(span)),
-                            guard: Some(guard),
-                            body: body,
+                            attrs=vec!(),
+                            pats=vec!(cx.pat_wild(span)),
+                            guard=Some(guard),
+                            body=body,
                         };
 
                         arms.push(arm);
@@ -136,10 +136,10 @@ fn cs_from(name: &str, cx: &mut ExtCtxt, trait_span: Span,
 
             // arm for `_ => None`
             let arm = ast::Arm {
-                attrs: vec!(),
-                pats: vec!(cx.pat_wild(trait_span)),
-                guard: None,
-                body: cx.expr_none(trait_span),
+                attrs=vec!(),
+                pats=vec!(cx.pat_wild(trait_span)),
+                guard=None,
+                body=cx.expr_none(trait_span),
             };
             arms.push(arm);
 

@@ -47,8 +47,8 @@ pub fn sockaddr_to_addr(storage: &libc::sockaddr_storage,
             let c = (ip >>  8) as u8;
             let d = (ip >>  0) as u8;
             rtio::SocketAddr {
-                ip: rtio::Ipv4Addr(a, b, c, d),
-                port: ntohs(storage.sin_port),
+                ip=rtio::Ipv4Addr(a, b, c, d),
+                port=ntohs(storage.sin_port),
             }
         }
         libc::AF_INET6 => {
@@ -65,8 +65,8 @@ pub fn sockaddr_to_addr(storage: &libc::sockaddr_storage,
             let g = ntohs(storage.sin6_addr.s6_addr[6]);
             let h = ntohs(storage.sin6_addr.s6_addr[7]);
             rtio::SocketAddr {
-                ip: rtio::Ipv6Addr(a, b, c, d, e, f, g, h),
-                port: ntohs(storage.sin6_port),
+                ip=rtio::Ipv6Addr(a, b, c, d, e, f, g, h),
+                port=ntohs(storage.sin6_port),
             }
         }
         n => {
@@ -89,7 +89,7 @@ fn addr_to_sockaddr(addr: rtio::SocketAddr) -> (libc::sockaddr_storage, uint) {
                 (*storage).sin_family = libc::AF_INET as libc::sa_family_t;
                 (*storage).sin_port = htons(addr.port);
                 (*storage).sin_addr = libc::in_addr {
-                    s_addr: Int::from_be(ip),
+                    s_addr=Int::from_be(ip),
 
                 };
                 mem::size_of::<libc::sockaddr_in>()
@@ -100,7 +100,7 @@ fn addr_to_sockaddr(addr: rtio::SocketAddr) -> (libc::sockaddr_storage, uint) {
                 storage.sin6_family = libc::AF_INET6 as libc::sa_family_t;
                 storage.sin6_port = htons(addr.port);
                 storage.sin6_addr = libc::in6_addr {
-                    s6_addr: [
+                    s6_addr=[
                         htons(a),
                         htons(b),
                         htons(c),
@@ -189,12 +189,12 @@ impl TcpWatcher {
             uvll::uv_tcp_init(loop_.handle, handle)
         }, 0);
         TcpWatcher {
-            home: home,
-            handle: handle,
-            stream: StreamWatcher::new(handle, true),
-            refcount: Refcount::new(),
-            read_access: AccessTimeout::new(),
-            write_access: AccessTimeout::new(),
+            home=home,
+            handle=handle,
+            stream=StreamWatcher::new(handle, true),
+            refcount=Refcount::new(),
+            read_access=AccessTimeout::new(),
+            write_access=AccessTimeout::new(),
         }
     }
 
@@ -202,7 +202,7 @@ impl TcpWatcher {
                    address: rtio::SocketAddr,
                    timeout: Option<u64>) -> Result<TcpWatcher, UvError> {
         let tcp = TcpWatcher::new(io);
-        let cx = ConnectCtx { status: -1, task: None, timer: None };
+        let cx = ConnectCtx { status=-1, task=None, timer=None };
         let (addr, _len) = addr_to_sockaddr(address);
         let addr_p = &addr as *const _ as *const libc::sockaddr;
         cx.connect(tcp, timeout, io, |req, tcp, cb| {
@@ -277,12 +277,12 @@ impl rtio::RtioTcpStream for TcpWatcher {
 
     fn clone(&self) -> Box<rtio::RtioTcpStream + Send> {
         box TcpWatcher {
-            handle: self.handle,
-            stream: StreamWatcher::new(self.handle, false),
-            home: self.home.clone(),
-            refcount: self.refcount.clone(),
-            read_access: self.read_access.clone(),
-            write_access: self.write_access.clone(),
+            handle=self.handle,
+            stream=StreamWatcher::new(self.handle, false),
+            home=self.home.clone(),
+            refcount=self.refcount.clone(),
+            read_access=self.read_access.clone(),
+            write_access=self.write_access.clone(),
         } as Box<rtio::RtioTcpStream + Send>
     }
 
@@ -356,10 +356,10 @@ impl TcpListener {
         }, 0);
         let (tx, rx) = channel();
         let l = box TcpListener {
-            home: io.make_handle(),
-            handle: handle,
-            outgoing: tx,
-            incoming: rx,
+            home=io.make_handle(),
+            handle=handle,
+            outgoing=tx,
+            incoming=rx,
         };
         let (addr, _len) = addr_to_sockaddr(address);
         let res = unsafe {
@@ -392,8 +392,8 @@ impl rtio::RtioTcpListener for TcpListener {
     fn listen(~self) -> Result<Box<rtio::RtioTcpAcceptor + Send>, IoError> {
         // create the acceptor object from ourselves
         let mut acceptor = box TcpAcceptor {
-            listener: self,
-            timeout: AcceptTimeout::new(),
+            listener=self,
+            timeout=AcceptTimeout::new(),
         };
 
         let _m = acceptor.fire_homing_missile();
@@ -502,12 +502,12 @@ impl UdpWatcher {
     pub fn bind(io: &mut UvIoFactory, address: rtio::SocketAddr)
                 -> Result<UdpWatcher, UvError> {
         let udp = UdpWatcher {
-            handle: unsafe { uvll::malloc_handle(uvll::UV_UDP) },
-            home: io.make_handle(),
-            refcount: Refcount::new(),
-            read_access: AccessTimeout::new(),
-            write_access: AccessTimeout::new(),
-            blocked_sender: None,
+            handle=unsafe { uvll::malloc_handle(uvll::UV_UDP) },
+            home=io.make_handle(),
+            refcount=Refcount::new(),
+            read_access=AccessTimeout::new(),
+            write_access=AccessTimeout::new(),
+            blocked_sender=None,
         };
         assert_eq!(unsafe {
             uvll::uv_udp_init(io.uv_loop(), udp.handle)
@@ -552,9 +552,9 @@ impl rtio::RtioUdpSocket for UdpWatcher {
         } {
             0 => {
                 let mut cx = UdpRecvCtx {
-                    task: None,
-                    buf: Some(slice_to_uv_buf(buf)),
-                    result: None,
+                    task=None,
+                    buf=Some(slice_to_uv_buf(buf)),
+                    result=None,
                 };
                 let handle = self.handle;
                 wait_until_woken_after(&mut cx.task, &loop_, || {
@@ -631,7 +631,7 @@ impl rtio::RtioUdpSocket for UdpWatcher {
             0 => {
                 req.defuse(); // uv callback now owns this request
                 let mut cx = UdpSendCtx {
-                    result: uvll::ECANCELED, data: data, udp: self as *mut _
+                    result=uvll::ECANCELED, data=data, udp=self as *mut _
                 };
                 wait_until_woken_after(&mut self.blocked_sender, &loop_, || {
                     req.set_data(&mut cx);
@@ -644,9 +644,9 @@ impl rtio::RtioUdpSocket for UdpWatcher {
                     }
                 }
                 let mut new_cx = box UdpSendCtx {
-                    result: 0,
-                    udp: 0 as *mut UdpWatcher,
-                    data: cx.data.take(),
+                    result=0,
+                    udp=0 as *mut UdpWatcher,
+                    data=cx.data.take(),
                 };
                 unsafe {
                     req.set_data(&mut *new_cx);
@@ -744,12 +744,12 @@ impl rtio::RtioUdpSocket for UdpWatcher {
 
     fn clone(&self) -> Box<rtio::RtioUdpSocket + Send> {
         box UdpWatcher {
-            handle: self.handle,
-            home: self.home.clone(),
-            refcount: self.refcount.clone(),
-            write_access: self.write_access.clone(),
-            read_access: self.read_access.clone(),
-            blocked_sender: None,
+            handle=self.handle,
+            home=self.home.clone(),
+            refcount=self.refcount.clone(),
+            write_access=self.write_access.clone(),
+            read_access=self.read_access.clone(),
+            blocked_sender=None,
         } as Box<rtio::RtioUdpSocket + Send>
     }
 
@@ -817,7 +817,7 @@ pub fn shutdown(handle: *mut uvll::uv_stream_t, loop_: &Loop) -> Result<(), IoEr
     return match unsafe { uvll::uv_shutdown(req.handle, handle, shutdown_cb) } {
         0 => {
             req.defuse(); // uv callback now owns this request
-            let mut cx = Ctx { slot: None, status: 0 };
+            let mut cx = Ctx { slot=None, status=0 };
 
             wait_until_woken_after(&mut cx.slot, loop_, || {
                 req.set_data(&mut cx);

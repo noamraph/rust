@@ -50,7 +50,7 @@ impl TempDir {
             let p = tmpdir.join(filename);
             match fs::mkdir(&p, io::UserRWX) {
                 Err(..) => {}
-                Ok(()) => return Some(TempDir { path: Some(p), disarmed: false })
+                Ok(()) => return Some(TempDir { path=Some(p), disarmed=false })
             }
         }
         None

@@ -131,21 +131,21 @@ fn wakeup(task: BlockedTask, guard: LockGuard) {
 impl<T: Send> Packet<T> {
     pub fn new(cap: uint) -> Packet<T> {
         Packet {
-            channels: atomics::AtomicUint::new(1),
-            lock: unsafe { NativeMutex::new() },
-            state: Unsafe::new(State {
-                disconnected: false,
-                blocker: NoneBlocked,
-                cap: cap,
-                canceled: None,
-                queue: Queue {
-                    head: 0 as *mut Node,
-                    tail: 0 as *mut Node,
+            channels=atomics::AtomicUint::new(1),
+            lock=unsafe { NativeMutex::new() },
+            state=Unsafe::new(State {
+                disconnected=false,
+                blocker=NoneBlocked,
+                cap=cap,
+                canceled=None,
+                queue=Queue {
+                    head=0 as *mut Node,
+                    tail=0 as *mut Node,
                 },
-                buf: Buffer {
-                    buf: Vec::from_fn(cap + if cap == 0 {1} else {0}, |_| None),
-                    start: 0,
-                    size: 0,
+                buf=Buffer {
+                    buf=Vec::from_fn(cap + if cap == 0 {1} else {0}, |_| None),
+                    start=0,
+                    size=0,
                 },
             }),
         }
@@ -335,8 +335,8 @@ impl<T: Send> Packet<T> {
             Vec::new()
         };
         let mut queue = mem::replace(&mut state.queue, Queue {
-            head: 0 as *mut Node,
-            tail: 0 as *mut Node,
+            head=0 as *mut Node,
+            tail=0 as *mut Node,
         });
 
         let waiter = match mem::replace(&mut state.blocker, NoneBlocked) {
@@ -444,8 +444,8 @@ impl Queue {
     fn enqueue(&mut self, lock: &NativeMutex) {
         let task: Box<Task> = Local::take();
         let mut node = Node {
-            task: None,
-            next: 0 as *mut Node,
+            task=None,
+            next=0 as *mut Node,
         };
         task.deschedule(1, |task| {
             node.task = Some(task);

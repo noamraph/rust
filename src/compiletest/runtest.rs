@@ -214,7 +214,7 @@ fn run_pretty_test(config: &Config, props: &TestProps, testfile: &Path) {
         fatal_proc_rec("pretty-printing (expanded) failed", &proc_res);
     }
 
-    let ProcRes{ stdout: expanded_src, .. } = proc_res;
+    let ProcRes{ stdout=expanded_src, .. } = proc_res;
     let proc_res = typecheck_source(config, props, testfile, expanded_src);
     if !proc_res.status.success() {
         fatal_proc_rec("pretty-printed source (expanded) does not typecheck",
@@ -256,8 +256,8 @@ fn run_pretty_test(config: &Config, props: &TestProps, testfile: &Path) {
         args.push_all_move(split_maybe_args(&config.target_rustcflags));
         args.push_all_move(split_maybe_args(&props.compile_flags));
         return ProcArgs {
-            prog: config.rustc_path.as_str().unwrap().to_string(),
-            args: args,
+            prog=config.rustc_path.as_str().unwrap().to_string(),
+            args=args,
         };
     }
 
@@ -305,16 +305,16 @@ actual:\n\
         args.push_all_move(split_maybe_args(&props.compile_flags));
         // FIXME (#9639): This needs to handle non-utf8 paths
         return ProcArgs {
-            prog: config.rustc_path.as_str().unwrap().to_string(),
-            args: args,
+            prog=config.rustc_path.as_str().unwrap().to_string(),
+            args=args,
         };
     }
 }
 
 fn run_debuginfo_gdb_test(config: &Config, props: &TestProps, testfile: &Path) {
     let mut config = Config {
-        target_rustcflags: cleanup_debug_info_options(&config.target_rustcflags),
-        host_rustcflags: cleanup_debug_info_options(&config.host_rustcflags),
+        target_rustcflags=cleanup_debug_info_options(&config.target_rustcflags),
+        host_rustcflags=cleanup_debug_info_options(&config.host_rustcflags),
         .. config.clone()
     };
 
@@ -441,10 +441,10 @@ fn run_debuginfo_gdb_test(config: &Config, props: &TestProps, testfile: &Path) {
             };
 
             debugger_run_result = ProcRes {
-                status: status,
-                stdout: out,
-                stderr: err,
-                cmdline: cmdline
+                status=status,
+                stdout=out,
+                stderr=err,
+                cmdline=cmdline
             };
             process.signal_kill().unwrap();
         }
@@ -482,8 +482,8 @@ fn run_debuginfo_gdb_test(config: &Config, props: &TestProps, testfile: &Path) {
                      format!("-command={}", debugger_script.as_str().unwrap()),
                      exe_file.as_str().unwrap().to_string());
             proc_args = ProcArgs {
-                prog: debugger(),
-                args: debugger_opts,
+                prog=debugger(),
+                args=debugger_opts,
             };
             debugger_run_result = compose_and_run(config,
                                                   testfile,
@@ -510,8 +510,8 @@ fn run_debuginfo_lldb_test(config: &Config, props: &TestProps, testfile: &Path) 
     }
 
     let mut config = Config {
-        target_rustcflags: cleanup_debug_info_options(&config.target_rustcflags),
-        host_rustcflags: cleanup_debug_info_options(&config.host_rustcflags),
+        target_rustcflags=cleanup_debug_info_options(&config.target_rustcflags),
+        host_rustcflags=cleanup_debug_info_options(&config.host_rustcflags),
         .. config.clone()
     };
 
@@ -593,10 +593,10 @@ fn run_debuginfo_lldb_test(config: &Config, props: &TestProps, testfile: &Path) 
 
         dump_output(config, test_executable, out.as_slice(), err.as_slice());
         return ProcRes {
-            status: status,
-            stdout: out,
-            stderr: err,
-            cmdline: format!("{}", cmd)
+            status=status,
+            stdout=out,
+            stderr=err,
+            cmdline=format!("{}", cmd)
         };
     }
 }
@@ -647,9 +647,9 @@ fn parse_debugger_commands(file_path: &Path, debugger_prefix: &str)
     }
 
     DebuggerCommands {
-        commands: commands,
-        check_lines: check_lines,
-        breakpoint_lines: breakpoint_lines
+        commands=commands,
+        check_lines=check_lines,
+        breakpoint_lines=breakpoint_lines
     }
 }
 
@@ -1132,8 +1132,8 @@ fn make_compile_args(config: &Config,
     }
     args.push_all_move(split_maybe_args(&props.compile_flags));
     return ProcArgs {
-        prog: config.rustc_path.as_str().unwrap().to_string(),
-        args: args,
+        prog=config.rustc_path.as_str().unwrap().to_string(),
+        args=args,
     };
 }
 
@@ -1170,8 +1170,8 @@ fn make_run_args(config: &Config, props: &TestProps, testfile: &Path) ->
 
     let prog = args.shift().unwrap();
     return ProcArgs {
-        prog: prog,
-        args: args,
+        prog=prog,
+        args=args,
     };
 }
 
@@ -1216,10 +1216,10 @@ fn program_output(config: &Config, testfile: &Path, lib_path: &str, prog: String
                      input).expect(format!("failed to exec `{}`", prog).as_slice());
     dump_output(config, testfile, out.as_slice(), err.as_slice());
     return ProcRes {
-        status: status,
-        stdout: out,
-        stderr: err,
-        cmdline: cmdline,
+        status=status,
+        stdout=out,
+        stderr=err,
+        cmdline=cmdline,
     };
 }
 
@@ -1379,7 +1379,7 @@ fn _arm_exec_compiled_test(config: &Config,
     runargs.push("cat".to_string());
     runargs.push(format!("{}/{}.exitcode", config.adb_test_dir, prog_short));
 
-    let procsrv::Result{ out: exitcode_out, err: _, status: _ } =
+    let procsrv::Result{ out=exitcode_out, err=_, status=_ } =
         procsrv::run("",
                      config.adb_path.as_slice(),
                      None,
@@ -1403,7 +1403,7 @@ fn _arm_exec_compiled_test(config: &Config,
     runargs.push("cat".to_string());
     runargs.push(format!("{}/{}.stdout", config.adb_test_dir, prog_short));
 
-    let procsrv::Result{ out: stdout_out, err: _, status: _ } =
+    let procsrv::Result{ out=stdout_out, err=_, status=_ } =
         procsrv::run("",
                      config.adb_path.as_slice(),
                      None,
@@ -1418,7 +1418,7 @@ fn _arm_exec_compiled_test(config: &Config,
     runargs.push("cat".to_string());
     runargs.push(format!("{}/{}.stderr", config.adb_test_dir, prog_short));
 
-    let procsrv::Result{ out: stderr_out, err: _, status: _ } =
+    let procsrv::Result{ out=stderr_out, err=_, status=_ } =
         procsrv::run("",
                      config.adb_path.as_slice(),
                      None,
@@ -1433,10 +1433,10 @@ fn _arm_exec_compiled_test(config: &Config,
                 stderr_out.as_slice());
 
     ProcRes {
-        status: process::ExitStatus(exitcode),
-        stdout: stdout_out,
-        stderr: stderr_out,
-        cmdline: cmdline
+        status=process::ExitStatus(exitcode),
+        stdout=stdout_out,
+        stderr=stderr_out,
+        cmdline=cmdline
     }
 }
 
@@ -1510,8 +1510,8 @@ fn compile_cc_with_clang_and_save_bitcode(config: &Config, _props: &TestProps,
     let testcc = testfile.with_extension("cc");
     let proc_args = ProcArgs {
         // FIXME (#9639): This needs to handle non-utf8 paths
-        prog: config.clang_path.get_ref().as_str().unwrap().to_string(),
-        args: vec!("-c".to_string(),
+        prog=config.clang_path.get_ref().as_str().unwrap().to_string(),
+        args=vec!("-c".to_string(),
                    "-emit-llvm".to_string(),
                    "-o".to_string(),
                    bitcodefile.as_str().unwrap().to_string(),
@@ -1529,8 +1529,8 @@ fn extract_function_from_bitcode(config: &Config, _props: &TestProps,
     let prog = config.llvm_bin_path.get_ref().join("llvm-extract");
     let proc_args = ProcArgs {
         // FIXME (#9639): This needs to handle non-utf8 paths
-        prog: prog.as_str().unwrap().to_string(),
-        args: vec!(format!("-func={}", fname),
+        prog=prog.as_str().unwrap().to_string(),
+        args=vec!(format!("-func={}", fname),
                    format!("-o={}", extracted_bc.as_str().unwrap()),
                    bitcodefile.as_str().unwrap().to_string())
     };
@@ -1546,8 +1546,8 @@ fn disassemble_extract(config: &Config, _props: &TestProps,
     let prog = config.llvm_bin_path.get_ref().join("llvm-dis");
     let proc_args = ProcArgs {
         // FIXME (#9639): This needs to handle non-utf8 paths
-        prog: prog.as_str().unwrap().to_string(),
-        args: vec!(format!("-o={}", extracted_ll.as_str().unwrap()),
+        prog=prog.as_str().unwrap().to_string(),
+        args=vec!(format!("-o={}", extracted_ll.as_str().unwrap()),
                    extracted_bc.as_str().unwrap().to_string())
     };
     compose_and_run(config, testfile, proc_args, Vec::new(), "", None, None)

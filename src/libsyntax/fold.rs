@@ -48,13 +48,13 @@ pub trait Folder {
                                 let id = self.new_id(path_list_ident.node
                                                                     .id);
                                 Spanned {
-                                    node: PathListIdent_ {
-                                        name: path_list_ident.node
+                                    node=PathListIdent_ {
+                                        name=path_list_ident.node
                                                              .name
                                                              .clone(),
-                                        id: id,
+                                        id=id,
                                     },
-                                    span: self.new_span(
+                                    span=self.new_span(
                                         path_list_ident.span)
                                 }
                              }).collect(),
@@ -62,8 +62,8 @@ pub trait Folder {
             }
         };
         box(GC) Spanned {
-            node: inner_view_path,
-            span: self.new_span(view_path.span),
+            node=inner_view_path,
+            span=self.new_span(view_path.span),
         }
     }
 
@@ -82,13 +82,13 @@ pub trait Folder {
     fn fold_struct_field(&mut self, sf: &StructField) -> StructField {
         let id = self.new_id(sf.node.id);
         Spanned {
-            node: ast::StructField_ {
-                kind: sf.node.kind,
-                id: id,
-                ty: self.fold_ty(sf.node.ty),
-                attrs: sf.node.attrs.iter().map(|e| self.fold_attribute(*e)).collect()
+            node=ast::StructField_ {
+                kind=sf.node.kind,
+                id=id,
+                ty=self.fold_ty(sf.node.ty),
+                attrs=sf.node.attrs.iter().map(|e| self.fold_attribute(*e)).collect()
             },
-            span: self.new_span(sf.span)
+            span=self.new_span(sf.span)
         }
     }
 
@@ -118,10 +118,10 @@ pub trait Folder {
 
     fn fold_arm(&mut self, a: &Arm) -> Arm {
         Arm {
-            attrs: a.attrs.iter().map(|x| self.fold_attribute(*x)).collect(),
-            pats: a.pats.iter().map(|x| self.fold_pat(*x)).collect(),
-            guard: a.guard.map(|x| self.fold_expr(x)),
-            body: self.fold_expr(a.body),
+            attrs=a.attrs.iter().map(|x| self.fold_attribute(*x)).collect(),
+            pats=a.pats.iter().map(|x| self.fold_pat(*x)).collect(),
+            guard=a.guard.map(|x| self.fold_expr(x)),
+            body=self.fold_expr(a.body),
         }
     }
 
@@ -139,8 +139,8 @@ pub trait Folder {
 
         node.move_iter().map(|node| {
             box(GC) Spanned {
-                node: node,
-                span: self.new_span(d.span),
+                node=node,
+                span=self.new_span(d.span),
             }
         }).collect()
     }
@@ -162,33 +162,33 @@ pub trait Folder {
             }
             TyClosure(ref f, ref region) => {
                 TyClosure(box(GC) ClosureTy {
-                    fn_style: f.fn_style,
-                    onceness: f.onceness,
-                    bounds: fold_opt_bounds(&f.bounds, self),
-                    decl: self.fold_fn_decl(&*f.decl),
-                    lifetimes: f.lifetimes.iter().map(|l| self.fold_lifetime(l)).collect(),
+                    fn_style=f.fn_style,
+                    onceness=f.onceness,
+                    bounds=fold_opt_bounds(&f.bounds, self),
+                    decl=self.fold_fn_decl(&*f.decl),
+                    lifetimes=f.lifetimes.iter().map(|l| self.fold_lifetime(l)).collect(),
                 }, fold_opt_lifetime(region, self))
             }
             TyProc(ref f) => {
                 TyProc(box(GC) ClosureTy {
-                    fn_style: f.fn_style,
-                    onceness: f.onceness,
-                    bounds: fold_opt_bounds(&f.bounds, self),
-                    decl: self.fold_fn_decl(&*f.decl),
-                    lifetimes: f.lifetimes.iter().map(|l| self.fold_lifetime(l)).collect(),
+                    fn_style=f.fn_style,
+                    onceness=f.onceness,
+                    bounds=fold_opt_bounds(&f.bounds, self),
+                    decl=self.fold_fn_decl(&*f.decl),
+                    lifetimes=f.lifetimes.iter().map(|l| self.fold_lifetime(l)).collect(),
                 })
             }
             TyBareFn(ref f) => {
                 TyBareFn(box(GC) BareFnTy {
-                    lifetimes: f.lifetimes.iter().map(|l| self.fold_lifetime(l)).collect(),
-                    fn_style: f.fn_style,
-                    abi: f.abi,
-                    decl: self.fold_fn_decl(&*f.decl)
+                    lifetimes=f.lifetimes.iter().map(|l| self.fold_lifetime(l)).collect(),
+                    fn_style=f.fn_style,
+                    abi=f.abi,
+                    decl=self.fold_fn_decl(&*f.decl)
                 })
             }
             TyUnboxedFn(ref f) => {
                 TyUnboxedFn(box(GC) UnboxedFnTy {
-                    decl: self.fold_fn_decl(&*f.decl),
+                    decl=self.fold_fn_decl(&*f.decl),
                 })
             }
             TyTup(ref tys) => TyTup(tys.iter().map(|&ty| self.fold_ty(ty)).collect()),
@@ -205,9 +205,9 @@ pub trait Folder {
             TyTypeof(expr) => TyTypeof(self.fold_expr(expr)),
         };
         P(Ty {
-            id: id,
-            span: self.new_span(t.span),
-            node: node,
+            id=id,
+            span=self.new_span(t.span),
+            node=node,
         })
     }
 
@@ -217,12 +217,12 @@ pub trait Folder {
 
     fn fold_foreign_mod(&mut self, nm: &ForeignMod) -> ForeignMod {
         ast::ForeignMod {
-            abi: nm.abi,
-            view_items: nm.view_items
+            abi=nm.abi,
+            view_items=nm.view_items
                           .iter()
                           .map(|x| self.fold_view_item(x))
                           .collect(),
-            items: nm.items
+            items=nm.items
                      .iter()
                      .map(|x| self.fold_foreign_item(*x))
                      .collect(),
@@ -239,14 +239,14 @@ pub trait Folder {
             }
             StructVariantKind(ref struct_def) => {
                 kind = StructVariantKind(box(GC) ast::StructDef {
-                    fields: struct_def.fields.iter()
+                    fields=struct_def.fields.iter()
                         .map(|f| self.fold_struct_field(f)).collect(),
-                    ctor_id: struct_def.ctor_id.map(|c| self.new_id(c)),
-                    super_struct: match struct_def.super_struct {
+                    ctor_id=struct_def.ctor_id.map(|c| self.new_id(c)),
+                    super_struct=match struct_def.super_struct {
                         Some(t) => Some(self.fold_ty(t)),
                         None => None
                     },
-                    is_virtual: struct_def.is_virtual,
+                    is_virtual=struct_def.is_virtual,
                 })
             }
         }
@@ -258,16 +258,16 @@ pub trait Folder {
           None => None
         };
         let node = ast::Variant_ {
-            name: v.node.name,
-            attrs: attrs,
-            kind: kind,
-            id: id,
-            disr_expr: de,
-            vis: v.node.vis,
+            name=v.node.name,
+            attrs=attrs,
+            kind=kind,
+            id=id,
+            disr_expr=de,
+            vis=v.node.vis,
         };
         P(Spanned {
-            node: node,
-            span: self.new_span(v.span),
+            node=node,
+            span=self.new_span(v.span),
         })
     }
 
@@ -277,12 +277,12 @@ pub trait Folder {
 
     fn fold_path(&mut self, p: &Path) -> Path {
         ast::Path {
-            span: self.new_span(p.span),
-            global: p.global,
-            segments: p.segments.iter().map(|segment| ast::PathSegment {
-                identifier: self.fold_ident(segment.identifier),
-                lifetimes: segment.lifetimes.iter().map(|l| self.fold_lifetime(l)).collect(),
-                types: segment.types.iter().map(|&typ| self.fold_ty(typ)).collect(),
+            span=self.new_span(p.span),
+            global=p.global,
+            segments=p.segments.iter().map(|segment| ast::PathSegment {
+                identifier=self.fold_ident(segment.identifier),
+                lifetimes=segment.lifetimes.iter().map(|l| self.fold_lifetime(l)).collect(),
+                types=segment.types.iter().map(|&typ| self.fold_ty(typ)).collect(),
             }).collect()
         }
     }
@@ -290,25 +290,25 @@ pub trait Folder {
     fn fold_local(&mut self, l: Gc<Local>) -> Gc<Local> {
         let id = self.new_id(l.id); // Needs to be first, for ast_map.
         box(GC) Local {
-            id: id,
-            ty: self.fold_ty(l.ty),
-            pat: self.fold_pat(l.pat),
-            init: l.init.map(|e| self.fold_expr(e)),
-            span: self.new_span(l.span),
-            source: l.source,
+            id=id,
+            ty=self.fold_ty(l.ty),
+            pat=self.fold_pat(l.pat),
+            init=l.init.map(|e| self.fold_expr(e)),
+            span=self.new_span(l.span),
+            source=l.source,
         }
     }
 
     fn fold_mac(&mut self, macro: &Mac) -> Mac {
         Spanned {
-            node: match macro.node {
+            node=match macro.node {
                 MacInvocTT(ref p, ref tts, ctxt) => {
                     MacInvocTT(self.fold_path(p),
                                fold_tts(tts.as_slice(), self),
                                ctxt)
                 }
             },
-            span: self.new_span(macro.span)
+            span=self.new_span(macro.span)
         }
     }
 
@@ -327,8 +327,8 @@ pub trait Folder {
 
     fn fold_explicit_self(&mut self, es: &ExplicitSelf) -> ExplicitSelf {
         Spanned {
-            span: self.new_span(es.span),
-            node: self.fold_explicit_self_(&es.node)
+            span=self.new_span(es.span),
+            node=self.fold_explicit_self_(&es.node)
         }
     }
 
@@ -348,12 +348,12 @@ pub trait Folder {
     //used in noop_fold_item and noop_fold_crate
     fn fold_attribute(&mut self, at: Attribute) -> Attribute {
         Spanned {
-            span: self.new_span(at.span),
-            node: ast::Attribute_ {
-                id: at.node.id,
-                style: at.node.style,
-                value: fold_meta_item_(at.node.value, self),
-                is_sugared_doc: at.node.is_sugared_doc
+            span=self.new_span(at.span),
+            node=ast::Attribute_ {
+                id=at.node.id,
+                style=at.node.style,
+                value=fold_meta_item_(at.node.value, self),
+                is_sugared_doc=at.node.is_sugared_doc
             }
         }
     }
@@ -366,7 +366,7 @@ pub trait Folder {
 //used in noop_fold_item and noop_fold_crate and noop_fold_crate_directive
 fn fold_meta_item_<T: Folder>(mi: Gc<MetaItem>, fld: &mut T) -> Gc<MetaItem> {
     box(GC) Spanned {
-        node:
+        node=
             match mi.node {
                 MetaWord(ref id) => MetaWord((*id).clone()),
                 MetaList(ref id, ref mis) => {
@@ -376,16 +376,16 @@ fn fold_meta_item_<T: Folder>(mi: Gc<MetaItem>, fld: &mut T) -> Gc<MetaItem> {
                     MetaNameValue((*id).clone(), (*s).clone())
                 }
             },
-        span: fld.new_span(mi.span) }
+        span=fld.new_span(mi.span) }
 }
 
 //used in noop_fold_foreign_item and noop_fold_fn_decl
 fn fold_arg_<T: Folder>(a: &Arg, fld: &mut T) -> Arg {
     let id = fld.new_id(a.id); // Needs to be first, for ast_map.
     Arg {
-        id: id,
-        ty: fld.fold_ty(a.ty),
-        pat: fld.fold_pat(a.pat),
+        id=id,
+        ty=fld.fold_ty(a.ty),
+        pat=fld.fold_pat(a.pat),
     }
 }
 
@@ -465,10 +465,10 @@ fn fold_interpolated<T: Folder>(nt : &token::Nonterminal, fld: &mut T) -> token:
 
 pub fn noop_fold_fn_decl<T: Folder>(decl: &FnDecl, fld: &mut T) -> P<FnDecl> {
     P(FnDecl {
-        inputs: decl.inputs.iter().map(|x| fold_arg_(x, fld)).collect(), // bad copy
-        output: fld.fold_ty(decl.output),
-        cf: decl.cf,
-        variadic: decl.variadic
+        inputs=decl.inputs.iter().map(|x| fold_arg_(x, fld)).collect(), // bad copy
+        output=fld.fold_ty(decl.output),
+        cf=decl.cf,
+        variadic=decl.variadic
     })
 }
 
@@ -479,7 +479,7 @@ fn fold_ty_param_bound<T: Folder>(tpb: &TyParamBound, fld: &mut T)
         StaticRegionTyParamBound => StaticRegionTyParamBound,
         UnboxedFnTyParamBound(ref unboxed_function_type) => {
             UnboxedFnTyParamBound(UnboxedFnTy {
-                decl: fld.fold_fn_decl(&*unboxed_function_type.decl),
+                decl=fld.fold_fn_decl(&*unboxed_function_type.decl),
             })
         }
         OtherRegionTyParamBound(s) => OtherRegionTyParamBound(s)
@@ -489,12 +489,12 @@ fn fold_ty_param_bound<T: Folder>(tpb: &TyParamBound, fld: &mut T)
 pub fn fold_ty_param<T: Folder>(tp: &TyParam, fld: &mut T) -> TyParam {
     let id = fld.new_id(tp.id);
     TyParam {
-        ident: tp.ident,
-        id: id,
-        bounds: tp.bounds.map(|x| fold_ty_param_bound(x, fld)),
-        unbound: tp.unbound.as_ref().map(|x| fold_ty_param_bound(x, fld)),
-        default: tp.default.map(|x| fld.fold_ty(x)),
-        span: tp.span
+        ident=tp.ident,
+        id=id,
+        bounds=tp.bounds.map(|x| fold_ty_param_bound(x, fld)),
+        unbound=tp.unbound.as_ref().map(|x| fold_ty_param_bound(x, fld)),
+        default=tp.default.map(|x| fld.fold_ty(x)),
+        span=tp.span
     }
 }
 
@@ -506,9 +506,9 @@ pub fn fold_ty_params<T: Folder>(tps: &OwnedSlice<TyParam>, fld: &mut T)
 pub fn noop_fold_lifetime<T: Folder>(l: &Lifetime, fld: &mut T) -> Lifetime {
     let id = fld.new_id(l.id);
     Lifetime {
-        id: id,
-        span: fld.new_span(l.span),
-        name: l.name
+        id=id,
+        span=fld.new_span(l.span),
+        name=l.name
     }
 }
 
@@ -523,56 +523,56 @@ pub fn fold_opt_lifetime<T: Folder>(o_lt: &Option<Lifetime>, fld: &mut T)
 }
 
 pub fn fold_generics<T: Folder>(generics: &Generics, fld: &mut T) -> Generics {
-    Generics {ty_params: fold_ty_params(&generics.ty_params, fld),
-              lifetimes: fold_lifetimes(&generics.lifetimes, fld)}
+    Generics {ty_params=fold_ty_params(&generics.ty_params, fld),
+              lifetimes=fold_lifetimes(&generics.lifetimes, fld)}
 }
 
 fn fold_struct_def<T: Folder>(struct_def: Gc<StructDef>,
                               fld: &mut T) -> Gc<StructDef> {
     box(GC) ast::StructDef {
-        fields: struct_def.fields.iter().map(|f| fold_struct_field(f, fld)).collect(),
-        ctor_id: struct_def.ctor_id.map(|cid| fld.new_id(cid)),
-        super_struct: match struct_def.super_struct {
+        fields=struct_def.fields.iter().map(|f| fold_struct_field(f, fld)).collect(),
+        ctor_id=struct_def.ctor_id.map(|cid| fld.new_id(cid)),
+        super_struct=match struct_def.super_struct {
             Some(t) => Some(fld.fold_ty(t)),
             None => None
         },
-        is_virtual: struct_def.is_virtual,
+        is_virtual=struct_def.is_virtual,
     }
 }
 
 fn fold_trait_ref<T: Folder>(p: &TraitRef, fld: &mut T) -> TraitRef {
     let id = fld.new_id(p.ref_id);
     ast::TraitRef {
-        path: fld.fold_path(&p.path),
-        ref_id: id,
+        path=fld.fold_path(&p.path),
+        ref_id=id,
     }
 }
 
 fn fold_struct_field<T: Folder>(f: &StructField, fld: &mut T) -> StructField {
     let id = fld.new_id(f.node.id);
     Spanned {
-        node: ast::StructField_ {
-            kind: f.node.kind,
-            id: id,
-            ty: fld.fold_ty(f.node.ty),
-            attrs: f.node.attrs.iter().map(|a| fld.fold_attribute(*a)).collect(),
+        node=ast::StructField_ {
+            kind=f.node.kind,
+            id=id,
+            ty=fld.fold_ty(f.node.ty),
+            attrs=f.node.attrs.iter().map(|a| fld.fold_attribute(*a)).collect(),
         },
-        span: fld.new_span(f.span),
+        span=fld.new_span(f.span),
     }
 }
 
 fn fold_field_<T: Folder>(field: Field, folder: &mut T) -> Field {
     ast::Field {
-        ident: respan(field.ident.span, folder.fold_ident(field.ident.node)),
-        expr: folder.fold_expr(field.expr),
-        span: folder.new_span(field.span),
+        ident=respan(field.ident.span, folder.fold_ident(field.ident.node)),
+        expr=folder.fold_expr(field.expr),
+        span=folder.new_span(field.span),
     }
 }
 
 fn fold_mt<T: Folder>(mt: &MutTy, folder: &mut T) -> MutTy {
     MutTy {
-        ty: folder.fold_ty(mt.ty),
-        mutbl: mt.mutbl,
+        ty=folder.fold_ty(mt.ty),
+        mutbl=mt.mutbl,
     }
 }
 
@@ -588,8 +588,8 @@ fn fold_opt_bounds<T: Folder>(b: &Option<OwnedSlice<TyParamBound>>, folder: &mut
 fn fold_variant_arg_<T: Folder>(va: &VariantArg, folder: &mut T) -> VariantArg {
     let id = folder.new_id(va.id);
     ast::VariantArg {
-        ty: folder.fold_ty(va.ty),
-        id: id,
+        ty=folder.fold_ty(va.ty),
+        id=id,
     }
 }
 
@@ -606,10 +606,10 @@ pub fn noop_fold_view_item<T: Folder>(vi: &ViewItem, folder: &mut T)
         }
     };
     ViewItem {
-        node: inner_view_item,
-        attrs: vi.attrs.iter().map(|a| folder.fold_attribute(*a)).collect(),
-        vis: vi.vis,
-        span: folder.new_span(vi.span),
+        node=inner_view_item,
+        attrs=vi.attrs.iter().map(|a| folder.fold_attribute(*a)).collect(),
+        vis=vi.vis,
+        span=folder.new_span(vi.span),
     }
 }
 
@@ -618,12 +618,12 @@ pub fn noop_fold_block<T: Folder>(b: P<Block>, folder: &mut T) -> P<Block> {
     let view_items = b.view_items.iter().map(|x| folder.fold_view_item(x)).collect();
     let stmts = b.stmts.iter().flat_map(|s| folder.fold_stmt(&**s).move_iter()).collect();
     P(Block {
-        id: id,
-        view_items: view_items,
-        stmts: stmts,
-        expr: b.expr.map(|x| folder.fold_expr(x)),
-        rules: b.rules,
-        span: folder.new_span(b.span),
+        id=id,
+        view_items=view_items,
+        stmts=stmts,
+        expr=b.expr.map(|x| folder.fold_expr(x)),
+        rules=b.rules,
+        span=folder.new_span(b.span),
     })
 }
 
@@ -649,7 +649,7 @@ pub fn noop_fold_item_underscore<T: Folder>(i: &Item_, folder: &mut T) -> Item_ 
         ItemEnum(ref enum_definition, ref generics) => {
             ItemEnum(
                 ast::EnumDef {
-                    variants: enum_definition.variants.iter().map(|&x| {
+                    variants=enum_definition.variants.iter().map(|&x| {
                         folder.fold_variant(&*x)
                     }).collect(),
                 },
@@ -685,34 +685,34 @@ pub fn noop_fold_item_underscore<T: Folder>(i: &Item_, folder: &mut T) -> Item_ 
 pub fn noop_fold_type_method<T: Folder>(m: &TypeMethod, fld: &mut T) -> TypeMethod {
     let id = fld.new_id(m.id); // Needs to be first, for ast_map.
     TypeMethod {
-        id: id,
-        ident: fld.fold_ident(m.ident),
-        attrs: m.attrs.iter().map(|a| fld.fold_attribute(*a)).collect(),
-        fn_style: m.fn_style,
-        decl: fld.fold_fn_decl(&*m.decl),
-        generics: fold_generics(&m.generics, fld),
-        explicit_self: fld.fold_explicit_self(&m.explicit_self),
-        span: fld.new_span(m.span),
-        vis: m.vis,
+        id=id,
+        ident=fld.fold_ident(m.ident),
+        attrs=m.attrs.iter().map(|a| fld.fold_attribute(*a)).collect(),
+        fn_style=m.fn_style,
+        decl=fld.fold_fn_decl(&*m.decl),
+        generics=fold_generics(&m.generics, fld),
+        explicit_self=fld.fold_explicit_self(&m.explicit_self),
+        span=fld.new_span(m.span),
+        vis=m.vis,
     }
 }
 
 pub fn noop_fold_mod<T: Folder>(m: &Mod, folder: &mut T) -> Mod {
     ast::Mod {
-        inner: folder.new_span(m.inner),
-        view_items: m.view_items
+        inner=folder.new_span(m.inner),
+        view_items=m.view_items
                      .iter()
                      .map(|x| folder.fold_view_item(x)).collect(),
-        items: m.items.iter().flat_map(|x| folder.fold_item(*x).move_iter()).collect(),
+        items=m.items.iter().flat_map(|x| folder.fold_item(*x).move_iter()).collect(),
     }
 }
 
 pub fn noop_fold_crate<T: Folder>(c: Crate, folder: &mut T) -> Crate {
     Crate {
-        module: folder.fold_mod(&c.module),
-        attrs: c.attrs.iter().map(|x| folder.fold_attribute(*x)).collect(),
-        config: c.config.iter().map(|x| fold_meta_item_(*x, folder)).collect(),
-        span: folder.new_span(c.span),
+        module=folder.fold_mod(&c.module),
+        attrs=c.attrs.iter().map(|x| folder.fold_attribute(*x)).collect(),
+        config=c.config.iter().map(|x| fold_meta_item_(*x, folder)).collect(),
+        span=folder.new_span(c.span),
     }
 }
 
@@ -736,12 +736,12 @@ pub fn noop_fold_item_<T: Folder>(i: &Item, folder: &mut T) -> Item {
     };
 
     Item {
-        id: id,
-        ident: folder.fold_ident(ident),
-        attrs: i.attrs.iter().map(|e| folder.fold_attribute(*e)).collect(),
-        node: node,
-        vis: i.vis,
-        span: folder.new_span(i.span)
+        id=id,
+        ident=folder.fold_ident(ident),
+        attrs=i.attrs.iter().map(|e| folder.fold_attribute(*e)).collect(),
+        node=node,
+        vis=i.vis,
+        span=folder.new_span(i.span)
     }
 }
 
@@ -749,40 +749,40 @@ pub fn noop_fold_foreign_item<T: Folder>(ni: &ForeignItem,
                                          folder: &mut T) -> Gc<ForeignItem> {
     let id = folder.new_id(ni.id); // Needs to be first, for ast_map.
     box(GC) ForeignItem {
-        id: id,
-        ident: folder.fold_ident(ni.ident),
-        attrs: ni.attrs.iter().map(|x| folder.fold_attribute(*x)).collect(),
-        node: match ni.node {
+        id=id,
+        ident=folder.fold_ident(ni.ident),
+        attrs=ni.attrs.iter().map(|x| folder.fold_attribute(*x)).collect(),
+        node=match ni.node {
             ForeignItemFn(ref fdec, ref generics) => {
                 ForeignItemFn(P(FnDecl {
-                    inputs: fdec.inputs.iter().map(|a| fold_arg_(a, folder)).collect(),
-                    output: folder.fold_ty(fdec.output),
-                    cf: fdec.cf,
-                    variadic: fdec.variadic
+                    inputs=fdec.inputs.iter().map(|a| fold_arg_(a, folder)).collect(),
+                    output=folder.fold_ty(fdec.output),
+                    cf=fdec.cf,
+                    variadic=fdec.variadic
                 }), fold_generics(generics, folder))
             }
             ForeignItemStatic(t, m) => {
                 ForeignItemStatic(folder.fold_ty(t), m)
             }
         },
-        span: folder.new_span(ni.span),
-        vis: ni.vis,
+        span=folder.new_span(ni.span),
+        vis=ni.vis,
     }
 }
 
 pub fn noop_fold_method<T: Folder>(m: &Method, folder: &mut T) -> Gc<Method> {
     let id = folder.new_id(m.id); // Needs to be first, for ast_map.
     box(GC) Method {
-        id: id,
-        ident: folder.fold_ident(m.ident),
-        attrs: m.attrs.iter().map(|a| folder.fold_attribute(*a)).collect(),
-        generics: fold_generics(&m.generics, folder),
-        explicit_self: folder.fold_explicit_self(&m.explicit_self),
-        fn_style: m.fn_style,
-        decl: folder.fold_fn_decl(&*m.decl),
-        body: folder.fold_block(m.body),
-        span: folder.new_span(m.span),
-        vis: m.vis
+        id=id,
+        ident=folder.fold_ident(m.ident),
+        attrs=m.attrs.iter().map(|a| folder.fold_attribute(*a)).collect(),
+        generics=fold_generics(&m.generics, folder),
+        explicit_self=folder.fold_explicit_self(&m.explicit_self),
+        fn_style=m.fn_style,
+        decl=folder.fold_fn_decl(&*m.decl),
+        body=folder.fold_block(m.body),
+        span=folder.new_span(m.span),
+        vis=m.vis
     }
 }
 
@@ -793,8 +793,8 @@ pub fn noop_fold_pat<T: Folder>(p: Gc<Pat>, folder: &mut T) -> Gc<Pat> {
         PatWildMulti => PatWildMulti,
         PatIdent(binding_mode, ref pth1, ref sub) => {
             PatIdent(binding_mode,
-                     Spanned{span: folder.new_span(pth1.span),
-                             node: folder.fold_ident(pth1.node)},
+                     Spanned{span=folder.new_span(pth1.span),
+                             node=folder.fold_ident(pth1.node)},
                      sub.map(|x| folder.fold_pat(x)))
         }
         PatLit(e) => PatLit(folder.fold_expr(e)),
@@ -806,8 +806,8 @@ pub fn noop_fold_pat<T: Folder>(p: Gc<Pat>, folder: &mut T) -> Gc<Pat> {
             let pth_ = folder.fold_path(pth);
             let fs = fields.iter().map(|f| {
                 ast::FieldPat {
-                    ident: f.ident,
-                    pat: folder.fold_pat(f.pat)
+                    ident=f.ident,
+                    pat=folder.fold_pat(f.pat)
                 }
             }).collect();
             PatStruct(pth_, fs, etc)
@@ -827,9 +827,9 @@ pub fn noop_fold_pat<T: Folder>(p: Gc<Pat>, folder: &mut T) -> Gc<Pat> {
     };
 
     box(GC) Pat {
-        id: id,
-        span: folder.new_span(p.span),
-        node: node,
+        id=id,
+        span=folder.new_span(p.span),
+        node=node,
     }
 }
 
@@ -927,10 +927,10 @@ pub fn noop_fold_expr<T: Folder>(e: Gc<Expr>, folder: &mut T) -> Gc<Expr> {
         }
         ExprInlineAsm(ref a) => {
             ExprInlineAsm(InlineAsm {
-                inputs: a.inputs.iter().map(|&(ref c, input)| {
+                inputs=a.inputs.iter().map(|&(ref c, input)| {
                     ((*c).clone(), folder.fold_expr(input))
                 }).collect(),
-                outputs: a.outputs.iter().map(|&(ref c, out)| {
+                outputs=a.outputs.iter().map(|&(ref c, out)| {
                     ((*c).clone(), folder.fold_expr(out))
                 }).collect(),
                 .. (*a).clone()
@@ -946,9 +946,9 @@ pub fn noop_fold_expr<T: Folder>(e: Gc<Expr>, folder: &mut T) -> Gc<Expr> {
     };
 
     box(GC) Expr {
-        id: id,
-        node: node,
-        span: folder.new_span(e.span),
+        id=id,
+        node=node,
+        span=folder.new_span(e.span),
     }
 }
 
@@ -973,8 +973,8 @@ pub fn noop_fold_stmt<T: Folder>(s: &Stmt,
     };
 
     nodes.move_iter().map(|node| box(GC) Spanned {
-        node: node,
-        span: folder.new_span(s.span),
+        node=node,
+        span=folder.new_span(s.span),
     }).collect()
 }
 

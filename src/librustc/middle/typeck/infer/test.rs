@@ -96,7 +96,7 @@ impl Emitter for ExpectErrorEmitter {
 
 fn errors(msgs: &[&str]) -> (Box<Emitter+Send>, uint) {
     let v = Vec::from_fn(msgs.len(), |i| msgs[i].to_owned());
-    (box ExpectErrorEmitter { messages: v } as Box<Emitter+Send>, msgs.len())
+    (box ExpectErrorEmitter { messages=v } as Box<Emitter+Send>, msgs.len())
 }
 
 fn test_env(_test_name: &str,
@@ -122,7 +122,7 @@ fn test_env(_test_name: &str,
 
     // run just enough stuff to build a tcx:
     let lang_items = lang_items::collect_language_items(&krate, &sess);
-    let resolve::CrateMap { def_map: def_map, .. } =
+    let resolve::CrateMap { def_map=def_map, .. } =
         resolve::resolve_crate(&sess, &lang_items, &krate);
     let freevars_map = freevars::annotate_freevars(&def_map, &krate);
     let named_region_map = resolve_lifetime::krate(&sess, &krate);
@@ -131,9 +131,9 @@ fn test_env(_test_name: &str,
     let tcx = ty::mk_ctxt(sess, def_map, named_region_map, ast_map,
                           freevars_map, region_map, lang_items, stability_index);
     let infcx = infer::new_infer_ctxt(&tcx);
-    let env = Env {krate: krate,
-                   tcx: &tcx,
-                   infcx: &infcx};
+    let env = Env {krate=krate,
+                   tcx=&tcx,
+                   infcx=&infcx};
     body(env);
     infcx.resolve_regions_and_report_errors();
     assert_eq!(tcx.sess.err_count(), expected_err_count);
@@ -151,11 +151,11 @@ impl<'a> Env<'a> {
         // creates a region hierarchy where 1 is root, 10 and 11 are
         // children of 1, etc
         self.create_region_hierarchy(
-            &RH {id: 1,
-                 sub: &[RH {id: 10,
-                            sub: &[]},
-                        RH {id: 11,
-                            sub: &[]}]});
+            &RH {id=1,
+                 sub=&[RH {id=10,
+                            sub=&[]},
+                        RH {id=11,
+                            sub=&[]}]});
     }
 
     pub fn lookup_item(&self, names: &[String]) -> ast::NodeId {
@@ -272,8 +272,8 @@ impl<'a> Env<'a> {
 
     pub fn t_rptr_free(&self, nid: ast::NodeId, id: uint) -> ty::t {
         ty::mk_imm_rptr(self.tcx,
-                        ty::ReFree(ty::FreeRegion {scope_id: nid,
-                                                    bound_region: ty::BrAnon(id)}),
+                        ty::ReFree(ty::FreeRegion {scope_id=nid,
+                                                    bound_region=ty::BrAnon(id)}),
                         self.t_int())
     }
 
@@ -283,10 +283,10 @@ impl<'a> Env<'a> {
 
     pub fn dummy_type_trace(&self) -> infer::TypeTrace {
         infer::TypeTrace {
-            origin: infer::Misc(DUMMY_SP),
-            values: infer::Types(ty::expected_found {
-                expected: ty::mk_err(),
-                found: ty::mk_err(),
+            origin=infer::Misc(DUMMY_SP),
+            values=infer::Types(ty::expected_found {
+                expected=ty::mk_err(),
+                found=ty::mk_err(),
             })
         }
     }

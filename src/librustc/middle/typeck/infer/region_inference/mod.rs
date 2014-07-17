@@ -161,15 +161,15 @@ pub struct RegionMark {
 impl<'a> RegionVarBindings<'a> {
     pub fn new(tcx: &'a ty::ctxt) -> RegionVarBindings<'a> {
         RegionVarBindings {
-            tcx: tcx,
-            var_origins: RefCell::new(Vec::new()),
-            values: RefCell::new(None),
-            constraints: RefCell::new(HashMap::new()),
-            lubs: RefCell::new(HashMap::new()),
-            glbs: RefCell::new(HashMap::new()),
-            skolemization_count: Cell::new(0),
-            bound_count: Cell::new(0),
-            undo_log: RefCell::new(Vec::new())
+            tcx=tcx,
+            var_origins=RefCell::new(Vec::new()),
+            values=RefCell::new(None),
+            constraints=RefCell::new(HashMap::new()),
+            lubs=RefCell::new(HashMap::new()),
+            glbs=RefCell::new(HashMap::new()),
+            skolemization_count=Cell::new(0),
+            bound_count=Cell::new(0),
+            undo_log=RefCell::new(Vec::new())
         }
     }
 
@@ -181,14 +181,14 @@ impl<'a> RegionVarBindings<'a> {
         let length = self.undo_log.borrow().len();
         debug!("RegionVarBindings: start_snapshot({})", length);
         self.undo_log.borrow_mut().push(OpenSnapshot);
-        RegionSnapshot { length: length }
+        RegionSnapshot { length=length }
     }
 
     pub fn mark(&self) -> RegionMark {
         let length = self.undo_log.borrow().len();
         debug!("RegionVarBindings: mark({})", length);
         self.undo_log.borrow_mut().push(Mark);
-        RegionMark { length: length }
+        RegionMark { length=length }
     }
 
     pub fn commit(&self, snapshot: RegionSnapshot) {
@@ -242,7 +242,7 @@ impl<'a> RegionVarBindings<'a> {
     pub fn new_region_var(&self, origin: RegionVariableOrigin) -> RegionVid {
         let id = self.num_vars();
         self.var_origins.borrow_mut().push(origin.clone());
-        let vid = RegionVid { index: id };
+        let vid = RegionVid { index=id };
         if self.in_snapshot() {
             self.undo_log.borrow_mut().push(AddVar(vid));
         }
@@ -438,7 +438,7 @@ impl<'a> RegionVarBindings<'a> {
                                  old_r: Region,
                                  new_r: Region|)
                         -> Region {
-        let vars = TwoRegions { a: a, b: b };
+        let vars = TwoRegions { a=a, b=b };
         match self.combine_map(t).borrow().find(&vars) {
             Some(&c) => {
                 return ReInfer(ReVar(c));
@@ -824,8 +824,8 @@ impl<'a> RegionVarBindings<'a> {
                 // the expansion phase, we will shift the classification for
                 // those nodes that have a concrete region predecessor to
                 // Expanding.
-                classification: Contracting,
-                value: NoValue,
+                classification=Contracting,
+                value=NoValue,
             }
         })
     }
@@ -1084,7 +1084,7 @@ impl<'a> RegionVarBindings<'a> {
                     }
                     let graph = opt_graph.get_ref();
 
-                    let node_vid = RegionVid { index: idx };
+                    let node_vid = RegionVid { index=idx };
                     match var_data[idx].classification {
                         Expanding => {
                             self.collect_error_for_expanding_node(
@@ -1273,10 +1273,10 @@ impl<'a> RegionVarBindings<'a> {
             dup_found: bool
         }
         let mut state = WalkState {
-            set: HashSet::new(),
-            stack: vec!(orig_node_idx),
-            result: Vec::new(),
-            dup_found: false
+            set=HashSet::new(),
+            stack=vec!(orig_node_idx),
+            result=Vec::new(),
+            dup_found=false
         };
         state.set.insert(orig_node_idx);
 
@@ -1333,8 +1333,8 @@ impl<'a> RegionVarBindings<'a> {
                     ConstrainRegSubVar(region, _) |
                     ConstrainVarSubReg(_, region) => {
                         state.result.push(RegionAndOrigin {
-                            region: region,
-                            origin: this.constraints.borrow().get_copy(&edge.data)
+                            region=region,
+                            origin=this.constraints.borrow().get_copy(&edge.data)
                         });
                     }
 

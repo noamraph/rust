@@ -41,7 +41,7 @@ pub fn strip_hidden(krate: clean::Crate) -> plugins::PluginResult {
                     match i.inner {
                         clean::StructFieldItem(..) => {
                             return Some(clean::Item {
-                                inner: clean::StructFieldItem(clean::HiddenStructField),
+                                inner=clean::StructFieldItem(clean::HiddenStructField),
                                 ..i
                             });
                         }
@@ -54,7 +54,7 @@ pub fn strip_hidden(krate: clean::Crate) -> plugins::PluginResult {
                 self.fold_item_recur(i)
             }
         }
-        let mut stripper = Stripper{ stripped: &mut stripped };
+        let mut stripper = Stripper{ stripped=&mut stripped };
         stripper.fold_crate(krate)
     };
 
@@ -67,7 +67,7 @@ pub fn strip_hidden(krate: clean::Crate) -> plugins::PluginResult {
             fn fold_item(&mut self, i: Item) -> Option<Item> {
                 match i.inner {
                     clean::ImplItem(clean::Impl{
-                        for_: clean::ResolvedPath{ did, .. },
+                        for_=clean::ResolvedPath{ did, .. },
                         ref trait_, ..
                     }) => {
                         // Impls for stripped types don't need to exist
@@ -89,7 +89,7 @@ pub fn strip_hidden(krate: clean::Crate) -> plugins::PluginResult {
                 self.fold_item_recur(i)
             }
         }
-        let mut stripper = ImplStripper{ stripped: &mut stripped };
+        let mut stripper = ImplStripper{ stripped=&mut stripped };
         stripper.fold_crate(krate)
     };
 
@@ -107,8 +107,8 @@ pub fn strip_private(mut krate: clean::Crate) -> plugins::PluginResult {
     // strip all private items
     {
         let mut stripper = Stripper {
-            retained: &mut retained,
-            exported_items: &exported_items,
+            retained=&mut retained,
+            exported_items=&exported_items,
         };
         krate = stripper.fold_crate(krate);
     }
@@ -150,7 +150,7 @@ impl<'a> fold::DocFolder for Stripper<'a> {
             clean::StructFieldItem(..) => {
                 if i.visibility != Some(ast::Public) {
                     return Some(clean::Item {
-                        inner: clean::StructFieldItem(clean::HiddenStructField),
+                        inner=clean::StructFieldItem(clean::HiddenStructField),
                         ..i
                     })
                 }
@@ -161,7 +161,7 @@ impl<'a> fold::DocFolder for Stripper<'a> {
 
             // trait impls for private items should be stripped
             clean::ImplItem(clean::Impl{
-                for_: clean::ResolvedPath{ did, .. }, ..
+                for_=clean::ResolvedPath{ did, .. }, ..
             }) => {
                 if ast_util::is_local(did) &&
                    !self.exported_items.contains(&did.node) {

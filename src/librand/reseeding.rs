@@ -40,10 +40,10 @@ impl<R: Rng, Rsdr: Reseeder<R>> ReseedingRng<R, Rsdr> {
     /// * `reseeder`: the reseeding object to use.
     pub fn new(rng: R, generation_threshold: uint, reseeder: Rsdr) -> ReseedingRng<R,Rsdr> {
         ReseedingRng {
-            rng: rng,
-            generation_threshold: generation_threshold,
-            bytes_generated: 0,
-            reseeder: reseeder
+            rng=rng,
+            generation_threshold=generation_threshold,
+            bytes_generated=0,
+            reseeder=reseeder
         }
     }
 
@@ -90,10 +90,10 @@ impl<S, R: SeedableRng<S>, Rsdr: Reseeder<R> + Default>
     /// seed. This uses a default value for `generation_threshold`.
     fn from_seed((rsdr, seed): (Rsdr, S)) -> ReseedingRng<R, Rsdr> {
         ReseedingRng {
-            rng: SeedableRng::from_seed(seed),
-            generation_threshold: DEFAULT_GENERATION_THRESHOLD,
-            bytes_generated: 0,
-            reseeder: rsdr
+            rng=SeedableRng::from_seed(seed),
+            generation_threshold=DEFAULT_GENERATION_THRESHOLD,
+            bytes_generated=0,
+            reseeder=rsdr
         }
     }
 }
@@ -166,7 +166,7 @@ mod test {
     }
     impl Default for Counter {
         fn default() -> Counter {
-            Counter { i: 0 }
+            Counter { i=0 }
         }
     }
     impl SeedableRng<u32> for Counter {
@@ -174,14 +174,14 @@ mod test {
             self.i = seed;
         }
         fn from_seed(seed: u32) -> Counter {
-            Counter { i: seed }
+            Counter { i=seed }
         }
     }
     type MyRng = ReseedingRng<Counter, ReseedWithDefault>;
 
     #[test]
     fn test_reseeding() {
-        let mut rs = ReseedingRng::new(Counter {i:0}, 400, ReseedWithDefault);
+        let mut rs = ReseedingRng::new(Counter {i=0}, 400, ReseedWithDefault);
 
         let mut i = 0;
         for _ in range(0u, 1000) {

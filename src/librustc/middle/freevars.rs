@@ -74,8 +74,8 @@ impl<'a> Visitor<int> for CollectFreevarsVisitor<'a> {
                             let dnum = def.def_id().node;
                             if !self.seen.contains(&dnum) {
                                 self.refs.push(freevar_entry {
-                                    def: def,
-                                    span: expr.span,
+                                    def=def,
+                                    span=expr.span,
                                 });
                                 self.seen.insert(dnum);
                             }
@@ -97,9 +97,9 @@ impl<'a> Visitor<int> for CollectFreevarsVisitor<'a> {
 // in order to start the search.
 fn collect_freevars(def_map: &resolve::DefMap, blk: &ast::Block) -> Vec<freevar_entry> {
     let mut v = CollectFreevarsVisitor {
-        seen: NodeSet::new(),
-        refs: Vec::new(),
-        def_map: def_map,
+        seen=NodeSet::new(),
+        refs=Vec::new(),
+        def_map=def_map,
     };
 
     v.visit_block(blk, 1);
@@ -128,8 +128,8 @@ impl<'a> Visitor<()> for AnnotateFreevarsVisitor<'a> {
 pub fn annotate_freevars(def_map: &resolve::DefMap, krate: &ast::Crate) ->
    freevar_map {
     let mut visitor = AnnotateFreevarsVisitor {
-        def_map: def_map,
-        freevars: NodeMap::new(),
+        def_map=def_map,
+        freevars=NodeMap::new(),
     };
     visit::walk_crate(&mut visitor, krate, ());
 

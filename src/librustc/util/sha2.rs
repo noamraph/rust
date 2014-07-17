@@ -114,8 +114,8 @@ impl FixedBuffer64 {
     /// Create a new FixedBuffer64
     fn new() -> FixedBuffer64 {
         return FixedBuffer64 {
-            buffer: [0u8, ..64],
-            buffer_idx: 0
+            buffer=[0u8, ..64],
+            buffer_idx=0
         };
     }
 }
@@ -279,14 +279,14 @@ struct Engine256State {
 impl Engine256State {
     fn new(h: &[u32, ..8]) -> Engine256State {
         return Engine256State {
-            h0: h[0],
-            h1: h[1],
-            h2: h[2],
-            h3: h[3],
-            h4: h[4],
-            h5: h[5],
-            h6: h[6],
-            h7: h[7]
+            h0=h[0],
+            h1=h[1],
+            h2=h[2],
+            h3=h[3],
+            h4=h[4],
+            h5=h[5],
+            h6=h[6],
+            h7=h[7]
         };
     }
 
@@ -432,10 +432,10 @@ struct Engine256 {
 impl Engine256 {
     fn new(h: &[u32, ..8]) -> Engine256 {
         return Engine256 {
-            length_bits: 0,
-            buffer: FixedBuffer64::new(),
-            state: Engine256State::new(h),
-            finished: false
+            length_bits=0,
+            buffer=FixedBuffer64::new(),
+            state=Engine256State::new(h),
+            finished=false
         }
     }
 
@@ -478,7 +478,7 @@ impl Sha256 {
     /// Construct a new instance of a SHA-256 digest.
     pub fn new() -> Sha256 {
         Sha256 {
-            engine: Engine256::new(&H256)
+            engine=Engine256::new(&H256)
         }
     }
 }
@@ -578,20 +578,20 @@ mod tests {
         // Examples from wikipedia
         let wikipedia_tests = vec!(
             Test {
-                input: "".to_string(),
-                output_str: "e3b0c44298fc1c149afb\
+                input="".to_string(),
+                output_str="e3b0c44298fc1c149afb\
             f4c8996fb92427ae41e4649b934ca495991b7852b855".to_string()
             },
             Test {
-                input: "The quick brown fox jumps over the lazy \
+                input="The quick brown fox jumps over the lazy \
                         dog".to_string(),
-                output_str: "d7a8fbb307d7809469ca\
+                output_str="d7a8fbb307d7809469ca\
             9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592".to_string()
             },
             Test {
-                input: "The quick brown fox jumps over the lazy \
+                input="The quick brown fox jumps over the lazy \
                         dog.".to_string(),
-                output_str: "ef537f25c895bfa78252\
+                output_str="ef537f25c895bfa78252\
             6529a9b63d97aa631564d5d789c2b765448c8635fb6c".to_string()
             });
 

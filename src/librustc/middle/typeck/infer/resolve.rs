@@ -88,11 +88,11 @@ pub fn resolver<'a>(infcx: &'a InferCtxt,
                     _: Option<Span>)
                     -> ResolveState<'a> {
     ResolveState {
-        infcx: infcx,
-        modes: modes,
-        err: None,
-        v_seen: Vec::new(),
-        type_depth: 0,
+        infcx=infcx,
+        modes=modes,
+        err=None,
+        v_seen=Vec::new(),
+        type_depth=0,
     }
 }
 
@@ -222,13 +222,13 @@ impl<'a> ResolveState<'a> {
             let node =
                 self.infcx.type_unification_table.borrow_mut().get(tcx, vid);
             let t1 = match node.value {
-              Bounds { ub:_, lb:Some(t) } if !type_is_bot(t) => {
+              Bounds { ub=_, lb=Some(t) } if !type_is_bot(t) => {
                   self.resolve_type(t)
               }
-              Bounds { ub:Some(t), lb:_ } | Bounds { ub:_, lb:Some(t) } => {
+              Bounds { ub=Some(t), lb=_ } | Bounds { ub=_, lb=Some(t) } => {
                   self.resolve_type(t)
               }
-              Bounds { ub:None, lb:None } => {
+              Bounds { ub=None, lb=None } => {
                 if self.should(force_tvar) {
                     self.err = Some(unresolved_ty(vid));
                 }

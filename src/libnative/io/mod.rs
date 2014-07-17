@@ -80,18 +80,18 @@ fn unimpl() -> IoError {
     #[cfg(unix)] use ERROR = libc::ENOSYS;
     #[cfg(windows)] use ERROR = libc::ERROR_CALL_NOT_IMPLEMENTED;
     IoError {
-        code: ERROR as uint,
-        extra: 0,
-        detail: Some("not yet supported by the `native` runtime, maybe try `green`.".to_string()),
+        code=ERROR as uint,
+        extra=0,
+        detail=Some("not yet supported by the `native` runtime, maybe try `green`.".to_string()),
     }
 }
 
 fn last_error() -> IoError {
     let errno = os::errno() as uint;
     IoError {
-        code: os::errno() as uint,
-        extra: 0,
-        detail: Some(os::error_string(errno)),
+        code=os::errno() as uint,
+        extra=0,
+        detail=Some(os::error_string(errno)),
     }
 }
 
@@ -163,7 +163,7 @@ pub struct IoFactory {
 impl IoFactory {
     pub fn new() -> IoFactory {
         net::init();
-        IoFactory { _cannot_construct_outside_of_this_module: () }
+        IoFactory { _cannot_construct_outside_of_this_module=() }
     }
 }
 
@@ -291,9 +291,9 @@ impl rtio::IoFactory for IoFactory {
             Ok(box file::FileDesc::new(fd, true) as Box<rtio::RtioTTY + Send>)
         } else {
             Err(IoError {
-                code: libc::ENOTTY as uint,
-                extra: 0,
-                detail: None,
+                code=libc::ENOTTY as uint,
+                extra=0,
+                detail=None,
             })
         }
     }
@@ -304,9 +304,9 @@ impl rtio::IoFactory for IoFactory {
             Ok(box tty::WindowsTTY::new(fd) as Box<rtio::RtioTTY + Send>)
         } else {
             Err(IoError {
-                code: libc::ERROR_INVALID_HANDLE as uint,
-                extra: 0,
-                detail: None,
+                code=libc::ERROR_INVALID_HANDLE as uint,
+                extra=0,
+                detail=None,
             })
         }
     }

@@ -57,7 +57,7 @@ struct CheckStaticVisitor<'a> {
 }
 
 pub fn check_crate(tcx: &ty::ctxt, krate: &ast::Crate) {
-    visit::walk_crate(&mut CheckStaticVisitor { tcx: tcx }, krate, false)
+    visit::walk_crate(&mut CheckStaticVisitor { tcx=tcx }, krate, false)
 }
 
 impl<'a> CheckStaticVisitor<'a> {

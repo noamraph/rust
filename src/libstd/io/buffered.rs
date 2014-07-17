@@ -61,10 +61,10 @@ impl<R: Reader> BufferedReader<R> {
         let mut buf = Vec::with_capacity(cap);
         unsafe { buf.set_len(cap); }
         BufferedReader {
-            inner: inner,
-            buf: buf,
-            pos: 0,
-            cap: 0,
+            inner=inner,
+            buf=buf,
+            pos=0,
+            cap=0,
         }
     }
 
@@ -147,9 +147,9 @@ impl<W: Writer> BufferedWriter<W> {
         let mut buf = Vec::with_capacity(cap);
         unsafe { buf.set_len(cap); }
         BufferedWriter {
-            inner: Some(inner),
-            buf: buf,
-            pos: 0
+            inner=Some(inner),
+            buf=buf,
+            pos=0
         }
     }
 
@@ -228,7 +228,7 @@ impl<W: Writer> LineBufferedWriter<W> {
     pub fn new(inner: W) -> LineBufferedWriter<W> {
         // Lines typically aren't that long, don't use a giant buffer
         LineBufferedWriter {
-            inner: BufferedWriter::with_capacity(1024, inner)
+            inner=BufferedWriter::with_capacity(1024, inner)
         }
     }
 
@@ -315,7 +315,7 @@ impl<S: Stream> BufferedStream<S> {
         let internal_writer = InternalBufferedWriter(writer);
         let reader = BufferedReader::with_capacity(reader_cap,
                                                    internal_writer);
-        BufferedStream { inner: reader }
+        BufferedStream { inner=reader }
     }
 
     /// Creates a new buffered stream with the default reader/writer buffer
@@ -556,7 +556,7 @@ mod test {
 
     #[test]
     fn test_short_reads() {
-        let inner = ShortReader{lengths: vec![0, 1, 2, 0, 1, 0]};
+        let inner = ShortReader{lengths=vec![0, 1, 2, 0, 1, 0]};
         let mut reader = BufferedReader::new(inner);
         let mut buf = [0, 0];
         assert_eq!(reader.read(buf), Ok(0));

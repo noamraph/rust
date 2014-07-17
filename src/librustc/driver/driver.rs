@@ -259,8 +259,8 @@ pub fn phase_2_configure_and_expand(sess: &Session,
                 sess.host_filesearch().add_dylib_search_paths();
             }
             let cfg = syntax::ext::expand::ExpansionConfig {
-                deriving_hash_type_parameter: sess.features.default_type_params.get(),
-                crate_name: crate_name.to_string(),
+                deriving_hash_type_parameter=sess.features.default_type_params.get(),
+                crate_name=crate_name.to_string(),
             };
             syntax::ext::expand::expand_crate(&sess.parse_sess,
                                               cfg,
@@ -319,11 +319,11 @@ pub fn phase_3_run_analysis_passes(sess: Session,
                           middle::lang_items::collect_language_items(krate, &sess));
 
     let middle::resolve::CrateMap {
-        def_map: def_map,
-        exp_map2: exp_map2,
-        trait_map: trait_map,
-        external_exports: external_exports,
-        last_private_map: last_private_map
+        def_map=def_map,
+        exp_map2=exp_map2,
+        trait_map=trait_map,
+        external_exports=external_exports,
+        last_private_map=last_private_map
     } =
         time(time_passes, "resolution", (), |_|
              middle::resolve::resolve_crate(&sess, &lang_items, krate));
@@ -408,12 +408,12 @@ pub fn phase_3_run_analysis_passes(sess: Session,
          lint::check_crate(&ty_cx, krate, &exported_items));
 
     CrateAnalysis {
-        exp_map2: exp_map2,
-        ty_cx: ty_cx,
-        exported_items: exported_items,
-        public_items: public_items,
-        reachable: reachable_map,
-        name: name,
+        exp_map2=exp_map2,
+        ty_cx=ty_cx,
+        exported_items=exported_items,
+        public_items=public_items,
+        reachable=reachable_map,
+        name=name,
     }
 }
 
@@ -711,7 +711,7 @@ pub fn pretty_print_input(sess: Session,
             let ast_map = ast_map.expect("--pretty=typed missing ast_map");
             let analysis = phase_3_run_analysis_passes(sess, &krate, ast_map, id);
             let annotation = TypedAnnotation {
-                analysis: analysis
+                analysis=analysis
             };
             pprust::print_crate(annotation.analysis.ty_cx.sess.codemap(),
                                 annotation.analysis.ty_cx.sess.diagnostic(),
@@ -765,9 +765,9 @@ fn print_flowgraph<W:io::Writer>(analysis: CrateAnalysis,
                                  mut out: W) -> io::IoResult<()> {
     let ty_cx = &analysis.ty_cx;
     let cfg = cfg::CFG::new(ty_cx, &*block);
-    let lcfg = LabelledCFG { ast_map: &ty_cx.map,
-                             cfg: &cfg,
-                             name: format!("block{}", block.id), };
+    let lcfg = LabelledCFG { ast_map=&ty_cx.map,
+                             cfg=&cfg,
+                             name=format!("block{}", block.id), };
     debug!("cfg: {:?}", cfg);
     let r = dot::render(&lcfg, &mut out);
     return expand_err_details(r);
@@ -777,7 +777,7 @@ fn print_flowgraph<W:io::Writer>(analysis: CrateAnalysis,
             let orig_detail = ioerr.detail.clone();
             let m = "graphviz::render failed";
             io::IoError {
-                detail: Some(match orig_detail {
+                detail=Some(match orig_detail {
                     None => m.into_string(),
                     Some(d) => format!("{}: {}", m, d)
                 }),
@@ -930,9 +930,9 @@ pub fn build_output_filenames(input: &Input,
             }).unwrap_or(input.filestem());
 
             OutputFilenames {
-                out_directory: dirpath,
-                out_filestem: stem,
-                single_output_file: None,
+                out_directory=dirpath,
+                out_filestem=stem,
+                single_output_file=None,
             }
         }
 
@@ -948,9 +948,9 @@ pub fn build_output_filenames(input: &Input,
                 sess.warn("ignoring --out-dir flag due to -o flag.");
             }
             OutputFilenames {
-                out_directory: out_file.dir_path(),
-                out_filestem: out_file.filestem_str().unwrap().to_string(),
-                single_output_file: ofile,
+                out_directory=out_file.dir_path(),
+                out_filestem=out_file.filestem_str().unwrap().to_string(),
+                single_output_file=ofile,
             }
         }
     }

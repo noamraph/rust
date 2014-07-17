@@ -252,11 +252,11 @@ fn parse_iter<T: Iterator<char>>(rdr: &mut T) -> Option<Version> {
     }
 
     Some(Version {
-        major: major,
-        minor: minor,
-        patch: patch,
-        pre: pre,
-        build: build,
+        major=major,
+        minor=minor,
+        patch=patch,
+        pre=pre,
+        build=build,
     })
 }
 
@@ -294,67 +294,67 @@ fn test_parse() {
     assert_eq!(parse("1.2.3 abc"), None);
 
     assert!(parse("1.2.3") == Some(Version {
-        major: 1u,
-        minor: 2u,
-        patch: 3u,
-        pre: vec!(),
-        build: vec!(),
+        major=1u,
+        minor=2u,
+        patch=3u,
+        pre=vec!(),
+        build=vec!(),
     }));
     assert!(parse("  1.2.3  ") == Some(Version {
-        major: 1u,
-        minor: 2u,
-        patch: 3u,
-        pre: vec!(),
-        build: vec!(),
+        major=1u,
+        minor=2u,
+        patch=3u,
+        pre=vec!(),
+        build=vec!(),
     }));
     assert!(parse("1.2.3-alpha1") == Some(Version {
-        major: 1u,
-        minor: 2u,
-        patch: 3u,
-        pre: vec!(AlphaNumeric("alpha1".to_string())),
-        build: vec!(),
+        major=1u,
+        minor=2u,
+        patch=3u,
+        pre=vec!(AlphaNumeric("alpha1".to_string())),
+        build=vec!(),
     }));
     assert!(parse("  1.2.3-alpha1  ") == Some(Version {
-        major: 1u,
-        minor: 2u,
-        patch: 3u,
-        pre: vec!(AlphaNumeric("alpha1".to_string())),
-        build: vec!()
+        major=1u,
+        minor=2u,
+        patch=3u,
+        pre=vec!(AlphaNumeric("alpha1".to_string())),
+        build=vec!()
     }));
     assert!(parse("1.2.3+build5") == Some(Version {
-        major: 1u,
-        minor: 2u,
-        patch: 3u,
-        pre: vec!(),
-        build: vec!(AlphaNumeric("build5".to_string()))
+        major=1u,
+        minor=2u,
+        patch=3u,
+        pre=vec!(),
+        build=vec!(AlphaNumeric("build5".to_string()))
     }));
     assert!(parse("  1.2.3+build5  ") == Some(Version {
-        major: 1u,
-        minor: 2u,
-        patch: 3u,
-        pre: vec!(),
-        build: vec!(AlphaNumeric("build5".to_string()))
+        major=1u,
+        minor=2u,
+        patch=3u,
+        pre=vec!(),
+        build=vec!(AlphaNumeric("build5".to_string()))
     }));
     assert!(parse("1.2.3-alpha1+build5") == Some(Version {
-        major: 1u,
-        minor: 2u,
-        patch: 3u,
-        pre: vec!(AlphaNumeric("alpha1".to_string())),
-        build: vec!(AlphaNumeric("build5".to_string()))
+        major=1u,
+        minor=2u,
+        patch=3u,
+        pre=vec!(AlphaNumeric("alpha1".to_string())),
+        build=vec!(AlphaNumeric("build5".to_string()))
     }));
     assert!(parse("  1.2.3-alpha1+build5  ") == Some(Version {
-        major: 1u,
-        minor: 2u,
-        patch: 3u,
-        pre: vec!(AlphaNumeric("alpha1".to_string())),
-        build: vec!(AlphaNumeric("build5".to_string()))
+        major=1u,
+        minor=2u,
+        patch=3u,
+        pre=vec!(AlphaNumeric("alpha1".to_string())),
+        build=vec!(AlphaNumeric("build5".to_string()))
     }));
     assert!(parse("1.2.3-1.alpha1.9+build5.7.3aedf  ") == Some(Version {
-        major: 1u,
-        minor: 2u,
-        patch: 3u,
-        pre: vec!(Numeric(1),AlphaNumeric("alpha1".to_string()),Numeric(9)),
-        build: vec!(AlphaNumeric("build5".to_string()),
+        major=1u,
+        minor=2u,
+        patch=3u,
+        pre=vec!(Numeric(1),AlphaNumeric("alpha1".to_string()),Numeric(9)),
+        build=vec!(AlphaNumeric("build5".to_string()),
                  Numeric(7),
                  AlphaNumeric("3aedf".to_string()))
     }));

@@ -315,7 +315,7 @@ struct NaiveSearcher {
 
 impl NaiveSearcher {
     fn new() -> NaiveSearcher {
-        NaiveSearcher { position: 0 }
+        NaiveSearcher { position=0 }
     }
 
     fn next(&mut self, haystack: &[u8], needle: &[u8]) -> Option<(uint, uint)> {
@@ -366,21 +366,21 @@ impl TwoWaySearcher {
 
         if needle.slice_to(critPos) == needle.slice_from(needle.len() - critPos) {
             TwoWaySearcher {
-                critPos: critPos,
-                period: period,
-                byteset: byteset,
+                critPos=critPos,
+                period=period,
+                byteset=byteset,
 
-                position: 0,
-                memory: 0
+                position=0,
+                memory=0
             }
         } else {
             TwoWaySearcher {
-                critPos: critPos,
-                period: cmp::max(critPos, needle.len() - critPos) + 1,
-                byteset: byteset,
+                critPos=critPos,
+                period=cmp::max(critPos, needle.len() - critPos) + 1,
+                byteset=byteset,
 
-                position: 0,
-                memory: uint::MAX // Dummy value to signify that the period is long
+                position=0,
+                memory=uint::MAX // Dummy value to signify that the period is long
             }
         }
     }
@@ -815,7 +815,7 @@ impl<'a> Iterator<Utf16Item> for Utf16Items<'a> {
 ///                 LoneSurrogate(0xD834)]);
 /// ```
 pub fn utf16_items<'a>(v: &'a [u16]) -> Utf16Items<'a> {
-    Utf16Items { iter : v.iter() }
+    Utf16Items { iter =v.iter() }
 }
 
 /// Return a slice of `v` ending at (and not including) the first NUL
@@ -920,7 +920,7 @@ pub mod raw {
             len += 1u;
             curr = s.offset(len as int);
         }
-        let v = Slice { data: s, len: len };
+        let v = Slice { data=s, len=len };
         assert!(is_utf8(::mem::transmute(v)));
         ::mem::transmute(v)
     }
@@ -948,8 +948,8 @@ pub mod raw {
     #[inline]
     pub unsafe fn slice_unchecked<'a>(s: &'a str, begin: uint, end: uint) -> &'a str {
         mem::transmute(Slice {
-                data: s.as_ptr().offset(begin as int),
-                len: end - begin,
+                data=s.as_ptr().offset(begin as int),
+                len=end - begin,
             })
     }
 }
@@ -1608,7 +1608,7 @@ impl<'a> StrSlice<'a> for &'a str {
 
     #[inline]
     fn chars(&self) -> Chars<'a> {
-        Chars{string: *self}
+        Chars{string=*self}
     }
 
     #[inline]
@@ -1618,17 +1618,17 @@ impl<'a> StrSlice<'a> for &'a str {
 
     #[inline]
     fn char_indices(&self) -> CharOffsets<'a> {
-        CharOffsets{string: *self, iter: self.chars()}
+        CharOffsets{string=*self, iter=self.chars()}
     }
 
     #[inline]
     fn split<Sep: CharEq>(&self, sep: Sep) -> CharSplits<'a, Sep> {
         CharSplits {
-            string: *self,
-            only_ascii: sep.only_ascii(),
-            sep: sep,
-            allow_trailing_empty: true,
-            finished: false,
+            string=*self,
+            only_ascii=sep.only_ascii(),
+            sep=sep,
+            allow_trailing_empty=true,
+            finished=false,
         }
     }
 
@@ -1636,9 +1636,9 @@ impl<'a> StrSlice<'a> for &'a str {
     fn splitn<Sep: CharEq>(&self, sep: Sep, count: uint)
         -> CharSplitsN<'a, Sep> {
         CharSplitsN {
-            iter: self.split(sep),
-            count: count,
-            invert: false,
+            iter=self.split(sep),
+            count=count,
+            invert=false,
         }
     }
 
@@ -1646,7 +1646,7 @@ impl<'a> StrSlice<'a> for &'a str {
     fn split_terminator<Sep: CharEq>(&self, sep: Sep)
         -> CharSplits<'a, Sep> {
         CharSplits {
-            allow_trailing_empty: false,
+            allow_trailing_empty=false,
             ..self.split(sep)
         }
     }
@@ -1655,9 +1655,9 @@ impl<'a> StrSlice<'a> for &'a str {
     fn rsplitn<Sep: CharEq>(&self, sep: Sep, count: uint)
         -> CharSplitsN<'a, Sep> {
         CharSplitsN {
-            iter: self.split(sep),
-            count: count,
-            invert: true,
+            iter=self.split(sep),
+            count=count,
+            invert=true,
         }
     }
 
@@ -1665,18 +1665,18 @@ impl<'a> StrSlice<'a> for &'a str {
     fn match_indices(&self, sep: &'a str) -> MatchIndices<'a> {
         assert!(!sep.is_empty())
         MatchIndices {
-            haystack: *self,
-            needle: sep,
-            searcher: Searcher::new(self.as_bytes(), sep.as_bytes())
+            haystack=*self,
+            needle=sep,
+            searcher=Searcher::new(self.as_bytes(), sep.as_bytes())
         }
     }
 
     #[inline]
     fn split_str(&self, sep: &'a str) -> StrSplits<'a> {
         StrSplits {
-            it: self.match_indices(sep),
-            last_end: 0,
-            finished: false
+            it=self.match_indices(sep),
+            last_end=0,
+            finished=false
         }
     }
 
@@ -1796,7 +1796,7 @@ impl<'a> StrSlice<'a> for &'a str {
     #[inline]
     fn char_range_at(&self, i: uint) -> CharRange {
         if self.as_bytes()[i] < 128u8 {
-            return CharRange {ch: self.as_bytes()[i] as char, next: i + 1 };
+            return CharRange {ch=self.as_bytes()[i] as char, next=i + 1 };
         }
 
         // Multibyte case is a fn to allow char_range_at to inline cleanly
@@ -1810,7 +1810,7 @@ impl<'a> StrSlice<'a> for &'a str {
             if w > 2 { val = utf8_acc_cont_byte!(val, s.as_bytes()[i + 2]); }
             if w > 3 { val = utf8_acc_cont_byte!(val, s.as_bytes()[i + 3]); }
 
-            return CharRange {ch: unsafe { mem::transmute(val) }, next: i + w};
+            return CharRange {ch=unsafe { mem::transmute(val) }, next=i + w};
         }
 
         return multibyte_char_range_at(*self, i);
@@ -1822,7 +1822,7 @@ impl<'a> StrSlice<'a> for &'a str {
 
         prev = prev.saturating_sub(1);
         if self.as_bytes()[prev] < 128 {
-            return CharRange{ch: self.as_bytes()[prev] as char, next: prev}
+            return CharRange{ch=self.as_bytes()[prev] as char, next=prev}
         }
 
         // Multibyte case is a fn to allow char_range_at_reverse to inline cleanly
@@ -1841,7 +1841,7 @@ impl<'a> StrSlice<'a> for &'a str {
             if w > 2 { val = utf8_acc_cont_byte!(val, s.as_bytes()[i + 2]); }
             if w > 3 { val = utf8_acc_cont_byte!(val, s.as_bytes()[i + 3]); }
 
-            return CharRange {ch: unsafe { mem::transmute(val) }, next: i};
+            return CharRange {ch=unsafe { mem::transmute(val) }, next=i};
         }
 
         return multibyte_char_range_at_reverse(*self, prev);
@@ -1923,7 +1923,7 @@ impl<'a> StrSlice<'a> for &'a str {
 
     #[inline]
     fn utf16_units(&self) -> Utf16CodeUnits<'a> {
-        Utf16CodeUnits{ chars: self.chars(), extra: 0}
+        Utf16CodeUnits{ chars=self.chars(), extra=0}
     }
 }
 

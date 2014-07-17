@@ -105,14 +105,14 @@ impl Method {
                provided_source: Option<ast::DefId>)
                -> Method {
        Method {
-            ident: ident,
-            generics: generics,
-            fty: fty,
-            explicit_self: explicit_self,
-            vis: vis,
-            def_id: def_id,
-            container: container,
-            provided_source: provided_source
+            ident=ident,
+            generics=generics,
+            fty=fty,
+            explicit_self=explicit_self,
+            vis=vis,
+            def_id=def_id,
+            container=container,
+            provided_source=provided_source
         }
     }
 
@@ -672,9 +672,9 @@ mod primitives {
     macro_rules! def_prim_ty(
         ($name:ident, $sty:expr, $id:expr) => (
             pub static $name: t_box_ = t_box_ {
-                sty: $sty,
-                id: $id,
-                flags: 0,
+                sty=$sty,
+                id=$id,
+                flags=0,
             };
         )
     )
@@ -696,15 +696,15 @@ mod primitives {
     def_prim_ty!(TY_F64,    super::ty_float(ast::TyF64),    15)
 
     pub static TY_BOT: t_box_ = t_box_ {
-        sty: super::ty_bot,
-        id: 16,
-        flags: super::has_ty_bot as uint,
+        sty=super::ty_bot,
+        id=16,
+        flags=super::has_ty_bot as uint,
     };
 
     pub static TY_ERR: t_box_ = t_box_ {
-        sty: super::ty_err,
-        id: 17,
-        flags: super::has_ty_err as uint,
+        sty=super::ty_err,
+        id=17,
+        flags=super::has_ty_err as uint,
     };
 
     pub static LAST_PRIMITIVE_ID: uint = 18;
@@ -976,8 +976,8 @@ pub struct Generics {
 
 impl Generics {
     pub fn empty() -> Generics {
-        Generics { types: VecPerParamSpace::empty(),
-                   regions: VecPerParamSpace::empty() }
+        Generics { types=VecPerParamSpace::empty(),
+                   regions=VecPerParamSpace::empty() }
     }
 
     pub fn has_type_params(&self, space: subst::ParamSpace) -> bool {
@@ -1048,58 +1048,58 @@ pub fn mk_ctxt(s: Session,
                stability: stability::Index)
             -> ctxt {
     ctxt {
-        named_region_map: named_region_map,
-        item_variance_map: RefCell::new(DefIdMap::new()),
-        interner: RefCell::new(FnvHashMap::new()),
-        next_id: Cell::new(primitives::LAST_PRIMITIVE_ID),
-        sess: s,
-        def_map: dm,
-        region_maps: region_maps,
-        node_types: RefCell::new(HashMap::new()),
-        item_substs: RefCell::new(NodeMap::new()),
-        trait_refs: RefCell::new(NodeMap::new()),
-        trait_defs: RefCell::new(DefIdMap::new()),
-        map: map,
-        intrinsic_defs: RefCell::new(DefIdMap::new()),
-        freevars: RefCell::new(freevars),
-        tcache: RefCell::new(DefIdMap::new()),
-        rcache: RefCell::new(HashMap::new()),
-        short_names_cache: RefCell::new(HashMap::new()),
-        needs_unwind_cleanup_cache: RefCell::new(HashMap::new()),
-        tc_cache: RefCell::new(HashMap::new()),
-        ast_ty_to_ty_cache: RefCell::new(NodeMap::new()),
-        enum_var_cache: RefCell::new(DefIdMap::new()),
-        methods: RefCell::new(DefIdMap::new()),
-        trait_method_def_ids: RefCell::new(DefIdMap::new()),
-        trait_methods_cache: RefCell::new(DefIdMap::new()),
-        impl_trait_cache: RefCell::new(DefIdMap::new()),
-        ty_param_defs: RefCell::new(NodeMap::new()),
-        adjustments: RefCell::new(NodeMap::new()),
-        normalized_cache: RefCell::new(HashMap::new()),
-        lang_items: lang_items,
-        provided_method_sources: RefCell::new(DefIdMap::new()),
-        supertraits: RefCell::new(DefIdMap::new()),
-        superstructs: RefCell::new(DefIdMap::new()),
-        struct_fields: RefCell::new(DefIdMap::new()),
-        destructor_for_type: RefCell::new(DefIdMap::new()),
-        destructors: RefCell::new(DefIdSet::new()),
-        trait_impls: RefCell::new(DefIdMap::new()),
-        inherent_impls: RefCell::new(DefIdMap::new()),
-        impl_methods: RefCell::new(DefIdMap::new()),
-        used_unsafe: RefCell::new(NodeSet::new()),
-        used_mut_nodes: RefCell::new(NodeSet::new()),
-        impl_vtables: RefCell::new(DefIdMap::new()),
-        populated_external_types: RefCell::new(DefIdSet::new()),
-        populated_external_traits: RefCell::new(DefIdSet::new()),
-        upvar_borrow_map: RefCell::new(HashMap::new()),
-        extern_const_statics: RefCell::new(DefIdMap::new()),
-        extern_const_variants: RefCell::new(DefIdMap::new()),
-        method_map: RefCell::new(FnvHashMap::new()),
-        vtable_map: RefCell::new(FnvHashMap::new()),
-        dependency_formats: RefCell::new(HashMap::new()),
-        node_lint_levels: RefCell::new(HashMap::new()),
-        transmute_restrictions: RefCell::new(Vec::new()),
-        stability: RefCell::new(stability)
+        named_region_map=named_region_map,
+        item_variance_map=RefCell::new(DefIdMap::new()),
+        interner=RefCell::new(FnvHashMap::new()),
+        next_id=Cell::new(primitives::LAST_PRIMITIVE_ID),
+        sess=s,
+        def_map=dm,
+        region_maps=region_maps,
+        node_types=RefCell::new(HashMap::new()),
+        item_substs=RefCell::new(NodeMap::new()),
+        trait_refs=RefCell::new(NodeMap::new()),
+        trait_defs=RefCell::new(DefIdMap::new()),
+        map=map,
+        intrinsic_defs=RefCell::new(DefIdMap::new()),
+        freevars=RefCell::new(freevars),
+        tcache=RefCell::new(DefIdMap::new()),
+        rcache=RefCell::new(HashMap::new()),
+        short_names_cache=RefCell::new(HashMap::new()),
+        needs_unwind_cleanup_cache=RefCell::new(HashMap::new()),
+        tc_cache=RefCell::new(HashMap::new()),
+        ast_ty_to_ty_cache=RefCell::new(NodeMap::new()),
+        enum_var_cache=RefCell::new(DefIdMap::new()),
+        methods=RefCell::new(DefIdMap::new()),
+        trait_method_def_ids=RefCell::new(DefIdMap::new()),
+        trait_methods_cache=RefCell::new(DefIdMap::new()),
+        impl_trait_cache=RefCell::new(DefIdMap::new()),
+        ty_param_defs=RefCell::new(NodeMap::new()),
+        adjustments=RefCell::new(NodeMap::new()),
+        normalized_cache=RefCell::new(HashMap::new()),
+        lang_items=lang_items,
+        provided_method_sources=RefCell::new(DefIdMap::new()),
+        supertraits=RefCell::new(DefIdMap::new()),
+        superstructs=RefCell::new(DefIdMap::new()),
+        struct_fields=RefCell::new(DefIdMap::new()),
+        destructor_for_type=RefCell::new(DefIdMap::new()),
+        destructors=RefCell::new(DefIdSet::new()),
+        trait_impls=RefCell::new(DefIdMap::new()),
+        inherent_impls=RefCell::new(DefIdMap::new()),
+        impl_methods=RefCell::new(DefIdMap::new()),
+        used_unsafe=RefCell::new(NodeSet::new()),
+        used_mut_nodes=RefCell::new(NodeSet::new()),
+        impl_vtables=RefCell::new(DefIdMap::new()),
+        populated_external_types=RefCell::new(DefIdSet::new()),
+        populated_external_traits=RefCell::new(DefIdSet::new()),
+        upvar_borrow_map=RefCell::new(HashMap::new()),
+        extern_const_statics=RefCell::new(DefIdMap::new()),
+        extern_const_variants=RefCell::new(DefIdMap::new()),
+        method_map=RefCell::new(FnvHashMap::new()),
+        vtable_map=RefCell::new(FnvHashMap::new()),
+        dependency_formats=RefCell::new(HashMap::new()),
+        node_lint_levels=RefCell::new(HashMap::new()),
+        transmute_restrictions=RefCell::new(Vec::new()),
+        stability=RefCell::new(stability)
     }
 }
 
@@ -1121,7 +1121,7 @@ pub fn mk_t(cx: &ctxt, st: sty) -> t {
         _ => {}
     };
 
-    let key = intern_key { sty: &st };
+    let key = intern_key { sty=&st };
 
     match cx.interner.borrow().find(&key) {
         Some(t) => unsafe { return mem::transmute(&t.sty); },
@@ -1211,15 +1211,15 @@ pub fn mk_t(cx: &ctxt, st: sty) -> t {
     }
 
     let t = box t_box_ {
-        sty: st,
-        id: cx.next_id.get(),
-        flags: flags,
+        sty=st,
+        id=cx.next_id.get(),
+        flags=flags,
     };
 
     let sty_ptr = &t.sty as *const sty;
 
     let key = intern_key {
-        sty: sty_ptr,
+        sty=sty_ptr,
     };
 
     cx.interner.borrow_mut().insert(key, t);
@@ -1323,8 +1323,8 @@ pub fn mk_str(cx: &ctxt) -> t {
 pub fn mk_str_slice(cx: &ctxt, r: Region, m: ast::Mutability) -> t {
     mk_rptr(cx, r,
             mt {
-                ty: mk_t(cx, ty_str),
-                mutbl: m
+                ty=mk_t(cx, ty_str),
+                mutbl=m
             })
 }
 
@@ -1342,22 +1342,22 @@ pub fn mk_ptr(cx: &ctxt, tm: mt) -> t { mk_t(cx, ty_ptr(tm)) }
 pub fn mk_rptr(cx: &ctxt, r: Region, tm: mt) -> t { mk_t(cx, ty_rptr(r, tm)) }
 
 pub fn mk_mut_rptr(cx: &ctxt, r: Region, ty: t) -> t {
-    mk_rptr(cx, r, mt {ty: ty, mutbl: ast::MutMutable})
+    mk_rptr(cx, r, mt {ty=ty, mutbl=ast::MutMutable})
 }
 pub fn mk_imm_rptr(cx: &ctxt, r: Region, ty: t) -> t {
-    mk_rptr(cx, r, mt {ty: ty, mutbl: ast::MutImmutable})
+    mk_rptr(cx, r, mt {ty=ty, mutbl=ast::MutImmutable})
 }
 
 pub fn mk_mut_ptr(cx: &ctxt, ty: t) -> t {
-    mk_ptr(cx, mt {ty: ty, mutbl: ast::MutMutable})
+    mk_ptr(cx, mt {ty=ty, mutbl=ast::MutMutable})
 }
 
 pub fn mk_imm_ptr(cx: &ctxt, ty: t) -> t {
-    mk_ptr(cx, mt {ty: ty, mutbl: ast::MutImmutable})
+    mk_ptr(cx, mt {ty=ty, mutbl=ast::MutImmutable})
 }
 
 pub fn mk_nil_ptr(cx: &ctxt) -> t {
-    mk_ptr(cx, mt {ty: mk_nil(), mutbl: ast::MutImmutable})
+    mk_ptr(cx, mt {ty=mk_nil(), mutbl=ast::MutImmutable})
 }
 
 pub fn mk_vec(cx: &ctxt, tm: mt, sz: Option<uint>) -> t {
@@ -1367,8 +1367,8 @@ pub fn mk_vec(cx: &ctxt, tm: mt, sz: Option<uint>) -> t {
 pub fn mk_slice(cx: &ctxt, r: Region, tm: mt) -> t {
     mk_rptr(cx, r,
             mt {
-                ty: mk_vec(cx, tm, None),
-                mutbl: tm.mutbl
+                ty=mk_vec(cx, tm, None),
+                mutbl=tm.mutbl
             })
 }
 
@@ -1389,13 +1389,13 @@ pub fn mk_ctor_fn(cx: &ctxt,
     let input_args = input_tys.iter().map(|t| *t).collect();
     mk_bare_fn(cx,
                BareFnTy {
-                   fn_style: ast::NormalFn,
-                   abi: abi::Rust,
-                   sig: FnSig {
-                    binder_id: binder_id,
-                    inputs: input_args,
-                    output: output,
-                    variadic: false
+                   fn_style=ast::NormalFn,
+                   abi=abi::Rust,
+                   sig=FnSig {
+                    binder_id=binder_id,
+                    inputs=input_args,
+                    output=output,
+                    variadic=false
                    }
                 })
 }
@@ -1408,9 +1408,9 @@ pub fn mk_trait(cx: &ctxt,
              -> t {
     // take a copy of substs so that we own the vectors inside
     let inner = box TyTrait {
-        def_id: did,
-        substs: substs,
-        bounds: bounds
+        def_id=did,
+        substs=substs,
+        bounds=bounds
     };
     mk_t(cx, ty_trait(inner))
 }
@@ -1429,7 +1429,7 @@ pub fn mk_float_var(cx: &ctxt, v: FloatVid) -> t { mk_infer(cx, FloatVar(v)) }
 pub fn mk_infer(cx: &ctxt, it: InferTy) -> t { mk_t(cx, ty_infer(it)) }
 
 pub fn mk_param(cx: &ctxt, space: subst::ParamSpace, n: uint, k: DefId) -> t {
-    mk_t(cx, ty_param(ParamTy { space: space, idx: n, def_id: k }))
+    mk_t(cx, ty_param(ParamTy { space=space, idx=n, def_id=k }))
 }
 
 pub fn mk_self_type(cx: &ctxt, did: ast::DefId) -> t {
@@ -1476,7 +1476,7 @@ pub fn maybe_walk_ty(ty: t, f: |t| -> bool) {
 
 // Folds types from the bottom up.
 pub fn fold_ty(cx: &ctxt, t0: t, fldop: |t| -> t) -> t {
-    let mut f = ty_fold::BottomUpFolder {tcx: cx, fldop: fldop};
+    let mut f = ty_fold::BottomUpFolder {tcx=cx, fldop=fldop};
     f.fold_ty(t0)
 }
 
@@ -1489,7 +1489,7 @@ pub fn walk_regions_and_ty(cx: &ctxt, ty: t, fldr: |r: Region|, fldt: |t: t|)
 
 impl ItemSubsts {
     pub fn empty() -> ItemSubsts {
-        ItemSubsts { substs: Substs::empty() }
+        ItemSubsts { substs=Substs::empty() }
     }
 
     pub fn is_noop(&self) -> bool {
@@ -1546,7 +1546,7 @@ fn type_is_slice(ty: t) -> bool {
 pub fn type_is_vec(ty: t) -> bool {
     match get(ty).sty {
         ty_vec(..) => true,
-        ty_ptr(mt{ty: t, ..}) | ty_rptr(_, mt{ty: t, ..}) |
+        ty_ptr(mt{ty=t, ..}) | ty_rptr(_, mt{ty=t, ..}) |
         ty_box(t) | ty_uniq(t) => match get(t).sty {
             ty_vec(_, None) => true,
             _ => false
@@ -1573,7 +1573,7 @@ pub fn type_is_simd(cx: &ctxt, ty: t) -> bool {
 pub fn sequence_element_type(cx: &ctxt, ty: t) -> t {
     match get(ty).sty {
         ty_vec(mt, _) => mt.ty,
-        ty_ptr(mt{ty: t, ..}) | ty_rptr(_, mt{ty: t, ..}) |
+        ty_ptr(mt{ty=t, ..}) | ty_rptr(_, mt{ty=t, ..}) |
         ty_box(t) | ty_uniq(t) => match get(t).sty {
             ty_vec(mt, None) => mt.ty,
             ty_str => mk_mach_uint(ast::TyU8),
@@ -1758,7 +1758,7 @@ macro_rules! def_type_content_sets(
     (mod $mname:ident { $($name:ident = $bits:expr),+ }) => {
         mod $mname {
             use middle::ty::TypeContents;
-            $(pub static $name: TypeContents = TypeContents { bits: $bits };)+
+            $(pub static $name: TypeContents = TypeContents { bits=$bits };)+
         }
     }
 )
@@ -1937,19 +1937,19 @@ impl TypeContents {
 
 impl ops::BitOr<TypeContents,TypeContents> for TypeContents {
     fn bitor(&self, other: &TypeContents) -> TypeContents {
-        TypeContents {bits: self.bits | other.bits}
+        TypeContents {bits=self.bits | other.bits}
     }
 }
 
 impl ops::BitAnd<TypeContents,TypeContents> for TypeContents {
     fn bitand(&self, other: &TypeContents) -> TypeContents {
-        TypeContents {bits: self.bits & other.bits}
+        TypeContents {bits=self.bits & other.bits}
     }
 }
 
 impl ops::Sub<TypeContents,TypeContents> for TypeContents {
     fn sub(&self, other: &TypeContents) -> TypeContents {
-        TypeContents {bits: self.bits & !other.bits}
+        TypeContents {bits=self.bits & !other.bits}
     }
 }
 
@@ -2547,8 +2547,8 @@ pub fn deref(t: t, explicit: bool) -> Option<mt> {
             // Don't deref ~[] etc., might need to generalise this to all DST.
             ty_vec(_, None) | ty_str | ty_trait(..) => None,
             _ => Some(mt {
-                ty: typ,
-                mutbl: ast::MutImmutable,
+                ty=typ,
+                mutbl=ast::MutImmutable,
             }),
         },
         ty_rptr(_, mt) => match get(mt.ty).sty {
@@ -2565,7 +2565,7 @@ pub fn deref(t: t, explicit: bool) -> Option<mt> {
 pub fn index(t: t) -> Option<mt> {
     match get(t).sty {
         ty_vec(mt, Some(_)) => Some(mt),
-        ty_ptr(mt{ty: t, ..}) | ty_rptr(_, mt{ty: t, ..}) |
+        ty_ptr(mt{ty=t, ..}) | ty_rptr(_, mt{ty=t, ..}) |
         ty_box(t) | ty_uniq(t) => match get(t).sty {
             ty_vec(mt, None) => Some(mt),
             _ => None,
@@ -2580,10 +2580,10 @@ pub fn index(t: t) -> Option<mt> {
 pub fn array_element_ty(t: t) -> Option<mt> {
     match get(t).sty {
         ty_vec(mt, Some(_)) => Some(mt),
-        ty_ptr(mt{ty: t, ..}) | ty_rptr(_, mt{ty: t, ..}) |
+        ty_ptr(mt{ty=t, ..}) | ty_rptr(_, mt{ty=t, ..}) |
         ty_box(t) | ty_uniq(t) => match get(t).sty {
             ty_vec(mt, None) => Some(mt),
-            ty_str => Some(mt {ty: mk_u8(), mutbl: ast::MutImmutable}),
+            ty_str => Some(mt {ty=mk_u8(), mutbl=ast::MutImmutable}),
             _ => None,
         },
         _ => None
@@ -2701,8 +2701,8 @@ pub fn ty_region(tcx: &ctxt,
 pub fn free_region_from_def(free_id: ast::NodeId, def: &RegionParameterDef)
     -> ty::Region
 {
-    ty::ReFree(ty::FreeRegion { scope_id: free_id,
-                                bound_region: ty::BrNamed(def.def_id,
+    ty::ReFree(ty::FreeRegion { scope_id=free_id,
+                                bound_region=ty::BrNamed(def.def_id,
                                                           def.name) })
 }
 
@@ -2807,11 +2807,11 @@ pub fn adjust_ty(cx: &ctxt,
                         ty::ty_bare_fn(ref b) => {
                             ty::mk_closure(
                                 cx,
-                                ty::ClosureTy {fn_style: b.fn_style,
-                                               onceness: ast::Many,
-                                               store: store,
-                                               bounds: ty::all_builtin_bounds(),
-                                               sig: b.sig.clone()})
+                                ty::ClosureTy {fn_style=b.fn_style,
+                                               onceness=ast::Many,
+                                               store=store,
+                                               bounds=ty::all_builtin_bounds(),
+                                               sig=b.sig.clone()})
                         }
                         ref b => {
                             cx.sess.bug(
@@ -2855,8 +2855,8 @@ pub fn adjust_ty(cx: &ctxt,
                             match *autoref {
                                 AutoPtr(r, m) => {
                                     mk_rptr(cx, r, mt {
-                                        ty: adjusted_ty,
-                                        mutbl: m
+                                        ty=adjusted_ty,
+                                        mutbl=m
                                     })
                                 }
 
@@ -2871,13 +2871,13 @@ pub fn adjust_ty(cx: &ctxt,
                                                              m,
                                                              adjusted_ty);
                                     mk_rptr(cx, r, mt {
-                                        ty: adjusted_ty,
-                                        mutbl: ast::MutImmutable
+                                        ty=adjusted_ty,
+                                        mutbl=ast::MutImmutable
                                     })
                                 }
 
                                 AutoUnsafe(m) => {
-                                    mk_ptr(cx, mt {ty: adjusted_ty, mutbl: m})
+                                    mk_ptr(cx, mt {ty=adjusted_ty, mutbl=m})
                                 }
 
                                 AutoBorrowObj(r, m) => {
@@ -2897,8 +2897,8 @@ pub fn adjust_ty(cx: &ctxt,
                         }
                         RegionTraitStore(r, m) => {
                             mk_rptr(cx, r, mt {
-                                ty: tr,
-                                mutbl: m
+                                ty=tr,
+                                mutbl=m
                             })
                         }
                     }
@@ -2914,9 +2914,9 @@ pub fn adjust_ty(cx: &ctxt,
                   m: ast::Mutability,
                   ty: ty::t) -> ty::t {
         match get(ty).sty {
-            ty_uniq(t) | ty_ptr(mt{ty: t, ..}) |
-            ty_rptr(_, mt{ty: t, ..}) => match get(t).sty {
-                ty::ty_vec(mt, None) => ty::mk_slice(cx, r, ty::mt {ty: mt.ty, mutbl: m}),
+            ty_uniq(t) | ty_ptr(mt{ty=t, ..}) |
+            ty_rptr(_, mt{ty=t, ..}) => match get(t).sty {
+                ty::ty_vec(mt, None) => ty::mk_slice(cx, r, ty::mt {ty=mt.ty, mutbl=m}),
                 ty::ty_str => ty::mk_str_slice(cx, r, m),
                 _ => {
                     cx.sess.span_bug(
@@ -2925,7 +2925,7 @@ pub fn adjust_ty(cx: &ctxt,
                                 get(ty).sty).as_slice());
                 }
             },
-            ty_vec(mt, Some(_)) => ty::mk_slice(cx, r, ty::mt {ty: mt.ty, mutbl: m}),
+            ty_vec(mt, Some(_)) => ty::mk_slice(cx, r, ty::mt {ty=mt.ty, mutbl=m}),
 
             ref s => {
                 cx.sess.span_bug(
@@ -2939,11 +2939,11 @@ pub fn adjust_ty(cx: &ctxt,
     fn borrow_obj(cx: &ctxt, span: Span, r: Region,
                   m: ast::Mutability, ty: ty::t) -> ty::t {
         match get(ty).sty {
-            ty_uniq(t) | ty_rptr(_, mt{ty: t, ..}) => match get(t).sty {
+            ty_uniq(t) | ty_rptr(_, mt{ty=t, ..}) => match get(t).sty {
                 ty_trait(box ty::TyTrait {def_id, ref substs, bounds, .. }) => {
                     mk_rptr(cx, r, mt {
-                        ty: ty::mk_trait(cx, def_id, substs.clone(), bounds),
-                        mutbl: m
+                        ty=ty::mk_trait(cx, def_id, substs.clone(), bounds),
+                        mutbl=m
                     })
                 }
                 _ => {
@@ -2981,10 +2981,10 @@ pub fn method_call_type_param_defs(tcx: &ctxt, origin: typeck::MethodOrigin)
         typeck::MethodStatic(did) => {
             ty::lookup_item_type(tcx, did).generics.types.clone()
         }
-        typeck::MethodParam(typeck::MethodParam{trait_id: trt_id,
-                                                method_num: n_mth, ..}) |
-        typeck::MethodObject(typeck::MethodObject{trait_id: trt_id,
-                                                  method_num: n_mth, ..}) => {
+        typeck::MethodParam(typeck::MethodParam{trait_id=trt_id,
+                                                method_num=n_mth, ..}) |
+        typeck::MethodObject(typeck::MethodObject{trait_id=trt_id,
+                                                  method_num=n_mth, ..}) => {
             ty::trait_method(tcx, trt_id, n_mth).generics.types.clone()
         }
     }
@@ -3606,7 +3606,7 @@ pub fn try_add_builtin_trait(tcx: &ctxt,
 
 pub fn ty_to_def_id(ty: t) -> Option<ast::DefId> {
     match get(ty).sty {
-        ty_trait(box TyTrait { def_id: id, .. }) |
+        ty_trait(box TyTrait { def_id=id, .. }) |
         ty_struct(id, _) |
         ty_enum(id, _) => Some(id),
         _ => None
@@ -3644,13 +3644,13 @@ impl VariantInfo {
                 };
 
                 return VariantInfo {
-                    args: arg_tys,
-                    arg_names: None,
-                    ctor_ty: ctor_ty,
-                    name: ast_variant.node.name,
-                    id: ast_util::local_def(ast_variant.node.id),
-                    disr_val: discriminant,
-                    vis: ast_variant.node.vis
+                    args=arg_tys,
+                    arg_names=None,
+                    ctor_ty=ctor_ty,
+                    name=ast_variant.node.name,
+                    id=ast_util::local_def(ast_variant.node.id),
+                    disr_val=discriminant,
+                    vis=ast_variant.node.vis
                 };
             },
             ast::StructVariantKind(ref struct_def) => {
@@ -3669,13 +3669,13 @@ impl VariantInfo {
                 }).collect();
 
                 return VariantInfo {
-                    args: arg_tys,
-                    arg_names: Some(arg_names),
-                    ctor_ty: ctor_ty,
-                    name: ast_variant.node.name,
-                    id: ast_util::local_def(ast_variant.node.id),
-                    disr_val: discriminant,
-                    vis: ast_variant.node.vis
+                    args=arg_tys,
+                    arg_names=Some(arg_names),
+                    ctor_ty=ctor_ty,
+                    name=ast_variant.node.name,
+                    id=ast_util::local_def(ast_variant.node.id),
+                    disr_val=discriminant,
+                    vis=ast_variant.node.vis
                 };
             }
         }
@@ -3693,8 +3693,8 @@ pub fn substd_enum_variants(cx: &ctxt,
         let substd_ctor_ty = variant_info.ctor_ty.subst(cx, substs);
 
         Rc::new(VariantInfo {
-            args: substd_args,
-            ctor_ty: substd_ctor_ty,
+            args=substd_args,
+            ctor_ty=substd_ctor_ty,
             ..(**variant_info).clone()
         })
     }).collect()
@@ -4028,10 +4028,10 @@ pub fn struct_fields(cx: &ctxt, did: ast::DefId, substs: &Substs)
     lookup_struct_fields(cx, did).iter().map(|f| {
        field {
             // FIXME #6993: change type of field to Name and get rid of new()
-            ident: ast::Ident::new(f.name),
-            mt: mt {
-                ty: lookup_field_type(cx, did, f.id, substs),
-                mutbl: MutImmutable
+            ident=ast::Ident::new(f.name),
+            mt=mt {
+                ty=lookup_field_type(cx, did, f.id, substs),
+                mutbl=MutImmutable
             }
         }
     }).collect()
@@ -4138,8 +4138,8 @@ pub fn normalize_ty(cx: &ctxt, t: t) -> t {
         fn fold_substs(&mut self,
                        substs: &subst::Substs)
                        -> subst::Substs {
-            subst::Substs { regions: subst::ErasedRegions,
-                            types: substs.types.fold_with(self) }
+            subst::Substs { regions=subst::ErasedRegions,
+                            types=substs.types.fold_with(self) }
         }
 
         fn fold_sig(&mut self,
@@ -4148,10 +4148,10 @@ pub fn normalize_ty(cx: &ctxt, t: t) -> t {
             // The binder-id is only relevant to bound regions, which
             // are erased at trans time.
             ty::FnSig {
-                binder_id: ast::DUMMY_NODE_ID,
-                inputs: sig.inputs.fold_with(self),
-                output: sig.output.fold_with(self),
-                variadic: sig.variadic,
+                binder_id=ast::DUMMY_NODE_ID,
+                inputs=sig.inputs.fold_with(self),
+                output=sig.output.fold_with(self),
+                variadic=sig.variadic,
             }
         }
     }
@@ -4294,10 +4294,10 @@ pub fn visitor_object_ty(tcx: &ctxt,
         Err(s) => { return Err(s); }
     };
     let substs = Substs::empty();
-    let trait_ref = Rc::new(TraitRef { def_id: trait_lang_item, substs: substs });
+    let trait_ref = Rc::new(TraitRef { def_id=trait_lang_item, substs=substs });
     Ok((trait_ref.clone(),
-        mk_rptr(tcx, region, mt {mutbl: ast::MutMutable,
-                                 ty: mk_trait(tcx,
+        mk_rptr(tcx, region, mt {mutbl=ast::MutMutable,
+                                 ty=mk_trait(tcx,
                                               trait_ref.def_id,
                                               trait_ref.substs.clone(),
                                               empty_builtin_bounds()) })))
@@ -4594,7 +4594,7 @@ pub fn hash_crate_independent(tcx: &ctxt, t: t, svh: &Svh) -> u64 {
                     }
                 }
             }
-            ty_trait(box ty::TyTrait { def_id: d, bounds, .. }) => {
+            ty_trait(box ty::TyTrait { def_id=d, bounds, .. }) => {
                 byte!(17);
                 did(&mut state, d);
                 hash!(bounds);
@@ -4658,8 +4658,8 @@ pub fn construct_parameter_environment(
     }
 
     let free_substs = Substs {
-        types: types,
-        regions: subst::NonerasedRegions(regions)
+        types=types,
+        regions=subst::NonerasedRegions(regions)
     };
 
     //
@@ -4680,8 +4680,8 @@ pub fn construct_parameter_environment(
            bounds.repr(tcx));
 
     return ty::ParameterEnvironment {
-        free_substs: free_substs,
-        bounds: bounds
+        free_substs=free_substs,
+        bounds=bounds
     };
 
     fn push_region_params(regions: &mut VecPerParamSpace<ty::Region>,

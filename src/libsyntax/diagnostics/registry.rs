@@ -16,7 +16,7 @@ pub struct Registry {
 
 impl Registry {
     pub fn new(descriptions: &[(&'static str, &'static str)]) -> Registry {
-        Registry { descriptions: descriptions.iter().map(|&tuple| tuple).collect() }
+        Registry { descriptions=descriptions.iter().map(|&tuple| tuple).collect() }
     }
 
     pub fn find_description(&self, code: &str) -> Option<&'static str> {

@@ -56,7 +56,7 @@ pub struct TcpStream {
 
 impl TcpStream {
     fn new(s: Box<RtioTcpStream + Send>) -> TcpStream {
-        TcpStream { obj: s }
+        TcpStream { obj=s }
     }
 
     /// Open a TCP connection to a remote host by hostname or IP address.
@@ -69,12 +69,12 @@ impl TcpStream {
             None => try!(get_host_addresses(host))
         };
         let mut err = IoError {
-            kind: ConnectionFailed,
-            desc: "no addresses found for hostname",
-            detail: None
+            kind=ConnectionFailed,
+            desc="no addresses found for hostname",
+            detail=None
         };
         for addr in addresses.iter() {
-            let addr = rtio::SocketAddr{ ip: super::to_rtio(*addr), port: port };
+            let addr = rtio::SocketAddr{ ip=super::to_rtio(*addr), port=port };
             let result = LocalIo::maybe_raise(|io| {
                 io.tcp_connect(addr, None).map(TcpStream::new)
             });
@@ -103,7 +103,7 @@ impl TcpStream {
     pub fn connect_timeout(addr: SocketAddr,
                            timeout_ms: u64) -> IoResult<TcpStream> {
         let SocketAddr { ip, port } = addr;
-        let addr = rtio::SocketAddr { ip: super::to_rtio(ip), port: port };
+        let addr = rtio::SocketAddr { ip=super::to_rtio(ip), port=port };
         LocalIo::maybe_raise(|io| {
             io.tcp_connect(addr, Some(timeout_ms)).map(TcpStream::new)
         }).map_err(IoError::from_rtio_error)
@@ -113,7 +113,7 @@ impl TcpStream {
     pub fn peer_name(&mut self) -> IoResult<SocketAddr> {
         match self.obj.peer_name() {
             Ok(rtio::SocketAddr { ip, port }) => {
-                Ok(SocketAddr { ip: super::from_rtio(ip), port: port })
+                Ok(SocketAddr { ip=super::from_rtio(ip), port=port })
             }
             Err(e) => Err(IoError::from_rtio_error(e)),
         }
@@ -123,7 +123,7 @@ impl TcpStream {
     pub fn socket_name(&mut self) -> IoResult<SocketAddr> {
         match self.obj.socket_name() {
             Ok(rtio::SocketAddr { ip, port }) => {
-                Ok(SocketAddr { ip: super::from_rtio(ip), port: port })
+                Ok(SocketAddr { ip=super::from_rtio(ip), port=port })
             }
             Err(e) => Err(IoError::from_rtio_error(e)),
         }
@@ -273,7 +273,7 @@ impl Clone for TcpStream {
     /// Instead, the first read will receive the first packet received, and the
     /// second read will receive the second packet.
     fn clone(&self) -> TcpStream {
-        TcpStream { obj: self.obj.clone() }
+        TcpStream { obj=self.obj.clone() }
     }
 }
 
@@ -341,18 +341,18 @@ impl TcpListener {
         match FromStr::from_str(addr) {
             Some(ip) => {
                 let addr = rtio::SocketAddr{
-                    ip: super::to_rtio(ip),
-                    port: port,
+                    ip=super::to_rtio(ip),
+                    port=port,
                 };
                 LocalIo::maybe_raise(|io| {
-                    io.tcp_bind(addr).map(|l| TcpListener { obj: l })
+                    io.tcp_bind(addr).map(|l| TcpListener { obj=l })
                 }).map_err(IoError::from_rtio_error)
             }
             None => {
                 Err(IoError{
-                    kind: InvalidInput,
-                    desc: "invalid IP address specified",
-                    detail: None
+                    kind=InvalidInput,
+                    desc="invalid IP address specified",
+                    detail=None
                 })
             }
         }
@@ -362,7 +362,7 @@ impl TcpListener {
     pub fn socket_name(&mut self) -> IoResult<SocketAddr> {
         match self.obj.socket_name() {
             Ok(rtio::SocketAddr { ip, port }) => {
-                Ok(SocketAddr { ip: super::from_rtio(ip), port: port })
+                Ok(SocketAddr { ip=super::from_rtio(ip), port=port })
             }
             Err(e) => Err(IoError::from_rtio_error(e)),
         }
@@ -372,7 +372,7 @@ impl TcpListener {
 impl Listener<TcpStream, TcpAcceptor> for TcpListener {
     fn listen(self) -> IoResult<TcpAcceptor> {
         match self.obj.listen() {
-            Ok(acceptor) => Ok(TcpAcceptor { obj: acceptor }),
+            Ok(acceptor) => Ok(TcpAcceptor { obj=acceptor }),
             Err(e) => Err(IoError::from_rtio_error(e)),
         }
     }
@@ -1260,8 +1260,8 @@ mod test {
         s.set_timeout(Some(20));
         for i in range(0i, 1001) {
             match s.write([0, .. 128 * 1024]) {
-                Ok(()) | Err(IoError { kind: ShortWrite(..), .. }) => {},
-                Err(IoError { kind: TimedOut, .. }) => break,
+                Ok(()) | Err(IoError { kind=ShortWrite(..), .. }) => {},
+                Err(IoError { kind=TimedOut, .. }) => break,
                 Err(e) => fail!("{}", e),
            }
            if i == 1000 { fail!("should have filled up?!"); }
@@ -1320,8 +1320,8 @@ mod test {
         s.set_write_timeout(Some(20));
         for i in range(0i, 1001) {
             match s.write([0, .. 128 * 1024]) {
-                Ok(()) | Err(IoError { kind: ShortWrite(..), .. }) => {},
-                Err(IoError { kind: TimedOut, .. }) => break,
+                Ok(()) | Err(IoError { kind=ShortWrite(..), .. }) => {},
+                Err(IoError { kind=TimedOut, .. }) => break,
                 Err(e) => fail!("{}", e),
            }
            if i == 1000 { fail!("should have filled up?!"); }

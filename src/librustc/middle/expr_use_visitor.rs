@@ -204,9 +204,9 @@ impl<'d,'t,TYPER:mc::Typer> ExprUseVisitor<'d,'t,TYPER> {
     pub fn new(delegate: &'d mut Delegate,
                typer: &'t TYPER)
                -> ExprUseVisitor<'d,'t,TYPER> {
-        ExprUseVisitor { typer: typer,
-                         mc: mc::MemCategorizationContext::new(typer),
-                         delegate: delegate }
+        ExprUseVisitor { typer=typer,
+                         mc=mc::MemCategorizationContext::new(typer),
+                         delegate=delegate }
     }
 
     pub fn walk_fn(&mut self,
@@ -651,8 +651,8 @@ impl<'d,'t,TYPER:mc::Typer> ExprUseVisitor<'d,'t,TYPER> {
                         self.delegate_consume(expr.id, expr.span, cmt_unadjusted);
                     }
                     ty::AutoDerefRef(ty::AutoDerefRef {
-                        autoref: ref opt_autoref,
-                        autoderefs: n
+                        autoref=ref opt_autoref,
+                        autoderefs=n
                     }) => {
                         self.walk_autoderefs(expr, n);
 
@@ -905,8 +905,8 @@ impl<'d,'t,TYPER:mc::Typer> ExprUseVisitor<'d,'t,TYPER> {
 
             // Lookup the kind of borrow the callee requires, as
             // inferred by regionbk
-            let upvar_id = ty::UpvarId { var_id: id_var,
-                                         closure_expr_id: closure_expr.id };
+            let upvar_id = ty::UpvarId { var_id=id_var,
+                                         closure_expr_id=closure_expr.id };
             let upvar_borrow = self.tcx().upvar_borrow_map.borrow()
                                    .get_copy(&upvar_id);
 

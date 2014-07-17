@@ -40,7 +40,7 @@ impl Visitor<()> for RegistrarFinder {
 /// Find the function marked with `#[plugin_registrar]`, if any.
 pub fn find_plugin_registrar(diagnostic: &diagnostic::SpanHandler,
                              krate: &ast::Crate) -> Option<ast::NodeId> {
-    let mut finder = RegistrarFinder { registrars: Vec::new() };
+    let mut finder = RegistrarFinder { registrars=Vec::new() };
     visit::walk_crate(&mut finder, krate, ());
 
     match finder.registrars.len() {

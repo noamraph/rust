@@ -174,20 +174,20 @@ pub fn mk_attr_id() -> AttrId {
 /// Returns an inner attribute with the given value.
 pub fn mk_attr_inner(id: AttrId, item: Gc<MetaItem>) -> Attribute {
     dummy_spanned(Attribute_ {
-        id: id,
-        style: ast::AttrInner,
-        value: item,
-        is_sugared_doc: false,
+        id=id,
+        style=ast::AttrInner,
+        value=item,
+        is_sugared_doc=false,
     })
 }
 
 /// Returns an outer attribute with the given value.
 pub fn mk_attr_outer(id: AttrId, item: Gc<MetaItem>) -> Attribute {
     dummy_spanned(Attribute_ {
-        id: id,
-        style: ast::AttrOuter,
-        value: item,
-        is_sugared_doc: false,
+        id=id,
+        style=ast::AttrOuter,
+        value=item,
+        is_sugared_doc=false,
     })
 }
 
@@ -197,11 +197,11 @@ pub fn mk_sugared_doc_attr(id: AttrId, text: InternedString, lo: BytePos,
     let style = doc_comment_style(text.get());
     let lit = spanned(lo, hi, ast::LitStr(text, ast::CookedStr));
     let attr = Attribute_ {
-        id: id,
-        style: style,
-        value: box(GC) spanned(lo, hi, MetaNameValue(InternedString::new("doc"),
+        id=id,
+        style=style,
+        value=box(GC) spanned(lo, hi, MetaNameValue(InternedString::new("doc"),
                                               lit)),
-        is_sugared_doc: true
+        is_sugared_doc=true
     };
     spanned(lo, hi, attr)
 }
@@ -258,7 +258,7 @@ pub fn sort_meta_items(items: &[Gc<MetaItem>]) -> Vec<Gc<MetaItem>> {
         match m.node {
             MetaList(ref n, ref mis) => {
                 box(GC) Spanned {
-                    node: MetaList((*n).clone(),
+                    node=MetaList((*n).clone(),
                                    sort_meta_items(mis.as_slice())),
                     .. /*bad*/ (*m).clone()
                 }
@@ -389,8 +389,8 @@ pub fn find_stability_generic<'a,
         };
 
         return Some((Stability {
-                level: level,
-                text: attr.value_str()
+                level=level,
+                text=attr.value_str()
             }, attr));
     }
     None

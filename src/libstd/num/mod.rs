@@ -715,13 +715,13 @@ mod tests {
     }
 
     impl FromPrimitive for Value {
-        fn from_i64(n: i64) -> Option<Value> { Some(Value { x: n as int }) }
-        fn from_u64(n: u64) -> Option<Value> { Some(Value { x: n as int }) }
+        fn from_i64(n: i64) -> Option<Value> { Some(Value { x=n as int }) }
+        fn from_u64(n: u64) -> Option<Value> { Some(Value { x=n as int }) }
     }
 
     #[test]
     fn test_to_primitive() {
-        let value = Value { x: 5 };
+        let value = Value { x=5 };
         assert_eq!(value.to_int(),  Some(5));
         assert_eq!(value.to_i8(),   Some(5));
         assert_eq!(value.to_i16(),  Some(5));
@@ -738,18 +738,18 @@ mod tests {
 
     #[test]
     fn test_from_primitive() {
-        assert_eq!(from_int(5),    Some(Value { x: 5 }));
-        assert_eq!(from_i8(5),     Some(Value { x: 5 }));
-        assert_eq!(from_i16(5),    Some(Value { x: 5 }));
-        assert_eq!(from_i32(5),    Some(Value { x: 5 }));
-        assert_eq!(from_i64(5),    Some(Value { x: 5 }));
-        assert_eq!(from_uint(5),   Some(Value { x: 5 }));
-        assert_eq!(from_u8(5),     Some(Value { x: 5 }));
-        assert_eq!(from_u16(5),    Some(Value { x: 5 }));
-        assert_eq!(from_u32(5),    Some(Value { x: 5 }));
-        assert_eq!(from_u64(5),    Some(Value { x: 5 }));
-        assert_eq!(from_f32(5f32), Some(Value { x: 5 }));
-        assert_eq!(from_f64(5f64), Some(Value { x: 5 }));
+        assert_eq!(from_int(5),    Some(Value { x=5 }));
+        assert_eq!(from_i8(5),     Some(Value { x=5 }));
+        assert_eq!(from_i16(5),    Some(Value { x=5 }));
+        assert_eq!(from_i32(5),    Some(Value { x=5 }));
+        assert_eq!(from_i64(5),    Some(Value { x=5 }));
+        assert_eq!(from_uint(5),   Some(Value { x=5 }));
+        assert_eq!(from_u8(5),     Some(Value { x=5 }));
+        assert_eq!(from_u16(5),    Some(Value { x=5 }));
+        assert_eq!(from_u32(5),    Some(Value { x=5 }));
+        assert_eq!(from_u64(5),    Some(Value { x=5 }));
+        assert_eq!(from_f32(5f32), Some(Value { x=5 }));
+        assert_eq!(from_f64(5f64), Some(Value { x=5 }));
     }
 
     #[test]

@@ -80,12 +80,12 @@ pub fn next_test_unix() -> Path {
 
 /// Get a unique IPv4 localhost:port pair starting at 9600
 pub fn next_test_ip4() -> SocketAddr {
-    SocketAddr { ip: Ipv4Addr(127, 0, 0, 1), port: next_test_port() }
+    SocketAddr { ip=Ipv4Addr(127, 0, 0, 1), port=next_test_port() }
 }
 
 /// Get a unique IPv6 localhost:port pair starting at 9600
 pub fn next_test_ip6() -> SocketAddr {
-    SocketAddr { ip: Ipv6Addr(0, 0, 0, 0, 0, 0, 0, 1), port: next_test_port() }
+    SocketAddr { ip=Ipv6Addr(0, 0, 0, 0, 0, 0, 0, 1), port=next_test_port() }
 }
 
 /*
@@ -179,7 +179,7 @@ mod darwin_fd_limit {
         }
 
         // Fetch the current resource limits
-        let mut rlim = rlimit{rlim_cur: 0, rlim_max: 0};
+        let mut rlim = rlimit{rlim_cur=0, rlim_max=0};
         if getrlimit(RLIMIT_NOFILE, &mut rlim) != 0 {
             let err = last_os_error();
             fail!("raise_fd_limit: error calling getrlimit: {}", err);

@@ -188,12 +188,12 @@ struct Parser<'a> {
 
 pub fn parse(s: &str) -> Result<Ast, Error> {
     Parser {
-        chars: s.chars().collect(),
-        chari: 0,
-        stack: vec!(),
-        flags: FLAG_EMPTY,
-        caps: 0,
-        names: vec!(),
+        chars=s.chars().collect(),
+        chari=0,
+        stack=vec!(),
+        flags=FLAG_EMPTY,
+        caps=0,
+        names=vec!(),
     }.parse()
 }
 
@@ -923,8 +923,8 @@ impl<'a> Parser<'a> {
 
     fn err<T>(&self, msg: &str) -> Result<T, Error> {
         Err(Error {
-            pos: self.chari,
-            msg: msg.to_string(),
+            pos=self.chari,
+            msg=msg.to_string(),
         })
     }
 

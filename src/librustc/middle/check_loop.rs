@@ -25,7 +25,7 @@ struct CheckLoopVisitor<'a> {
 }
 
 pub fn check_crate(sess: &Session, krate: &ast::Crate) {
-    visit::walk_crate(&mut CheckLoopVisitor { sess: sess }, krate, Normal)
+    visit::walk_crate(&mut CheckLoopVisitor { sess=sess }, krate, Normal)
 }
 
 impl<'a> Visitor<Context> for CheckLoopVisitor<'a> {

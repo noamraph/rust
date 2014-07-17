@@ -323,8 +323,8 @@ struct Rib {
 impl Rib {
     fn new(kind: RibKind) -> Rib {
         Rib {
-            bindings: RefCell::new(HashMap::new()),
-            kind: kind
+            bindings=RefCell::new(HashMap::new()),
+            kind=kind
         }
     }
 }
@@ -346,11 +346,11 @@ impl ImportDirective {
            is_public: bool)
            -> ImportDirective {
         ImportDirective {
-            module_path: module_path,
-            subclass: subclass,
-            span: span,
-            id: id,
-            is_public: is_public,
+            module_path=module_path,
+            subclass=subclass,
+            span=span,
+            id=id,
+            is_public=is_public,
         }
     }
 }
@@ -365,8 +365,8 @@ struct Target {
 impl Target {
     fn new(target_module: Rc<Module>, bindings: Rc<NameBindings>) -> Target {
         Target {
-            target_module: target_module,
-            bindings: bindings
+            target_module=target_module,
+            bindings=bindings
         }
     }
 }
@@ -400,12 +400,12 @@ struct ImportResolution {
 impl ImportResolution {
     fn new(id: NodeId, is_public: bool) -> ImportResolution {
         ImportResolution {
-            type_id: id,
-            value_id: id,
-            outstanding_references: 0,
-            value_target: None,
-            type_target: None,
-            is_public: is_public,
+            type_id=id,
+            value_id=id,
+            outstanding_references=0,
+            value_target=None,
+            type_target=None,
+            is_public=is_public,
         }
     }
 
@@ -496,18 +496,18 @@ impl Module {
            is_public: bool)
            -> Module {
         Module {
-            parent_link: parent_link,
-            def_id: Cell::new(def_id),
-            kind: Cell::new(kind),
-            is_public: is_public,
-            children: RefCell::new(HashMap::new()),
-            imports: RefCell::new(Vec::new()),
-            external_module_children: RefCell::new(HashMap::new()),
-            anonymous_children: RefCell::new(NodeMap::new()),
-            import_resolutions: RefCell::new(HashMap::new()),
-            glob_count: Cell::new(0),
-            resolved_import_count: Cell::new(0),
-            populated: Cell::new(!external),
+            parent_link=parent_link,
+            def_id=Cell::new(def_id),
+            kind=Cell::new(kind),
+            is_public=is_public,
+            children=RefCell::new(HashMap::new()),
+            imports=RefCell::new(Vec::new()),
+            external_module_children=RefCell::new(HashMap::new()),
+            anonymous_children=RefCell::new(NodeMap::new()),
+            import_resolutions=RefCell::new(HashMap::new()),
+            glob_count=Cell::new(0),
+            resolved_import_count=Cell::new(0),
+            populated=Cell::new(!external),
         }
     }
 
@@ -550,8 +550,8 @@ enum TraitReferenceType {
 impl NameBindings {
     fn new() -> NameBindings {
         NameBindings {
-            type_def: RefCell::new(None),
-            value_def: RefCell::new(None),
+            type_def=RefCell::new(None),
+            value_def=RefCell::new(None),
         }
     }
 
@@ -570,18 +570,18 @@ impl NameBindings {
         match type_def {
             None => {
                 *self.type_def.borrow_mut() = Some(TypeNsDef {
-                    is_public: is_public,
-                    module_def: Some(module_),
-                    type_def: None,
-                    type_span: Some(sp)
+                    is_public=is_public,
+                    module_def=Some(module_),
+                    type_def=None,
+                    type_span=Some(sp)
                 });
             }
             Some(type_def) => {
                 *self.type_def.borrow_mut() = Some(TypeNsDef {
-                    is_public: is_public,
-                    module_def: Some(module_),
-                    type_span: Some(sp),
-                    type_def: type_def.type_def
+                    is_public=is_public,
+                    module_def=Some(module_),
+                    type_span=Some(sp),
+                    type_def=type_def.type_def
                 });
             }
         }
@@ -601,10 +601,10 @@ impl NameBindings {
                 let module = Module::new(parent_link, def_id, kind,
                                          external, is_public);
                 *self.type_def.borrow_mut() = Some(TypeNsDef {
-                    is_public: is_public,
-                    module_def: Some(Rc::new(module)),
-                    type_def: None,
-                    type_span: None,
+                    is_public=is_public,
+                    module_def=Some(Rc::new(module)),
+                    type_def=None,
+                    type_span=None,
                 });
             }
             Some(type_def) => {
@@ -616,10 +616,10 @@ impl NameBindings {
                                                  external,
                                                  is_public);
                         *self.type_def.borrow_mut() = Some(TypeNsDef {
-                            is_public: is_public,
-                            module_def: Some(Rc::new(module)),
-                            type_def: type_def.type_def,
-                            type_span: None,
+                            is_public=is_public,
+                            module_def=Some(Rc::new(module)),
+                            type_def=type_def.type_def,
+                            type_span=None,
                         });
                     }
                     Some(module_def) => module_def.kind.set(kind),
@@ -635,18 +635,18 @@ impl NameBindings {
         match type_def {
             None => {
                 *self.type_def.borrow_mut() = Some(TypeNsDef {
-                    module_def: None,
-                    type_def: Some(def),
-                    type_span: Some(sp),
-                    is_public: is_public,
+                    module_def=None,
+                    type_def=Some(def),
+                    type_span=Some(sp),
+                    is_public=is_public,
                 });
             }
             Some(type_def) => {
                 *self.type_def.borrow_mut() = Some(TypeNsDef {
-                    type_def: Some(def),
-                    type_span: Some(sp),
-                    module_def: type_def.module_def,
-                    is_public: is_public,
+                    type_def=Some(def),
+                    type_span=Some(sp),
+                    module_def=type_def.module_def,
+                    is_public=is_public,
                 });
             }
         }
@@ -655,9 +655,9 @@ impl NameBindings {
     /// Records a value definition.
     fn define_value(&self, def: Def, sp: Span, is_public: bool) {
         *self.value_def.borrow_mut() = Some(ValueNsDef {
-            def: def,
-            value_span: Some(sp),
-            is_public: is_public,
+            def=def,
+            value_span=Some(sp),
+            is_public=is_public,
         });
     }
 
@@ -763,7 +763,7 @@ struct PrimitiveTypeTable {
 impl PrimitiveTypeTable {
     fn new() -> PrimitiveTypeTable {
         let mut table = PrimitiveTypeTable {
-            primitive_types: HashMap::new()
+            primitive_types=HashMap::new()
         };
 
         table.intern("bool",    TyBool);
@@ -868,7 +868,7 @@ impl<'a, 'b> Visitor<ReducedGraphParent> for BuildReducedGraphVisitor<'a, 'b> {
         self.resolver.build_reduced_graph_for_foreign_item(foreign_item,
                                                            context.clone(),
                                                            |r| {
-            let mut v = BuildReducedGraphVisitor{ resolver: r };
+            let mut v = BuildReducedGraphVisitor{ resolver=r };
             visit::walk_foreign_item(&mut v, foreign_item, context.clone());
         })
     }
@@ -898,7 +898,7 @@ impl<'a> Resolver<'a> {
         let graph_root = NameBindings::new();
 
         graph_root.define_module(NoParentLink,
-                                 Some(DefId { krate: 0, node: 0 }),
+                                 Some(DefId { krate=0, node=0 }),
                                  NormalModuleKind,
                                  false,
                                  true,
@@ -907,39 +907,39 @@ impl<'a> Resolver<'a> {
         let current_module = graph_root.get_module();
 
         Resolver {
-            session: session,
+            session=session,
 
             // The outermost module has def ID 0; this is not reflected in the
             // AST.
 
-            graph_root: graph_root,
+            graph_root=graph_root,
 
-            method_map: RefCell::new(FnvHashMap::new()),
-            structs: FnvHashMap::new(),
+            method_map=RefCell::new(FnvHashMap::new()),
+            structs=FnvHashMap::new(),
 
-            unresolved_imports: 0,
+            unresolved_imports=0,
 
-            current_module: current_module,
-            value_ribs: RefCell::new(Vec::new()),
-            type_ribs: RefCell::new(Vec::new()),
-            label_ribs: RefCell::new(Vec::new()),
+            current_module=current_module,
+            value_ribs=RefCell::new(Vec::new()),
+            type_ribs=RefCell::new(Vec::new()),
+            label_ribs=RefCell::new(Vec::new()),
 
-            current_trait_ref: None,
-            current_self_type: None,
+            current_trait_ref=None,
+            current_self_type=None,
 
-            self_name: special_names::self_,
-            type_self_name: special_names::type_self,
+            self_name=special_names::self_,
+            type_self_name=special_names::type_self,
 
-            primitive_type_table: PrimitiveTypeTable::new(),
+            primitive_type_table=PrimitiveTypeTable::new(),
 
-            def_map: RefCell::new(NodeMap::new()),
-            export_map2: RefCell::new(NodeMap::new()),
-            trait_map: NodeMap::new(),
-            used_imports: HashSet::new(),
-            external_exports: DefIdSet::new(),
-            last_private: NodeMap::new(),
+            def_map=RefCell::new(NodeMap::new()),
+            export_map2=RefCell::new(NodeMap::new()),
+            trait_map=NodeMap::new(),
+            used_imports=HashSet::new(),
+            external_exports=DefIdSet::new(),
+            last_private=NodeMap::new(),
 
-            emit_errors: true,
+            emit_errors=true,
         }
     }
     /// The main name resolution procedure.
@@ -971,7 +971,7 @@ impl<'a> Resolver<'a> {
         let initial_parent =
             ModuleReducedGraphParent(self.graph_root.get_module());
 
-        let mut visitor = BuildReducedGraphVisitor { resolver: self, };
+        let mut visitor = BuildReducedGraphVisitor { resolver=self, };
         visit::walk_crate(&mut visitor, krate, initial_parent);
     }
 
@@ -1145,7 +1145,7 @@ impl<'a> Resolver<'a> {
                     self.add_child(ident, parent.clone(), ForbidDuplicateModules, sp);
 
                 let parent_link = self.get_parent_link(parent, ident);
-                let def_id = DefId { krate: 0, node: item.id };
+                let def_id = DefId { krate=0, node=item.id };
                 name_bindings.define_module(parent_link,
                                             Some(def_id),
                                             NormalModuleKind,
@@ -1499,7 +1499,7 @@ impl<'a> Resolver<'a> {
                 // n.b. we don't need to look at the path option here, because cstore already did
                 for &crate_id in self.session.cstore
                                      .find_extern_mod_stmt_cnum(node_id).iter() {
-                    let def_id = DefId { krate: crate_id, node: 0 };
+                    let def_id = DefId { krate=crate_id, node=0 };
                     self.external_exports.insert(def_id);
                     let parent_link =
                         ModuleParentLink(parent.module().downgrade(), name);
@@ -1604,7 +1604,7 @@ impl<'a> Resolver<'a> {
           DefTy(def_id) => {
             let type_def = child_name_bindings.type_def.borrow().clone();
             match type_def {
-              Some(TypeNsDef { module_def: Some(module_def), .. }) => {
+              Some(TypeNsDef { module_def=Some(module_def), .. }) => {
                 debug!("(building reduced graph for external crate) \
                         already created module");
                 module_def.def_id.set(Some(def_id));
@@ -1793,7 +1793,7 @@ impl<'a> Resolver<'a> {
                                 let type_def = child_name_bindings.type_def.borrow().clone();
                                 match type_def {
                                     Some(TypeNsDef {
-                                        module_def: Some(module_def),
+                                        module_def=Some(module_def),
                                         ..
                                     }) => {
                                         // We already have a module. This
@@ -2211,13 +2211,13 @@ impl<'a> Resolver<'a> {
 
     fn create_name_bindings_from_module(module: Rc<Module>) -> NameBindings {
         NameBindings {
-            type_def: RefCell::new(Some(TypeNsDef {
-                is_public: false,
-                module_def: Some(module),
-                type_def: None,
-                type_span: None
+            type_def=RefCell::new(Some(TypeNsDef {
+                is_public=false,
+                module_def=Some(module),
+                type_def=None,
+                type_span=None
             })),
-            value_def: RefCell::new(None),
+            value_def=RefCell::new(None),
         }
     }
 
@@ -2454,10 +2454,10 @@ impl<'a> Resolver<'a> {
             None => None,
         };
 
-        self.last_private.insert(directive.id, LastImport{value_priv: value_private,
-                                                          value_used: Used,
-                                                          type_priv: type_private,
-                                                          type_used: Used});
+        self.last_private.insert(directive.id, LastImport{value_priv=value_private,
+                                                          value_used=Used,
+                                                          type_priv=type_private,
+                                                          type_used=Used});
 
         debug!("(resolving single import) successfully resolved import");
         return Success(());
@@ -3324,8 +3324,8 @@ impl<'a> Resolver<'a> {
                 debug!("(computing exports) YES: export '{}' => {:?}",
                        name, d.def_id());
                 exports2.push(Export2 {
-                    name: name.get().to_string(),
-                    def_id: d.def_id()
+                    name=name.get().to_string(),
+                    def_id=d.def_id()
                 });
             }
             d_opt => {
@@ -4129,8 +4129,8 @@ impl<'a> Resolver<'a> {
         pat_bindings(&self.def_map, pat, |binding_mode, _id, sp, path1| {
             let name = mtwt::resolve(path1.node);
             result.insert(name,
-                          binding_info {span: sp,
-                                        binding_mode: binding_mode});
+                          binding_info {span=sp,
+                                        binding_mode=binding_mode});
         });
         return result;
     }
@@ -5151,8 +5151,8 @@ impl<'a> Resolver<'a> {
                                 let mut method_scope = false;
                                 self.value_ribs.borrow().iter().rev().all(|rib| {
                                     let res = match *rib {
-                                        Rib { bindings: _, kind: MethodRibKind(_, _) } => true,
-                                        Rib { bindings: _, kind: ItemRibKind } => false,
+                                        Rib { bindings=_, kind=MethodRibKind(_, _) } => true,
+                                        Rib { bindings=_, kind=ItemRibKind } => false,
                                         _ => return true, // Keep advancing
                                     };
 
@@ -5420,7 +5420,7 @@ impl<'a> Resolver<'a> {
     //
 
     fn check_for_unused_imports(&mut self, krate: &ast::Crate) {
-        let mut visitor = UnusedImportCheckVisitor{ resolver: self };
+        let mut visitor = UnusedImportCheckVisitor{ resolver=self };
         visit::walk_crate(&mut visitor, krate, ());
     }
 
@@ -5478,10 +5478,10 @@ impl<'a> Resolver<'a> {
 
         let (v_priv, t_priv) = match self.last_private.find(&id) {
             Some(&LastImport {
-                value_priv: v,
-                value_used: _,
-                type_priv: t,
-                type_used: _
+                value_priv=v,
+                value_used=_,
+                type_priv=t,
+                type_used=_
             }) => (v, t),
             Some(_) => {
                 fail!("we should only have LastImport for `use` directives")
@@ -5508,10 +5508,10 @@ impl<'a> Resolver<'a> {
             _ => {},
         }
 
-        self.last_private.insert(id, LastImport{value_priv: v_priv,
-                                                value_used: v_used,
-                                                type_priv: t_priv,
-                                                type_used: t_used});
+        self.last_private.insert(id, LastImport{value_priv=v_priv,
+                                                value_used=v_used,
+                                                type_priv=t_priv,
+                                                type_used=t_used});
     }
 
     //
@@ -5603,10 +5603,10 @@ pub fn resolve_crate(session: &Session,
     let Resolver { def_map, export_map2, trait_map, last_private,
                    external_exports, .. } = resolver;
     CrateMap {
-        def_map: def_map,
-        exp_map2: export_map2,
-        trait_map: trait_map,
-        external_exports: external_exports,
-        last_private_map: last_private,
+        def_map=def_map,
+        exp_map2=export_map2,
+        trait_map=trait_map,
+        external_exports=external_exports,
+        last_private_map=last_private,
     }
 }

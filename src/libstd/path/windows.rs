@@ -194,7 +194,7 @@ impl GenericPathUnsafe for Path {
     unsafe fn new_unchecked<T: BytesContainer>(path: T) -> Path {
         let (prefix, path) = Path::normalize_(path.container_as_str().unwrap());
         assert!(!path.is_empty());
-        let mut ret = Path{ repr: path, prefix: prefix, sepidx: None };
+        let mut ret = Path{ repr=path, prefix=prefix, sepidx=None };
         ret.update_sepidx();
         ret
     }

@@ -114,7 +114,7 @@ pub fn lookup_variant_by_id(tcx: &ty::ctxt,
             match tcx.map.find(enum_def.node) {
                 None => None,
                 Some(ast_map::NodeItem(it)) => match it.node {
-                    ItemEnum(ast::EnumDef { variants: ref variants }, _) => {
+                    ItemEnum(ast::EnumDef { variants=ref variants }, _) => {
                         variant_expr(variants.as_slice(), variant_def.node)
                     }
                     _ => None
@@ -130,7 +130,7 @@ pub fn lookup_variant_by_id(tcx: &ty::ctxt,
         let e = match csearch::maybe_get_item_ast(tcx, enum_def,
             |a, b, c, d| astencode::decode_inlined_item(a, b, c, d)) {
             csearch::found(ast::IIItem(item)) => match item.node {
-                ItemEnum(ast::EnumDef { variants: ref variants }, _) => {
+                ItemEnum(ast::EnumDef { variants=ref variants }, _) => {
                     variant_expr(variants.as_slice(), variant_def.node)
                 }
                 _ => None
@@ -282,8 +282,8 @@ impl<'a> Visitor<()> for ConstEvalVisitor<'a> {
 pub fn process_crate(krate: &ast::Crate,
                      tcx: &ty::ctxt) {
     let mut v = ConstEvalVisitor {
-        tcx: tcx,
-        ccache: DefIdMap::new(),
+        tcx=tcx,
+        ccache=DefIdMap::new(),
     };
     visit::walk_crate(&mut v, krate, ());
     tcx.sess.abort_if_errors();

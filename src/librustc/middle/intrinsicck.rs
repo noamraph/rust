@@ -105,9 +105,9 @@ impl<'a> IntrinsicCheckingVisitor<'a> {
         }
 
         let restriction = TransmuteRestriction {
-            span: span,
-            from: from,
-            to: to,
+            span=span,
+            from=from,
+            to=to,
         };
         self.tcx.transmute_restrictions.borrow_mut().push(restriction);
     }
@@ -147,7 +147,7 @@ impl<'a> Visitor<()> for IntrinsicCheckingVisitor<'a> {
 
 pub fn check_crate(tcx: &ctxt, krate: &ast::Crate) {
     let mut visitor = IntrinsicCheckingVisitor {
-        tcx: tcx,
+        tcx=tcx,
     };
 
     visit::walk_crate(&mut visitor, krate, ());

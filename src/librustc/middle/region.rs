@@ -425,7 +425,7 @@ fn resolve_block(visitor: &mut RegionResolutionVisitor,
     //   }
     //
 
-    let subcx = Context {var_parent: Some(blk.id), parent: Some(blk.id)};
+    let subcx = Context {var_parent=Some(blk.id), parent=Some(blk.id)};
     visit::walk_block(visitor, blk, subcx);
 }
 
@@ -470,7 +470,7 @@ fn resolve_stmt(visitor: &mut RegionResolutionVisitor,
     visitor.region_maps.mark_as_terminating_scope(stmt_id);
     record_superlifetime(visitor, cx, stmt_id, stmt.span);
 
-    let subcx = Context {parent: Some(stmt_id), ..cx};
+    let subcx = Context {parent=Some(stmt_id), ..cx};
     visit::walk_stmt(visitor, stmt, subcx);
 }
 
@@ -805,7 +805,7 @@ fn resolve_item(visitor: &mut RegionResolutionVisitor,
                 item: &ast::Item,
                 cx: Context) {
     // Items create a new outer block scope as far as we're concerned.
-    let new_cx = Context {var_parent: None, parent: None, ..cx};
+    let new_cx = Context {var_parent=None, parent=None, ..cx};
     visit::walk_item(visitor, item, new_cx);
 }
 
@@ -828,15 +828,15 @@ fn resolve_fn(visitor: &mut RegionResolutionVisitor,
     visitor.region_maps.mark_as_terminating_scope(body.id);
 
     // The arguments and `self` are parented to the body of the fn.
-    let decl_cx = Context {parent: Some(body.id),
-                           var_parent: Some(body.id)};
+    let decl_cx = Context {parent=Some(body.id),
+                           var_parent=Some(body.id)};
     visit::walk_fn_decl(visitor, decl, decl_cx);
 
     // The body of the fn itself is either a root scope (top-level fn)
     // or it continues with the inherited scope (closures).
     let body_cx = match *fk {
         visit::FkItemFn(..) | visit::FkMethod(..) => {
-            Context {parent: None, var_parent: None, ..cx}
+            Context {parent=None, var_parent=None, ..cx}
         }
         visit::FkFnBlock(..) => {
             // FIXME(#3696) -- at present we are place the closure body
@@ -885,18 +885,18 @@ impl<'a> Visitor<Context> for RegionResolutionVisitor<'a> {
 
 pub fn resolve_crate(sess: &Session, krate: &ast::Crate) -> RegionMaps {
     let maps = RegionMaps {
-        scope_map: RefCell::new(NodeMap::new()),
-        var_map: RefCell::new(NodeMap::new()),
-        free_region_map: RefCell::new(HashMap::new()),
-        rvalue_scopes: RefCell::new(NodeMap::new()),
-        terminating_scopes: RefCell::new(HashSet::new()),
+        scope_map=RefCell::new(NodeMap::new()),
+        var_map=RefCell::new(NodeMap::new()),
+        free_region_map=RefCell::new(HashMap::new()),
+        rvalue_scopes=RefCell::new(NodeMap::new()),
+        terminating_scopes=RefCell::new(HashSet::new()),
     };
     {
         let mut visitor = RegionResolutionVisitor {
-            sess: sess,
-            region_maps: &maps
+            sess=sess,
+            region_maps=&maps
         };
-        let cx = Context { parent: None, var_parent: None };
+        let cx = Context { parent=None, var_parent=None };
         visit::walk_crate(&mut visitor, krate, cx);
     }
     return maps;
@@ -905,11 +905,11 @@ pub fn resolve_crate(sess: &Session, krate: &ast::Crate) -> RegionMaps {
 pub fn resolve_inlined_item(sess: &Session,
                             region_maps: &RegionMaps,
                             item: &ast::InlinedItem) {
-    let cx = Context {parent: None,
-                      var_parent: None};
+    let cx = Context {parent=None,
+                      var_parent=None};
     let mut visitor = RegionResolutionVisitor {
-        sess: sess,
-        region_maps: region_maps,
+        sess=sess,
+        region_maps=region_maps,
     };
     visit::walk_inlined_item(&mut visitor, item, cx);
 }

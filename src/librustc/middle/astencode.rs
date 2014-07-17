@@ -109,8 +109,8 @@ pub fn decode_inlined_item(cdata: &cstore::crate_metadata,
                            par_doc: ebml::Doc)
                            -> Result<ast::InlinedItem, Vec<ast_map::PathElem>> {
     let dcx = &DecodeContext {
-        cdata: cdata,
-        tcx: tcx,
+        cdata=cdata,
+        tcx=tcx,
     };
     match par_doc.opt_child(c::tag_ast) {
       None => Err(path),
@@ -127,9 +127,9 @@ pub fn decode_inlined_item(cdata: &cstore::crate_metadata,
         let from_id_range = Decodable::decode(&mut ast_dsr).unwrap();
         let to_id_range = reserve_id_range(&dcx.tcx.sess, from_id_range);
         let xcx = &ExtendedDecodeContext {
-            dcx: dcx,
-            from_id_range: from_id_range,
-            to_id_range: to_id_range
+            dcx=dcx,
+            from_id_range=from_id_range,
+            to_id_range=to_id_range
         };
         let raw_ii = decode_ast(ast_doc);
         let ii = renumber_and_map_ast(xcx, &dcx.tcx.map, path, raw_ii);
@@ -166,7 +166,7 @@ fn reserve_id_range(sess: &Session,
     let cnt = from_id_range.max - from_id_range.min;
     let to_id_min = sess.reserve_node_ids(cnt);
     let to_id_max = to_id_min + cnt;
-    ast_util::IdRange { min: to_id_min, max: to_id_max }
+    ast_util::IdRange { min=to_id_min, max=to_id_max }
 }
 
 impl<'a> ExtendedDecodeContext<'a> {
@@ -218,7 +218,7 @@ impl<'a> ExtendedDecodeContext<'a> {
          */
 
         assert_eq!(did.krate, ast::LOCAL_CRATE);
-        ast::DefId { krate: ast::LOCAL_CRATE, node: self.tr_id(did.node) }
+        ast::DefId { krate=ast::LOCAL_CRATE, node=self.tr_id(did.node) }
     }
     pub fn tr_span(&self, _span: Span) -> Span {
         codemap::DUMMY_SP // FIXME (#1972): handle span properly
@@ -316,13 +316,13 @@ impl Folder for NestedItemsDropper {
             }
         }).collect();
         let blk_sans_items = ast::P(ast::Block {
-            view_items: Vec::new(), // I don't know if we need the view_items
+            view_items=Vec::new(), // I don't know if we need the view_items
                                     // here, but it doesn't break tests!
-            stmts: stmts_sans_items,
-            expr: blk.expr,
-            id: blk.id,
-            rules: blk.rules,
-            span: blk.span,
+            stmts=stmts_sans_items,
+            expr=blk.expr,
+            id=blk.id,
+            rules=blk.rules,
+            span=blk.span,
         });
         fold::noop_fold_block(blk_sans_items, self)
     }
@@ -380,7 +380,7 @@ fn renumber_and_map_ast(xcx: &ExtendedDecodeContext,
                         ii: ast::InlinedItem) -> ast::InlinedItem {
     ast_map::map_decoded_item(map,
                               path.move_iter().collect(),
-                              AstRenumberer { xcx: xcx },
+                              AstRenumberer { xcx=xcx },
                               |fld| {
         match ii {
             ast::IIItem(i) => {
@@ -459,8 +459,8 @@ impl tr for def::Def {
 impl tr for ty::AutoDerefRef {
     fn tr(&self, xcx: &ExtendedDecodeContext) -> ty::AutoDerefRef {
         ty::AutoDerefRef {
-            autoderefs: self.autoderefs,
-            autoref: match self.autoref {
+            autoderefs=self.autoderefs,
+            autoref=match self.autoref {
                 Some(ref autoref) => Some(autoref.tr(xcx)),
                 None => None
             }
@@ -490,8 +490,8 @@ impl tr for ty::Region {
                 *self
             }
             ty::ReFree(ref fr) => {
-                ty::ReFree(ty::FreeRegion {scope_id: xcx.tr_id(fr.scope_id),
-                                            bound_region: fr.bound_region.tr(xcx)})
+                ty::ReFree(ty::FreeRegion {scope_id=xcx.tr_id(fr.scope_id),
+                                            bound_region=fr.bound_region.tr(xcx)})
             }
         }
     }
@@ -542,8 +542,8 @@ impl<'a> ebml_decoder_helper for reader::Decoder<'a> {
 impl tr for freevar_entry {
     fn tr(&self, xcx: &ExtendedDecodeContext) -> freevar_entry {
         freevar_entry {
-            def: self.def.tr(xcx),
-            span: self.span.tr(xcx),
+            def=self.def.tr(xcx),
+            span=self.span.tr(xcx),
         }
     }
 }
@@ -585,15 +585,15 @@ impl<'a> read_method_callee_helper for reader::Decoder<'a> {
                 Decodable::decode(this)
             }).unwrap();
             Ok((adjustment, MethodCallee {
-                origin: this.read_struct_field("origin", 1, |this| {
+                origin=this.read_struct_field("origin", 1, |this| {
                     let method_origin: MethodOrigin =
                         Decodable::decode(this).unwrap();
                     Ok(method_origin.tr(xcx))
                 }).unwrap(),
-                ty: this.read_struct_field("ty", 2, |this| {
+                ty=this.read_struct_field("ty", 2, |this| {
                     Ok(this.read_ty(xcx))
                 }).unwrap(),
-                substs: this.read_struct_field("substs", 3, |this| {
+                substs=this.read_struct_field("substs", 3, |this| {
                     Ok(this.read_substs(xcx))
                 }).unwrap()
             }))
@@ -608,7 +608,7 @@ impl tr for MethodOrigin {
             typeck::MethodParam(ref mp) => {
                 typeck::MethodParam(
                     typeck::MethodParam {
-                        trait_id: mp.trait_id.tr(xcx),
+                        trait_id=mp.trait_id.tr(xcx),
                         .. *mp
                     }
                 )
@@ -616,7 +616,7 @@ impl tr for MethodOrigin {
             typeck::MethodObject(ref mo) => {
                 typeck::MethodObject(
                     typeck::MethodObject {
-                        trait_id: mo.trait_id.tr(xcx),
+                        trait_id=mo.trait_id.tr(xcx),
                         .. *mo
                     }
                 )
@@ -825,10 +825,10 @@ trait get_ty_str_ctxt {
 impl<'a> get_ty_str_ctxt for e::EncodeContext<'a> {
     fn ty_str_ctxt<'a>(&'a self) -> tyencode::ctxt<'a> {
         tyencode::ctxt {
-            diag: self.tcx.sess.diagnostic(),
-            ds: e::def_to_string,
-            tcx: self.tcx,
-            abbrevs: &self.type_abbrevs
+            diag=self.tcx.sess.diagnostic(),
+            ds=e::def_to_string,
+            tcx=self.tcx,
+            abbrevs=&self.type_abbrevs
         }
     }
 }
@@ -978,10 +978,10 @@ fn encode_side_tables_for_ii(ecx: &e::EncodeContext,
     // ecx directly, but /I/ know that it'll be fine since the lifetime is
     // tied to the CrateContext that lives throughout this entire section.
     ast_util::visit_ids_for_inlined_item(ii, &SideTableEncodingIdVisitor {
-        ecx_ptr: unsafe {
+        ecx_ptr=unsafe {
             mem::transmute(ecx)
         },
-        new_ebml_w: &mut new_ebml_w,
+        new_ebml_w=&mut new_ebml_w,
     });
     ebml_w.end_tag();
 }
@@ -1029,7 +1029,7 @@ fn encode_side_tables_for_id(ecx: &e::EncodeContext,
         })
     }
 
-    let lid = ast::DefId { krate: ast::LOCAL_CRATE, node: id };
+    let lid = ast::DefId { krate=ast::LOCAL_CRATE, node=id };
     for &pty in tcx.tcache.borrow().find(&lid).iter() {
         ebml_w.tag(c::tag_table_tcache, |ebml_w| {
             ebml_w.id(id);
@@ -1249,16 +1249,16 @@ impl<'a> ebml_decoder_decoder_helpers for reader::Decoder<'a> {
                                    -> ty::Polytype {
         self.read_struct("Polytype", 2, |this| {
             Ok(ty::Polytype {
-                generics: this.read_struct_field("generics", 0, |this| {
+                generics=this.read_struct_field("generics", 0, |this| {
                     this.read_struct("Generics", 2, |this| {
                         Ok(ty::Generics {
-                            types:
+                            types=
                             this.read_struct_field("types", 0, |this| {
                                 Ok(this.read_vec_per_param_space(
                                     |this| this.read_type_param_def(xcx)))
                             }).unwrap(),
 
-                            regions:
+                            regions=
                             this.read_struct_field("regions", 1, |this| {
                                 Ok(this.read_vec_per_param_space(
                                     |this| Decodable::decode(this).unwrap()))
@@ -1266,7 +1266,7 @@ impl<'a> ebml_decoder_decoder_helpers for reader::Decoder<'a> {
                         })
                     })
                 }).unwrap(),
-                ty: this.read_struct_field("ty", 1, |this| {
+                ty=this.read_struct_field("ty", 1, |this| {
                     Ok(this.read_ty(xcx))
                 }).unwrap()
             })
@@ -1396,7 +1396,7 @@ fn decode_side_tables(xcx: &ExtendedDecodeContext,
                     }
                     c::tag_table_item_subst => {
                         let item_substs = ty::ItemSubsts {
-                            substs: val_dsr.read_substs(xcx)
+                            substs=val_dsr.read_substs(xcx)
                         };
                         dcx.tcx.item_substs.borrow_mut().insert(
                             id, item_substs);
@@ -1409,7 +1409,7 @@ fn decode_side_tables(xcx: &ExtendedDecodeContext,
                     }
                     c::tag_table_tcache => {
                         let pty = val_dsr.read_polytype(xcx);
-                        let lid = ast::DefId { krate: ast::LOCAL_CRATE, node: id };
+                        let lid = ast::DefId { krate=ast::LOCAL_CRATE, node=id };
                         dcx.tcx.tcache.borrow_mut().insert(lid, pty);
                     }
                     c::tag_table_param_defs => {
@@ -1419,8 +1419,8 @@ fn decode_side_tables(xcx: &ExtendedDecodeContext,
                     c::tag_table_method_map => {
                         let (adjustment, method) = val_dsr.read_method_callee(xcx);
                         let method_call = MethodCall {
-                            expr_id: id,
-                            adjustment: adjustment
+                            expr_id=id,
+                            adjustment=adjustment
                         };
                         dcx.tcx.method_map.borrow_mut().insert(method_call, method);
                     }
@@ -1429,8 +1429,8 @@ fn decode_side_tables(xcx: &ExtendedDecodeContext,
                             val_dsr.read_vtable_res_with_key(xcx.dcx.tcx,
                                                              xcx.dcx.cdata);
                         let vtable_key = MethodCall {
-                            expr_id: id,
-                            adjustment: adjustment
+                            expr_id=id,
+                            adjustment=adjustment
                         };
                         dcx.tcx.vtable_map.borrow_mut().insert(vtable_key, vtable_res);
                     }
@@ -1485,9 +1485,9 @@ impl fake_ext_ctxt for parse::ParseSess {
     fn parse_sess<'a>(&'a self) -> &'a parse::ParseSess { self }
     fn call_site(&self) -> Span {
         codemap::Span {
-            lo: codemap::BytePos(0),
-            hi: codemap::BytePos(0),
-            expn_info: None
+            lo=codemap::BytePos(0),
+            hi=codemap::BytePos(0),
+            expn_info=None
         }
     }
     fn ident_of(&self, st: &str) -> ast::Ident {

@@ -46,7 +46,7 @@ pub fn check_crate(krate: &ast::Crate,
     }
 
     {
-        let mut cx = Context { sess: sess, items: items };
+        let mut cx = Context { sess=sess, items=items };
         visit::walk_crate(&mut cx, krate, ());
     }
     verify(sess, items);

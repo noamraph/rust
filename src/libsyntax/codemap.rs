@@ -94,7 +94,7 @@ pub struct Span {
     pub expn_info: Option<Gc<ExpnInfo>>
 }
 
-pub static DUMMY_SP: Span = Span { lo: BytePos(0), hi: BytePos(0), expn_info: None };
+pub static DUMMY_SP: Span = Span { lo=BytePos(0), hi=BytePos(0), expn_info=None };
 
 #[deriving(Clone, PartialEq, Eq, Encodable, Decodable, Hash, Show)]
 pub struct Spanned<T> {
@@ -129,7 +129,7 @@ pub fn spanned<T>(lo: BytePos, hi: BytePos, t: T) -> Spanned<T> {
 }
 
 pub fn respan<T>(sp: Span, t: T) -> Spanned<T> {
-    Spanned {node: t, span: sp}
+    Spanned {node=t, span=sp}
 }
 
 pub fn dummy_spanned<T>(t: T) -> Spanned<T> {
@@ -138,7 +138,7 @@ pub fn dummy_spanned<T>(t: T) -> Spanned<T> {
 
 /* assuming that we're not in macro expansion */
 pub fn mk_sp(lo: BytePos, hi: BytePos) -> Span {
-    Span {lo: lo, hi: hi, expn_info: None}
+    Span {lo=lo, hi=hi, expn_info=None}
 }
 
 /// Return the span itself if it doesn't come from a macro expansion,
@@ -284,8 +284,8 @@ impl FileMap {
     pub fn record_multibyte_char(&self, pos: BytePos, bytes: uint) {
         assert!(bytes >=2 && bytes <= 4);
         let mbc = MultiByteChar {
-            pos: pos,
-            bytes: bytes,
+            pos=pos,
+            bytes=bytes,
         };
         self.multibyte_chars.borrow_mut().push(mbc);
     }
@@ -303,7 +303,7 @@ pub struct CodeMap {
 impl CodeMap {
     pub fn new() -> CodeMap {
         CodeMap {
-            files: RefCell::new(Vec::new()),
+            files=RefCell::new(Vec::new()),
         }
     }
 
@@ -332,11 +332,11 @@ impl CodeMap {
         }
 
         let filemap = Rc::new(FileMap {
-            name: filename,
-            src: src.to_string(),
-            start_pos: Pos::from_uint(start_pos),
-            lines: RefCell::new(Vec::new()),
-            multibyte_chars: RefCell::new(Vec::new()),
+            name=filename,
+            src=src.to_string(),
+            start_pos=Pos::from_uint(start_pos),
+            lines=RefCell::new(Vec::new()),
+            multibyte_chars=RefCell::new(Vec::new()),
         });
 
         files.push(filemap.clone());
@@ -360,10 +360,10 @@ impl CodeMap {
     pub fn lookup_char_pos_adj(&self, pos: BytePos) -> LocWithOpt {
         let loc = self.lookup_char_pos(pos);
         LocWithOpt {
-            filename: loc.file.name.to_string(),
-            line: loc.line,
-            col: loc.col,
-            file: Some(loc.file)
+            filename=loc.file.name.to_string(),
+            line=loc.line,
+            col=loc.col,
+            file=Some(loc.file)
         }
     }
 
@@ -393,7 +393,7 @@ impl CodeMap {
         for i in range(lo.line - 1u, hi.line as uint) {
             lines.push(i);
         };
-        FileLines {file: lo.file, lines: lines}
+        FileLines {file=lo.file, lines=lines}
     }
 
     pub fn span_to_snippet(&self, sp: Span) -> Option<String> {
@@ -425,7 +425,7 @@ impl CodeMap {
         let idx = self.lookup_filemap_idx(bpos);
         let fm = self.files.borrow().get(idx).clone();
         let offset = bpos - fm.start_pos;
-        FileMapAndBytePos {fm: fm, pos: offset}
+        FileMapAndBytePos {fm=fm, pos=offset}
     }
 
     /// Converts an absolute BytePos to a CharPos relative to the filemap and above.
@@ -504,11 +504,11 @@ impl CodeMap {
                 if *lines.get(m) > pos { b = m; } else { a = m; }
             }
         }
-        FileMapAndLine {fm: f, line: a}
+        FileMapAndLine {fm=f, line=a}
     }
 
     fn lookup_pos(&self, pos: BytePos) -> Loc {
-        let FileMapAndLine {fm: f, line: a} = self.lookup_line(pos);
+        let FileMapAndLine {fm=f, line=a} = self.lookup_line(pos);
         let line = a + 1u; // Line numbers start at 1
         let chpos = self.bytepos_to_file_charpos(pos);
         let linebpos = *f.lines.borrow().get(a);
@@ -520,9 +520,9 @@ impl CodeMap {
         debug!("byte is on line: {}", line);
         assert!(chpos >= linechpos);
         Loc {
-            file: f,
-            line: line,
-            col: chpos - linechpos
+            file=f,
+            line=line,
+            col=chpos - linechpos
         }
     }
 }
@@ -663,7 +663,7 @@ mod test {
     fn t7() {
         // Test span_to_lines for a span ending at the end of filemap
         let cm = init_code_map();
-        let span = Span {lo: BytePos(12), hi: BytePos(23), expn_info: None};
+        let span = Span {lo=BytePos(12), hi=BytePos(23), expn_info=None};
         let file_lines = cm.span_to_lines(span);
 
         assert_eq!(file_lines.file.name, "blork.rs".to_string());
@@ -675,7 +675,7 @@ mod test {
     fn t8() {
         // Test span_to_snippet for a span ending at the end of filemap
         let cm = init_code_map();
-        let span = Span {lo: BytePos(12), hi: BytePos(23), expn_info: None};
+        let span = Span {lo=BytePos(12), hi=BytePos(23), expn_info=None};
         let snippet = cm.span_to_snippet(span);
 
         assert_eq!(snippet, Some("second line".to_string()));
@@ -685,7 +685,7 @@ mod test {
     fn t9() {
         // Test span_to_str for a span ending at the end of filemap
         let cm = init_code_map();
-        let span = Span {lo: BytePos(12), hi: BytePos(23), expn_info: None};
+        let span = Span {lo=BytePos(12), hi=BytePos(23), expn_info=None};
         let sstr =  cm.span_to_string(span);
 
         assert_eq!(sstr, "blork.rs:2:1: 2:12".to_string());

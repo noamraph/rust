@@ -30,32 +30,32 @@ pub fn expand_deriving_decodable(cx: &mut ExtCtxt,
                                  item: Gc<Item>,
                                  push: |Gc<Item>|) {
     let trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: Path::new_(vec!("serialize", "Decodable"), None,
+        span=span,
+        attributes=Vec::new(),
+        path=Path::new_(vec!("serialize", "Decodable"), None,
                          vec!(box Literal(Path::new_local("__D")),
                               box Literal(Path::new_local("__E"))), true),
-        additional_bounds: Vec::new(),
-        generics: LifetimeBounds {
-            lifetimes: Vec::new(),
-            bounds: vec!(("__D", None, vec!(Path::new_(
+        additional_bounds=Vec::new(),
+        generics=LifetimeBounds {
+            lifetimes=Vec::new(),
+            bounds=vec!(("__D", None, vec!(Path::new_(
                             vec!("serialize", "Decoder"), None,
                             vec!(box Literal(Path::new_local("__E"))), true))),
                          ("__E", None, vec!()))
         },
-        methods: vec!(
+        methods=vec!(
             MethodDef {
-                name: "decode",
-                generics: LifetimeBounds::empty(),
-                explicit_self: None,
-                args: vec!(Ptr(box Literal(Path::new_local("__D")),
+                name="decode",
+                generics=LifetimeBounds::empty(),
+                explicit_self=None,
+                args=vec!(Ptr(box Literal(Path::new_local("__D")),
                             Borrowed(None, MutMutable))),
-                ret_ty: Literal(Path::new_(vec!("std", "result", "Result"), None,
+                ret_ty=Literal(Path::new_(vec!("std", "result", "Result"), None,
                                           vec!(box Self,
                                                box Literal(Path::new_local("__E"))), true)),
-                attributes: Vec::new(),
-                const_nonmatching: true,
-                combine_substructure: combine_substructure(|a, b, c| {
+                attributes=Vec::new(),
+                const_nonmatching=true,
+                combine_substructure=combine_substructure(|a, b, c| {
                     decodable_substructure(a, b, c)
                 }),
             })

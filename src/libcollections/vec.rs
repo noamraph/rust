@@ -79,7 +79,7 @@ impl<T> Vec<T> {
         // non-null value which is fine since we never call deallocate on the ptr
         // if cap is 0. The reason for this is because the pointer of a slice
         // being NULL would break the null pointer optimization for enums.
-        Vec { len: 0, cap: 0, ptr: &PTR_MARKER as *const _ as *mut T }
+        Vec { len=0, cap=0, ptr=&PTR_MARKER as *const _ as *mut T }
     }
 
     /// Constructs a new, empty `Vec` with the specified capacity.
@@ -96,14 +96,14 @@ impl<T> Vec<T> {
     #[inline]
     pub fn with_capacity(capacity: uint) -> Vec<T> {
         if mem::size_of::<T>() == 0 {
-            Vec { len: 0, cap: uint::MAX, ptr: &PTR_MARKER as *const _ as *mut T }
+            Vec { len=0, cap=uint::MAX, ptr=&PTR_MARKER as *const _ as *mut T }
         } else if capacity == 0 {
             Vec::new()
         } else {
             let size = capacity.checked_mul(&mem::size_of::<T>())
                                .expect("capacity overflow");
             let ptr = unsafe { allocate(size, mem::min_align_of::<T>()) };
-            Vec { len: 0, cap: capacity, ptr: ptr as *mut T }
+            Vec { len=0, cap=capacity, ptr=ptr as *mut T }
         }
     }
 
@@ -143,7 +143,7 @@ impl<T> Vec<T> {
     /// - `ptr` must be allocated by the default `Vec` allocator
     pub unsafe fn from_raw_parts(length: uint, capacity: uint,
                                  ptr: *mut T) -> Vec<T> {
-        Vec { len: length, cap: capacity, ptr: ptr }
+        Vec { len=length, cap=capacity, ptr=ptr }
     }
 
     /// Consumes the `Vec`, partitioning it based on a predicate.
@@ -681,8 +681,8 @@ impl<T> Vec<T> {
     pub fn as_mut_slice<'a>(&'a mut self) -> &'a mut [T] {
         unsafe {
             mem::transmute(Slice {
-                data: self.as_mut_ptr() as *const T,
-                len: self.len,
+                data=self.as_mut_ptr() as *const T,
+                len=self.len,
             })
         }
     }
@@ -707,7 +707,7 @@ impl<T> Vec<T> {
             let ptr = self.ptr;
             let cap = self.cap;
             mem::forget(self);
-            MoveItems { allocation: ptr, cap: cap, iter: iter }
+            MoveItems { allocation=ptr, cap=cap, iter=iter }
         }
     }
 
@@ -1427,7 +1427,7 @@ impl<T> Vector<T> for Vec<T> {
     /// ```
     #[inline]
     fn as_slice<'a>(&'a self) -> &'a [T] {
-        unsafe { mem::transmute(Slice { data: self.as_ptr(), len: self.len }) }
+        unsafe { mem::transmute(Slice { data=self.as_ptr(), len=self.len }) }
     }
 }
 
@@ -1584,11 +1584,11 @@ mod tests {
         let mut count_x @ mut count_y = 0;
         {
             let mut tv = TwoVec {
-                x: Vec::new(),
-                y: Vec::new()
+                x=Vec::new(),
+                y=Vec::new()
             };
-            tv.x.push(DropCounter {count: &mut count_x});
-            tv.y.push(DropCounter {count: &mut count_y});
+            tv.x.push(DropCounter {count=&mut count_x});
+            tv.y.push(DropCounter {count=&mut count_y});
 
             // If Vec had a drop flag, here is where it would be zeroed.
             // Instead, it should rely on its internal state to prevent

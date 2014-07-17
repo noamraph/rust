@@ -119,17 +119,17 @@ macro_rules! bitflags(
             bits: $T,
         }
 
-        $($(#[$Flag_attr])* pub static $Flag: $BitFlags = $BitFlags { bits: $value };)+
+        $($(#[$Flag_attr])* pub static $Flag: $BitFlags = $BitFlags { bits=$value };)+
 
         impl $BitFlags {
             /// Returns an empty set of flags.
             pub fn empty() -> $BitFlags {
-                $BitFlags { bits: 0 }
+                $BitFlags { bits=0 }
             }
 
             /// Returns the set containing all flags.
             pub fn all() -> $BitFlags {
-                $BitFlags { bits: $($value)|+ }
+                $BitFlags { bits=$($value)|+ }
             }
 
             /// Returns the raw value of the flags currently stored.
@@ -143,14 +143,14 @@ macro_rules! bitflags(
                 if (bits & !$BitFlags::all().bits()) != 0 {
                     ::std::option::None
                 } else {
-                    ::std::option::Some($BitFlags { bits: bits })
+                    ::std::option::Some($BitFlags { bits=bits })
                 }
             }
 
             /// Convert from underlying bit representation, dropping any bits
             /// that do not correspond to flags.
             pub fn from_bits_truncate(bits: $T) -> $BitFlags {
-                $BitFlags { bits: bits } & $BitFlags::all()
+                $BitFlags { bits=bits } & $BitFlags::all()
             }
 
             /// Returns `true` if no flags are currently stored.
@@ -188,7 +188,7 @@ macro_rules! bitflags(
             /// Returns the union of the two sets of flags.
             #[inline]
             fn bitor(&self, other: &$BitFlags) -> $BitFlags {
-                $BitFlags { bits: self.bits | other.bits }
+                $BitFlags { bits=self.bits | other.bits }
             }
         }
 
@@ -196,7 +196,7 @@ macro_rules! bitflags(
             /// Returns the intersection between the two sets of flags.
             #[inline]
             fn bitand(&self, other: &$BitFlags) -> $BitFlags {
-                $BitFlags { bits: self.bits & other.bits }
+                $BitFlags { bits=self.bits & other.bits }
             }
         }
 
@@ -204,7 +204,7 @@ macro_rules! bitflags(
             /// Returns the set difference of the two sets of flags.
             #[inline]
             fn sub(&self, other: &$BitFlags) -> $BitFlags {
-                $BitFlags { bits: self.bits & !other.bits }
+                $BitFlags { bits=self.bits & !other.bits }
             }
         }
 
@@ -212,7 +212,7 @@ macro_rules! bitflags(
             /// Returns the complement of this set of flags.
             #[inline]
             fn not(&self) -> $BitFlags {
-                $BitFlags { bits: !self.bits } & $BitFlags::all()
+                $BitFlags { bits=!self.bits } & $BitFlags::all()
             }
         }
     )

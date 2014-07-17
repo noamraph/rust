@@ -199,8 +199,8 @@ impl<'a> Visitor<()> for EffectCheckVisitor<'a> {
 
 pub fn check_crate(tcx: &ty::ctxt, krate: &ast::Crate) {
     let mut visitor = EffectCheckVisitor {
-        tcx: tcx,
-        unsafe_context: SafeContext,
+        tcx=tcx,
+        unsafe_context=SafeContext,
     };
 
     visit::walk_crate(&mut visitor, krate, ());

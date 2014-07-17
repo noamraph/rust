@@ -273,9 +273,9 @@ impl<'a> ErrorReporting for InferCtxt<'a> {
                    scope_id: ast::NodeId)
                    -> FreeRegionsFromSameFn {
                 FreeRegionsFromSameFn {
-                    sub_fr: sub_fr,
-                    sup_fr: sup_fr,
-                    scope_id: scope_id
+                    sub_fr=sub_fr,
+                    sup_fr=sup_fr,
+                    scope_id=scope_id
                 }
             }
         }
@@ -329,8 +329,8 @@ impl<'a> ErrorReporting for InferCtxt<'a> {
                 }
             }
             same_regions.push(SameRegions {
-                scope_id: scope_id,
-                regions: vec!(sub_fr.bound_region, sup_fr.bound_region)
+                scope_id=scope_id,
+                regions=vec!(sub_fr.bound_region, sup_fr.bound_region)
             })
         }
     }
@@ -755,14 +755,14 @@ impl<'a> Rebuilder<'a> {
            life_giver: &'a LifeGiver)
            -> Rebuilder<'a> {
         Rebuilder {
-            tcx: tcx,
-            fn_decl: fn_decl,
-            expl_self_opt: expl_self_opt,
-            generics: generics,
-            same_regions: same_regions,
-            life_giver: life_giver,
-            cur_anon: Cell::new(0),
-            inserted_anons: RefCell::new(HashSet::new()),
+            tcx=tcx,
+            fn_decl=fn_decl,
+            expl_self_opt=expl_self_opt,
+            generics=generics,
+            same_regions=same_regions,
+            life_giver=life_giver,
+            cur_anon=Cell::new(0),
+            inserted_anons=RefCell::new(HashSet::new()),
         }
     }
 
@@ -800,10 +800,10 @@ impl<'a> Rebuilder<'a> {
                                              &all_region_names,
                                              ty_params);
         let new_fn_decl = ast::FnDecl {
-            inputs: inputs,
-            output: output,
-            cf: self.fn_decl.cf,
-            variadic: self.fn_decl.variadic
+            inputs=inputs,
+            output=output,
+            cf=self.fn_decl.cf,
+            variadic=self.fn_decl.variadic
         };
         (new_fn_decl, expl_self_opt, generics)
     }
@@ -892,12 +892,12 @@ impl<'a> Rebuilder<'a> {
                                                       lifetime,
                                                       region_names);
             ast::TyParam {
-                ident: ty_param.ident,
-                id: ty_param.id,
-                bounds: bounds,
-                unbound: ty_param.unbound.clone(),
-                default: ty_param.default,
-                span: ty_param.span,
+                ident=ty_param.ident,
+                id=ty_param.id,
+                bounds=bounds,
+                unbound=ty_param.unbound.clone(),
+                default=ty_param.default,
+                span=ty_param.span,
             }
         })
     }
@@ -923,16 +923,16 @@ impl<'a> Rebuilder<'a> {
                         }
                     }
                     let rebuild_info = RebuildPathInfo {
-                        path: &tr.path,
-                        indexes: insert,
-                        expected: last_seg.lifetimes.len(),
-                        anon_nums: &HashSet::new(),
-                        region_names: region_names
+                        path=&tr.path,
+                        indexes=insert,
+                        expected=last_seg.lifetimes.len(),
+                        anon_nums=&HashSet::new(),
+                        region_names=region_names
                     };
                     let new_path = self.rebuild_path(rebuild_info, lifetime);
                     ast::TraitTyParamBound(ast::TraitRef {
-                        path: new_path,
-                        ref_id: tr.ref_id,
+                        path=new_path,
+                        ref_id=tr.ref_id,
                     })
                 }
             }
@@ -984,8 +984,8 @@ impl<'a> Rebuilder<'a> {
             }
         }
         ast::Generics {
-            lifetimes: lifetimes,
-            ty_params: ty_params
+            lifetimes=lifetimes,
+            ty_params=ty_params
         }
     }
 
@@ -1000,9 +1000,9 @@ impl<'a> Rebuilder<'a> {
             let new_ty = self.rebuild_arg_ty_or_output(arg.ty, lifetime,
                                                        anon_nums, region_names);
             let possibly_new_arg = ast::Arg {
-                ty: new_ty,
-                pat: arg.pat,
-                id: arg.id
+                ty=new_ty,
+                pat=arg.pat,
+                id=arg.id
             };
             new_inputs.push(possibly_new_arg);
         }
@@ -1053,8 +1053,8 @@ impl<'a> Rebuilder<'a> {
                     match a_def {
                         def::DefTy(did) | def::DefStruct(did) => {
                             let ty::Polytype {
-                                generics: generics,
-                                ty: _
+                                generics=generics,
+                                ty=_
                             } = ty::lookup_item_type(self.tcx, did);
 
                             let expected =
@@ -1080,11 +1080,11 @@ impl<'a> Rebuilder<'a> {
                                 }
                             }
                             let rebuild_info = RebuildPathInfo {
-                                path: path,
-                                indexes: insert,
-                                expected: expected,
-                                anon_nums: anon_nums,
-                                region_names: region_names
+                                path=path,
+                                indexes=insert,
+                                expected=expected,
+                                anon_nums=anon_nums,
+                                region_names=region_names
                             };
                             new_ty = self.rebuild_ty(new_ty, cur_ty,
                                                      lifetime,
@@ -1116,15 +1116,15 @@ impl<'a> Rebuilder<'a> {
             let new_node = match from.node {
                 ast::TyRptr(ref lifetime, ref mut_ty) => {
                     let new_mut_ty = ast::MutTy {
-                        ty: build_to(mut_ty.ty, to),
-                        mutbl: mut_ty.mutbl
+                        ty=build_to(mut_ty.ty, to),
+                        mutbl=mut_ty.mutbl
                     };
                     ast::TyRptr(*lifetime, new_mut_ty)
                 }
                 ast::TyPtr(ref mut_ty) => {
                     let new_mut_ty = ast::MutTy {
-                        ty: build_to(mut_ty.ty, to),
-                        mutbl: mut_ty.mutbl
+                        ty=build_to(mut_ty.ty, to),
+                        mutbl=mut_ty.mutbl
                     };
                     ast::TyPtr(new_mut_ty)
                 }
@@ -1144,7 +1144,7 @@ impl<'a> Rebuilder<'a> {
                 ast::TyParen(ref typ) => ast::TyParen(build_to(*typ, to)),
                 ref other => other.clone()
             };
-            box(GC) ast::Ty { id: from.id, node: new_node, span: from.span }
+            box(GC) ast::Ty { id=from.id, node=new_node, span=from.span }
         }
 
         let new_ty_node = match to.node {
@@ -1160,9 +1160,9 @@ impl<'a> Rebuilder<'a> {
             _ => fail!("expect ast::TyRptr or ast::TyPath")
         };
         let new_ty = box(GC) ast::Ty {
-            id: to.id,
-            node: new_ty_node,
-            span: to.span
+            id=to.id,
+            node=new_ty_node,
+            span=to.span
         };
         build_to(from, new_ty)
     }
@@ -1172,11 +1172,11 @@ impl<'a> Rebuilder<'a> {
                     lifetime: ast::Lifetime)
                     -> ast::Path {
         let RebuildPathInfo {
-            path: path,
-            indexes: indexes,
-            expected: expected,
-            anon_nums: anon_nums,
-            region_names: region_names,
+            path=path,
+            indexes=indexes,
+            expected=expected,
+            anon_nums=anon_nums,
+            region_names=region_names,
         } = rebuild_info;
 
         let last_seg = path.segments.last().unwrap();
@@ -1208,17 +1208,17 @@ impl<'a> Rebuilder<'a> {
             self.rebuild_arg_ty_or_output(t, lifetime, anon_nums, region_names)
         });
         let new_seg = ast::PathSegment {
-            identifier: last_seg.identifier,
-            lifetimes: new_lts,
-            types: new_types,
+            identifier=last_seg.identifier,
+            lifetimes=new_lts,
+            types=new_types,
         };
         let mut new_segs = Vec::new();
         new_segs.push_all(path.segments.init());
         new_segs.push(new_seg);
         ast::Path {
-            span: path.span,
-            global: path.global,
-            segments: new_segs
+            span=path.span,
+            global=path.global,
+            segments=new_segs
         }
     }
 }
@@ -1493,9 +1493,9 @@ impl LifeGiver {
             taken_.insert(lt_name);
         }
         LifeGiver {
-            taken: taken_,
-            counter: Cell::new(0),
-            generated: RefCell::new(Vec::new()),
+            taken=taken_,
+            counter=Cell::new(0),
+            generated=RefCell::new(Vec::new()),
         }
     }
 

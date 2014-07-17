@@ -45,7 +45,7 @@ impl<'r, R: Reader> Bytes<'r, R> {
     /// Constructs a new byte iterator from the given Reader instance.
     pub fn new(r: &'r mut R) -> Bytes<'r, R> {
         Bytes {
-            reader: r,
+            reader=r,
         }
     }
 }
@@ -55,7 +55,7 @@ impl<'r, R: Reader> Iterator<IoResult<u8>> for Bytes<'r, R> {
     fn next(&mut self) -> Option<IoResult<u8>> {
         match self.reader.read_byte() {
             Ok(x) => Some(Ok(x)),
-            Err(IoError { kind: io::EndOfFile, .. }) => None,
+            Err(IoError { kind=io::EndOfFile, .. }) => None,
             Err(e) => Some(Err(e))
         }
     }
@@ -275,7 +275,7 @@ mod test {
     #[test]
     fn read_byte_0_bytes() {
         let mut reader = InitialZeroByteReader {
-            count: 0,
+            count=0,
         };
         let byte = reader.read_byte();
         assert!(byte == Ok(10));
@@ -298,7 +298,7 @@ mod test {
     #[test]
     fn bytes_0_bytes() {
         let mut reader = InitialZeroByteReader {
-            count: 0,
+            count=0,
         };
         let byte = reader.bytes().next();
         assert!(byte == Some(Ok(10)));
@@ -329,7 +329,7 @@ mod test {
     #[test]
     fn read_bytes_partial() {
         let mut reader = PartialReader {
-            count: 0,
+            count=0,
         };
         let bytes = reader.read_exact(4).unwrap();
         assert!(bytes == vec!(10, 11, 12, 13));
@@ -352,7 +352,7 @@ mod test {
     #[test]
     fn push_at_least_partial() {
         let mut reader = PartialReader {
-            count: 0,
+            count=0,
         };
         let mut buf = vec![8, 9];
         assert!(reader.push_at_least(4, 4, &mut buf).is_ok());
@@ -370,7 +370,7 @@ mod test {
     #[test]
     fn push_at_least_error() {
         let mut reader = ErroringLaterReader {
-            count: 0,
+            count=0,
         };
         let mut buf = vec![8, 9];
         assert!(reader.push_at_least(4, 4, &mut buf).is_err());
@@ -380,7 +380,7 @@ mod test {
     #[test]
     fn read_to_end() {
         let mut reader = ThreeChunkReader {
-            count: 0,
+            count=0,
         };
         let buf = reader.read_to_end().unwrap();
         assert!(buf == vec!(10, 11, 12, 13));
@@ -390,7 +390,7 @@ mod test {
     #[should_fail]
     fn read_to_end_error() {
         let mut reader = ThreeChunkReader {
-            count: 0,
+            count=0,
         };
         let buf = reader.read_to_end().unwrap();
         assert!(buf == vec!(10, 11));

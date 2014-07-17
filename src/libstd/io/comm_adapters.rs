@@ -48,10 +48,10 @@ impl ChanReader {
     /// Wraps a `Port` in a `ChanReader` structure
     pub fn new(rx: Receiver<Vec<u8>>) -> ChanReader {
         ChanReader {
-            buf: None,
-            pos: 0,
-            rx: rx,
-            closed: false,
+            buf=None,
+            pos=0,
+            rx=rx,
+            closed=false,
         }
     }
 }
@@ -106,13 +106,13 @@ pub struct ChanWriter {
 impl ChanWriter {
     /// Wraps a channel in a `ChanWriter` structure
     pub fn new(tx: Sender<Vec<u8>>) -> ChanWriter {
-        ChanWriter { tx: tx }
+        ChanWriter { tx=tx }
     }
 }
 
 impl Clone for ChanWriter {
     fn clone(&self) -> ChanWriter {
-        ChanWriter { tx: self.tx.clone() }
+        ChanWriter { tx=self.tx.clone() }
     }
 }
 
@@ -120,9 +120,9 @@ impl Writer for ChanWriter {
     fn write(&mut self, buf: &[u8]) -> IoResult<()> {
         self.tx.send_opt(Vec::from_slice(buf)).map_err(|_| {
             io::IoError {
-                kind: io::BrokenPipe,
-                desc: "Pipe closed",
-                detail: None
+                kind=io::BrokenPipe,
+                desc="Pipe closed",
+                detail=None
             }
         })
     }

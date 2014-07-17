@@ -38,12 +38,12 @@ impl AsyncWatcher {
             uvll::uv_async_init(loop_.handle, handle, async_cb)
         }, 0);
         let flag = Arc::new(Exclusive::new(false));
-        let payload = box Payload { callback: cb, exit_flag: flag.clone() };
+        let payload = box Payload { callback=cb, exit_flag=flag.clone() };
         unsafe {
             let payload: *mut u8 = mem::transmute(payload);
             uvll::set_data_for_uv_handle(handle, payload);
         }
-        return AsyncWatcher { handle: handle, exit_flag: flag, };
+        return AsyncWatcher { handle=handle, exit_flag=flag, };
     }
 }
 

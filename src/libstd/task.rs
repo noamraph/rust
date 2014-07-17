@@ -158,13 +158,13 @@ impl TaskBuilder<SiblingSpawner> {
     /// configuration methods can be chained.
     pub fn new() -> TaskBuilder<SiblingSpawner> {
         TaskBuilder {
-            name: None,
-            stack_size: None,
-            stdout: None,
-            stderr: None,
-            spawner: SiblingSpawner,
-            gen_body: None,
-            nocopy: marker::NoCopy,
+            name=None,
+            stack_size=None,
+            stdout=None,
+            stderr=None,
+            spawner=SiblingSpawner,
+            gen_body=None,
+            nocopy=marker::NoCopy,
         }
     }
 }
@@ -207,16 +207,16 @@ impl<S: Spawner> TaskBuilder<S> {
     pub fn spawner<T: Spawner>(self, spawner: T) -> TaskBuilder<T> {
         // repackage the entire TaskBuilder since its type is changing.
         let TaskBuilder {
-            name, stack_size, stdout, stderr, spawner: _, gen_body, nocopy
+            name, stack_size, stdout, stderr, spawner=_, gen_body, nocopy
         } = self;
         TaskBuilder {
-            name: name,
-            stack_size: stack_size,
-            stdout: stdout,
-            stderr: stderr,
-            spawner: spawner,
-            gen_body: gen_body,
-            nocopy: nocopy,
+            name=name,
+            stack_size=stack_size,
+            stdout=stdout,
+            stderr=stderr,
+            spawner=spawner,
+            gen_body=gen_body,
+            nocopy=nocopy,
         }
     }
 
@@ -244,16 +244,16 @@ impl<S: Spawner> TaskBuilder<S> {
     fn spawn_internal(self, f: proc():Send,
                       on_exit: Option<proc(Result<(), Box<Any + Send>>):Send>) {
         let TaskBuilder {
-            name, stack_size, stdout, stderr, spawner, mut gen_body, nocopy: _
+            name, stack_size, stdout, stderr, spawner, mut gen_body, nocopy=_
         } = self;
         let f = match gen_body.take() {
             Some(gen) => gen(f),
             None => f
         };
         let opts = task::TaskOpts {
-            on_exit: on_exit,
-            name: name,
-            stack_size: stack_size,
+            on_exit=on_exit,
+            name=name,
+            stack_size=stack_size,
         };
         if stdout.is_some() || stderr.is_some() {
             spawner.spawn(opts, proc() {

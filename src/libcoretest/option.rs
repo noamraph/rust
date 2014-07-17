@@ -54,7 +54,7 @@ fn test_get_resource() {
 
     fn r(i: Rc<RefCell<int>>) -> R {
         R {
-            i: i
+            i=i
         }
     }
 

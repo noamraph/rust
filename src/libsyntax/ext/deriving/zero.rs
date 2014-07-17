@@ -26,33 +26,33 @@ pub fn expand_deriving_zero(cx: &mut ExtCtxt,
     let inline = cx.meta_word(span, InternedString::new("inline"));
     let attrs = vec!(cx.attribute(span, inline));
     let trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: Path::new(vec!("std", "num", "Zero")),
-        additional_bounds: Vec::new(),
-        generics: LifetimeBounds::empty(),
-        methods: vec!(
+        span=span,
+        attributes=Vec::new(),
+        path=Path::new(vec!("std", "num", "Zero")),
+        additional_bounds=Vec::new(),
+        generics=LifetimeBounds::empty(),
+        methods=vec!(
             MethodDef {
-                name: "zero",
-                generics: LifetimeBounds::empty(),
-                explicit_self: None,
-                args: Vec::new(),
-                ret_ty: Self,
-                attributes: attrs.clone(),
-                const_nonmatching: false,
-                combine_substructure: combine_substructure(|a, b, c| {
+                name="zero",
+                generics=LifetimeBounds::empty(),
+                explicit_self=None,
+                args=Vec::new(),
+                ret_ty=Self,
+                attributes=attrs.clone(),
+                const_nonmatching=false,
+                combine_substructure=combine_substructure(|a, b, c| {
                     zero_substructure(a, b, c)
                 })
             },
             MethodDef {
-                name: "is_zero",
-                generics: LifetimeBounds::empty(),
-                explicit_self: borrowed_explicit_self(),
-                args: Vec::new(),
-                ret_ty: Literal(Path::new(vec!("bool"))),
-                attributes: attrs,
-                const_nonmatching: false,
-                combine_substructure: combine_substructure(|cx, span, substr| {
+                name="is_zero",
+                generics=LifetimeBounds::empty(),
+                explicit_self=borrowed_explicit_self(),
+                args=Vec::new(),
+                ret_ty=Literal(Path::new(vec!("bool"))),
+                attributes=attrs,
+                const_nonmatching=false,
+                combine_substructure=combine_substructure(|cx, span, substr| {
                     cs_and(|cx, span, _, _| cx.span_bug(span,
                                                         "Non-matching enum \
                                                          variant in \

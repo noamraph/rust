@@ -90,7 +90,7 @@ impl Writer for WriterWrapper {
 pub fn stdout() -> Option<Box<Terminal<WriterWrapper> + Send>> {
     let ti: Option<TerminfoTerminal<WriterWrapper>>
         = Terminal::new(WriterWrapper {
-            wrapped: box std::io::stdout() as Box<Writer + Send>,
+            wrapped=box std::io::stdout() as Box<Writer + Send>,
         });
     ti.map(|t| box t as Box<Terminal<WriterWrapper> + Send>)
 }
@@ -101,7 +101,7 @@ pub fn stdout() -> Option<Box<Terminal<WriterWrapper> + Send>> {
 pub fn stdout() -> Option<Box<Terminal<WriterWrapper> + Send>> {
     let ti: Option<TerminfoTerminal<WriterWrapper>>
         = Terminal::new(WriterWrapper {
-            wrapped: box std::io::stdout() as Box<Writer + Send>,
+            wrapped=box std::io::stdout() as Box<Writer + Send>,
         });
 
     match ti {
@@ -109,7 +109,7 @@ pub fn stdout() -> Option<Box<Terminal<WriterWrapper> + Send>> {
         None => {
             let wc: Option<WinConsole<WriterWrapper>>
                 = Terminal::new(WriterWrapper {
-                    wrapped: box std::io::stdout() as Box<Writer + Send>,
+                    wrapped=box std::io::stdout() as Box<Writer + Send>,
                 });
             wc.map(|w| box w as Box<Terminal<WriterWrapper> + Send>)
         }
@@ -122,7 +122,7 @@ pub fn stdout() -> Option<Box<Terminal<WriterWrapper> + Send>> {
 pub fn stderr() -> Option<Box<Terminal<WriterWrapper> + Send> + Send> {
     let ti: Option<TerminfoTerminal<WriterWrapper>>
         = Terminal::new(WriterWrapper {
-            wrapped: box std::io::stderr() as Box<Writer + Send>,
+            wrapped=box std::io::stderr() as Box<Writer + Send>,
         });
     ti.map(|t| box t as Box<Terminal<WriterWrapper> + Send>)
 }
@@ -133,7 +133,7 @@ pub fn stderr() -> Option<Box<Terminal<WriterWrapper> + Send> + Send> {
 pub fn stderr() -> Option<Box<Terminal<WriterWrapper> + Send> + Send> {
     let ti: Option<TerminfoTerminal<WriterWrapper>>
         = Terminal::new(WriterWrapper {
-            wrapped: box std::io::stderr() as Box<Writer + Send>,
+            wrapped=box std::io::stderr() as Box<Writer + Send>,
         });
 
     match ti {
@@ -141,7 +141,7 @@ pub fn stderr() -> Option<Box<Terminal<WriterWrapper> + Send> + Send> {
         None => {
             let wc: Option<WinConsole<WriterWrapper>>
                 = Terminal::new(WriterWrapper {
-                    wrapped: box std::io::stderr() as Box<Writer + Send>,
+                    wrapped=box std::io::stderr() as Box<Writer + Send>,
                 });
             wc.map(|w| box w as Box<Terminal<WriterWrapper> + Send>)
         }

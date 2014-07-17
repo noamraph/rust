@@ -305,10 +305,10 @@ pub fn parse(file: &mut io::Reader, longnames: bool)
 
     // And that's all there is to it
     Ok(box TermInfo {
-        names: term_names,
-        bools: bools_map,
-        numbers: numbers_map,
-        strings: string_map
+        names=term_names,
+        bools=bools_map,
+        numbers=numbers_map,
+        strings=string_map
     })
 }
 
@@ -320,10 +320,10 @@ pub fn msys_terminfo() -> Box<TermInfo> {
     strings.insert("setaf".to_string(), Vec::from_slice(b"\x1B[3%p1%dm"));
     strings.insert("setab".to_string(), Vec::from_slice(b"\x1B[4%p1%dm"));
     box TermInfo {
-        names: vec!("cygwin".to_string()), // msys is a fork of an older cygwin version
-        bools: HashMap::new(),
-        numbers: HashMap::new(),
-        strings: strings
+        names=vec!("cygwin".to_string()), // msys is a fork of an older cygwin version
+        bools=HashMap::new(),
+        numbers=HashMap::new(),
+        strings=strings
     }
 }
 

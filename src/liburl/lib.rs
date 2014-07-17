@@ -91,11 +91,11 @@ impl Url {
                fragment: Option<String>)
                -> Url {
         Url {
-            scheme: scheme,
-            user: user,
-            host: host,
-            port: port,
-            path: Path::new(path, query, fragment)
+            scheme=scheme,
+            user=user,
+            host=host,
+            port=port,
+            path=Path::new(path, query, fragment)
         }
     }
 
@@ -145,9 +145,9 @@ impl Path {
                fragment: Option<String>)
                -> Path {
         Path {
-            path: path,
-            query: query,
-            fragment: fragment,
+            path=path,
+            query=query,
+            fragment=fragment,
         }
     }
 
@@ -167,7 +167,7 @@ impl Path {
         // query and fragment
         let (query, fragment) = try!(get_query_fragment(rest.as_slice()));
 
-        Ok(Path{ path: path, query: query, fragment: fragment })
+        Ok(Path{ path=path, query=query, fragment=fragment })
     }
 }
 
@@ -179,7 +179,7 @@ pub fn path_from_str(s: &str) -> Result<Path, String> {
 impl UserInfo {
     #[inline]
     pub fn new(user: String, pass: Option<String>) -> UserInfo {
-        UserInfo { user: user, pass: pass }
+        UserInfo { user=user, pass=pass }
     }
 }
 

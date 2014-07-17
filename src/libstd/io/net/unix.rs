@@ -57,7 +57,7 @@ impl UnixStream {
     /// ```
     pub fn connect<P: ToCStr>(path: &P) -> IoResult<UnixStream> {
         LocalIo::maybe_raise(|io| {
-            io.unix_connect(&path.to_c_str(), None).map(|p| UnixStream { obj: p })
+            io.unix_connect(&path.to_c_str(), None).map(|p| UnixStream { obj=p })
         }).map_err(IoError::from_rtio_error)
     }
 
@@ -71,7 +71,7 @@ impl UnixStream {
                                       timeout_ms: u64) -> IoResult<UnixStream> {
         LocalIo::maybe_raise(|io| {
             let s = io.unix_connect(&path.to_c_str(), Some(timeout_ms));
-            s.map(|p| UnixStream { obj: p })
+            s.map(|p| UnixStream { obj=p })
         }).map_err(IoError::from_rtio_error)
     }
 
@@ -125,7 +125,7 @@ impl UnixStream {
 
 impl Clone for UnixStream {
     fn clone(&self) -> UnixStream {
-        UnixStream { obj: self.obj.clone() }
+        UnixStream { obj=self.obj.clone() }
     }
 }
 
@@ -172,7 +172,7 @@ impl UnixListener {
     /// ```
     pub fn bind<P: ToCStr>(path: &P) -> IoResult<UnixListener> {
         LocalIo::maybe_raise(|io| {
-            io.unix_bind(&path.to_c_str()).map(|s| UnixListener { obj: s })
+            io.unix_bind(&path.to_c_str()).map(|s| UnixListener { obj=s })
         }).map_err(IoError::from_rtio_error)
     }
 }
@@ -180,7 +180,7 @@ impl UnixListener {
 impl Listener<UnixStream, UnixAcceptor> for UnixListener {
     fn listen(self) -> IoResult<UnixAcceptor> {
         self.obj.listen().map(|obj| {
-            UnixAcceptor { obj: obj }
+            UnixAcceptor { obj=obj }
         }).map_err(IoError::from_rtio_error)
     }
 }
@@ -213,7 +213,7 @@ impl UnixAcceptor {
 impl Acceptor<UnixStream> for UnixAcceptor {
     fn accept(&mut self) -> IoResult<UnixStream> {
         self.obj.accept().map(|s| {
-            UnixStream { obj: s }
+            UnixStream { obj=s }
         }).map_err(IoError::from_rtio_error)
     }
 }
@@ -588,8 +588,8 @@ mod tests {
         s.set_timeout(Some(20));
         for i in range(0u, 1001) {
             match s.write([0, .. 128 * 1024]) {
-                Ok(()) | Err(IoError { kind: ShortWrite(..), .. }) => {},
-                Err(IoError { kind: TimedOut, .. }) => break,
+                Ok(()) | Err(IoError { kind=ShortWrite(..), .. }) => {},
+                Err(IoError { kind=TimedOut, .. }) => break,
                 Err(e) => fail!("{}", e),
            }
            if i == 1000 { fail!("should have filled up?!"); }
@@ -649,8 +649,8 @@ mod tests {
         s.set_write_timeout(Some(20));
         for i in range(0u, 1001) {
             match s.write([0, .. 128 * 1024]) {
-                Ok(()) | Err(IoError { kind: ShortWrite(..), .. }) => {},
-                Err(IoError { kind: TimedOut, .. }) => break,
+                Ok(()) | Err(IoError { kind=ShortWrite(..), .. }) => {},
+                Err(IoError { kind=TimedOut, .. }) => break,
                 Err(e) => fail!("{}", e),
            }
            if i == 1000 { fail!("should have filled up?!"); }

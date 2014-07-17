@@ -127,7 +127,7 @@ pub fn push_ctxt(s: &'static str) -> _InsnCtxt {
         Some(ctx) => ctx.borrow_mut().push(s),
         None => {}
     }
-    _InsnCtxt { _cannot_construct_outside_of_this_module: () }
+    _InsnCtxt { _cannot_construct_outside_of_this_module=() }
 }
 
 pub struct StatRecorder<'a> {
@@ -146,10 +146,10 @@ impl<'a> StatRecorder<'a> {
         };
         let istart = ccx.stats.n_llvm_insns.get();
         StatRecorder {
-            ccx: ccx,
-            name: Some(name),
-            start: start,
-            istart: istart,
+            ccx=ccx,
+            name=Some(name),
+            start=start,
+            istart=istart,
         }
     }
 }
@@ -1185,23 +1185,23 @@ pub fn new_fn_ctxt<'a>(ccx: &'a CrateContext,
     let debug_context = debuginfo::create_function_debug_context(ccx, id, param_substs, llfndecl);
 
     let mut fcx = FunctionContext {
-          llfn: llfndecl,
-          llenv: None,
-          llretptr: Cell::new(None),
-          alloca_insert_pt: Cell::new(None),
-          llreturn: Cell::new(None),
-          personality: Cell::new(None),
-          caller_expects_out_pointer: uses_outptr,
-          llargs: RefCell::new(NodeMap::new()),
-          lllocals: RefCell::new(NodeMap::new()),
-          llupvars: RefCell::new(NodeMap::new()),
-          id: id,
-          param_substs: param_substs,
-          span: sp,
-          block_arena: block_arena,
-          ccx: ccx,
-          debug_context: debug_context,
-          scopes: RefCell::new(Vec::new())
+          llfn=llfndecl,
+          llenv=None,
+          llretptr=Cell::new(None),
+          alloca_insert_pt=Cell::new(None),
+          llreturn=Cell::new(None),
+          personality=Cell::new(None),
+          caller_expects_out_pointer=uses_outptr,
+          llargs=RefCell::new(NodeMap::new()),
+          lllocals=RefCell::new(NodeMap::new()),
+          llupvars=RefCell::new(NodeMap::new()),
+          id=id,
+          param_substs=param_substs,
+          span=sp,
+          block_arena=block_arena,
+          ccx=ccx,
+          debug_context=debug_context,
+          scopes=RefCell::new(Vec::new())
     };
 
     if has_env {
@@ -1256,7 +1256,7 @@ pub fn arg_kind(cx: &FunctionContext, t: ty::t) -> datum::Rvalue {
     use middle::trans::datum::{ByRef, ByValue};
 
     datum::Rvalue {
-        mode: if arg_is_indirect(cx.ccx, t) { ByRef } else { ByValue }
+        mode=if arg_is_indirect(cx.ccx, t) { ByRef } else { ByValue }
     }
 }
 
@@ -1665,7 +1665,7 @@ pub fn trans_item(ccx: &CrateContext, item: &ast::Item) {
         } else {
             // Be sure to travel more than just one layer deep to catch nested
             // items in blocks and such.
-            let mut v = TransItemVisitor{ ccx: ccx };
+            let mut v = TransItemVisitor{ ccx=ccx };
             v.visit_block(&**body, ());
         }
       }
@@ -1684,7 +1684,7 @@ pub fn trans_item(ccx: &CrateContext, item: &ast::Item) {
       }
       ast::ItemStatic(_, m, ref expr) => {
           // Recurse on the expression to catch items in blocks
-          let mut v = TransItemVisitor{ ccx: ccx };
+          let mut v = TransItemVisitor{ ccx=ccx };
           v.visit_expr(&**expr, ());
           consts::trans_const(ccx, m, item.id);
           // Do static_assert checking. It can't really be done much earlier
@@ -1717,7 +1717,7 @@ pub fn trans_item(ccx: &CrateContext, item: &ast::Item) {
         // functions, but the trait still needs to be walked. Otherwise default
         // methods with items will not get translated and will cause ICE's when
         // metadata time comes around.
-        let mut v = TransItemVisitor{ ccx: ccx };
+        let mut v = TransItemVisitor{ ccx=ccx };
         visit::walk_item(&mut v, item, ());
       }
       _ => {/* fall through */ }
@@ -1843,7 +1843,7 @@ pub fn get_fn_llvm_attributes(ccx: &CrateContext, fn_ty: ty::t) -> Vec<(uint, u6
         match ty::get(ret_ty).sty {
             // These are not really pointers but pairs, (pointer, len)
             ty::ty_uniq(it) |
-            ty::ty_rptr(_, ty::mt { ty: it, .. }) if match ty::get(it).sty {
+            ty::ty_rptr(_, ty::mt { ty=it, .. }) if match ty::get(it).sty {
                 ty::ty_str | ty::ty_vec(..) | ty::ty_trait(..) => true, _ => false
             } => {}
             ty::ty_uniq(_) | ty::ty_rptr(_, _) => {
@@ -2268,15 +2268,15 @@ pub fn p2i(ccx: &CrateContext, v: ValueRef) -> ValueRef {
 pub fn crate_ctxt_to_encode_parms<'r>(cx: &'r CrateContext, ie: encoder::EncodeInlinedItem<'r>)
     -> encoder::EncodeParams<'r> {
         encoder::EncodeParams {
-            diag: cx.sess().diagnostic(),
-            tcx: cx.tcx(),
-            reexports2: &cx.exp_map2,
-            item_symbols: &cx.item_symbols,
-            non_inlineable_statics: &cx.non_inlineable_statics,
-            link_meta: &cx.link_meta,
-            cstore: &cx.sess().cstore,
-            encode_inlined_item: ie,
-            reachable: &cx.reachable,
+            diag=cx.sess().diagnostic(),
+            tcx=cx.tcx(),
+            reexports2=&cx.exp_map2,
+            item_symbols=&cx.item_symbols,
+            non_inlineable_statics=&cx.non_inlineable_statics,
+            link_meta=&cx.link_meta,
+            cstore=&cx.sess().cstore,
+            encode_inlined_item=ie,
+            reachable=&cx.reachable,
         }
 }
 
@@ -2324,7 +2324,7 @@ pub fn write_metadata(cx: &CrateContext, krate: &ast::Crate) -> Vec<u8> {
 
 pub fn trans_crate(krate: ast::Crate,
                    analysis: CrateAnalysis) -> (ty::ctxt, CrateTranslation) {
-    let CrateAnalysis { ty_cx: tcx, exp_map2, reachable, name, .. } = analysis;
+    let CrateAnalysis { ty_cx=tcx, exp_map2, reachable, name, .. } = analysis;
 
     // Before we touch LLVM, make sure that multithreading is enabled.
     unsafe {
@@ -2442,13 +2442,13 @@ pub fn trans_crate(krate: ast::Crate,
     let no_builtins = attr::contains_name(krate.attrs.as_slice(), "no_builtins");
 
     (ccx.tcx, CrateTranslation {
-        context: llcx,
-        module: llmod,
-        link: link_meta,
-        metadata_module: metadata_module,
-        metadata: metadata,
-        reachable: reachable,
-        crate_formats: formats,
-        no_builtins: no_builtins,
+        context=llcx,
+        module=llmod,
+        link=link_meta,
+        metadata_module=metadata_module,
+        metadata=metadata,
+        reachable=reachable,
+        crate_formats=formats,
+        no_builtins=no_builtins,
     })
 }

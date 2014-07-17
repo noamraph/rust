@@ -114,5 +114,5 @@ pub fn simple_identifier<'a>(pat: &'a Pat) -> Option<&'a Ident> {
 }
 
 pub fn wild() -> Gc<Pat> {
-    box (GC) Pat { id: 0, node: PatWild, span: DUMMY_SP }
+    box (GC) Pat { id=0, node=PatWild, span=DUMMY_SP }
 }

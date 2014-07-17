@@ -32,14 +32,14 @@ impl GetAddrInfoRequest {
 
         let hint = hint.map(|hint| {
             libc::addrinfo {
-                ai_flags: hint.flags as c_int,
-                ai_family: hint.family as c_int,
-                ai_socktype: 0,
-                ai_protocol: 0,
-                ai_addrlen: 0,
-                ai_canonname: mut_null(),
-                ai_addr: mut_null(),
-                ai_next: mut_null()
+                ai_flags=hint.flags as c_int,
+                ai_family=hint.family as c_int,
+                ai_socktype=0,
+                ai_protocol=0,
+                ai_addrlen=0,
+                ai_canonname=mut_null(),
+                ai_addr=mut_null(),
+                ai_next=mut_null()
             }
         });
 
@@ -71,11 +71,11 @@ impl GetAddrInfoRequest {
                     Err(e) => return Err(e)
                 };
                 addrs.push(rtio::AddrinfoInfo {
-                    address: addr,
-                    family: (*rp).ai_family as uint,
-                    socktype: 0,
-                    protocol: 0,
-                    flags: (*rp).ai_flags as uint
+                    address=addr,
+                    family=(*rp).ai_family as uint,
+                    socktype=0,
+                    protocol=0,
+                    flags=(*rp).ai_flags as uint
                 });
 
                 rp = (*rp).ai_next as *mut libc::addrinfo;
@@ -109,8 +109,8 @@ fn get_error(s: c_int) -> IoError {
         CString::new(gai_strerror(s), false).as_str().unwrap().to_string()
     };
     IoError {
-        code: s as uint,
-        extra: 0,
-        detail: Some(err_str),
+        code=s as uint,
+        extra=0,
+        detail=Some(err_str),
     }
 }

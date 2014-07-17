@@ -57,8 +57,8 @@ impl LanguageItems {
         fn foo(_: LangItem) -> Option<ast::DefId> { None }
 
         LanguageItems {
-            items: vec!($(foo($variant)),*),
-            missing: Vec::new(),
+            items=vec!($(foo($variant)),*),
+            missing=Vec::new(),
         }
     }
 
@@ -141,9 +141,9 @@ impl<'a> LanguageItemCollector<'a> {
         $( item_refs.insert($name, $variant as uint); )*
 
         LanguageItemCollector {
-            session: session,
-            items: LanguageItems::new(),
-            item_refs: item_refs
+            session=session,
+            items=LanguageItems::new(),
+            item_refs=item_refs
         }
     }
 
@@ -172,7 +172,7 @@ impl<'a> LanguageItemCollector<'a> {
         let crate_store = &self.session.cstore;
         crate_store.iter_crate_data(|crate_number, _crate_metadata| {
             each_lang_item(crate_store, crate_number, |node_id, item_index| {
-                let def_id = ast::DefId { krate: crate_number, node: node_id };
+                let def_id = ast::DefId { krate=crate_number, node=node_id };
                 self.collect_item(item_index, def_id);
                 true
             });

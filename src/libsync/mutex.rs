@@ -165,20 +165,20 @@ pub struct Guard<'a> {
 /// Static initialization of a mutex. This constant can be used to initialize
 /// other mutex constants.
 pub static MUTEX_INIT: StaticMutex = StaticMutex {
-    lock: mutex::NATIVE_MUTEX_INIT,
-    state: atomics::INIT_ATOMIC_UINT,
-    flavor: Unsafe { value: Unlocked, marker1: marker::InvariantType },
-    green_blocker: Unsafe { value: 0, marker1: marker::InvariantType },
-    native_blocker: Unsafe { value: 0, marker1: marker::InvariantType },
-    green_cnt: atomics::INIT_ATOMIC_UINT,
-    q: q::Queue {
-        head: atomics::INIT_ATOMIC_UINT,
-        tail: Unsafe {
-            value: 0 as *mut q::Node<uint>,
-            marker1: marker::InvariantType,
+    lock=mutex::NATIVE_MUTEX_INIT,
+    state=atomics::INIT_ATOMIC_UINT,
+    flavor=Unsafe { value=Unlocked, marker1=marker::InvariantType },
+    green_blocker=Unsafe { value=0, marker1=marker::InvariantType },
+    native_blocker=Unsafe { value=0, marker1=marker::InvariantType },
+    green_cnt=atomics::INIT_ATOMIC_UINT,
+    q=q::Queue {
+        head=atomics::INIT_ATOMIC_UINT,
+        tail=Unsafe {
+            value=0 as *mut q::Node<uint>,
+            marker1=marker::InvariantType,
         },
-        stub: q::DummyNode {
-            next: atomics::INIT_ATOMIC_UINT,
+        stub=q::DummyNode {
+            next=atomics::INIT_ATOMIC_UINT,
         }
     }
 };
@@ -465,14 +465,14 @@ impl Mutex {
     /// Creates a new mutex in an unlocked state ready for use.
     pub fn new() -> Mutex {
         Mutex {
-            lock: box StaticMutex {
-                state: atomics::AtomicUint::new(0),
-                flavor: Unsafe::new(Unlocked),
-                green_blocker: Unsafe::new(0),
-                native_blocker: Unsafe::new(0),
-                green_cnt: atomics::AtomicUint::new(0),
-                q: q::Queue::new(),
-                lock: unsafe { mutex::StaticNativeMutex::new() },
+            lock=box StaticMutex {
+                state=atomics::AtomicUint::new(0),
+                flavor=Unsafe::new(Unlocked),
+                green_blocker=Unsafe::new(0),
+                native_blocker=Unsafe::new(0),
+                green_cnt=atomics::AtomicUint::new(0),
+                q=q::Queue::new(),
+                lock=unsafe { mutex::StaticNativeMutex::new() },
             }
         }
     }
@@ -504,7 +504,7 @@ impl<'a> Guard<'a> {
             assert!(unsafe { *lock.flavor.get() != Unlocked });
             assert!(lock.state.load(atomics::SeqCst) & LOCKED != 0);
         }
-        Guard { lock: lock }
+        Guard { lock=lock }
     }
 }
 

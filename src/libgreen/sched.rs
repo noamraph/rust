@@ -147,25 +147,25 @@ impl Scheduler {
 
         let (consumer, producer) = msgq::queue();
         let mut sched = Scheduler {
-            pool_id: pool_id,
-            sleeper_list: sleeper_list,
-            message_queue: consumer,
-            message_producer: producer,
-            sleepy: false,
-            no_sleep: false,
-            event_loop: event_loop,
-            work_queue: work_queue,
-            work_queues: work_queues,
-            stack_pool: StackPool::new(),
-            sched_task: None,
-            cleanup_job: None,
-            run_anything: run_anything,
-            friend_handle: friend,
-            rng: new_sched_rng(),
-            idle_callback: None,
-            yield_check_count: 0,
-            steal_for_yield: false,
-            task_state: state,
+            pool_id=pool_id,
+            sleeper_list=sleeper_list,
+            message_queue=consumer,
+            message_producer=producer,
+            sleepy=false,
+            no_sleep=false,
+            event_loop=event_loop,
+            work_queue=work_queue,
+            work_queues=work_queues,
+            stack_pool=StackPool::new(),
+            sched_task=None,
+            cleanup_job=None,
+            run_anything=run_anything,
+            friend_handle=friend,
+            rng=new_sched_rng(),
+            idle_callback=None,
+            yield_check_count=0,
+            steal_for_yield=false,
+            task_state=state,
         };
 
         sched.yield_check_count = reset_yield_check(&mut sched.rng);
@@ -636,7 +636,7 @@ impl Scheduler {
                 mem::transmute(&**next_task.sched.get_mut_ref());
 
             let current_task: &mut GreenTask = match sched.cleanup_job {
-                Some(CleanupJob { task: ref mut task, .. }) => &mut **task,
+                Some(CleanupJob { task=ref mut task, .. }) => &mut **task,
                 None => rtabort!("no cleanup job")
             };
 
@@ -882,9 +882,9 @@ impl Scheduler {
         let remote = self.event_loop.remote_callback(box SchedRunner);
 
         return SchedHandle {
-            remote: remote,
-            queue: self.message_producer.clone(),
-            sched_id: self.sched_id()
+            remote=remote,
+            queue=self.message_producer.clone(),
+            sched_id=self.sched_id()
         }
     }
 }
@@ -943,13 +943,13 @@ struct CleanupJob {
 impl CleanupJob {
     pub fn new(task: Box<GreenTask>, f: UnsafeTaskReceiver) -> CleanupJob {
         CleanupJob {
-            task: task,
-            f: f
+            task=task,
+            f=f
         }
     }
 
     pub fn run(self, sched: &mut Scheduler) {
-        let CleanupJob { task: task, f: f } = self;
+        let CleanupJob { task=task, f=f } = self;
         f.to_fn()(sched, task)
     }
 }
@@ -1033,8 +1033,8 @@ mod test {
 
     fn pool() -> SchedPool {
         SchedPool::new(PoolConfig {
-            threads: 1,
-            event_loop_factory: basic::event_loop,
+            threads=1,
+            event_loop_factory=basic::event_loop,
         })
     }
 
@@ -1195,7 +1195,7 @@ mod test {
                         run_any
                     }
                     TypeGreen(Some(HomeSched(SchedHandle {
-                        sched_id: ref id,
+                        sched_id=ref id,
                         ..
                     }))) => {
                         *id == sched_id
@@ -1277,8 +1277,8 @@ mod test {
         use std::io::timer;
 
         let mut pool = SchedPool::new(PoolConfig {
-            threads: 2,
-            event_loop_factory: rustuv::event_loop,
+            threads=2,
+            event_loop_factory=rustuv::event_loop,
         });
 
         // This is a regression test that when there are no schedulable tasks in
@@ -1417,7 +1417,7 @@ mod test {
                 }
             }
 
-            let s = S { field: () };
+            let s = S { field=() };
 
             spawn(proc() {
                 let _ss = &s;
@@ -1428,8 +1428,8 @@ mod test {
     #[test]
     fn dont_starve_1() {
         let mut pool = SchedPool::new(PoolConfig {
-            threads: 2, // this must be > 1
-            event_loop_factory: basic::event_loop,
+            threads=2, // this must be > 1
+            event_loop_factory=basic::event_loop,
         });
         pool.spawn(TaskOpts::new(), proc() {
             let (tx, rx) = channel();

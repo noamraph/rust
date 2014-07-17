@@ -50,8 +50,8 @@ impl<'a> PoisonOnFail<'a> {
     fn new<'a>(flag: &'a mut bool, name: &str) -> PoisonOnFail<'a> {
         PoisonOnFail::check(*flag, name);
         PoisonOnFail {
-            flag: flag,
-            failed: failing()
+            flag=flag,
+            failed=failing()
         }
     }
 }
@@ -202,9 +202,9 @@ impl<T: Send> Mutex<T> {
     /// allowed but any operations on the condvar will fail.)
     pub fn new_with_condvars(user_data: T, num_condvars: uint) -> Mutex<T> {
         Mutex {
-            lock: raw::Mutex::new_with_condvars(num_condvars),
-            failed: Unsafe::new(false),
-            data: Unsafe::new(user_data),
+            lock=raw::Mutex::new_with_condvars(num_condvars),
+            failed=Unsafe::new(false),
+            data=Unsafe::new(user_data),
         }
     }
 
@@ -230,11 +230,11 @@ impl<T: Send> Mutex<T> {
         let data = unsafe { &mut *self.data.get() };
 
         MutexGuard {
-            _data: data,
-            cond: Condvar {
-                name: "Mutex",
-                poison: PoisonOnFail::new(poison, "Mutex"),
-                inner: InnerMutex(guard),
+            _data=data,
+            cond=Condvar {
+                name="Mutex",
+                poison=PoisonOnFail::new(poison, "Mutex"),
+                inner=InnerMutex(guard),
             },
         }
     }
@@ -308,9 +308,9 @@ impl<T: Send + Share> RWLock<T> {
     /// of condvars (as sync::RWLock::new_with_condvars).
     pub fn new_with_condvars(user_data: T, num_condvars: uint) -> RWLock<T> {
         RWLock {
-            lock: raw::RWLock::new_with_condvars(num_condvars),
-            failed: Unsafe::new(false),
-            data: Unsafe::new(user_data),
+            lock=raw::RWLock::new_with_condvars(num_condvars),
+            failed=Unsafe::new(false),
+            data=Unsafe::new(user_data),
         }
     }
 
@@ -333,11 +333,11 @@ impl<T: Send + Share> RWLock<T> {
         let data = unsafe { &mut *self.data.get() };
 
         RWLockWriteGuard {
-            _data: data,
-            cond: Condvar {
-                name: "RWLock",
-                poison: PoisonOnFail::new(poison, "RWLock"),
-                inner: InnerRWLock(guard),
+            _data=data,
+            cond=Condvar {
+                name="RWLock",
+                poison=PoisonOnFail::new(poison, "RWLock"),
+                inner=InnerRWLock(guard),
             },
         }
     }
@@ -353,8 +353,8 @@ impl<T: Send + Share> RWLock<T> {
         let guard = self.lock.read();
         PoisonOnFail::check(unsafe { *self.failed.get() }, "RWLock");
         RWLockReadGuard {
-            _guard: guard,
-            _data: unsafe { &*self.data.get() },
+            _guard=guard,
+            _data=unsafe { &*self.data.get() },
         }
     }
 }
@@ -371,7 +371,7 @@ impl<'a, T: Send + Share> RWLockWriteGuard<'a, T> {
             InnerMutex(..) => unreachable!(),
             InnerRWLock(guard) => guard.downgrade()
         };
-        RWLockReadGuard { _guard: guard, _data: data }
+        RWLockReadGuard { _guard=guard, _data=data }
     }
 }
 
@@ -422,11 +422,11 @@ impl Barrier {
     /// Create a new barrier that can block a given number of tasks.
     pub fn new(num_tasks: uint) -> Barrier {
         Barrier {
-            lock: Mutex::new(BarrierState {
-                count: 0,
-                generation_id: 0,
+            lock=Mutex::new(BarrierState {
+                count=0,
+                generation_id=0,
             }),
-            num_tasks: num_tasks,
+            num_tasks=num_tasks,
         }
     }
 
@@ -545,7 +545,7 @@ mod tests {
                     *lock += 1;
                 }
             }
-            let _u = Unwinder { i: arc2 };
+            let _u = Unwinder { i=arc2 };
             fail!();
         });
         let lock = arc.lock();
@@ -660,7 +660,7 @@ mod tests {
                     *lock += 1;
                 }
             }
-            let _u = Unwinder { i: arc2 };
+            let _u = Unwinder { i=arc2 };
             fail!();
         });
         let lock = arc.read();

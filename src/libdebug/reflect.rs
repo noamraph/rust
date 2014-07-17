@@ -46,7 +46,7 @@ pub struct MovePtrAdaptor<V> {
 
 impl<V:TyVisitor + MovePtr> MovePtrAdaptor<V> {
     pub fn new(v: V) -> MovePtrAdaptor<V> {
-        MovePtrAdaptor { inner: v }
+        MovePtrAdaptor { inner=v }
     }
 
     #[inline]

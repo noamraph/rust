@@ -105,7 +105,7 @@ static mut CALLBACK_CNT: atomics::AtomicUint = atomics::INIT_ATOMIC_UINT;
 impl Unwinder {
     pub fn new() -> Unwinder {
         Unwinder {
-            unwinding: false,
+            unwinding=false,
         }
     }
 
@@ -151,8 +151,8 @@ pub unsafe fn try(f: ||) -> ::core::result::Result<(), Box<Any + Send>> {
     extern fn try_fn(code: *mut c_void, env: *mut c_void) {
         unsafe {
             let closure: || = mem::transmute(Closure {
-                code: code as *mut (),
-                env: env as *mut (),
+                code=code as *mut (),
+                env=env as *mut (),
             });
             closure();
         }
@@ -178,12 +178,12 @@ fn rust_fail(cause: Box<Any + Send>) -> ! {
 
     unsafe {
         let exception = box Exception {
-            uwe: uw::_Unwind_Exception {
-                exception_class: rust_exception_class(),
-                exception_cleanup: exception_cleanup,
-                private: [0, ..uw::unwinder_private_data_size],
+            uwe=uw::_Unwind_Exception {
+                exception_class=rust_exception_class(),
+                exception_cleanup=exception_cleanup,
+                private=[0, ..uw::unwinder_private_data_size],
             },
-            cause: Some(cause),
+            cause=Some(cause),
         };
         let error = uw::_Unwind_RaiseException(mem::transmute(exception));
         rtabort!("Could not unwind stack, error = {}", error as int)
@@ -413,7 +413,7 @@ pub fn begin_unwind_fmt(msg: &fmt::Arguments, file: &'static str,
     }
 
     let mut v = Vec::new();
-    let _ = write!(&mut VecWriter { v: &mut v }, "{}", msg);
+    let _ = write!(&mut VecWriter { v=&mut v }, "{}", msg);
 
     begin_unwind_inner(box String::from_utf8(v).unwrap(), file, line)
 }

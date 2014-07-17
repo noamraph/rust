@@ -34,7 +34,7 @@ pub fn path_name_i(idents: &[Ident]) -> String {
 }
 
 pub fn local_def(id: NodeId) -> DefId {
-    ast::DefId { krate: LOCAL_CRATE, node: id }
+    ast::DefId { krate=LOCAL_CRATE, node=id }
 }
 
 pub fn is_local(did: ast::DefId) -> bool { did.krate == LOCAL_CRATE }
@@ -171,12 +171,12 @@ pub fn is_call_expr(e: Gc<Expr>) -> bool {
 
 pub fn block_from_expr(e: Gc<Expr>) -> P<Block> {
     P(Block {
-        view_items: Vec::new(),
-        stmts: Vec::new(),
-        expr: Some(e),
-        id: e.id,
-        rules: DefaultBlock,
-        span: e.span
+        view_items=Vec::new(),
+        stmts=Vec::new(),
+        expr=Some(e),
+        id=e.id,
+        rules=DefaultBlock,
+        span=e.span
     })
 }
 
@@ -184,28 +184,28 @@ pub fn block_from_expr(e: Gc<Expr>) -> P<Block> {
 // 1-segment path
 pub fn ident_to_path(s: Span, identifier: Ident) -> Path {
     ast::Path {
-        span: s,
-        global: false,
-        segments: vec!(
+        span=s,
+        global=false,
+        segments=vec!(
             ast::PathSegment {
-                identifier: identifier,
-                lifetimes: Vec::new(),
-                types: OwnedSlice::empty(),
+                identifier=identifier,
+                lifetimes=Vec::new(),
+                types=OwnedSlice::empty(),
             }
         ),
     }
 }
 
 pub fn ident_to_pat(id: NodeId, s: Span, i: Ident) -> Gc<Pat> {
-    box(GC) ast::Pat { id: id,
-                node: PatIdent(BindByValue(MutImmutable), codemap::Spanned{span:s, node:i}, None),
-                span: s }
+    box(GC) ast::Pat { id=id,
+                node=PatIdent(BindByValue(MutImmutable), codemap::Spanned{span=s, node=i}, None),
+                span=s }
 }
 
 pub fn name_to_dummy_lifetime(name: Name) -> Lifetime {
-    Lifetime { id: DUMMY_NODE_ID,
-               span: codemap::DUMMY_SP,
-               name: name }
+    Lifetime { id=DUMMY_NODE_ID,
+               span=codemap::DUMMY_SP,
+               name=name }
 }
 
 pub fn is_unguarded(a: &Arm) -> bool {
@@ -256,15 +256,15 @@ pub fn trait_method_to_ty_method(method: &TraitMethod) -> TypeMethod {
         Required(ref m) => (*m).clone(),
         Provided(ref m) => {
             TypeMethod {
-                ident: m.ident,
-                attrs: m.attrs.clone(),
-                fn_style: m.fn_style,
-                decl: m.decl,
-                generics: m.generics.clone(),
-                explicit_self: m.explicit_self,
-                id: m.id,
-                span: m.span,
-                vis: m.vis,
+                ident=m.ident,
+                attrs=m.attrs.clone(),
+                fn_style=m.fn_style,
+                decl=m.decl,
+                generics=m.generics.clone(),
+                explicit_self=m.explicit_self,
+                id=m.id,
+                span=m.span,
+                vis=m.vis,
             }
         }
     }
@@ -311,8 +311,8 @@ pub fn operator_prec(op: ast::BinOp) -> uint {
 pub static as_prec: uint = 12u;
 
 pub fn empty_generics() -> Generics {
-    Generics {lifetimes: Vec::new(),
-              ty_params: OwnedSlice::empty()}
+    Generics {lifetimes=Vec::new(),
+              ty_params=OwnedSlice::empty()}
 }
 
 // ______________________________________________________________________
@@ -327,8 +327,8 @@ pub struct IdRange {
 impl IdRange {
     pub fn max() -> IdRange {
         IdRange {
-            min: u32::MAX,
-            max: u32::MIN,
+            min=u32::MAX,
+            max=u32::MIN,
         }
     }
 
@@ -544,9 +544,9 @@ impl<'a, O: IdVisitingOperation> Visitor<()> for IdVisitor<'a, O> {
 pub fn visit_ids_for_inlined_item<O: IdVisitingOperation>(item: &InlinedItem,
                                                           operation: &O) {
     let mut id_visitor = IdVisitor {
-        operation: operation,
-        pass_through_items: true,
-        visited_outermost: false,
+        operation=operation,
+        pass_through_items=true,
+        visited_outermost=false,
     };
 
     visit::walk_inlined_item(&mut id_visitor, item, ());
@@ -566,7 +566,7 @@ impl IdVisitingOperation for IdRangeComputingVisitor {
 
 pub fn compute_id_range_for_inlined_item(item: &InlinedItem) -> IdRange {
     let visitor = IdRangeComputingVisitor {
-        result: Cell::new(IdRange::max())
+        result=Cell::new(IdRange::max())
     };
     visit_ids_for_inlined_item(item, &visitor);
     visitor.result.get()
@@ -585,12 +585,12 @@ pub fn compute_id_range_for_fn_body(fk: &visit::FnKind,
      */
 
     let visitor = IdRangeComputingVisitor {
-        result: Cell::new(IdRange::max())
+        result=Cell::new(IdRange::max())
     };
     let mut id_visitor = IdVisitor {
-        operation: &visitor,
-        pass_through_items: false,
-        visited_outermost: false,
+        operation=&visitor,
+        pass_through_items=false,
+        visited_outermost=false,
     };
     id_visitor.visit_fn(fk, decl, body, sp, id, ());
     visitor.result.get()
@@ -649,7 +649,7 @@ impl<'a> Visitor<()> for EachViewItemData<'a> {
 impl EachViewItem for ast::Crate {
     fn each_view_item(&self, f: |&ast::ViewItem| -> bool) -> bool {
         let mut visit = EachViewItemData {
-            callback: f,
+            callback=f,
         };
         visit::walk_crate(&mut visit, self, ());
         true
@@ -747,21 +747,21 @@ mod test {
     use owned_slice::OwnedSlice;
 
     fn ident_to_segment(id : &Ident) -> PathSegment {
-        PathSegment {identifier:id.clone(),
-                     lifetimes: Vec::new(),
-                     types: OwnedSlice::empty()}
+        PathSegment {identifier=id.clone(),
+                     lifetimes=Vec::new(),
+                     types=OwnedSlice::empty()}
     }
 
     #[test] fn idents_name_eq_test() {
         assert!(segments_name_eq(
-            [Ident{name:Name(3),ctxt:4}, Ident{name:Name(78),ctxt:82}]
+            [Ident{name=Name(3),ctxt=4}, Ident{name=Name(78),ctxt=82}]
                 .iter().map(ident_to_segment).collect::<Vec<PathSegment>>().as_slice(),
-            [Ident{name:Name(3),ctxt:104}, Ident{name:Name(78),ctxt:182}]
+            [Ident{name=Name(3),ctxt=104}, Ident{name=Name(78),ctxt=182}]
                 .iter().map(ident_to_segment).collect::<Vec<PathSegment>>().as_slice()));
         assert!(!segments_name_eq(
-            [Ident{name:Name(3),ctxt:4}, Ident{name:Name(78),ctxt:82}]
+            [Ident{name=Name(3),ctxt=4}, Ident{name=Name(78),ctxt=82}]
                 .iter().map(ident_to_segment).collect::<Vec<PathSegment>>().as_slice(),
-            [Ident{name:Name(3),ctxt:104}, Ident{name:Name(77),ctxt:182}]
+            [Ident{name=Name(3),ctxt=104}, Ident{name=Name(77),ctxt=182}]
                 .iter().map(ident_to_segment).collect::<Vec<PathSegment>>().as_slice()));
     }
 }

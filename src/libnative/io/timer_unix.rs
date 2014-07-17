@@ -210,21 +210,21 @@ impl Timer {
         static mut ID: atomics::AtomicUint = atomics::INIT_ATOMIC_UINT;
         let id = unsafe { ID.fetch_add(1, atomics::Relaxed) };
         Ok(Timer {
-            id: id,
-            inner: Some(box Inner {
-                cb: None,
-                interval: 0,
-                target: 0,
-                repeat: false,
-                id: id,
+            id=id,
+            inner=Some(box Inner {
+                cb=None,
+                interval=0,
+                target=0,
+                repeat=false,
+                id=id,
             })
         })
     }
 
     pub fn sleep(ms: u64) {
         let mut to_sleep = libc::timespec {
-            tv_sec: (ms / 1000) as libc::time_t,
-            tv_nsec: ((ms % 1000) * 1000000) as libc::c_long,
+            tv_sec=(ms / 1000) as libc::time_t,
+            tv_nsec=((ms % 1000) * 1000000) as libc::c_long,
         };
         while unsafe { libc::nanosleep(&to_sleep, &mut to_sleep) } != 0 {
             if os::errno() as int != libc::EINTR as int {

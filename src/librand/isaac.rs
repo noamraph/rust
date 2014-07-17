@@ -39,10 +39,10 @@ pub struct IsaacRng {
     c: u32
 }
 static EMPTY: IsaacRng = IsaacRng {
-    cnt: 0,
-    rsl: [0, ..RAND_SIZE_UINT],
-    mem: [0, ..RAND_SIZE_UINT],
-    a: 0, b: 0, c: 0
+    cnt=0,
+    rsl=[0, ..RAND_SIZE_UINT],
+    mem=[0, ..RAND_SIZE_UINT],
+    a=0, b=0, c=0
 };
 
 impl IsaacRng {
@@ -262,10 +262,10 @@ pub struct Isaac64Rng {
 }
 
 static EMPTY_64: Isaac64Rng = Isaac64Rng {
-    cnt: 0,
-    rsl: [0, .. RAND_SIZE_64],
-    mem: [0, .. RAND_SIZE_64],
-    a: 0, b: 0, c: 0,
+    cnt=0,
+    rsl=[0, .. RAND_SIZE_64],
+    mem=[0, .. RAND_SIZE_64],
+    a=0, b=0, c=0,
 };
 
 impl Isaac64Rng {

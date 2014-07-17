@@ -137,17 +137,17 @@ impl Command {
     /// otherwise configure the process.
     pub fn new<T:ToCStr>(program: T) -> Command {
         Command {
-            program: program.to_c_str(),
-            args: Vec::new(),
-            env: None,
-            cwd: None,
-            stdin: CreatePipe(true, false),
-            stdout: CreatePipe(false, true),
-            stderr: CreatePipe(false, true),
-            extra_io: Vec::new(),
-            uid: None,
-            gid: None,
-            detach: false,
+            program=program.to_c_str(),
+            args=Vec::new(),
+            env=None,
+            cwd=None,
+            stdin=CreatePipe(true, false),
+            stdout=CreatePipe(false, true),
+            stderr=CreatePipe(false, true),
+            extra_io=Vec::new(),
+            uid=None,
+            gid=None,
+            detach=false,
         }
     }
 
@@ -278,29 +278,29 @@ impl Command {
                     Some(env_map.iter().collect::<Vec<_>>())
             };
             let cfg = ProcessConfig {
-                program: &self.program,
-                args: self.args.as_slice(),
-                env: env.as_ref().map(|e| e.as_slice()),
-                cwd: self.cwd.as_ref(),
-                stdin: to_rtio(self.stdin),
-                stdout: to_rtio(self.stdout),
-                stderr: to_rtio(self.stderr),
-                extra_io: extra_io.as_slice(),
-                uid: self.uid,
-                gid: self.gid,
-                detach: self.detach,
+                program=&self.program,
+                args=self.args.as_slice(),
+                env=env.as_ref().map(|e| e.as_slice()),
+                cwd=self.cwd.as_ref(),
+                stdin=to_rtio(self.stdin),
+                stdout=to_rtio(self.stdout),
+                stderr=to_rtio(self.stderr),
+                extra_io=extra_io.as_slice(),
+                uid=self.uid,
+                gid=self.gid,
+                detach=self.detach,
             };
             io.spawn(cfg).map(|(p, io)| {
                 let mut io = io.move_iter().map(|p| {
                     p.map(|p| io::PipeStream::new(p))
                 });
                 Process {
-                    handle: p,
-                    forget: false,
-                    stdin: io.next().unwrap(),
-                    stdout: io.next().unwrap(),
-                    stderr: io.next().unwrap(),
-                    extra_io: io.collect(),
+                    handle=p,
+                    forget=false,
+                    stdin=io.next().unwrap(),
+                    stdout=io.next().unwrap(),
+                    stderr=io.next().unwrap(),
+                    extra_io=io.collect(),
                 }
             })
         }).map_err(IoError::from_rtio_error)
@@ -571,9 +571,9 @@ impl Process {
         let status = try!(self.wait());
 
         Ok(ProcessOutput {
-            status: status,
-            output: stdout.recv().ok().unwrap_or(Vec::new()),
-            error:  stderr.recv().ok().unwrap_or(Vec::new()),
+            status=status,
+            output=stdout.recv().ok().unwrap_or(Vec::new()),
+            error= stderr.recv().ok().unwrap_or(Vec::new()),
         })
     }
 

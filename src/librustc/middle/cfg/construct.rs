@@ -46,23 +46,23 @@ pub fn construct(tcx: &ty::ctxt,
     let block_exit;
 
     let mut cfg_builder = CFGBuilder {
-        exit_map: NodeMap::new(),
-        graph: graph,
-        fn_exit: fn_exit,
-        tcx: tcx,
-        loop_scopes: Vec::new()
+        exit_map=NodeMap::new(),
+        graph=graph,
+        fn_exit=fn_exit,
+        tcx=tcx,
+        loop_scopes=Vec::new()
     };
     block_exit = cfg_builder.block(blk, entry);
     cfg_builder.add_contained_edge(block_exit, fn_exit);
     let CFGBuilder {exit_map, graph, ..} = cfg_builder;
-    CFG {exit_map: exit_map,
-         graph: graph,
-         entry: entry,
-         exit: fn_exit}
+    CFG {exit_map=exit_map,
+         graph=graph,
+         entry=entry,
+         exit=fn_exit}
 }
 
 fn add_initial_dummy_node(g: &mut CFGGraph) -> CFGIndex {
-    g.add_node(CFGNodeData { id: ast::DUMMY_NODE_ID })
+    g.add_node(CFGNodeData { id=ast::DUMMY_NODE_ID })
 }
 
 impl<'a> CFGBuilder<'a> {
@@ -248,9 +248,9 @@ impl<'a> CFGBuilder<'a> {
                 let cond_exit = self.expr(cond.clone(), loopback);       // 2
                 let expr_exit = self.add_node(expr.id, [cond_exit]);     // 3
                 self.loop_scopes.push(LoopScope {
-                    loop_id: expr.id,
-                    continue_index: loopback,
-                    break_index: expr_exit
+                    loop_id=expr.id,
+                    continue_index=loopback,
+                    break_index=expr_exit
                 });
                 let body_exit = self.block(&**body, cond_exit);          // 4
                 self.add_contained_edge(body_exit, loopback);            // 5
@@ -278,9 +278,9 @@ impl<'a> CFGBuilder<'a> {
                 let loopback = self.add_dummy_node([pred]);              // 1
                 let expr_exit = self.add_node(expr.id, []);              // 2
                 self.loop_scopes.push(LoopScope {
-                    loop_id: expr.id,
-                    continue_index: loopback,
-                    break_index: expr_exit,
+                    loop_id=expr.id,
+                    continue_index=loopback,
+                    break_index=expr_exit,
                 });
                 let body_exit = self.block(&**body, loopback);           // 3
                 self.add_contained_edge(body_exit, loopback);            // 4
@@ -501,7 +501,7 @@ impl<'a> CFGBuilder<'a> {
 
     fn add_node(&mut self, id: ast::NodeId, preds: &[CFGIndex]) -> CFGIndex {
         assert!(!self.exit_map.contains_key(&id));
-        let node = self.graph.add_node(CFGNodeData {id: id});
+        let node = self.graph.add_node(CFGNodeData {id=id});
         if id != ast::DUMMY_NODE_ID {
             assert!(!self.exit_map.contains_key(&id));
             self.exit_map.insert(id, node);
@@ -515,7 +515,7 @@ impl<'a> CFGBuilder<'a> {
     fn add_contained_edge(&mut self,
                           source: CFGIndex,
                           target: CFGIndex) {
-        let data = CFGEdgeData {exiting_scopes: vec!() };
+        let data = CFGEdgeData {exiting_scopes=vec!() };
         self.graph.add_edge(source, target, data);
     }
 
@@ -524,7 +524,7 @@ impl<'a> CFGBuilder<'a> {
                         from_index: CFGIndex,
                         to_loop: LoopScope,
                         to_index: CFGIndex) {
-        let mut data = CFGEdgeData {exiting_scopes: vec!() };
+        let mut data = CFGEdgeData {exiting_scopes=vec!() };
         let mut scope_id = from_expr.id;
         while scope_id != to_loop.loop_id {
 
@@ -538,9 +538,9 @@ impl<'a> CFGBuilder<'a> {
                           _from_expr: Gc<ast::Expr>,
                           from_index: CFGIndex) {
         let mut data = CFGEdgeData {
-            exiting_scopes: vec!(),
+            exiting_scopes=vec!(),
         };
-        for &LoopScope { loop_id: id, .. } in self.loop_scopes.iter().rev() {
+        for &LoopScope { loop_id=id, .. } in self.loop_scopes.iter().rev() {
             data.exiting_scopes.push(id);
         }
         self.graph.add_edge(from_index, self.fn_exit, data);

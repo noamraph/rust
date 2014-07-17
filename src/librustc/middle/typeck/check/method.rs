@@ -140,18 +140,18 @@ pub fn lookup<'a>(
         report_statics: StaticMethodsFlag)
      -> Option<MethodCallee> {
     let mut lcx = LookupContext {
-        fcx: fcx,
-        span: expr.span,
-        self_expr: Some(self_expr),
-        m_name: m_name,
-        supplied_tps: supplied_tps,
-        impl_dups: HashSet::new(),
-        inherent_candidates: Vec::new(),
-        extension_candidates: Vec::new(),
-        deref_args: deref_args,
-        check_traits: check_traits,
-        autoderef_receiver: autoderef_receiver,
-        report_statics: report_statics,
+        fcx=fcx,
+        span=expr.span,
+        self_expr=Some(self_expr),
+        m_name=m_name,
+        supplied_tps=supplied_tps,
+        impl_dups=HashSet::new(),
+        inherent_candidates=Vec::new(),
+        extension_candidates=Vec::new(),
+        deref_args=deref_args,
+        check_traits=check_traits,
+        autoderef_receiver=autoderef_receiver,
+        report_statics=report_statics,
     };
 
     debug!("method lookup(self_ty={}, expr={}, self_expr={})",
@@ -186,18 +186,18 @@ pub fn lookup_in_trait<'a>(
         report_statics: StaticMethodsFlag)
      -> Option<MethodCallee> {
     let mut lcx = LookupContext {
-        fcx: fcx,
-        span: span,
-        self_expr: self_expr,
-        m_name: m_name,
-        supplied_tps: supplied_tps,
-        impl_dups: HashSet::new(),
-        inherent_candidates: Vec::new(),
-        extension_candidates: Vec::new(),
-        deref_args: check::DoDerefArgs,
-        check_traits: CheckTraitsOnly,
-        autoderef_receiver: autoderef_receiver,
-        report_statics: report_statics,
+        fcx=fcx,
+        span=span,
+        self_expr=self_expr,
+        m_name=m_name,
+        supplied_tps=supplied_tps,
+        impl_dups=HashSet::new(),
+        inherent_candidates=Vec::new(),
+        extension_candidates=Vec::new(),
+        deref_args=check::DoDerefArgs,
+        check_traits=CheckTraitsOnly,
+        autoderef_receiver=autoderef_receiver,
+        report_statics=report_statics,
     };
 
     debug!("method lookup_in_trait(self_ty={}, self_expr={})",
@@ -282,7 +282,7 @@ fn construct_transformed_self_ty_for_object(
                     let r = r.subst(tcx, rcvr_substs); // handle Early-Bound lifetime
                     let tr = ty::mk_trait(tcx, trait_def_id, obj_substs,
                                           ty::empty_builtin_bounds());
-                    ty::mk_rptr(tcx, r, ty::mt{ ty: tr, mutbl: mt.mutbl })
+                    ty::mk_rptr(tcx, r, ty::mt{ ty=tr, mutbl=mt.mutbl })
                 }
                 ty::ty_uniq(_) => { // must be SelfUniq
                     let tr = ty::mk_trait(tcx, trait_def_id, obj_substs,
@@ -524,8 +524,8 @@ impl<'a> LookupContext<'a> {
         // for Self. (fix)
         let rcvr_substs = substs.with_self_ty(ty::mk_err());
         let trait_ref = Rc::new(TraitRef {
-            def_id: did,
-            substs: rcvr_substs.clone()
+            def_id=did,
+            substs=rcvr_substs.clone()
         });
 
         self.push_inherent_candidates_from_bounds_inner(&[trait_ref.clone()],
@@ -539,14 +539,14 @@ impl<'a> LookupContext<'a> {
                     tcx, span, did, &rcvr_substs, &m);
 
             Some(Candidate {
-                rcvr_match_condition: RcvrMatchesIfObject(did),
-                rcvr_substs: new_trait_ref.substs.clone(),
-                method_ty: Rc::new(m),
-                origin: MethodObject(MethodObject {
-                        trait_id: new_trait_ref.def_id,
-                        object_trait_id: did,
-                        method_num: method_num,
-                        real_index: vtable_index
+                rcvr_match_condition=RcvrMatchesIfObject(did),
+                rcvr_substs=new_trait_ref.substs.clone(),
+                method_ty=Rc::new(m),
+                origin=MethodObject(MethodObject {
+                        trait_id=new_trait_ref.def_id,
+                        object_trait_id=did,
+                        method_num=method_num,
+                        real_index=vtable_index
                     })
             })
         });
@@ -563,7 +563,7 @@ impl<'a> LookupContext<'a> {
             param_ty.space,
             param_ty.idx,
             restrict_to,
-            param_index { space: param_ty.space, index: param_ty.idx });
+            param_index { space=param_ty.space, index=param_ty.idx });
     }
 
 
@@ -587,14 +587,14 @@ impl<'a> LookupContext<'a> {
                     _ => {}
                 }
                 Some(Candidate {
-                    rcvr_match_condition: RcvrMatchesIfSubtype(self_ty),
-                    rcvr_substs: trait_ref.substs.clone(),
-                    method_ty: m,
-                    origin: MethodParam(MethodParam {
-                        trait_id: trait_ref.def_id,
-                        method_num: method_num,
-                        param_num: param,
-                        bound_num: bound_num,
+                    rcvr_match_condition=RcvrMatchesIfSubtype(self_ty),
+                    rcvr_substs=trait_ref.substs.clone(),
+                    method_ty=m,
+                    origin=MethodParam(MethodParam {
+                        trait_id=trait_ref.def_id,
+                        method_num=method_num,
+                        param_num=param,
+                        bound_num=bound_num,
                     })
                 })
         })
@@ -692,8 +692,8 @@ impl<'a> LookupContext<'a> {
         let span = self.self_expr.map_or(self.span, |e| e.span);
         let vcx = self.fcx.vtable_context();
         let TypeAndSubsts {
-            substs: impl_substs,
-            ty: impl_ty
+            substs=impl_substs,
+            ty=impl_ty
         } = impl_self_ty(&vcx, span, impl_did);
 
         let candidates = if is_extension {
@@ -703,10 +703,10 @@ impl<'a> LookupContext<'a> {
         };
 
         candidates.push(Candidate {
-            rcvr_match_condition: RcvrMatchesIfSubtype(impl_ty),
-            rcvr_substs: impl_substs,
-            origin: MethodStatic(method.def_id),
-            method_ty: method,
+            rcvr_match_condition=RcvrMatchesIfSubtype(impl_ty),
+            rcvr_substs=impl_substs,
+            origin=MethodStatic(method.def_id),
+            method_ty=method,
         });
     }
 
@@ -771,8 +771,8 @@ impl<'a> LookupContext<'a> {
             ty::ty_rptr(_, self_mt) if default_method_hack(self_mt) => {
                 (self_ty,
                  ty::AutoDerefRef {
-                     autoderefs: autoderefs,
-                     autoref: None})
+                     autoderefs=autoderefs,
+                     autoref=None})
             }
             ty::ty_rptr(_, self_mt) => {
                 let region =
@@ -785,14 +785,14 @@ impl<'a> LookupContext<'a> {
                 };
                 (ty::mk_rptr(tcx, region, self_mt),
                  ty::AutoDerefRef {
-                     autoderefs: autoderefs + extra_derefs,
-                     autoref: Some(auto)})
+                     autoderefs=autoderefs + extra_derefs,
+                     autoref=Some(auto)})
             }
             _ => {
                 (self_ty,
                  ty::AutoDerefRef {
-                     autoderefs: autoderefs,
-                     autoref: None})
+                     autoderefs=autoderefs,
+                     autoref=None})
             }
         };
 
@@ -815,7 +815,7 @@ impl<'a> LookupContext<'a> {
         let entry = self.search_for_some_kind_of_autorefd_method(
             AutoBorrowVec, autoderefs, [MutImmutable, MutMutable],
             |m,r| ty::mk_slice(tcx, r,
-                               ty::mt {ty:mt.ty, mutbl:m}));
+                               ty::mt {ty=mt.ty, mutbl=m}));
 
         if entry.is_some() {
             return entry;
@@ -826,13 +826,13 @@ impl<'a> LookupContext<'a> {
             AutoBorrowVecRef, autoderefs, [MutImmutable, MutMutable],
             |m,r| {
                 let slice_ty = ty::mk_slice(tcx, r,
-                                            ty::mt {ty:mt.ty, mutbl:m});
+                                            ty::mt {ty=mt.ty, mutbl=m});
                 // NB: we do not try to autoref to a mutable
                 // pointer. That would be creating a pointer
                 // to a temporary pointer (the borrowed
                 // slice), so any update the callee makes to
                 // it can't be observed.
-                ty::mk_rptr(tcx, r, ty::mt {ty:slice_ty, mutbl:MutImmutable})
+                ty::mk_rptr(tcx, r, ty::mt {ty=slice_ty, mutbl=MutImmutable})
             })
     }
 
@@ -853,7 +853,7 @@ impl<'a> LookupContext<'a> {
             AutoBorrowVecRef, autoderefs, [MutImmutable],
             |m,r| {
                 let slice_ty = ty::mk_str_slice(tcx, r, m);
-                ty::mk_rptr(tcx, r, ty::mt {ty:slice_ty, mutbl:m})
+                ty::mk_rptr(tcx, r, ty::mt {ty=slice_ty, mutbl=m})
             })
     }
 
@@ -861,16 +861,16 @@ impl<'a> LookupContext<'a> {
     fn auto_slice_trait(&self, ty: ty::t, autoderefs: uint) -> Option<MethodCallee> {
         match ty::get(ty).sty {
             ty_trait(box ty::TyTrait {
-                    def_id: trt_did,
-                    substs: ref trt_substs,
-                    bounds: b,
+                    def_id=trt_did,
+                    substs=ref trt_substs,
+                    bounds=b,
                     .. }) => {
                 let tcx = self.tcx();
                 self.search_for_some_kind_of_autorefd_method(
                     AutoBorrowObj, autoderefs, [MutImmutable, MutMutable],
                     |m, r| {
                         let tr = ty::mk_trait(tcx, trt_did, trt_substs.clone(), b);
-                        ty::mk_rptr(tcx, r, ty::mt{ ty: tr, mutbl: m })
+                        ty::mk_rptr(tcx, r, ty::mt{ ty=tr, mutbl=m })
                     })
             }
             _ => fail!("Expected ty_trait in auto_slice_trait")
@@ -932,7 +932,7 @@ impl<'a> LookupContext<'a> {
             ty_str | ty_vec(..) | ty_trait(..) | ty_closure(..) => {
                 self.search_for_some_kind_of_autorefd_method(
                     AutoPtr, autoderefs, [MutImmutable, MutMutable],
-                    |m,r| ty::mk_rptr(tcx, r, ty::mt {ty:self_ty, mutbl:m}))
+                    |m,r| ty::mk_rptr(tcx, r, ty::mt {ty=self_ty, mutbl=m}))
             }
 
             ty_err => None,
@@ -979,8 +979,8 @@ impl<'a> LookupContext<'a> {
                             self.fcx.write_adjustment(
                                 self_expr_id,
                                 ty::AutoDerefRef(ty::AutoDerefRef {
-                                    autoderefs: autoderefs,
-                                    autoref: Some(kind(region, *mutbl))
+                                    autoderefs=autoderefs,
+                                    autoref=Some(kind(region, *mutbl))
                                 }));
                         }
                         None => {}
@@ -1034,9 +1034,9 @@ impl<'a> LookupContext<'a> {
 
             // return something so we don't get errors for every mutability
             return Some(MethodCallee {
-                origin: relevant_candidates.get(0).origin,
-                ty: ty::mk_err(),
-                substs: subst::Substs::empty()
+                origin=relevant_candidates.get(0).origin,
+                ty=ty::mk_err(),
+                substs=subst::Substs::empty()
             });
         }
 
@@ -1157,10 +1157,10 @@ impl<'a> LookupContext<'a> {
             _ => fn_sig.inputs.subst(tcx, &all_substs)
         };
         let fn_sig = ty::FnSig {
-            binder_id: fn_sig.binder_id,
-            inputs: inputs,
-            output: fn_sig.output.subst(tcx, &all_substs),
-            variadic: fn_sig.variadic
+            binder_id=fn_sig.binder_id,
+            inputs=inputs,
+            output=fn_sig.output.subst(tcx, &all_substs),
+            variadic=fn_sig.variadic
         };
 
         debug!("after subst, fty={}", fn_sig.repr(tcx));
@@ -1173,9 +1173,9 @@ impl<'a> LookupContext<'a> {
                 infer::LateBoundRegion(self.span, br)));
         let transformed_self_ty = *fn_sig.inputs.get(0);
         let fty = ty::mk_bare_fn(tcx, ty::BareFnTy {
-            sig: fn_sig,
-            fn_style: bare_fn_ty.fn_style,
-            abi: bare_fn_ty.abi.clone(),
+            sig=fn_sig,
+            fn_style=bare_fn_ty.fn_style,
+            abi=bare_fn_ty.abi.clone(),
         });
         debug!("after replacing bound regions, fty={}", self.ty_to_string(fty));
 
@@ -1197,9 +1197,9 @@ impl<'a> LookupContext<'a> {
         }
 
         MethodCallee {
-            origin: candidate.origin,
-            ty: fty,
-            substs: all_substs
+            origin=candidate.origin,
+            ty=fty,
+            substs=all_substs
         }
     }
 
@@ -1271,8 +1271,8 @@ impl<'a> LookupContext<'a> {
             }
             // FIXME: does this properly enforce this on everything now
             // that self has been merged in? -sully
-            MethodParam(MethodParam { trait_id: trait_id, .. }) |
-            MethodObject(MethodObject { trait_id: trait_id, .. }) => {
+            MethodParam(MethodParam { trait_id=trait_id, .. }) |
+            MethodObject(MethodObject { trait_id=trait_id, .. }) => {
                 bad = self.tcx().destructor_for_type.borrow()
                           .contains_key(&trait_id);
             }
@@ -1302,7 +1302,7 @@ impl<'a> LookupContext<'a> {
                     ty::ty_uniq(typ) => {
                         match ty::get(typ).sty {
                             ty::ty_trait(box ty::TyTrait {
-                                def_id: self_did,
+                                def_id=self_did,
                                 ..
                             }) => {
                                 rcvr_matches_object(self_did, candidate) ||
@@ -1325,7 +1325,7 @@ impl<'a> LookupContext<'a> {
                     ty::ty_rptr(_, mt) => {
                         match ty::get(mt.ty).sty {
                             ty::ty_vec(_, None) | ty::ty_str => false,
-                            ty::ty_trait(box ty::TyTrait { def_id: self_did, .. }) => {
+                            ty::ty_trait(box ty::TyTrait { def_id=self_did, .. }) => {
                                 mutability_matches(mt.mutbl, m) &&
                                 rcvr_matches_object(self_did, candidate)
                             }
@@ -1345,7 +1345,7 @@ impl<'a> LookupContext<'a> {
                     ty::ty_uniq(typ) => {
                         match ty::get(typ).sty {
                             ty::ty_vec(_, None) | ty::ty_str => false,
-                            ty::ty_trait(box ty::TyTrait { def_id: self_did, .. }) => {
+                            ty::ty_trait(box ty::TyTrait { def_id=self_did, .. }) => {
                                 rcvr_matches_object(self_did, candidate)
                             }
                             _ => rcvr_matches_ty(self.fcx, typ, candidate),

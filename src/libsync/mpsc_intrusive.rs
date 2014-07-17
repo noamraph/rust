@@ -62,10 +62,10 @@ pub struct Queue<T> {
 impl<T: Send> Queue<T> {
     pub fn new() -> Queue<T> {
         Queue {
-            head: atomics::AtomicUint::new(0),
-            tail: Unsafe::new(0 as *mut Node<T>),
-            stub: DummyNode {
-                next: atomics::AtomicUint::new(0),
+            head=atomics::AtomicUint::new(0),
+            tail=Unsafe::new(0 as *mut Node<T>),
+            stub=DummyNode {
+                next=atomics::AtomicUint::new(0),
             },
         }
     }
@@ -134,8 +134,8 @@ impl<T: Send> Queue<T> {
 impl<T: Send> Node<T> {
     pub fn new(t: T) -> Node<T> {
         Node {
-            data: t,
-            next: atomics::AtomicUint::new(0),
+            data=t,
+            next=atomics::AtomicUint::new(0),
         }
     }
     pub unsafe fn next(&self, ord: atomics::Ordering) -> *mut Node<T> {

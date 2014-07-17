@@ -171,10 +171,10 @@ impl<'a> ReachableContext<'a> {
             *ty != config::CrateTypeExecutable
         });
         ReachableContext {
-            tcx: tcx,
-            reachable_symbols: NodeSet::new(),
-            worklist: Vec::new(),
-            any_library: any_library,
+            tcx=tcx,
+            reachable_symbols=NodeSet::new(),
+            worklist=Vec::new(),
+            any_library=any_library,
         }
     }
 

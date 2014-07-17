@@ -174,7 +174,7 @@ pub enum deref_kind {
 pub fn opt_deref_kind(t: ty::t) -> Option<deref_kind> {
     match ty::get(t).sty {
         ty::ty_uniq(_) |
-        ty::ty_closure(box ty::ClosureTy {store: ty::UniqTraitStore, ..}) => {
+        ty::ty_closure(box ty::ClosureTy {store=ty::UniqTraitStore, ..}) => {
             Some(deref_ptr(OwnedPtr))
         }
 
@@ -184,7 +184,7 @@ pub fn opt_deref_kind(t: ty::t) -> Option<deref_kind> {
         }
 
         ty::ty_closure(box ty::ClosureTy {
-                store: ty::RegionTraitStore(r, _),
+                store=ty::RegionTraitStore(r, _),
                 ..
             }) => {
             Some(deref_ptr(BorrowedPtr(ty::ImmBorrow, r)))
@@ -347,7 +347,7 @@ macro_rules! if_ok(
 
 impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
     pub fn new(typer: &'t TYPER) -> MemCategorizationContext<'t,TYPER> {
-        MemCategorizationContext { typer: typer }
+        MemCategorizationContext { typer=typer }
     }
 
     fn tcx(&self) -> &'t ty::ctxt {
@@ -398,7 +398,7 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
 
                     ty::AutoDerefRef(
                         ty::AutoDerefRef {
-                            autoref: Some(_), ..}) => {
+                            autoref=Some(_), ..}) => {
                         // Equivalent to &*expr or something similar.
                         // Result is an rvalue.
                         let expr_ty = if_ok!(self.expr_ty_adjusted(expr));
@@ -407,7 +407,7 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
 
                     ty::AutoDerefRef(
                         ty::AutoDerefRef {
-                            autoref: None, autoderefs: autoderefs}) => {
+                            autoref=None, autoderefs=autoderefs}) => {
                         // Equivalent to *expr or something similar.
                         self.cat_expr_autoderefd(expr, autoderefs)
                     }
@@ -493,21 +493,21 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
           def::DefTyParam(..) | def::DefTyParamBinder(..) | def::DefRegion(_) |
           def::DefLabel(_) | def::DefSelfTy(..) | def::DefMethod(..) => {
               Ok(Rc::new(cmt_ {
-                  id:id,
-                  span:span,
-                  cat:cat_static_item,
-                  mutbl: McImmutable,
-                  ty:expr_ty
+                  id=id,
+                  span=span,
+                  cat=cat_static_item,
+                  mutbl=McImmutable,
+                  ty=expr_ty
               }))
           }
 
           def::DefStatic(_, true) => {
               Ok(Rc::new(cmt_ {
-                  id:id,
-                  span:span,
-                  cat:cat_static_item,
-                  mutbl: McDeclared,
-                  ty:expr_ty
+                  id=id,
+                  span=span,
+                  cat=cat_static_item,
+                  mutbl=McDeclared,
+                  ty=expr_ty
               }))
           }
 
@@ -521,11 +521,11 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
                 _ => McImmutable
             };
             Ok(Rc::new(cmt_ {
-                id: id,
-                span: span,
-                cat: cat_arg(vid),
-                mutbl: m,
-                ty:expr_ty
+                id=id,
+                span=span,
+                cat=cat_arg(vid),
+                mutbl=m,
+                ty=expr_ty
             }))
           }
 
@@ -551,15 +551,15 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
                       } else {
                           // FIXME #2152 allow mutation of moved upvars
                           Ok(Rc::new(cmt_ {
-                              id:id,
-                              span:span,
-                              cat:cat_copied_upvar(CopiedUpvar {
-                                  upvar_id: var_id,
-                                  onceness: closure_ty.onceness,
-                                  capturing_proc: fn_node_id,
+                              id=id,
+                              span=span,
+                              cat=cat_copied_upvar(CopiedUpvar {
+                                  upvar_id=var_id,
+                                  onceness=closure_ty.onceness,
+                                  capturing_proc=fn_node_id,
                               }),
-                              mutbl:McImmutable,
-                              ty:expr_ty
+                              mutbl=McImmutable,
+                              ty=expr_ty
                           }))
                       }
                   }
@@ -582,11 +582,11 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
             };
 
             Ok(Rc::new(cmt_ {
-                id: id,
-                span: span,
-                cat: cat_local(vid),
-                mutbl: m,
-                ty: expr_ty
+                id=id,
+                span=span,
+                cat=cat_local(vid),
+                mutbl=m,
+                ty=expr_ty
             }))
           }
         }
@@ -608,8 +608,8 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
          * equivalence is expose in the mem-categorization.
          */
 
-        let upvar_id = ty::UpvarId { var_id: var_id,
-                                     closure_expr_id: fn_node_id };
+        let upvar_id = ty::UpvarId { var_id=var_id,
+                                     closure_expr_id=fn_node_id };
 
         let upvar_borrow = self.typer.upvar_borrow(upvar_id);
 
@@ -622,21 +622,21 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
         let upvar_ty = ty::mk_err();
 
         let base_cmt = Rc::new(cmt_ {
-            id:id,
-            span:span,
-            cat:cat_upvar(upvar_id, upvar_borrow),
-            mutbl:McImmutable,
-            ty:upvar_ty,
+            id=id,
+            span=span,
+            cat=cat_upvar(upvar_id, upvar_borrow),
+            mutbl=McImmutable,
+            ty=upvar_ty,
         });
 
         let ptr = BorrowedPtr(upvar_borrow.kind, upvar_borrow.region);
 
         let deref_cmt = Rc::new(cmt_ {
-            id:id,
-            span:span,
-            cat:cat_deref(base_cmt, 0, ptr),
-            mutbl:MutabilityCategory::from_borrow_kind(upvar_borrow.kind),
-            ty:var_ty,
+            id=id,
+            span=span,
+            cat=cat_deref(base_cmt, 0, ptr),
+            mutbl=MutabilityCategory::from_borrow_kind(upvar_borrow.kind),
+            ty=var_ty,
         });
 
         Ok(deref_cmt)
@@ -663,11 +663,11 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
                       temp_scope: ty::Region,
                       expr_ty: ty::t) -> cmt {
         Rc::new(cmt_ {
-            id:cmt_id,
-            span:span,
-            cat:cat_rvalue(temp_scope),
-            mutbl:McDeclared,
-            ty:expr_ty
+            id=cmt_id,
+            span=span,
+            cat=cat_rvalue(temp_scope),
+            mutbl=McDeclared,
+            ty=expr_ty
         })
     }
 
@@ -678,11 +678,11 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
                                  f_ty: ty::t)
                                  -> cmt {
         Rc::new(cmt_ {
-            id: node.id(),
-            span: node.span(),
-            mutbl: base_cmt.mutbl.inherit(),
-            cat: cat_interior(base_cmt, InteriorField(NamedField(f_name.name))),
-            ty: f_ty
+            id=node.id(),
+            span=node.span(),
+            mutbl=base_cmt.mutbl.inherit(),
+            cat=cat_interior(base_cmt, InteriorField(NamedField(f_name.name))),
+            ty=f_ty
         })
     }
 
@@ -701,8 +701,8 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
             _ => typeck::NoAdjustment
         };
         let method_call = typeck::MethodCall {
-            expr_id: node.id(),
-            adjustment: adjustment
+            expr_id=node.id(),
+            adjustment=adjustment
         };
         let method_ty = self.typer.node_method_ty(method_call);
 
@@ -745,11 +745,11 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
             }
         };
         Rc::new(cmt_ {
-            id: node.id(),
-            span: node.span(),
-            cat: cat,
-            mutbl: m,
-            ty: deref_ty
+            id=node.id(),
+            span=node.span(),
+            cat=cat,
+            mutbl=m,
+            ty=deref_ty
         })
     }
 
@@ -819,11 +819,11 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
 
             // the deref is explicit in the resulting cmt
             let deref_cmt = Rc::new(cmt_ {
-                id:elt.id(),
-                span:elt.span(),
-                cat:cat_deref(base_cmt.clone(), derefs, ptr),
-                mutbl:m,
-                ty:element_ty
+                id=elt.id(),
+                span=elt.span(),
+                cat=cat_deref(base_cmt.clone(), derefs, ptr),
+                mutbl=m,
+                ty=element_ty
             });
 
             interior(elt, deref_cmt, base_cmt.ty, m.inherit(), element_ty)
@@ -843,11 +843,11 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
                                  element_ty: ty::t) -> cmt
         {
             Rc::new(cmt_ {
-                id:elt.id(),
-                span:elt.span(),
-                cat:cat_interior(of_cmt, InteriorElement(element_kind(vec_ty))),
-                mutbl:mutbl,
-                ty:element_ty
+                id=elt.id(),
+                span=elt.span(),
+                cat=cat_interior(of_cmt, InteriorElement(element_kind(vec_ty))),
+                mutbl=mutbl,
+                ty=element_ty
             })
         }
     }
@@ -905,11 +905,11 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
                                         interior: InteriorKind)
                                         -> cmt {
         Rc::new(cmt_ {
-            id: node.id(),
-            span: node.span(),
-            mutbl: base_cmt.mutbl.inherit(),
-            cat: cat_interior(base_cmt, interior),
-            ty: interior_ty
+            id=node.id(),
+            span=node.span(),
+            mutbl=base_cmt.mutbl.inherit(),
+            cat=cat_interior(base_cmt, interior),
+            ty=interior_ty
         })
     }
 
@@ -919,11 +919,11 @@ impl<'t,TYPER:Typer> MemCategorizationContext<'t,TYPER> {
                                     downcast_ty: ty::t)
                                     -> cmt {
         Rc::new(cmt_ {
-            id: node.id(),
-            span: node.span(),
-            mutbl: base_cmt.mutbl.inherit(),
-            cat: cat_downcast(base_cmt),
-            ty: downcast_ty
+            id=node.id(),
+            span=node.span(),
+            mutbl=base_cmt.mutbl.inherit(),
+            cat=cat_downcast(base_cmt),
+            ty=downcast_ty
         })
     }
 
@@ -1221,7 +1221,7 @@ impl cmt_ {
                 b.freely_aliasable(ctxt)
             }
 
-            cat_copied_upvar(CopiedUpvar {onceness: ast::Once, ..}) |
+            cat_copied_upvar(CopiedUpvar {onceness=ast::Once, ..}) |
             cat_rvalue(..) |
             cat_local(..) |
             cat_upvar(..) |
@@ -1230,7 +1230,7 @@ impl cmt_ {
                 None
             }
 
-            cat_copied_upvar(CopiedUpvar {onceness: ast::Many, ..}) => {
+            cat_copied_upvar(CopiedUpvar {onceness=ast::Many, ..}) => {
                 Some(AliasableOther)
             }
 
@@ -1321,7 +1321,7 @@ impl Repr for InteriorKind {
 
 fn element_kind(t: ty::t) -> ElementKind {
     match ty::get(t).sty {
-        ty::ty_rptr(_, ty::mt{ty:ty, ..}) |
+        ty::ty_rptr(_, ty::mt{ty=ty, ..}) |
         ty::ty_uniq(ty) => match ty::get(ty).sty {
             ty::ty_vec(_, None) => VecElement,
             _ => OtherElement

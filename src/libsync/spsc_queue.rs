@@ -77,8 +77,8 @@ impl<T: Send> Node<T> {
     fn new() -> *mut Node<T> {
         unsafe {
             mem::transmute(box Node {
-                value: None,
-                next: AtomicPtr::new(0 as *mut Node<T>),
+                value=None,
+                next=AtomicPtr::new(0 as *mut Node<T>),
             })
         }
     }
@@ -103,14 +103,14 @@ impl<T: Send> Queue<T> {
         let n2 = Node::new();
         unsafe { (*n1).next.store(n2, Relaxed) }
         Queue {
-            tail: Unsafe::new(n2),
-            tail_prev: AtomicPtr::new(n1),
-            head: Unsafe::new(n2),
-            first: Unsafe::new(n1),
-            tail_copy: Unsafe::new(n1),
-            cache_bound: bound,
-            cache_additions: AtomicUint::new(0),
-            cache_subtractions: AtomicUint::new(0),
+            tail=Unsafe::new(n2),
+            tail_prev=AtomicPtr::new(n1),
+            head=Unsafe::new(n2),
+            first=Unsafe::new(n1),
+            tail_copy=Unsafe::new(n1),
+            cache_bound=bound,
+            cache_additions=AtomicUint::new(0),
+            cache_subtractions=AtomicUint::new(0),
         }
     }
 

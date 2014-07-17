@@ -37,10 +37,10 @@ impl<'a> RustdocVisitor<'a> {
     pub fn new<'b>(cx: &'b core::DocContext,
                    analysis: Option<&'b core::CrateAnalysis>) -> RustdocVisitor<'b> {
         RustdocVisitor {
-            module: Module::new(None),
-            attrs: Vec::new(),
-            cx: cx,
-            analysis: analysis,
+            module=Module::new(None),
+            attrs=Vec::new(),
+            cx=cx,
+            analysis=analysis,
         }
     }
 
@@ -72,15 +72,15 @@ impl<'a> RustdocVisitor<'a> {
         debug!("Visiting struct");
         let struct_type = struct_type_from_def(&*sd);
         Struct {
-            id: item.id,
-            struct_type: struct_type,
-            name: item.ident,
-            vis: item.vis,
-            stab: self.stability(item.id),
-            attrs: item.attrs.iter().map(|x| *x).collect(),
-            generics: generics.clone(),
-            fields: sd.fields.iter().map(|x| (*x).clone()).collect(),
-            where: item.span
+            id=item.id,
+            struct_type=struct_type,
+            name=item.ident,
+            vis=item.vis,
+            stab=self.stability(item.id),
+            attrs=item.attrs.iter().map(|x| *x).collect(),
+            generics=generics.clone(),
+            fields=sd.fields.iter().map(|x| (*x).clone()).collect(),
+            where=item.span
         }
     }
 
@@ -90,24 +90,24 @@ impl<'a> RustdocVisitor<'a> {
         let mut vars: Vec<Variant> = Vec::new();
         for x in def.variants.iter() {
             vars.push(Variant {
-                name: x.node.name,
-                attrs: x.node.attrs.iter().map(|x| *x).collect(),
-                vis: x.node.vis,
-                stab: self.stability(x.node.id),
-                id: x.node.id,
-                kind: x.node.kind.clone(),
-                where: x.span,
+                name=x.node.name,
+                attrs=x.node.attrs.iter().map(|x| *x).collect(),
+                vis=x.node.vis,
+                stab=self.stability(x.node.id),
+                id=x.node.id,
+                kind=x.node.kind.clone(),
+                where=x.span,
             });
         }
         Enum {
-            name: it.ident,
-            variants: vars,
-            vis: it.vis,
-            stab: self.stability(it.id),
-            generics: params.clone(),
-            attrs: it.attrs.iter().map(|x| *x).collect(),
-            id: it.id,
-            where: it.span,
+            name=it.ident,
+            variants=vars,
+            vis=it.vis,
+            stab=self.stability(it.id),
+            generics=params.clone(),
+            attrs=it.attrs.iter().map(|x| *x).collect(),
+            id=it.id,
+            where=it.span,
         }
     }
 
@@ -116,15 +116,15 @@ impl<'a> RustdocVisitor<'a> {
                     gen: &ast::Generics) -> Function {
         debug!("Visiting fn");
         Function {
-            id: item.id,
-            vis: item.vis,
-            stab: self.stability(item.id),
-            attrs: item.attrs.iter().map(|x| *x).collect(),
-            decl: fd.clone(),
-            name: item.ident,
-            where: item.span,
-            generics: gen.clone(),
-            fn_style: *fn_style,
+            id=item.id,
+            vis=item.vis,
+            stab=self.stability(item.id),
+            attrs=item.attrs.iter().map(|x| *x).collect(),
+            decl=fd.clone(),
+            name=item.ident,
+            where=item.span,
+            generics=gen.clone(),
+            fn_style=*fn_style,
         }
     }
 
@@ -166,7 +166,7 @@ impl<'a> RustdocVisitor<'a> {
                     None => return,
                     Some(path) => {
                         ast::ViewItem {
-                            node: ast::ViewItemUse(path),
+                            node=ast::ViewItemUse(path),
                             .. item.clone()
                         }
                     }
@@ -194,8 +194,8 @@ impl<'a> RustdocVisitor<'a> {
 
                 if mine.len() == 0 { return None }
                 return Some(box(GC) ::syntax::codemap::Spanned {
-                    node: ast::ViewPathList(p.clone(), mine, b.clone()),
-                    span: path.span,
+                    node=ast::ViewPathList(p.clone(), mine, b.clone()),
+                    span=path.span,
                 })
             }
 
@@ -267,56 +267,56 @@ impl<'a> RustdocVisitor<'a> {
                 om.fns.push(self.visit_fn(item, &**fd, pur, abi, gen)),
             ast::ItemTy(ty, ref gen) => {
                 let t = Typedef {
-                    ty: ty,
-                    gen: gen.clone(),
-                    name: item.ident,
-                    id: item.id,
-                    attrs: item.attrs.iter().map(|x| *x).collect(),
-                    where: item.span,
-                    vis: item.vis,
-                    stab: self.stability(item.id),
+                    ty=ty,
+                    gen=gen.clone(),
+                    name=item.ident,
+                    id=item.id,
+                    attrs=item.attrs.iter().map(|x| *x).collect(),
+                    where=item.span,
+                    vis=item.vis,
+                    stab=self.stability(item.id),
                 };
                 om.typedefs.push(t);
             },
             ast::ItemStatic(ty, ref mut_, ref exp) => {
                 let s = Static {
-                    type_: ty,
-                    mutability: mut_.clone(),
-                    expr: exp.clone(),
-                    id: item.id,
-                    name: item.ident,
-                    attrs: item.attrs.iter().map(|x| *x).collect(),
-                    where: item.span,
-                    vis: item.vis,
-                    stab: self.stability(item.id),
+                    type_=ty,
+                    mutability=mut_.clone(),
+                    expr=exp.clone(),
+                    id=item.id,
+                    name=item.ident,
+                    attrs=item.attrs.iter().map(|x| *x).collect(),
+                    where=item.span,
+                    vis=item.vis,
+                    stab=self.stability(item.id),
                 };
                 om.statics.push(s);
             },
             ast::ItemTrait(ref gen, _, ref tr, ref met) => {
                 let t = Trait {
-                    name: item.ident,
-                    methods: met.iter().map(|x| (*x).clone()).collect(),
-                    generics: gen.clone(),
-                    parents: tr.iter().map(|x| (*x).clone()).collect(),
-                    id: item.id,
-                    attrs: item.attrs.iter().map(|x| *x).collect(),
-                    where: item.span,
-                    vis: item.vis,
-                    stab: self.stability(item.id),
+                    name=item.ident,
+                    methods=met.iter().map(|x| (*x).clone()).collect(),
+                    generics=gen.clone(),
+                    parents=tr.iter().map(|x| (*x).clone()).collect(),
+                    id=item.id,
+                    attrs=item.attrs.iter().map(|x| *x).collect(),
+                    where=item.span,
+                    vis=item.vis,
+                    stab=self.stability(item.id),
                 };
                 om.traits.push(t);
             },
             ast::ItemImpl(ref gen, ref tr, ty, ref meths) => {
                 let i = Impl {
-                    generics: gen.clone(),
-                    trait_: tr.clone(),
-                    for_: ty,
-                    methods: meths.iter().map(|x| *x).collect(),
-                    attrs: item.attrs.iter().map(|x| *x).collect(),
-                    id: item.id,
-                    where: item.span,
-                    vis: item.vis,
-                    stab: self.stability(item.id),
+                    generics=gen.clone(),
+                    trait_=tr.clone(),
+                    for_=ty,
+                    methods=meths.iter().map(|x| *x).collect(),
+                    attrs=item.attrs.iter().map(|x| *x).collect(),
+                    id=item.id,
+                    where=item.span,
+                    vis=item.vis,
+                    stab=self.stability(item.id),
                 };
                 om.impls.push(i);
             },
@@ -325,11 +325,11 @@ impl<'a> RustdocVisitor<'a> {
             }
             ast::ItemMac(ref _m) => {
                 om.macros.push(Macro {
-                    id: item.id,
-                    attrs: item.attrs.iter().map(|x| *x).collect(),
-                    name: item.ident,
-                    where: item.span,
-                    stab: self.stability(item.id),
+                    id=item.id,
+                    attrs=item.attrs.iter().map(|x| *x).collect(),
+                    name=item.ident,
+                    where=item.span,
+                    stab=self.stability(item.id),
                 })
             }
         }

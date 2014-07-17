@@ -63,13 +63,13 @@ pub fn find_entry_point(session: &Session, krate: &Crate, ast_map: &ast_map::Map
     }
 
     let mut ctxt = EntryContext {
-        session: session,
-        main_name: token::intern("main"),
-        ast_map: ast_map,
-        main_fn: None,
-        attr_main_fn: None,
-        start_fn: None,
-        non_main_fns: Vec::new(),
+        session=session,
+        main_name=token::intern("main"),
+        ast_map=ast_map,
+        main_fn=None,
+        attr_main_fn=None,
+        start_fn=None,
+        non_main_fns=Vec::new(),
     };
 
     visit::walk_crate(&mut ctxt, krate, ());

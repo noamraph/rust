@@ -116,11 +116,11 @@ impl<'a> ReprVisitor<'a> {
     // Various helpers for the TyVisitor impl
     pub fn new(ptr: *const u8, writer: &'a mut io::Writer) -> ReprVisitor<'a> {
         ReprVisitor {
-            ptr: ptr,
-            ptr_stk: vec!(),
-            var_stk: vec!(),
-            writer: writer,
-            last_err: None,
+            ptr=ptr,
+            ptr_stk=vec!(),
+            var_stk=vec!(),
+            writer=writer,
+            last_err=None,
         }
     }
 
@@ -606,11 +606,11 @@ fn test_repr() {
     exact_test(&(1i,), "(1,)");
     exact_test(&(&["hi", "there"]),
                "&[\"hi\", \"there\"]");
-    exact_test(&(P{a:10, b:1.234}),
+    exact_test(&(P{a=10, b=1.234}),
                "repr::P{a: 10, b: 1.234f64}");
-    exact_test(&(box(GC) P{a:10, b:1.234}),
+    exact_test(&(box(GC) P{a=10, b=1.234}),
                "box(GC) repr::P{a: 10, b: 1.234f64}");
-    exact_test(&(box P{a:10, b:1.234}),
+    exact_test(&(box P{a=10, b=1.234}),
                "box repr::P{a: 10, b: 1.234f64}");
 
     exact_test(&(&[1i, 2i]), "&[1, 2]");

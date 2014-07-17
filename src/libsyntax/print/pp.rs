@@ -97,8 +97,8 @@ impl Token {
     pub fn is_hardbreak_tok(&self) -> bool {
         match *self {
             Break(BreakToken {
-                offset: 0,
-                blank_space: bs
+                offset=0,
+                blank_space=bs
             }) if bs == SIZE_INFINITY =>
                 true,
             _ =>
@@ -164,22 +164,22 @@ pub fn mk_printer(out: Box<io::Writer>, linewidth: uint) -> Printer {
     let size: Vec<int> = Vec::from_elem(n, 0i);
     let scan_stack: Vec<uint> = Vec::from_elem(n, 0u);
     Printer {
-        out: out,
-        buf_len: n,
-        margin: linewidth as int,
-        space: linewidth as int,
-        left: 0,
-        right: 0,
-        token: token,
-        size: size,
-        left_total: 0,
-        right_total: 0,
-        scan_stack: scan_stack,
-        scan_stack_empty: true,
-        top: 0,
-        bottom: 0,
-        print_stack: Vec::new(),
-        pending_indentation: 0
+        out=out,
+        buf_len=n,
+        margin=linewidth as int,
+        space=linewidth as int,
+        left=0,
+        right=0,
+        token=token,
+        size=size,
+        left_total=0,
+        right_total=0,
+        scan_stack=scan_stack,
+        scan_stack_empty=true,
+        top=0,
+        bottom=0,
+        print_stack=Vec::new(),
+        pending_indentation=0
     }
 }
 
@@ -514,8 +514,8 @@ impl Printer {
             *print_stack.get(n - 1u)
         } else {
             PrintStackElem {
-                offset: 0,
-                pbreak: Broken(Inconsistent)
+                offset=0,
+                pbreak=Broken(Inconsistent)
             }
         }
     }
@@ -540,14 +540,14 @@ impl Printer {
                 let col = self.margin - self.space + b.offset;
                 debug!("print Begin -> push broken block at col {}", col);
                 self.print_stack.push(PrintStackElem {
-                    offset: col,
-                    pbreak: Broken(b.breaks)
+                    offset=col,
+                    pbreak=Broken(b.breaks)
                 });
             } else {
                 debug!("print Begin -> push fitting block");
                 self.print_stack.push(PrintStackElem {
-                    offset: 0,
-                    pbreak: Fits
+                    offset=0,
+                    pbreak=Fits
                 });
             }
             Ok(())
@@ -612,8 +612,8 @@ impl Printer {
 // "raw box"
 pub fn rbox(p: &mut Printer, indent: uint, b: Breaks) -> io::IoResult<()> {
     p.pretty_print(Begin(BeginToken {
-        offset: indent as int,
-        breaks: b
+        offset=indent as int,
+        breaks=b
     }))
 }
 
@@ -627,8 +627,8 @@ pub fn cbox(p: &mut Printer, indent: uint) -> io::IoResult<()> {
 
 pub fn break_offset(p: &mut Printer, n: uint, off: int) -> io::IoResult<()> {
     p.pretty_print(Break(BreakToken {
-        offset: off,
-        blank_space: n as int
+        offset=off,
+        blank_space=n as int
     }))
 }
 
@@ -665,7 +665,7 @@ pub fn hardbreak(p: &mut Printer) -> io::IoResult<()> {
 }
 
 pub fn hardbreak_tok_offset(off: int) -> Token {
-    Break(BreakToken {offset: off, blank_space: SIZE_INFINITY})
+    Break(BreakToken {offset=off, blank_space=SIZE_INFINITY})
 }
 
 pub fn hardbreak_tok() -> Token { return hardbreak_tok_offset(0); }

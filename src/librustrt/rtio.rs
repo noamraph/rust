@@ -167,15 +167,15 @@ impl<'a> LocalIo<'a> {
         match LocalIo::borrow() {
             Some(mut io) => f(io.get()),
             None => Err(IoError {
-                code: ERROR as uint,
-                extra: 0,
-                detail: None,
+                code=ERROR as uint,
+                extra=0,
+                detail=None,
             }),
         }
     }
 
     pub fn new<'a>(io: &'a mut IoFactory) -> LocalIo<'a> {
-        LocalIo { factory: io }
+        LocalIo { factory=io }
     }
 
     /// Returns the underlying I/O factory as a trait reference.

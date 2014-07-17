@@ -57,18 +57,18 @@ pub struct Helper<M> {
 
 macro_rules! helper_init( (static mut $name:ident: Helper<$m:ty>) => (
     static mut $name: Helper<$m> = Helper {
-        lock: ::std::rt::mutex::NATIVE_MUTEX_INIT,
-        chan: ::std::ty::Unsafe {
-            value: 0 as *mut Sender<$m>,
-            marker1: ::std::kinds::marker::InvariantType,
+        lock=::std::rt::mutex::NATIVE_MUTEX_INIT,
+        chan=::std::ty::Unsafe {
+            value=0 as *mut Sender<$m>,
+            marker1=::std::kinds::marker::InvariantType,
         },
-        signal: ::std::ty::Unsafe {
-            value: 0,
-            marker1: ::std::kinds::marker::InvariantType,
+        signal=::std::ty::Unsafe {
+            value=0,
+            marker1=::std::kinds::marker::InvariantType,
         },
-        initialized: ::std::ty::Unsafe {
-            value: false,
-            marker1: ::std::kinds::marker::InvariantType,
+        initialized=::std::ty::Unsafe {
+            value=false,
+            marker1=::std::kinds::marker::InvariantType,
         },
     };
 ) )

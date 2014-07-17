@@ -208,8 +208,8 @@ pub struct ForbidSwitch {
 impl ForbidSwitch {
     fn new(s: &'static str) -> ForbidSwitch {
         ForbidSwitch {
-            msg: s,
-            io: homing::local_id(),
+            msg=s,
+            io=homing::local_id(),
         }
     }
 }
@@ -230,7 +230,7 @@ pub struct ForbidUnwind {
 impl ForbidUnwind {
     fn new(s: &'static str) -> ForbidUnwind {
         ForbidUnwind {
-            msg: s, failing_before: task::failing(),
+            msg=s, failing_before=task::failing(),
         }
     }
 }
@@ -279,7 +279,7 @@ impl Request {
     }
 
     pub fn wrap(handle: *mut uvll::uv_req_t) -> Request {
-        Request { handle: handle, defused: false }
+        Request { handle=handle, defused=false }
     }
 
     pub fn set_data<T>(&self, t: *mut T) {
@@ -328,7 +328,7 @@ impl Loop {
         Loop::wrap(handle)
     }
 
-    pub fn wrap(handle: *mut uvll::uv_loop_t) -> Loop { Loop { handle: handle } }
+    pub fn wrap(handle: *mut uvll::uv_loop_t) -> Loop { Loop { handle=handle } }
 
     pub fn run(&mut self) {
         assert_eq!(unsafe { uvll::uv_run(self.handle, uvll::RUN_DEFAULT) }, 0);
@@ -398,9 +398,9 @@ fn error_smoke_test() {
 pub fn uv_error_to_io_error(uverr: UvError) -> IoError {
     let UvError(errcode) = uverr;
     IoError {
-        code: if errcode == uvll::EOF {libc::EOF as uint} else {-errcode as uint},
-        extra: 0,
-        detail: Some(uverr.desc()),
+        code=if errcode == uvll::EOF {libc::EOF as uint} else {-errcode as uint},
+        extra=0,
+        detail=Some(uverr.desc()),
     }
 }
 
@@ -408,7 +408,7 @@ pub fn uv_error_to_io_error(uverr: UvError) -> IoError {
 pub fn uv_error_to_io_error(uverr: UvError) -> IoError {
     let UvError(errcode) = uverr;
     IoError {
-        code: match errcode {
+        code=match errcode {
             uvll::EOF => libc::EOF,
             uvll::EACCES => libc::ERROR_ACCESS_DENIED,
             uvll::ECONNREFUSED => libc::WSAECONNREFUSED,
@@ -426,8 +426,8 @@ pub fn uv_error_to_io_error(uverr: UvError) -> IoError {
                 -1
             }
         } as uint,
-        extra: 0,
-        detail: Some(uverr.desc()),
+        extra=0,
+        detail=Some(uverr.desc()),
     }
 }
 
@@ -449,15 +449,15 @@ pub type Buf = uvll::uv_buf_t;
 
 pub fn empty_buf() -> Buf {
     uvll::uv_buf_t {
-        base: ptr::mut_null(),
-        len: 0,
+        base=ptr::mut_null(),
+        len=0,
     }
 }
 
 /// Borrow a slice to a Buf
 pub fn slice_to_uv_buf(v: &[u8]) -> Buf {
     let data = v.as_ptr();
-    uvll::uv_buf_t { base: data as *mut u8, len: v.len() as uvll::uv_buf_len_t }
+    uvll::uv_buf_t { base=data as *mut u8, len=v.len() as uvll::uv_buf_len_t }
 }
 
 // This function is full of lies!
@@ -484,7 +484,7 @@ fn next_test_ip4() -> std::rt::rtio::SocketAddr {
         io::net::ip::Ipv4Addr(a, b, c, d) => rtio::Ipv4Addr(a, b, c, d),
         _ => unreachable!(),
     };
-    rtio::SocketAddr { ip: ip, port: port }
+    rtio::SocketAddr { ip=ip, port=port }
 }
 
 #[cfg(test)]
@@ -498,7 +498,7 @@ fn next_test_ip6() -> std::rt::rtio::SocketAddr {
             rtio::Ipv6Addr(a, b, c, d, e, f, g, h),
         _ => unreachable!(),
     };
-    rtio::SocketAddr { ip: ip, port: port }
+    rtio::SocketAddr { ip=ip, port=port }
 }
 
 #[cfg(test)]

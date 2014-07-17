@@ -99,9 +99,9 @@ impl Listener {
     pub fn new() -> Listener {
         let (tx, rx) = channel();
         Listener {
-            tx: tx,
-            rx: rx,
-            handles: vec!(),
+            tx=tx,
+            rx=rx,
+            handles=vec!(),
         }
     }
 
@@ -135,8 +135,8 @@ impl Listener {
         }
         match LocalIo::maybe_raise(|io| {
             io.signal(signum as int, box SignalCallback {
-                signum: signum,
-                tx: self.tx.clone(),
+                signum=signum,
+                tx=self.tx.clone(),
             })
         }) {
             Ok(handle) => {

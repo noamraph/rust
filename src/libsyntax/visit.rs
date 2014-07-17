@@ -56,8 +56,8 @@ pub fn generics_of_fn(fk: &FnKind) -> Generics {
         }
         FkFnBlock(..) => {
             Generics {
-                lifetimes: Vec::new(),
-                ty_params: OwnedSlice::empty(),
+                lifetimes=Vec::new(),
+                ty_params=OwnedSlice::empty(),
             }
         }
     }

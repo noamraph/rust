@@ -143,30 +143,30 @@ impl Bitv {
         }
         let mut iter = self.storage.slice_from(start).iter();
         MaskWords {
-          next_word: iter.next(),
-          iter: iter,
-          last_word_mask: {
+          next_word=iter.next(),
+          iter=iter,
+          last_word_mask={
               let rem = self.nbits % uint::BITS;
               if rem > 0 {
                   (1 << rem) - 1
               } else { !0 }
           },
-          offset: start
+          offset=start
         }
     }
 
     /// Creates an empty Bitv
     pub fn new() -> Bitv {
-        Bitv { storage: Vec::new(), nbits: 0 }
+        Bitv { storage=Vec::new(), nbits=0 }
     }
 
     /// Creates a Bitv that holds `nbits` elements, setting each element
     /// to `init`.
     pub fn with_capacity(nbits: uint, init: bool) -> Bitv {
         Bitv {
-            storage: Vec::from_elem((nbits + uint::BITS - 1) / uint::BITS,
+            storage=Vec::from_elem((nbits + uint::BITS - 1) / uint::BITS,
                                     if init { !0u } else { 0u }),
-            nbits: nbits
+            nbits=nbits
         }
     }
 
@@ -271,7 +271,7 @@ impl Bitv {
     /// ```
     #[inline]
     pub fn iter<'a>(&'a self) -> Bits<'a> {
-        Bits {bitv: self, next_idx: 0, end_idx: self.nbits}
+        Bits {bitv=self, next_idx=0, end_idx=self.nbits}
     }
 
     /// Returns `true` if all bits are 0
@@ -529,7 +529,7 @@ impl Extendable<bool> for Bitv {
 impl Clone for Bitv {
     #[inline]
     fn clone(&self) -> Bitv {
-        Bitv { storage: self.storage.clone(), nbits: self.nbits }
+        Bitv { storage=self.storage.clone(), nbits=self.nbits }
     }
 
     #[inline]
@@ -750,18 +750,18 @@ impl BitvSet {
     /// Iterator over each uint stored in the BitvSet
     #[inline]
     pub fn iter<'a>(&'a self) -> BitPositions<'a> {
-        BitPositions {set: self, next_idx: 0}
+        BitPositions {set=self, next_idx=0}
     }
 
     /// Iterator over each uint stored in the `self` setminus `other`
     #[inline]
     pub fn difference<'a>(&'a self, other: &'a BitvSet) -> TwoBitPositions<'a> {
         TwoBitPositions {
-            set: self,
-            other: other,
-            merge: |w1, w2| w1 & !w2,
-            current_word: 0,
-            next_idx: 0
+            set=self,
+            other=other,
+            merge=|w1, w2| w1 & !w2,
+            current_word=0,
+            next_idx=0
         }
     }
 
@@ -769,11 +769,11 @@ impl BitvSet {
     #[inline]
     pub fn symmetric_difference<'a>(&'a self, other: &'a BitvSet) -> TwoBitPositions<'a> {
         TwoBitPositions {
-            set: self,
-            other: other,
-            merge: |w1, w2| w1 ^ w2,
-            current_word: 0,
-            next_idx: 0
+            set=self,
+            other=other,
+            merge=|w1, w2| w1 ^ w2,
+            current_word=0,
+            next_idx=0
         }
     }
 
@@ -782,11 +782,11 @@ impl BitvSet {
     pub fn intersection<'a>(&'a self, other: &'a BitvSet) -> Take<TwoBitPositions<'a>> {
         let min = cmp::min(self.capacity(), other.capacity());
         TwoBitPositions {
-            set: self,
-            other: other,
-            merge: |w1, w2| w1 & w2,
-            current_word: 0,
-            next_idx: 0
+            set=self,
+            other=other,
+            merge=|w1, w2| w1 & w2,
+            current_word=0,
+            next_idx=0
         }.take(min)
     }
 
@@ -794,11 +794,11 @@ impl BitvSet {
     #[inline]
     pub fn union<'a>(&'a self, other: &'a BitvSet) -> TwoBitPositions<'a> {
         TwoBitPositions {
-            set: self,
-            other: other,
-            merge: |w1, w2| w1 | w2,
-            current_word: 0,
-            next_idx: 0
+            set=self,
+            other=other,
+            merge=|w1, w2| w1 | w2,
+            current_word=0,
+            next_idx=0
         }
     }
 }

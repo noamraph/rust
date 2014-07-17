@@ -189,13 +189,13 @@ impl<T> Rc<T> {
                 // destructor never frees the allocation while the
                 // strong destructor is running, even if the weak
                 // pointer is stored inside the strong one.
-                _ptr: transmute(box RcBox {
-                    value: value,
-                    strong: Cell::new(1),
-                    weak: Cell::new(1)
+                _ptr=transmute(box RcBox {
+                    value=value,
+                    strong=Cell::new(1),
+                    weak=Cell::new(1)
                 }),
-                _nosend: marker::NoSend,
-                _noshare: marker::NoShare
+                _nosend=marker::NoSend,
+                _noshare=marker::NoShare
             }
         }
     }
@@ -206,9 +206,9 @@ impl<T> Rc<T> {
     pub fn downgrade(&self) -> Weak<T> {
         self.inc_weak();
         Weak {
-            _ptr: self._ptr,
-            _nosend: marker::NoSend,
-            _noshare: marker::NoShare
+            _ptr=self._ptr,
+            _nosend=marker::NoSend,
+            _noshare=marker::NoShare
         }
     }
 }
@@ -274,7 +274,7 @@ impl<T> Clone for Rc<T> {
     #[inline]
     fn clone(&self) -> Rc<T> {
         self.inc_strong();
-        Rc { _ptr: self._ptr, _nosend: marker::NoSend, _noshare: marker::NoShare }
+        Rc { _ptr=self._ptr, _nosend=marker::NoSend, _noshare=marker::NoShare }
     }
 }
 
@@ -341,7 +341,7 @@ impl<T> Weak<T> {
             None
         } else {
             self.inc_strong();
-            Some(Rc { _ptr: self._ptr, _nosend: marker::NoSend, _noshare: marker::NoShare })
+            Some(Rc { _ptr=self._ptr, _nosend=marker::NoSend, _noshare=marker::NoShare })
         }
     }
 }
@@ -368,7 +368,7 @@ impl<T> Clone for Weak<T> {
     #[inline]
     fn clone(&self) -> Weak<T> {
         self.inc_weak();
-        Weak { _ptr: self._ptr, _nosend: marker::NoSend, _noshare: marker::NoShare }
+        Weak { _ptr=self._ptr, _nosend=marker::NoSend, _noshare=marker::NoShare }
     }
 }
 
@@ -471,7 +471,7 @@ mod tests {
             x: RefCell<Option<Weak<Cycle>>>
         }
 
-        let a = Rc::new(Cycle { x: RefCell::new(None) });
+        let a = Rc::new(Cycle { x=RefCell::new(None) });
         let b = a.clone().downgrade();
         *a.x.borrow_mut() = Some(b);
 

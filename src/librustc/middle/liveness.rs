@@ -256,14 +256,14 @@ struct IrMaps<'a> {
 impl<'a> IrMaps<'a> {
     fn new(tcx: &'a ty::ctxt) -> IrMaps<'a> {
         IrMaps {
-            tcx: tcx,
-            num_live_nodes: 0,
-            num_vars: 0,
-            live_node_map: NodeMap::new(),
-            variable_map: NodeMap::new(),
-            capture_info_map: NodeMap::new(),
-            var_kinds: Vec::new(),
-            lnks: Vec::new(),
+            tcx=tcx,
+            num_live_nodes=0,
+            num_vars=0,
+            live_node_map=NodeMap::new(),
+            variable_map=NodeMap::new(),
+            capture_info_map=NodeMap::new(),
+            var_kinds=Vec::new(),
+            lnks=Vec::new(),
         }
     }
 
@@ -291,7 +291,7 @@ impl<'a> IrMaps<'a> {
         self.num_vars += 1;
 
         match vk {
-            Local(LocalInfo { id: node_id, .. }) | Arg(node_id, _) => {
+            Local(LocalInfo { id=node_id, .. }) | Arg(node_id, _) => {
                 self.variable_map.insert(node_id, v);
             },
             ImplicitRet => {}
@@ -316,7 +316,7 @@ impl<'a> IrMaps<'a> {
 
     fn variable_name(&self, var: Variable) -> String {
         match self.var_kinds.get(var.get()) {
-            &Local(LocalInfo { ident: nm, .. }) | &Arg(_, nm) => {
+            &Local(LocalInfo { ident=nm, .. }) | &Arg(_, nm) => {
                 token::get_ident(nm).get().to_string()
             },
             &ImplicitRet => "<implicit-ret>".to_string()
@@ -383,9 +383,9 @@ fn visit_fn(ir: &mut IrMaps,
     // - implicit_ret_var is a pseudo-variable that represents
     //   an implicit return
     let specials = Specials {
-        exit_ln: fn_maps.add_live_node(ExitNode),
-        fallthrough_ln: fn_maps.add_live_node(ExitNode),
-        no_ret_var: fn_maps.add_variable(ImplicitRet)
+        exit_ln=fn_maps.add_live_node(ExitNode),
+        fallthrough_ln=fn_maps.add_live_node(ExitNode),
+        no_ret_var=fn_maps.add_variable(ImplicitRet)
     };
 
     // compute liveness
@@ -404,8 +404,8 @@ fn visit_local(ir: &mut IrMaps, local: &Local) {
         let name = path1.node;
         ir.add_live_node_for_node(p_id, VarDefNode(sp));
         ir.add_variable(Local(LocalInfo {
-          id: p_id,
-          ident: name
+          id=p_id,
+          ident=name
         }));
     });
     visit::walk_local(ir, local, ());
@@ -419,8 +419,8 @@ fn visit_arm(ir: &mut IrMaps, arm: &Arm) {
             let name = path1.node;
             ir.add_live_node_for_node(p_id, VarDefNode(sp));
             ir.add_variable(Local(LocalInfo {
-                id: p_id,
-                ident: name
+                id=p_id,
+                ident=name
             }));
         })
     }
@@ -463,8 +463,8 @@ fn visit_expr(ir: &mut IrMaps, expr: &Expr) {
                 match moved_variable_node_id_from_def(fv.def) {
                     Some(rv) => {
                         let fv_ln = ir.add_live_node(FreeVarNode(fv.span));
-                        call_caps.push(CaptureInfo {ln: fv_ln,
-                                                    var_nid: rv});
+                        call_caps.push(CaptureInfo {ln=fv_ln,
+                                                    var_nid=rv});
                     }
                     None => {}
                 }
@@ -515,9 +515,9 @@ struct Users {
 
 fn invalid_users() -> Users {
     Users {
-        reader: invalid_node(),
-        writer: invalid_node(),
-        used: false
+        reader=invalid_node(),
+        writer=invalid_node(),
+        used=false
     }
 }
 
@@ -551,13 +551,13 @@ impl<'a> Liveness<'a> {
         let num_live_nodes = ir.num_live_nodes;
         let num_vars = ir.num_vars;
         Liveness {
-            ir: ir,
-            s: specials,
-            successors: Vec::from_elem(num_live_nodes, invalid_node()),
-            users: Vec::from_elem(num_live_nodes * num_vars, invalid_users()),
-            loop_scope: Vec::new(),
-            break_ln: NodeMap::new(),
-            cont_ln: NodeMap::new(),
+            ir=ir,
+            s=specials,
+            successors=Vec::from_elem(num_live_nodes, invalid_node()),
+            users=Vec::from_elem(num_live_nodes * num_vars, invalid_users()),
+            loop_scope=Vec::new(),
+            break_ln=NodeMap::new(),
+            cont_ln=NodeMap::new(),
         }
     }
 
@@ -1464,9 +1464,9 @@ impl<'a> Liveness<'a> {
                     let last_stmt = body.stmts.last().unwrap();
                     let original_span = original_sp(last_stmt.span, sp);
                     let span_semicolon = Span {
-                        lo: original_span.hi - BytePos(1),
-                        hi: original_span.hi,
-                        expn_info: original_span.expn_info
+                        lo=original_span.hi - BytePos(1),
+                        hi=original_span.hi,
+                        expn_info=original_span.expn_info
                     };
                     self.ir.tcx.sess.span_note(
                         span_semicolon, "consider removing this semicolon:");

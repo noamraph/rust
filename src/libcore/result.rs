@@ -607,7 +607,7 @@ pub fn collect<T, E, Iter: Iterator<Result<T, E>>, V: FromIterator<T>>(iter: Ite
         }
     }
 
-    let mut adapter = Adapter { iter: iter, err: None };
+    let mut adapter = Adapter { iter=iter, err=None };
     let v: V = FromIterator::from_iter(adapter.by_ref());
 
     match adapter.err {

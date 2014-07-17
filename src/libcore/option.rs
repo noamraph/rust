@@ -338,19 +338,19 @@ impl<T> Option<T> {
     /// Returns an iterator over the possibly contained value.
     #[inline]
     pub fn iter<'r>(&'r self) -> Item<&'r T> {
-        Item{opt: self.as_ref()}
+        Item{opt=self.as_ref()}
     }
 
     /// Returns a mutable iterator over the possibly contained value.
     #[inline]
     pub fn mut_iter<'r>(&'r mut self) -> Item<&'r mut T> {
-        Item{opt: self.as_mut()}
+        Item{opt=self.as_mut()}
     }
 
     /// Returns a consuming iterator over the possibly contained value.
     #[inline]
     pub fn move_iter(self) -> Item<T> {
-        Item{opt: self}
+        Item{opt=self}
     }
 
     /////////////////////////////////////////////////////////////////////////
@@ -609,7 +609,7 @@ pub fn collect<T, Iter: Iterator<Option<T>>, V: FromIterator<T>>(iter: Iter) -> 
         }
     }
 
-    let mut adapter = Adapter { iter: iter, found_none: false };
+    let mut adapter = Adapter { iter=iter, found_none=false };
     let v: V = FromIterator::from_iter(adapter.by_ref());
 
     if adapter.found_none {

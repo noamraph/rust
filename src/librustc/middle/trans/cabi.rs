@@ -51,31 +51,31 @@ impl ArgType {
                             pad: option::Option<Type>,
                             attr: option::Option<Attribute>) -> ArgType {
         ArgType {
-            kind: Direct,
-            ty: ty,
-            cast: cast,
-            pad: pad,
-            attr: attr
+            kind=Direct,
+            ty=ty,
+            cast=cast,
+            pad=pad,
+            attr=attr
         }
     }
 
     pub fn indirect(ty: Type, attr: option::Option<Attribute>) -> ArgType {
         ArgType {
-            kind: Indirect,
-            ty: ty,
-            cast: option::None,
-            pad: option::None,
-            attr: attr
+            kind=Indirect,
+            ty=ty,
+            cast=option::None,
+            pad=option::None,
+            attr=attr
         }
     }
 
     pub fn ignore(ty: Type) -> ArgType {
         ArgType {
-            kind: Ignore,
-            ty: ty,
-            cast: None,
-            pad: None,
-            attr: None,
+            kind=Ignore,
+            ty=ty,
+            cast=None,
+            pad=None,
+            attr=None,
         }
     }
 

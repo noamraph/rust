@@ -86,8 +86,8 @@ impl Runtime for SimpleTask {
 pub fn task() -> Box<Task> {
     let mut task = box Task::new();
     task.put_runtime(box SimpleTask {
-        lock: unsafe {NativeMutex::new()},
-        awoken: false,
+        lock=unsafe {NativeMutex::new()},
+        awoken=false,
     });
     return task;
 }

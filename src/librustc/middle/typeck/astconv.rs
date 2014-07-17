@@ -100,8 +100,8 @@ pub fn ast_region_to_region(tcx: &ty::ctxt, lifetime: &ast::Lifetime)
 
         Some(&rl::DefFreeRegion(scope_id, id)) => {
             ty::ReFree(ty::FreeRegion {
-                    scope_id: scope_id,
-                    bound_region: ty::BrNamed(ast_util::local_def(id),
+                    scope_id=scope_id,
+                    bound_region=ty::BrNamed(ast_util::local_def(id),
                                               lifetime.name)
                 })
         }
@@ -278,8 +278,8 @@ pub fn ast_path_to_trait_ref<AC:AstConv,RS:RegionScope>(
         path: &ast::Path) -> Rc<ty::TraitRef> {
     let trait_def = this.get_trait_def(trait_def_id);
     Rc::new(ty::TraitRef {
-        def_id: trait_def_id,
-        substs: ast_path_substs(this, rscope, &trait_def.generics, self_ty, path)
+        def_id=trait_def_id,
+        substs=ast_path_substs(this, rscope, &trait_def.generics, self_ty, path)
     })
 }
 
@@ -292,13 +292,13 @@ pub fn ast_path_to_ty<AC:AstConv,RS:RegionScope>(
 {
     let tcx = this.tcx();
     let ty::Polytype {
-        generics: generics,
-        ty: decl_ty
+        generics=generics,
+        ty=decl_ty
     } = this.get_item_ty(did);
 
     let substs = ast_path_substs(this, rscope, &generics, None, path);
     let ty = decl_ty.subst(tcx, &substs);
-    TypeAndSubsts { substs: substs, ty: ty }
+    TypeAndSubsts { substs=substs, ty=ty }
 }
 
 pub static NO_REGIONS: uint = 1;
@@ -418,8 +418,8 @@ pub fn ast_ty_to_builtin_ty<AC:AstConv,
                                               .iter()
                                               .flat_map(|s| s.types.iter()) {
                         let mt = ast::MutTy {
-                            ty: *inner_ast_type,
-                            mutbl: ast::MutImmutable,
+                            ty=*inner_ast_type,
+                            mutbl=ast::MutImmutable,
                         };
                         return Some(mk_pointer(this,
                                                rscope,
@@ -466,8 +466,8 @@ pub fn ast_ty_to_builtin_ty<AC:AstConv,
                                               .iter()
                                               .flat_map(|s| s.types.iter()) {
                         let mt = ast::MutTy {
-                            ty: *inner_ast_type,
-                            mutbl: ast::MutImmutable,
+                            ty=*inner_ast_type,
+                            mutbl=ast::MutImmutable,
                         };
                         return Some(mk_pointer(this,
                                                rscope,
@@ -513,7 +513,7 @@ enum PointerTy {
 fn ast_ty_to_mt<AC:AstConv, RS:RegionScope>(this: &AC,
                                             rscope: &RS,
                                             ty: &ast::Ty) -> ty::mt {
-    ty::mt {ty: ast_ty_to_ty(this, rscope, ty), mutbl: ast::MutImmutable}
+    ty::mt {ty=ast_ty_to_ty(this, rscope, ty), mutbl=ast::MutImmutable}
 }
 
 pub fn trait_ref_for_unboxed_function<AC:AstConv,
@@ -548,8 +548,8 @@ pub fn trait_ref_for_unboxed_function<AC:AstConv,
     }
 
     ty::TraitRef {
-        def_id: fn_mut_trait_did,
-        substs: substs,
+        def_id=fn_mut_trait_did,
+        substs=substs,
     }
 }
 
@@ -594,7 +594,7 @@ fn mk_pointer<AC:AstConv,
                 RPtr(r) => {
                     return ty::mk_rptr(this.tcx(),
                                        r,
-                                       ty::mt {mutbl: a_seq_ty.mutbl, ty: tr});
+                                       ty::mt {mutbl=a_seq_ty.mutbl, ty=tr});
                 }
                 _ => {
                     tcx.sess.span_err(
@@ -658,7 +658,7 @@ fn mk_pointer<AC:AstConv,
                             return ty::mk_uniq(tcx, tr);
                         }
                         ty::RegionTraitStore(r, m) => {
-                            return ty::mk_rptr(tcx, r, ty::mt{mutbl: m, ty: tr});
+                            return ty::mk_rptr(tcx, r, ty::mt{mutbl=m, ty=tr});
                         }
                     }
                 }
@@ -697,11 +697,11 @@ pub fn ast_ty_to_ty<AC:AstConv, RS:RegionScope>(
             ast::TyNil => ty::mk_nil(),
             ast::TyBot => ty::mk_bot(),
             ast::TyBox(ty) => {
-                let mt = ast::MutTy { ty: ty, mutbl: ast::MutImmutable };
+                let mt = ast::MutTy { ty=ty, mutbl=ast::MutImmutable };
                 mk_pointer(this, rscope, &mt, Box, |ty| ty::mk_box(tcx, ty))
             }
             ast::TyUniq(ty) => {
-                let mt = ast::MutTy { ty: ty, mutbl: ast::MutImmutable };
+                let mt = ast::MutTy { ty=ty, mutbl=ast::MutImmutable };
                 mk_pointer(this, rscope, &mt, Uniq,
                            |ty| ty::mk_uniq(tcx, ty))
             }
@@ -713,15 +713,15 @@ pub fn ast_ty_to_ty<AC:AstConv, RS:RegionScope>(
             }
             ast::TyPtr(ref mt) => {
                 ty::mk_ptr(tcx, ty::mt {
-                    ty: ast_ty_to_ty(this, rscope, &*mt.ty),
-                    mutbl: mt.mutbl
+                    ty=ast_ty_to_ty(this, rscope, &*mt.ty),
+                    mutbl=mt.mutbl
                 })
             }
             ast::TyRptr(ref region, ref mt) => {
                 let r = opt_ast_region_to_region(this, rscope, ast_ty.span, region);
                 debug!("ty_rptr r={}", r.repr(this.tcx()));
                 mk_pointer(this, rscope, mt, RPtr(r),
-                           |ty| ty::mk_rptr(tcx, r, ty::mt {ty: ty, mutbl: mt.mutbl}))
+                           |ty| ty::mk_rptr(tcx, r, ty::mt {ty=ty, mutbl=mt.mutbl}))
             }
             ast::TyTup(ref fields) => {
                 let flds = fields.iter()
@@ -914,8 +914,8 @@ pub fn ty_of_method<AC:AstConv>(
     -> ty::BareFnTy
 {
     ty_of_method_or_bare_fn(this, id, fn_style, abi::Rust, Some(SelfInfo {
-        untransformed_self_ty: untransformed_self_ty,
-        explicit_self: explicit_self
+        untransformed_self_ty=untransformed_self_ty,
+        explicit_self=explicit_self
     }), decl)
 }
 
@@ -947,8 +947,8 @@ fn ty_of_method_or_bare_fn<AC:AstConv>(this: &AC, id: ast::NodeId,
                                              self_info.explicit_self.span,
                                              lifetime);
                 Some(ty::mk_rptr(this.tcx(), region,
-                                 ty::mt {ty: self_info.untransformed_self_ty,
-                                         mutbl: mutability}))
+                                 ty::mt {ty=self_info.untransformed_self_ty,
+                                         mutbl=mutability}))
             }
             ast::SelfUniq(_) => {
                 Some(ty::mk_uniq(this.tcx(), self_info.untransformed_self_ty))
@@ -972,13 +972,13 @@ fn ty_of_method_or_bare_fn<AC:AstConv>(this: &AC, id: ast::NodeId,
     };
 
     return ty::BareFnTy {
-        fn_style: fn_style,
-        abi: abi,
-        sig: ty::FnSig {
-            binder_id: id,
-            inputs: self_and_input_tys,
-            output: output_ty,
-            variadic: decl.variadic
+        fn_style=fn_style,
+        abi=abi,
+        sig=ty::FnSig {
+            binder_id=id,
+            inputs=self_and_input_tys,
+            output=output_ty,
+            variadic=decl.variadic
         }
     };
 }
@@ -1021,14 +1021,14 @@ pub fn ty_of_closure<AC:AstConv>(
     };
 
     ty::ClosureTy {
-        fn_style: fn_style,
-        onceness: onceness,
-        store: store,
-        bounds: bounds,
-        sig: ty::FnSig {binder_id: id,
-                        inputs: input_tys,
-                        output: output_ty,
-                        variadic: decl.variadic}
+        fn_style=fn_style,
+        onceness=onceness,
+        store=store,
+        bounds=bounds,
+        sig=ty::FnSig {binder_id=id,
+                        inputs=input_tys,
+                        output=output_ty,
+                        variadic=decl.variadic}
     }
 }
 

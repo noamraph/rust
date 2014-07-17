@@ -51,8 +51,8 @@ pub fn monomorphic_fn(ccx: &CrateContext,
     let _icx = push_ctxt("monomorphic_fn");
 
     let hash_id = MonoId {
-        def: fn_id,
-        params: real_substs.types.clone()
+        def=fn_id,
+        params=real_substs.types.clone()
     };
 
     match ccx.monomorphized.borrow().find(&hash_id) {
@@ -65,8 +65,8 @@ pub fn monomorphic_fn(ccx: &CrateContext,
     }
 
     let psubsts = param_substs {
-        substs: (*real_substs).clone(),
-        vtables: vtables,
+        substs=(*real_substs).clone(),
+        vtables=vtables,
     };
 
     debug!("monomorphic_fn(\
@@ -144,7 +144,7 @@ pub fn monomorphic_fn(ccx: &CrateContext,
         ast_map::NodeItem(i) => {
             match *i {
               ast::Item {
-                  node: ast::ItemFn(ref decl, _, _, _, ref body),
+                  node=ast::ItemFn(ref decl, _, _, _, ref body),
                   ..
               } => {
                   let d = mk_lldecl();
@@ -248,8 +248,8 @@ pub fn make_vtable_id(_ccx: &CrateContext,
     match origin {
         &typeck::vtable_static(impl_id, ref substs, _) => {
             MonoId {
-                def: impl_id,
-                params: substs.types.clone()
+                def=impl_id,
+                params=substs.types.clone()
             }
         }
 

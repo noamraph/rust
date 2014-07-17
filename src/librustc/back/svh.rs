@@ -63,7 +63,7 @@ pub struct Svh {
 impl Svh {
     pub fn new(hash: &str) -> Svh {
         assert!(hash.len() == 16);
-        Svh { hash: hash.to_string() }
+        Svh { hash=hash.to_string() }
     }
 
     pub fn as_str<'a>(&'a self) -> &'a str {
@@ -106,7 +106,7 @@ impl Svh {
 
         let hash = state.result();
         return Svh {
-            hash: range_step(0u, 64u, 4u).map(|i| hex(hash >> i)).collect()
+            hash=range_step(0u, 64u, 4u).map(|i| hex(hash >> i)).collect()
         };
 
         fn hex(b: u64) -> char {
@@ -148,7 +148,7 @@ mod svh_visitor {
     }
 
     pub fn make<'a>(st: &'a mut SipState) -> StrictVersionHashVisitor<'a> {
-        StrictVersionHashVisitor { st: st }
+        StrictVersionHashVisitor { st=st }
     }
 
     // To off-load the bulk of the hash-computation on deriving(Hash),

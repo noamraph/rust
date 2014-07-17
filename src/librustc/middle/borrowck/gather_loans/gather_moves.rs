@@ -52,10 +52,10 @@ pub fn gather_move_from_expr(bccx: &BorrowckCtxt,
         euv::CaptureMove => Captured
     };
     let move_info = GatherMoveInfo {
-        id: move_expr_id,
-        kind: kind,
-        cmt: cmt,
-        span_path_opt: None,
+        id=move_expr_id,
+        kind=kind,
+        cmt=cmt,
+        span_path_opt=None,
     };
     gather_move(bccx, move_data, move_error_collector, move_info);
 }
@@ -67,16 +67,16 @@ pub fn gather_move_from_pat(bccx: &BorrowckCtxt,
                             cmt: mc::cmt) {
     let pat_span_path_opt = match move_pat.node {
         ast::PatIdent(_, ref path1, _) => {
-            Some(MoveSpanAndPath{span: move_pat.span,
-                                 ident: path1.node})
+            Some(MoveSpanAndPath{span=move_pat.span,
+                                 ident=path1.node})
         },
         _ => None,
     };
     let move_info = GatherMoveInfo {
-        id: move_pat.id,
-        kind: MovePat,
-        cmt: cmt,
-        span_path_opt: pat_span_path_opt,
+        id=move_pat.id,
+        kind=MovePat,
+        cmt=cmt,
+        span_path_opt=pat_span_path_opt,
     };
     gather_move(bccx, move_data, move_error_collector, move_info);
 }
@@ -134,14 +134,14 @@ fn check_and_get_illegal_move_origin(bccx: &BorrowckCtxt,
         mc::cat_deref(_, _, mc::GcPtr) |
         mc::cat_deref(_, _, mc::UnsafePtr(..)) |
         mc::cat_upvar(..) | mc::cat_static_item |
-        mc::cat_copied_upvar(mc::CopiedUpvar { onceness: ast::Many, .. }) => {
+        mc::cat_copied_upvar(mc::CopiedUpvar { onceness=ast::Many, .. }) => {
             Some(cmt.clone())
         }
 
         // Can move out of captured upvars only if the destination closure
         // type is 'once'. 1-shot stack closures emit the copied_upvar form
         // (see mem_categorization.rs).
-        mc::cat_copied_upvar(mc::CopiedUpvar { onceness: ast::Once, .. }) => {
+        mc::cat_copied_upvar(mc::CopiedUpvar { onceness=ast::Once, .. }) => {
             None
         }
 

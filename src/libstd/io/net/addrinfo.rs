@@ -96,10 +96,10 @@ fn lookup(hostname: Option<&str>, servname: Option<&str>, hint: Option<Hint>)
           -> IoResult<Vec<Info>> {
     let hint = hint.map(|Hint { family, socktype, protocol, flags }| {
         rtio::AddrinfoHint {
-            family: family,
-            socktype: 0, // FIXME: this should use the above variable
-            protocol: 0, // FIXME: this should use the above variable
-            flags: flags,
+            family=family,
+            socktype=0, // FIXME: this should use the above variable
+            protocol=0, // FIXME: this should use the above variable
+            flags=flags,
         }
     });
     match LocalIo::maybe_raise(|io| {
@@ -107,14 +107,14 @@ fn lookup(hostname: Option<&str>, servname: Option<&str>, hint: Option<Hint>)
     }) {
         Ok(v) => Ok(v.move_iter().map(|info| {
             Info {
-                address: SocketAddr {
-                    ip: super::from_rtio(info.address.ip),
-                    port: info.address.port,
+                address=SocketAddr {
+                    ip=super::from_rtio(info.address.ip),
+                    port=info.address.port,
                 },
-                family: info.family,
-                socktype: None, // FIXME: this should use the above variable
-                protocol: None, // FIXME: this should use the above variable
-                flags: info.flags,
+                family=info.family,
+                socktype=None, // FIXME: this should use the above variable
+                protocol=None, // FIXME: this should use the above variable
+                flags=info.flags,
             }
         }).collect()),
         Err(e) => Err(IoError::from_rtio_error(e)),

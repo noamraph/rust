@@ -46,12 +46,12 @@ fn ip_to_inaddr(ip: rtio::IpAddr) -> InAddr {
                      (c as u32 <<  8) |
                      (d as u32 <<  0);
             InAddr(libc::in_addr {
-                s_addr: Int::from_be(ip)
+                s_addr=Int::from_be(ip)
             })
         }
         rtio::Ipv6Addr(a, b, c, d, e, f, g, h) => {
             In6Addr(libc::in6_addr {
-                s6_addr: [
+                s6_addr=[
                     htons(a),
                     htons(b),
                     htons(c),
@@ -139,9 +139,9 @@ pub fn last_error() -> IoError {
     use std::os;
     let code = unsafe { c::WSAGetLastError() as uint };
     IoError {
-        code: code,
-        extra: 0,
-        detail: Some(os::error_string(code)),
+        code=code,
+        extra=0,
+        detail=Some(os::error_string(code)),
     }
 }
 
@@ -186,8 +186,8 @@ pub fn sockaddr_to_addr(storage: &libc::sockaddr_storage,
             let c = (ip >>  8) as u8;
             let d = (ip >>  0) as u8;
             Ok(rtio::SocketAddr {
-                ip: rtio::Ipv4Addr(a, b, c, d),
-                port: ntohs(storage.sin_port),
+                ip=rtio::Ipv4Addr(a, b, c, d),
+                port=ntohs(storage.sin_port),
             })
         }
         libc::AF_INET6 => {
@@ -204,17 +204,17 @@ pub fn sockaddr_to_addr(storage: &libc::sockaddr_storage,
             let g = ntohs(storage.sin6_addr.s6_addr[6]);
             let h = ntohs(storage.sin6_addr.s6_addr[7]);
             Ok(rtio::SocketAddr {
-                ip: rtio::Ipv6Addr(a, b, c, d, e, f, g, h),
-                port: ntohs(storage.sin6_port),
+                ip=rtio::Ipv6Addr(a, b, c, d, e, f, g, h),
+                port=ntohs(storage.sin6_port),
             })
         }
         _ => {
             #[cfg(unix)] use ERROR = libc::EINVAL;
             #[cfg(windows)] use ERROR = libc::WSAEINVAL;
             Err(IoError {
-                code: ERROR as uint,
-                extra: 0,
-                detail: None,
+                code=ERROR as uint,
+                extra=0,
+                detail=None,
             })
         }
     }
@@ -267,7 +267,7 @@ pub struct Guard<'a> {
 
 impl Inner {
     fn new(fd: sock_t) -> Inner {
-        Inner { fd: fd, lock: unsafe { mutex::NativeMutex::new() } }
+        Inner { fd=fd, lock=unsafe { mutex::NativeMutex::new() } }
     }
 }
 
@@ -297,9 +297,9 @@ impl TcpStream {
 
     fn new(inner: Inner) -> TcpStream {
         TcpStream {
-            inner: Arc::new(inner),
-            read_deadline: 0,
-            write_deadline: 0,
+            inner=Arc::new(inner),
+            read_deadline=0,
+            write_deadline=0,
         }
     }
 
@@ -341,8 +341,8 @@ impl TcpStream {
     #[cfg(not(target_os = "linux"))]
     fn lock_nonblocking<'a>(&'a self) -> Guard<'a> {
         let ret = Guard {
-            fd: self.fd(),
-            guard: unsafe { self.inner.lock.lock() },
+            fd=self.fd(),
+            guard=unsafe { self.inner.lock.lock() },
         };
         assert!(util::set_nonblocking(self.fd(), true).is_ok());
         ret
@@ -399,9 +399,9 @@ impl rtio::RtioTcpStream for TcpStream {
 
     fn clone(&self) -> Box<rtio::RtioTcpStream + Send> {
         box TcpStream {
-            inner: self.inner.clone(),
-            read_deadline: 0,
-            write_deadline: 0,
+            inner=self.inner.clone(),
+            read_deadline=0,
+            write_deadline=0,
         } as Box<rtio::RtioTcpStream + Send>
     }
 
@@ -453,7 +453,7 @@ pub struct TcpListener {
 impl TcpListener {
     pub fn bind(addr: rtio::SocketAddr) -> IoResult<TcpListener> {
         let fd = try!(socket(addr, libc::SOCK_STREAM));
-        let ret = TcpListener { inner: Inner::new(fd) };
+        let ret = TcpListener { inner=Inner::new(fd) };
 
         let (addr, len) = addr_to_sockaddr(addr);
         let addrp = &addr as *const _ as *const libc::sockaddr;
@@ -478,7 +478,7 @@ impl TcpListener {
     pub fn native_listen(self, backlog: int) -> IoResult<TcpAcceptor> {
         match unsafe { libc::listen(self.fd(), backlog as libc::c_int) } {
             -1 => Err(last_error()),
-            _ => Ok(TcpAcceptor { listener: self, deadline: 0 })
+            _ => Ok(TcpAcceptor { listener=self, deadline=0 })
         }
     }
 }
@@ -558,9 +558,9 @@ impl UdpSocket {
     pub fn bind(addr: rtio::SocketAddr) -> IoResult<UdpSocket> {
         let fd = try!(socket(addr, libc::SOCK_DGRAM));
         let ret = UdpSocket {
-            inner: Arc::new(Inner::new(fd)),
-            read_deadline: 0,
-            write_deadline: 0,
+            inner=Arc::new(Inner::new(fd)),
+            read_deadline=0,
+            write_deadline=0,
         };
 
         let (addr, len) = addr_to_sockaddr(addr);
@@ -590,16 +590,16 @@ impl UdpSocket {
         match ip_to_inaddr(addr) {
             InAddr(addr) => {
                 let mreq = libc::ip_mreq {
-                    imr_multiaddr: addr,
+                    imr_multiaddr=addr,
                     // interface == INADDR_ANY
-                    imr_interface: libc::in_addr { s_addr: 0x0 },
+                    imr_interface=libc::in_addr { s_addr=0x0 },
                 };
                 setsockopt(self.fd(), libc::IPPROTO_IP, opt, mreq)
             }
             In6Addr(addr) => {
                 let mreq = libc::ip6_mreq {
-                    ipv6mr_multiaddr: addr,
-                    ipv6mr_interface: 0,
+                    ipv6mr_multiaddr=addr,
+                    ipv6mr_interface=0,
                 };
                 setsockopt(self.fd(), libc::IPPROTO_IPV6, opt, mreq)
             }
@@ -612,8 +612,8 @@ impl UdpSocket {
     #[cfg(not(target_os = "linux"))]
     fn lock_nonblocking<'a>(&'a self) -> Guard<'a> {
         let ret = Guard {
-            fd: self.fd(),
-            guard: unsafe { self.inner.lock.lock() },
+            fd=self.fd(),
+            guard=unsafe { self.inner.lock.lock() },
         };
         assert!(util::set_nonblocking(self.fd(), true).is_ok());
         ret
@@ -722,9 +722,9 @@ impl rtio::RtioUdpSocket for UdpSocket {
 
     fn clone(&self) -> Box<rtio::RtioUdpSocket + Send> {
         box UdpSocket {
-            inner: self.inner.clone(),
-            read_deadline: 0,
-            write_deadline: 0,
+            inner=self.inner.clone(),
+            read_deadline=0,
+            write_deadline=0,
         } as Box<rtio::RtioUdpSocket + Send>
     }
 

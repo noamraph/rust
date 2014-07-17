@@ -450,9 +450,9 @@ impl<'a> Context<'a> {
             match metadata {
                 Some(metadata) => {
                     libraries.push(Library {
-                        dylib: dylib,
-                        rlib: rlib,
-                        metadata: metadata,
+                        dylib=dylib,
+                        rlib=rlib,
+                        metadata=metadata,
                     })
                 }
                 None => {}
@@ -582,8 +582,8 @@ impl<'a> Context<'a> {
         if triple.as_slice() != self.triple {
             info!("Rejecting via crate triple: expected {} got {}", self.triple, triple);
             self.rejected_via_triple.push(CrateMismatch {
-                path: libpath.clone(),
-                got: triple.to_string()
+                path=libpath.clone(),
+                got=triple.to_string()
             });
             return false;
         }
@@ -594,8 +594,8 @@ impl<'a> Context<'a> {
                 if *myhash != hash {
                     info!("Rejecting via hash: expected {} got {}", *myhash, hash);
                     self.rejected_via_hash.push(CrateMismatch {
-                        path: libpath.clone(),
-                        got: myhash.as_str().to_string()
+                        path=libpath.clone(),
+                        got=myhash.as_str().to_string()
                     });
                     false
                 } else {
@@ -674,9 +674,9 @@ impl<'a> Context<'a> {
         if rlib.is_none() && dylib.is_none() { return None }
         match metadata {
             Some(metadata) => Some(Library {
-                dylib: dylib,
-                rlib: rlib,
-                metadata: metadata,
+                dylib=dylib,
+                rlib=rlib,
+                metadata=metadata,
             }),
             None => None,
         }
@@ -710,8 +710,8 @@ impl ArchiveMetadata {
             unsafe { mem::transmute(data) }
         };
         Some(ArchiveMetadata {
-            _archive: ar,
-            data: data,
+            _archive=ar,
+            data=data,
         })
     }
 

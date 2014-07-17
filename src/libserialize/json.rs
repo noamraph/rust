@@ -331,7 +331,7 @@ impl<'a> Encoder<'a> {
     /// Creates a new JSON encoder whose output will be written to the writer
     /// specified.
     pub fn new(writer: &'a mut io::Writer) -> Encoder<'a> {
-        Encoder { writer: writer }
+        Encoder { writer=writer }
     }
 
     /// Encode the specified struct into a json [u8]
@@ -544,7 +544,7 @@ pub struct PrettyEncoder<'a> {
 impl<'a> PrettyEncoder<'a> {
     /// Creates a new encoder whose output will be written to the specified writer
     pub fn new<'a>(writer: &'a mut io::Writer) -> PrettyEncoder<'a> {
-        PrettyEncoder { writer: writer, indent: 0 }
+        PrettyEncoder { writer=writer, indent=0 }
     }
 }
 
@@ -1004,7 +1004,7 @@ enum InternalStackElement {
 
 impl Stack {
     pub fn new() -> Stack {
-        Stack { stack: Vec::new(), str_buffer: Vec::new() }
+        Stack { stack=Vec::new(), str_buffer=Vec::new() }
     }
 
     /// Returns The number of elements in the Stack.
@@ -1154,12 +1154,12 @@ impl<T: Iterator<char>> Parser<T> {
     /// Creates the JSON parser.
     pub fn new(rdr: T) -> Parser<T> {
         let mut p = Parser {
-            rdr: rdr,
-            ch: Some('\x00'),
-            line: 1,
-            col: 0,
-            stack: Stack::new(),
-            state: ParseStart,
+            rdr=rdr,
+            ch=Some('\x00'),
+            line=1,
+            col=0,
+            stack=Stack::new(),
+            state=ParseStart,
         };
         p.bump();
         return p;
@@ -1644,7 +1644,7 @@ pub struct Builder<T> {
 impl<T: Iterator<char>> Builder<T> {
     /// Create a JSON Builder.
     pub fn new(src: T) -> Builder<T> {
-        Builder { parser: Parser::new(src), token: None, }
+        Builder { parser=Parser::new(src), token=None, }
     }
 
     // Decode a Json value from a Parser.
@@ -1753,7 +1753,7 @@ pub struct Decoder {
 impl Decoder {
     /// Creates a new decoder instance for decoding the specified JSON value.
     pub fn new(json: Json) -> Decoder {
-        Decoder { stack: vec![json] }
+        Decoder { stack=vec![json] }
     }
 }
 
@@ -2656,8 +2656,8 @@ mod tests {
         assert_eq!(
             v,
             Outer {
-                inner: vec![
-                    Inner { a: (), b: 2, c: vec!["abc".to_string(), "xyz".to_string()] }
+                inner=vec![
+                    Inner { a=(), b=2, c=vec!["abc".to_string(), "xyz".to_string()] }
                 ]
             }
         );

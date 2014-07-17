@@ -51,7 +51,7 @@ impl Ascii {
     /// Convert to lowercase.
     #[inline]
     pub fn to_lowercase(self) -> Ascii {
-        Ascii{chr: ASCII_LOWER_MAP[self.chr as uint]}
+        Ascii{chr=ASCII_LOWER_MAP[self.chr as uint]}
     }
 
     #[inline]
@@ -64,7 +64,7 @@ impl Ascii {
     /// Convert to uppercase.
     #[inline]
     pub fn to_uppercase(self) -> Ascii {
-        Ascii{chr: ASCII_UPPER_MAP[self.chr as uint]}
+        Ascii{chr=ASCII_UPPER_MAP[self.chr as uint]}
     }
 
     /// Compares two ascii characters of equality, ignoring case.
@@ -232,7 +232,7 @@ impl<'a> AsciiCast<&'a [Ascii]> for &'a str {
 impl AsciiCast<Ascii> for u8 {
     #[inline]
     unsafe fn to_ascii_nocheck(&self) -> Ascii {
-        Ascii{ chr: *self }
+        Ascii{ chr=*self }
     }
 
     #[inline]
@@ -244,7 +244,7 @@ impl AsciiCast<Ascii> for u8 {
 impl AsciiCast<Ascii> for char {
     #[inline]
     unsafe fn to_ascii_nocheck(&self) -> Ascii {
-        Ascii{ chr: *self as u8 }
+        Ascii{ chr=*self as u8 }
     }
 
     #[inline]
@@ -531,12 +531,12 @@ mod tests {
     use str::StrSlice;
 
     macro_rules! v2ascii (
-        ( [$($e:expr),*]) => (&[$(Ascii{chr:$e}),*]);
-        (&[$($e:expr),*]) => (&[$(Ascii{chr:$e}),*]);
+        ( [$($e:expr),*]) => (&[$(Ascii{chr=$e}),*]);
+        (&[$($e:expr),*]) => (&[$(Ascii{chr=$e}),*]);
     )
 
     macro_rules! vec2ascii (
-        ($($e:expr),*) => (Vec::from_slice([$(Ascii{chr:$e}),*]));
+        ($($e:expr),*) => (Vec::from_slice([$(Ascii{chr=$e}),*]));
     )
 
     #[test]
@@ -639,10 +639,10 @@ mod tests {
 
     #[test]
     fn test_opt() {
-        assert_eq!(65u8.to_ascii_opt(), Some(Ascii { chr: 65u8 }));
+        assert_eq!(65u8.to_ascii_opt(), Some(Ascii { chr=65u8 }));
         assert_eq!(255u8.to_ascii_opt(), None);
 
-        assert_eq!('A'.to_ascii_opt(), Some(Ascii { chr: 65u8 }));
+        assert_eq!('A'.to_ascii_opt(), Some(Ascii { chr=65u8 }));
         assert_eq!('λ'.to_ascii_opt(), None);
 
         assert_eq!("zoä华".to_ascii_opt(), None);
@@ -758,13 +758,13 @@ mod tests {
 
     #[test]
     fn test_to_string() {
-        let s = Ascii{ chr: 't' as u8 }.to_string();
+        let s = Ascii{ chr='t' as u8 }.to_string();
         assert_eq!(s, "t".to_string());
     }
 
     #[test]
     fn test_show() {
-        let c = Ascii { chr: 't' as u8 };
+        let c = Ascii { chr='t' as u8 };
         assert_eq!(format!("{}", c), "t".to_string());
     }
 }

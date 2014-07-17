@@ -54,8 +54,8 @@ pub struct BindingRscope {
 impl BindingRscope {
     pub fn new(binder_id: ast::NodeId) -> BindingRscope {
         BindingRscope {
-            binder_id: binder_id,
-            anon_bindings: Cell::new(0),
+            binder_id=binder_id,
+            anon_bindings=Cell::new(0),
         }
     }
 }

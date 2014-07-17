@@ -139,8 +139,8 @@ pub struct Node<K,V> {
 impl<V:PartialEq+Clone+Repr,K:UnifyKey<V>> UnificationTable<K,V> {
     pub fn new() -> UnificationTable<K,V> {
         UnificationTable {
-            values: Vec::new(),
-            undo_log: Vec::new()
+            values=Vec::new(),
+            undo_log=Vec::new()
         }
     }
 
@@ -160,9 +160,9 @@ impl<V:PartialEq+Clone+Repr,K:UnifyKey<V>> UnificationTable<K,V> {
                UnifyKey::tag(None::<K>),
                length);
         self.undo_log.push(OpenSnapshot);
-        Snapshot { length: length,
-                   marker1: marker::CovariantType,
-                   marker2: marker::NoCopy }
+        Snapshot { length=length,
+                   marker1=marker::CovariantType,
+                   marker2=marker::NoCopy }
     }
 
     fn assert_open_snapshot(&self, snapshot: &Snapshot<K>) {
@@ -287,7 +287,7 @@ impl<V:PartialEq+Clone+Repr,K:UnifyKey<V>> UnificationTable<K,V> {
                 node
             }
             Root(value, rank) => {
-                Node { key: vid, value: value, rank: rank }
+                Node { key=vid, value=value, rank=rank }
             }
         }
     }
@@ -376,10 +376,10 @@ pub fn err<V:SimplyUnifiable>(a_is_expected: bool,
                               b_t: V) -> ures {
     if a_is_expected {
         Err(SimplyUnifiable::to_type_err(
-            ty::expected_found {expected: a_t, found: b_t}))
+            ty::expected_found {expected=a_t, found=b_t}))
     } else {
         Err(SimplyUnifiable::to_type_err(
-            ty::expected_found {expected: b_t, found: a_t}))
+            ty::expected_found {expected=b_t, found=a_t}))
     }
 }
 
@@ -488,7 +488,7 @@ impl<'tcx,V:SimplyUnifiable,K:UnifyKey<Option<V>>>
 impl UnifyKey<Bounds<ty::t>> for ty::TyVid {
     fn index(&self) -> uint { self.index }
 
-    fn from_index(i: uint) -> ty::TyVid { ty::TyVid { index: i } }
+    fn from_index(i: uint) -> ty::TyVid { ty::TyVid { index=i } }
 
     fn unification_table<'v>(infcx: &'v InferCtxt)
         -> &'v RefCell<UnificationTable<ty::TyVid, Bounds<ty::t>>>
@@ -508,7 +508,7 @@ impl UnifyValue for Bounds<ty::t> { }
 impl UnifyKey<Option<IntVarValue>> for ty::IntVid {
     fn index(&self) -> uint { self.index }
 
-    fn from_index(i: uint) -> ty::IntVid { ty::IntVid { index: i } }
+    fn from_index(i: uint) -> ty::IntVid { ty::IntVid { index=i } }
 
     fn unification_table<'v>(infcx: &'v InferCtxt)
         -> &'v RefCell<UnificationTable<ty::IntVid, Option<IntVarValue>>>
@@ -534,7 +534,7 @@ impl UnifyValue for Option<IntVarValue> { }
 impl UnifyKey<Option<ast::FloatTy>> for ty::FloatVid {
     fn index(&self) -> uint { self.index }
 
-    fn from_index(i: uint) -> ty::FloatVid { ty::FloatVid { index: i } }
+    fn from_index(i: uint) -> ty::FloatVid { ty::FloatVid { index=i } }
 
     fn unification_table<'v>(infcx: &'v InferCtxt)
         -> &'v RefCell<UnificationTable<ty::FloatVid, Option<ast::FloatTy>>>

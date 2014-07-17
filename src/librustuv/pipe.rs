@@ -67,12 +67,12 @@ impl PipeWatcher {
             handle
         };
         PipeWatcher {
-            stream: StreamWatcher::new(handle, true),
-            home: home,
-            defused: false,
-            refcount: Refcount::new(),
-            read_access: AccessTimeout::new(),
-            write_access: AccessTimeout::new(),
+            stream=StreamWatcher::new(handle, true),
+            home=home,
+            defused=false,
+            refcount=Refcount::new(),
+            read_access=AccessTimeout::new(),
+            write_access=AccessTimeout::new(),
         }
     }
 
@@ -90,7 +90,7 @@ impl PipeWatcher {
         -> Result<PipeWatcher, UvError>
     {
         let pipe = PipeWatcher::new(io, false);
-        let cx = ConnectCtx { status: -1, task: None, timer: None };
+        let cx = ConnectCtx { status=-1, task=None, timer=None };
         cx.connect(pipe, timeout, io, |req, pipe, cb| {
             unsafe {
                 uvll::uv_pipe_connect(req.handle, pipe.handle(),
@@ -131,12 +131,12 @@ impl rtio::RtioPipe for PipeWatcher {
 
     fn clone(&self) -> Box<rtio::RtioPipe + Send> {
         box PipeWatcher {
-            stream: StreamWatcher::new(self.stream.handle, false),
-            defused: false,
-            home: self.home.clone(),
-            refcount: self.refcount.clone(),
-            read_access: self.read_access.clone(),
-            write_access: self.write_access.clone(),
+            stream=StreamWatcher::new(self.stream.handle, false),
+            defused=false,
+            home=self.home.clone(),
+            refcount=self.refcount.clone(),
+            read_access=self.read_access.clone(),
+            write_access=self.write_access.clone(),
         } as Box<rtio::RtioPipe + Send>
     }
 
@@ -235,10 +235,10 @@ impl PipeListener {
                 // StreamWatcher's default close method.
                 let (tx, rx) = channel();
                 let p = box PipeListener {
-                    home: io.make_handle(),
-                    pipe: pipe.unwrap(),
-                    incoming: rx,
-                    outgoing: tx,
+                    home=io.make_handle(),
+                    pipe=pipe.unwrap(),
+                    incoming=rx,
+                    outgoing=tx,
                 };
                 Ok(p.install())
             }
@@ -251,8 +251,8 @@ impl rtio::RtioUnixListener for PipeListener {
     fn listen(~self) -> IoResult<Box<rtio::RtioUnixAcceptor + Send>> {
         // create the acceptor object from ourselves
         let mut acceptor = box PipeAcceptor {
-            listener: self,
-            timeout: AcceptTimeout::new(),
+            listener=self,
+            timeout=AcceptTimeout::new(),
         };
 
         let _m = acceptor.fire_homing_missile();

@@ -58,7 +58,7 @@ impl<'f> Combine for Glb<'f> {
           // the precise type from the mut side.
           (MutMutable, MutMutable) => {
             eq_tys(self, a.ty, b.ty).then(|| {
-                Ok(ty::mt {ty: a.ty, mutbl: MutMutable})
+                Ok(ty::mt {ty=a.ty, mutbl=MutMutable})
             })
           }
 
@@ -66,7 +66,7 @@ impl<'f> Combine for Glb<'f> {
           // both sides but mutbl must be `MutImmutable`.
           (MutImmutable, MutImmutable) => {
             self.tys(a.ty, b.ty).and_then(|t| {
-                Ok(ty::mt {ty: t, mutbl: MutImmutable})
+                Ok(ty::mt {ty=t, mutbl=MutImmutable})
             })
           }
 

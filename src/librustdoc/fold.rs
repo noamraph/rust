@@ -74,7 +74,7 @@ pub trait DocFolder {
                         let c = |x| self.fold_item(x);
                         j.fields.extend(foo.move_iter().filter_map(c));
                         j.fields_stripped |= num_fields != j.fields.len();
-                        VariantItem(Variant {kind: StructVariant(j), ..i2})
+                        VariantItem(Variant {kind=StructVariant(j), ..i2})
                     },
                     _ => VariantItem(i2)
                 }
@@ -82,14 +82,14 @@ pub trait DocFolder {
             x => x
         };
 
-        Some(Item { attrs: attrs, name: name, source: source, inner: inner,
-                    visibility: visibility, stability: stability, def_id: def_id })
+        Some(Item { attrs=attrs, name=name, source=source, inner=inner,
+                    visibility=visibility, stability=stability, def_id=def_id })
     }
 
     fn fold_mod(&mut self, m: Module) -> Module {
         Module {
-            is_crate: m.is_crate,
-            items: m.items.move_iter().filter_map(|i| self.fold_item(i)).collect()
+            is_crate=m.is_crate,
+            items=m.items.move_iter().filter_map(|i| self.fold_item(i)).collect()
         }
     }
 

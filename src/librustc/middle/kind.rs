@@ -77,7 +77,7 @@ impl<'a> Visitor<()> for Context<'a> {
 pub fn check_crate(tcx: &ty::ctxt,
                    krate: &Crate) {
     let mut ctx = Context {
-        tcx: tcx,
+        tcx=tcx,
     };
     visit::walk_crate(&mut ctx, krate, ());
     tcx.sess.abort_if_errors();
@@ -199,8 +199,8 @@ fn with_appropriate_checker(cx: &Context,
     let fty = ty::node_id_to_type(cx.tcx, id);
     match ty::get(fty).sty {
         ty::ty_closure(box ty::ClosureTy {
-            store: ty::UniqTraitStore,
-            bounds: mut bounds, ..
+            store=ty::UniqTraitStore,
+            bounds=mut bounds, ..
         }) => {
             // Procs can't close over non-static references!
             bounds.add(ty::BoundStatic);
@@ -209,7 +209,7 @@ fn with_appropriate_checker(cx: &Context,
         }
 
         ty::ty_closure(box ty::ClosureTy {
-            store: ty::RegionTraitStore(region, _), bounds, ..
+            store=ty::RegionTraitStore(region, _), bounds, ..
         }) => b(|cx, fv| check_for_block(cx, fv, bounds, region)),
 
         ty::ty_bare_fn(_) => {
@@ -263,8 +263,8 @@ pub fn check_expr(cx: &mut Context, e: &Expr) {
             let source_ty = ty::expr_ty(cx.tcx, &**source);
             let target_ty = ty::expr_ty(cx.tcx, e);
             let method_call = MethodCall {
-                expr_id: e.id,
-                adjustment: NoAdjustment,
+                expr_id=e.id,
+                adjustment=NoAdjustment,
             };
             check_trait_cast(cx,
                              source_ty,
@@ -291,8 +291,8 @@ pub fn check_expr(cx: &mut Context, e: &Expr) {
                     let source_ty = ty::expr_ty(cx.tcx, e);
                     let target_ty = ty::expr_ty_adjusted(cx.tcx, e);
                     let method_call = MethodCall {
-                        expr_id: e.id,
-                        adjustment: typeck::AutoObject,
+                        expr_id=e.id,
+                        adjustment=typeck::AutoObject,
                     };
                     check_trait_cast(cx,
                                      source_ty,

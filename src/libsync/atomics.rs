@@ -123,11 +123,11 @@ pub struct AtomicOption<T> {
 impl<T> AtomicOption<T> {
     /// Create a new `AtomicOption`
     pub fn new(p: Box<T>) -> AtomicOption<T> {
-        unsafe { AtomicOption { p: AtomicUint::new(mem::transmute(p)) } }
+        unsafe { AtomicOption { p=AtomicUint::new(mem::transmute(p)) } }
     }
 
     /// Create a new `AtomicOption` that doesn't contain a value
-    pub fn empty() -> AtomicOption<T> { AtomicOption { p: AtomicUint::new(0) } }
+    pub fn empty() -> AtomicOption<T> { AtomicOption { p=AtomicUint::new(0) } }
 
     /// Store a value, returning the old value
     #[inline]

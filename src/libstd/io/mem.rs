@@ -30,9 +30,9 @@ fn combine(seek: SeekStyle, cur: uint, end: uint, offset: i64) -> IoResult<u64> 
 
     if offset + pos < 0 {
         Err(IoError {
-            kind: io::InvalidInput,
-            desc: "invalid seek to a negative offset",
-            detail: None
+            kind=io::InvalidInput,
+            desc="invalid seek to a negative offset",
+            detail=None
         })
     } else {
         Ok((offset + pos) as u64)
@@ -67,7 +67,7 @@ impl MemWriter {
     /// the internal buffer.
     #[inline]
     pub fn with_capacity(n: uint) -> MemWriter {
-        MemWriter { buf: Vec::with_capacity(n), pos: 0 }
+        MemWriter { buf=Vec::with_capacity(n), pos=0 }
     }
 
     /// Acquires an immutable reference to the underlying buffer of this
@@ -151,8 +151,8 @@ impl MemReader {
     #[inline]
     pub fn new(buf: Vec<u8>) -> MemReader {
         MemReader {
-            buf: buf,
-            pos: 0
+            buf=buf,
+            pos=0
         }
     }
 
@@ -249,8 +249,8 @@ impl<'a> BufWriter<'a> {
     #[inline]
     pub fn new<'a>(buf: &'a mut [u8]) -> BufWriter<'a> {
         BufWriter {
-            buf: buf,
-            pos: 0
+            buf=buf,
+            pos=0
         }
     }
 }
@@ -262,9 +262,9 @@ impl<'a> Writer for BufWriter<'a> {
         let max_size = self.buf.len();
         if self.pos >= max_size || (self.pos + buf.len()) > max_size {
             return Err(IoError {
-                kind: io::OtherIoError,
-                desc: "Trying to write past end of buffer",
-                detail: None
+                kind=io::OtherIoError,
+                desc="Trying to write past end of buffer",
+                detail=None
             })
         }
 
@@ -309,8 +309,8 @@ impl<'a> BufReader<'a> {
     #[inline]
     pub fn new<'a>(buf: &'a [u8]) -> BufReader<'a> {
         BufReader {
-            buf: buf,
-            pos: 0
+            buf=buf,
+            pos=0
         }
     }
 

@@ -232,19 +232,19 @@ local_data_key!(pub current_location_key: Vec<String> )
 /// Generates the documentation for `crate` into the directory `dst`
 pub fn run(mut krate: clean::Crate, external_html: &ExternalHtml, dst: Path) -> io::IoResult<()> {
     let mut cx = Context {
-        dst: dst,
-        current: Vec::new(),
-        root_path: String::new(),
-        sidebar: HashMap::new(),
-        layout: layout::Layout {
-            logo: "".to_string(),
-            favicon: "".to_string(),
-            external_html: external_html.clone(),
-            krate: krate.name.clone(),
-            playground_url: "".to_string(),
+        dst=dst,
+        current=Vec::new(),
+        root_path=String::new(),
+        sidebar=HashMap::new(),
+        layout=layout::Layout {
+            logo="".to_string(),
+            favicon="".to_string(),
+            external_html=external_html.clone(),
+            krate=krate.name.clone(),
+            playground_url="".to_string(),
         },
-        include_sources: true,
-        render_redirect_pages: false,
+        include_sources=true,
+        render_redirect_pages=false,
     };
 
     try!(mkdir(&cx.dst));
@@ -302,26 +302,26 @@ pub fn run(mut krate: clean::Crate, external_html: &ExternalHtml, dst: Path) -> 
         }).collect()
     }).unwrap_or(HashMap::new());
     let mut cache = Cache {
-        impls: HashMap::new(),
-        external_paths: paths.iter().map(|(&k, &(ref v, _))| (k, v.clone()))
+        impls=HashMap::new(),
+        external_paths=paths.iter().map(|(&k, &(ref v, _))| (k, v.clone()))
                              .collect(),
-        paths: paths,
-        implementors: HashMap::new(),
-        stack: Vec::new(),
-        parent_stack: Vec::new(),
-        search_index: Vec::new(),
-        extern_locations: HashMap::new(),
-        primitive_locations: HashMap::new(),
-        privmod: false,
-        public_items: public_items,
-        orphan_methods: Vec::new(),
-        traits: analysis.as_ref().map(|a| {
+        paths=paths,
+        implementors=HashMap::new(),
+        stack=Vec::new(),
+        parent_stack=Vec::new(),
+        search_index=Vec::new(),
+        extern_locations=HashMap::new(),
+        primitive_locations=HashMap::new(),
+        privmod=false,
+        public_items=public_items,
+        orphan_methods=Vec::new(),
+        traits=analysis.as_ref().map(|a| {
             a.external_traits.borrow_mut().take_unwrap()
         }).unwrap_or(HashMap::new()),
-        typarams: analysis.as_ref().map(|a| {
+        typarams=analysis.as_ref().map(|a| {
             a.external_typarams.borrow_mut().take_unwrap()
         }).unwrap_or(HashMap::new()),
-        inlined: analysis.as_ref().map(|a| {
+        inlined=analysis.as_ref().map(|a| {
             a.inlined.borrow_mut().take_unwrap()
         }).unwrap_or(HashSet::new()),
     };
@@ -331,7 +331,7 @@ pub fn run(mut krate: clean::Crate, external_html: &ExternalHtml, dst: Path) -> 
     // Cache where all our extern crates are located
     for &(n, ref e) in krate.externs.iter() {
         cache.extern_locations.insert(n, extern_location(e, &cx.dst));
-        let did = ast::DefId { krate: n, node: ast::CRATE_NODE_ID };
+        let did = ast::DefId { krate=n, node=ast::CRATE_NODE_ID };
         cache.paths.insert(did, (vec![e.name.to_string()], item_type::Module));
     }
 
@@ -380,11 +380,11 @@ fn build_index(krate: &clean::Crate, cache: &mut Cache) -> io::IoResult<String> 
             match paths.find(&did) {
                 Some(&(ref fqp, _)) => {
                     search_index.push(IndexItem {
-                        ty: shortty(item),
-                        name: item.name.clone().unwrap(),
-                        path: fqp.slice_to(fqp.len() - 1).connect("::"),
-                        desc: shorter(item.doc_value()).to_string(),
-                        parent: Some(did),
+                        ty=shortty(item),
+                        name=item.name.clone().unwrap(),
+                        path=fqp.slice_to(fqp.len() - 1).connect("::"),
+                        desc=shorter(item.doc_value()).to_string(),
+                        parent=Some(did),
                     });
                 },
                 None => {}
@@ -587,9 +587,9 @@ fn render_sources(cx: &mut Context,
     let dst = dst.join(krate.name.as_slice());
     try!(mkdir(&dst));
     let mut folder = SourceCollector {
-        dst: dst,
-        seen: HashSet::new(),
-        cx: cx,
+        dst=dst,
+        seen=HashSet::new(),
+        cx=cx,
     };
     // skip all invalid spans
     folder.seen.insert("".to_string());
@@ -735,9 +735,9 @@ impl<'a> SourceCollector<'a> {
 
         let title = format!("{} -- source", cur.filename_display());
         let page = layout::Page {
-            title: title.as_slice(),
-            ty: "source",
-            root_path: root_path.as_slice(),
+            title=title.as_slice(),
+            ty="source",
+            root_path=root_path.as_slice(),
         };
         try!(layout::render(&mut w as &mut Writer, &self.cx.layout,
                             &page, &(""), &Source(contents)));
@@ -791,11 +791,11 @@ impl DocFolder for Cache {
                             Vec::new()
                         });
                         v.push(Implementor {
-                            def_id: item.def_id,
-                            generics: i.generics.clone(),
-                            trait_: i.trait_.get_ref().clone(),
-                            for_: i.for_.clone(),
-                            stability: item.stability.clone(),
+                            def_id=item.def_id,
+                            generics=i.generics.clone(),
+                            trait_=i.trait_.get_ref().clone(),
+                            for_=i.for_.clone(),
+                            stability=item.stability.clone(),
                         });
                     }
                     Some(..) | None => {}
@@ -840,11 +840,11 @@ impl DocFolder for Cache {
                 match parent {
                     (parent, Some(path)) if !self.privmod => {
                         self.search_index.push(IndexItem {
-                            ty: shortty(&item),
-                            name: s.to_string(),
-                            path: path.connect("::").to_string(),
-                            desc: shorter(item.doc_value()).to_string(),
-                            parent: parent,
+                            ty=shortty(&item),
+                            name=s.to_string(),
+                            path=path.connect("::").to_string(),
+                            desc=shorter(item.doc_value()).to_string(),
+                            parent=parent,
                         });
                     }
                     (Some(parent), None) if !self.privmod => {
@@ -926,7 +926,7 @@ impl DocFolder for Cache {
         let ret = match self.fold_item_recur(item) {
             Some(item) => {
                 match item {
-                    clean::Item{ attrs, inner: clean::ImplItem(i), .. } => {
+                    clean::Item{ attrs, inner=clean::ImplItem(i), .. } => {
                         use clean::{Primitive, Vector, ResolvedPath, BorrowedRef};
                         use clean::{FixedVector, Slice, Tuple, PrimitiveTuple};
 
@@ -953,7 +953,7 @@ impl DocFolder for Cache {
                             // recognize implementations for &str, this may not
                             // be necessary in a DST world.
                             Primitive(p) |
-                                BorrowedRef { type_: box Primitive(p), ..} =>
+                                BorrowedRef { type_=box Primitive(p), ..} =>
                             {
                                 Some(ast_util::local_def(p.to_node_id()))
                             }
@@ -962,8 +962,8 @@ impl DocFolder for Cache {
                             // Vector/FixedVector, but for now we also pick up
                             // borrowed references
                             Vector(..) | FixedVector(..) |
-                                BorrowedRef{ type_: box Vector(..), ..  } |
-                                BorrowedRef{ type_: box FixedVector(..), .. } =>
+                                BorrowedRef{ type_=box Vector(..), ..  } |
+                                BorrowedRef{ type_=box FixedVector(..), .. } =>
                             {
                                 Some(ast_util::local_def(Slice.to_node_id()))
                             }
@@ -982,9 +982,9 @@ impl DocFolder for Cache {
                                     Vec::new()
                                 });
                                 v.push(Impl {
-                                    impl_: i,
-                                    dox: dox,
-                                    stability: item.stability.clone(),
+                                    impl_=i,
+                                    dox=dox,
+                                    stability=item.stability.clone(),
                                 });
                             }
                             None => {}
@@ -1087,9 +1087,9 @@ impl Context {
             }
             title.push_str(" - Rust");
             let page = layout::Page {
-                ty: shortty(it).to_static_str(),
-                root_path: cx.root_path.as_slice(),
-                title: title.as_slice(),
+                ty=shortty(it).to_static_str(),
+                root_path=cx.root_path.as_slice(),
+                title=title.as_slice(),
             };
 
             markdown::reset_headers();
@@ -1100,8 +1100,8 @@ impl Context {
             let mut writer = BufferedWriter::new(w);
             if !cx.render_redirect_pages {
                 try!(layout::render(&mut writer, &cx.layout, &page,
-                                    &Sidebar{ cx: cx, item: it },
-                                    &Item{ cx: cx, item: it }));
+                                    &Sidebar{ cx=cx, item=it },
+                                    &Item{ cx=cx, item=it }));
             } else {
                 let mut url = "../".repeat(cx.current.len());
                 match cache_key.get().unwrap().paths.find(&it.def_id) {
@@ -1470,7 +1470,7 @@ fn item_module(w: &mut fmt::Formatter, cx: &Context,
                 MutableSpace(s.mutability),
                 *myitem.name.get_ref(),
                 s.type_,
-                Initializer(s.expr.as_slice(), Item { cx: cx, item: myitem }),
+                Initializer(s.expr.as_slice(), Item { cx=cx, item=myitem }),
                 Markdown(blank(myitem.doc_value()))));
             }
 

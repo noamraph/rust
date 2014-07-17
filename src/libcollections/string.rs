@@ -35,7 +35,7 @@ impl String {
     #[inline]
     pub fn new() -> String {
         String {
-            vec: Vec::new(),
+            vec=Vec::new(),
         }
     }
 
@@ -43,7 +43,7 @@ impl String {
     #[inline]
     pub fn with_capacity(capacity: uint) -> String {
         String {
-            vec: Vec::with_capacity(capacity),
+            vec=Vec::with_capacity(capacity),
         }
     }
 
@@ -51,7 +51,7 @@ impl String {
     #[inline]
     pub unsafe fn from_raw_parts(length: uint, capacity: uint, ptr: *mut u8) -> String {
         String {
-            vec: Vec::from_raw_parts(length, capacity, ptr),
+            vec=Vec::from_raw_parts(length, capacity, ptr),
         }
     }
 
@@ -59,7 +59,7 @@ impl String {
     #[inline]
     pub fn from_str(string: &str) -> String {
         String {
-            vec: Vec::from_slice(string.as_bytes())
+            vec=Vec::from_slice(string.as_bytes())
         }
     }
 
@@ -78,7 +78,7 @@ impl String {
     #[inline]
     pub fn from_utf8(vec: Vec<u8>) -> Result<String, Vec<u8>> {
         if str::is_utf8(vec.as_slice()) {
-            Ok(String { vec: vec })
+            Ok(String { vec=vec })
         } else {
             Err(vec)
         }
@@ -170,8 +170,8 @@ impl String {
             // Attempt to not use an intermediate buffer by just pushing bytes
             // directly onto this string.
             let slice = Slice {
-                data: self.vec.as_ptr().offset(cur_len as int),
-                len: 4,
+                data=self.vec.as_ptr().offset(cur_len as int),
+                len=4,
             };
             let used = ch.encode_utf8(mem::transmute(slice));
             self.vec.set_len(cur_len + used);

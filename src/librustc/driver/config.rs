@@ -102,28 +102,28 @@ pub struct Options {
 /// Some reasonable defaults
 pub fn basic_options() -> Options {
     Options {
-        crate_types: Vec::new(),
-        gc: false,
-        optimize: No,
-        debuginfo: NoDebugInfo,
-        lint_opts: Vec::new(),
-        describe_lints: false,
-        output_types: Vec::new(),
-        addl_lib_search_paths: RefCell::new(HashSet::new()),
-        maybe_sysroot: None,
-        target_triple: driver::host_triple().to_string(),
-        cfg: Vec::new(),
-        test: false,
-        parse_only: false,
-        no_trans: false,
-        no_analysis: false,
-        debugging_opts: 0,
-        write_dependency_info: (false, None),
-        print_metas: (false, false),
-        cg: basic_codegen_options(),
-        color: Auto,
-        externs: HashMap::new(),
-        crate_name: None,
+        crate_types=Vec::new(),
+        gc=false,
+        optimize=No,
+        debuginfo=NoDebugInfo,
+        lint_opts=Vec::new(),
+        describe_lints=false,
+        output_types=Vec::new(),
+        addl_lib_search_paths=RefCell::new(HashSet::new()),
+        maybe_sysroot=None,
+        target_triple=driver::host_triple().to_string(),
+        cfg=Vec::new(),
+        test=false,
+        parse_only=false,
+        no_trans=false,
+        no_analysis=false,
+        debugging_opts=0,
+        write_dependency_info=(false, None),
+        print_metas=(false, false),
+        cg=basic_codegen_options(),
+        color=Auto,
+        externs=HashMap::new(),
+        crate_name=None,
     }
 }
 
@@ -235,7 +235,7 @@ macro_rules! cgoptions(
     pub struct CodegenOptions { $(pub $opt: $t),* }
 
     pub fn basic_codegen_options() -> CodegenOptions {
-        CodegenOptions { $($opt: $init),* }
+        CodegenOptions { $($opt=$init),* }
     }
 
     pub type CodegenSetter = fn(&mut CodegenOptions, v: Option<&str>) -> bool;
@@ -494,11 +494,11 @@ pub fn build_target_config(sopts: &Options) -> Config {
       abi::Mipsel => mipsel::get_target_strs(target_triple, os)
     };
     Config {
-        os: os,
-        arch: arch,
-        target_strs: target_strs,
-        int_type: int_type,
-        uint_type: uint_type,
+        os=os,
+        arch=arch,
+        target_strs=target_strs,
+        int_type=int_type,
+        uint_type=uint_type,
     }
 }
 
@@ -763,28 +763,28 @@ pub fn build_session_options(matches: &getopts::Matches) -> Options {
     let crate_name = matches.opt_str("crate-name");
 
     Options {
-        crate_types: crate_types,
-        gc: gc,
-        optimize: opt_level,
-        debuginfo: debuginfo,
-        lint_opts: lint_opts,
-        describe_lints: describe_lints,
-        output_types: output_types,
-        addl_lib_search_paths: RefCell::new(addl_lib_search_paths),
-        maybe_sysroot: sysroot_opt,
-        target_triple: target,
-        cfg: cfg,
-        test: test,
-        parse_only: parse_only,
-        no_trans: no_trans,
-        no_analysis: no_analysis,
-        debugging_opts: debugging_opts,
-        write_dependency_info: write_dependency_info,
-        print_metas: print_metas,
-        cg: cg,
-        color: color,
-        externs: externs,
-        crate_name: crate_name,
+        crate_types=crate_types,
+        gc=gc,
+        optimize=opt_level,
+        debuginfo=debuginfo,
+        lint_opts=lint_opts,
+        describe_lints=describe_lints,
+        output_types=output_types,
+        addl_lib_search_paths=RefCell::new(addl_lib_search_paths),
+        maybe_sysroot=sysroot_opt,
+        target_triple=target,
+        cfg=cfg,
+        test=test,
+        parse_only=parse_only,
+        no_trans=no_trans,
+        no_analysis=no_analysis,
+        debugging_opts=debugging_opts,
+        write_dependency_info=write_dependency_info,
+        print_metas=print_metas,
+        cg=cg,
+        color=color,
+        externs=externs,
+        crate_name=crate_name,
     }
 }
 

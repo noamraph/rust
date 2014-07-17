@@ -98,13 +98,13 @@ fn try_inline_def(cx: &core::DocContext,
     let fqn = csearch::get_item_path(tcx, did);
     cx.inlined.borrow_mut().get_mut_ref().insert(did);
     ret.push(clean::Item {
-        source: clean::Span::empty(),
-        name: Some(fqn.last().unwrap().to_string()),
-        attrs: load_attrs(tcx, did),
-        inner: inner,
-        visibility: Some(ast::Public),
-        stability: stability::lookup(tcx, did).clean(),
-        def_id: did,
+        source=clean::Span::empty(),
+        name=Some(fqn.last().unwrap().to_string()),
+        attrs=load_attrs(tcx, did),
+        inner=inner,
+        visibility=Some(ast::Public),
+        stability=stability::lookup(tcx, did).clean(),
+        def_id=did,
     });
     Some(ret)
 }
@@ -163,9 +163,9 @@ pub fn build_external_trait(tcx: &ty::ctxt, did: ast::DefId) -> clean::Trait {
     });
 
     clean::Trait {
-        generics: def.generics.clean(),
-        methods: methods.collect(),
-        parents: parents.collect()
+        generics=def.generics.clean(),
+        methods=methods.collect(),
+        parents=parents.collect()
     }
 }
 
@@ -174,12 +174,12 @@ fn build_external_function(tcx: &ty::ctxt,
                            style: ast::FnStyle) -> clean::Function {
     let t = ty::lookup_item_type(tcx, did);
     clean::Function {
-        decl: match ty::get(t.ty).sty {
+        decl=match ty::get(t.ty).sty {
             ty::ty_bare_fn(ref f) => (did, &f.sig).clean(),
             _ => fail!("bad function"),
         },
-        generics: t.generics.clean(),
-        fn_style: style,
+        generics=t.generics.clean(),
+        fn_style=style,
     }
 }
 
@@ -190,15 +190,15 @@ fn build_struct(tcx: &ty::ctxt, did: ast::DefId) -> clean::Struct {
     let fields = ty::lookup_struct_fields(tcx, did);
 
     clean::Struct {
-        struct_type: match fields.as_slice() {
+        struct_type=match fields.as_slice() {
             [] => doctree::Unit,
             [ref f] if f.name == unnamed_field.name => doctree::Newtype,
             [ref f, ..] if f.name == unnamed_field.name => doctree::Tuple,
             _ => doctree::Plain,
         },
-        generics: t.generics.clean(),
-        fields: fields.iter().map(|f| f.clean()).collect(),
-        fields_stripped: false,
+        generics=t.generics.clean(),
+        fields=fields.iter().map(|f| f.clean()).collect(),
+        fields_stripped=false,
     }
 }
 
@@ -207,17 +207,17 @@ fn build_type(tcx: &ty::ctxt, did: ast::DefId) -> clean::ItemEnum {
     match ty::get(t.ty).sty {
         ty::ty_enum(edid, _) if !csearch::is_typedef(&tcx.sess.cstore, did) => {
             return clean::EnumItem(clean::Enum {
-                generics: t.generics.clean(),
-                variants_stripped: false,
-                variants: ty::enum_variants(tcx, edid).clean(),
+                generics=t.generics.clean(),
+                variants_stripped=false,
+                variants=ty::enum_variants(tcx, edid).clean(),
             })
         }
         _ => {}
     }
 
     clean::TypedefItem(clean::Typedef {
-        type_: t.ty.clean(),
-        generics: t.generics.clean(),
+        type_=t.ty.clean(),
+        generics=t.generics.clean(),
     })
 }
 
@@ -292,10 +292,10 @@ fn build_impl(cx: &core::DocContext,
                 fn_style, decl, self_, generics
             }) => {
                 clean::MethodItem(clean::Method {
-                    fn_style: fn_style,
-                    decl: decl,
-                    self_: self_,
-                    generics: generics,
+                    fn_style=fn_style,
+                    decl=decl,
+                    self_=self_,
+                    generics=generics,
                 })
             }
             _ => fail!("not a tymethod"),
@@ -303,24 +303,24 @@ fn build_impl(cx: &core::DocContext,
         Some(item)
     }).collect();
     Some(clean::Item {
-        inner: clean::ImplItem(clean::Impl {
-            derived: clean::detect_derived(attrs.as_slice()),
-            trait_: associated_trait.clean().map(|bound| {
+        inner=clean::ImplItem(clean::Impl {
+            derived=clean::detect_derived(attrs.as_slice()),
+            trait_=associated_trait.clean().map(|bound| {
                 match bound {
                     clean::TraitBound(ty) => ty,
                     clean::RegionBound => unreachable!(),
                 }
             }),
-            for_: ty.ty.clean(),
-            generics: ty.generics.clean(),
-            methods: methods,
+            for_=ty.ty.clean(),
+            generics=ty.generics.clean(),
+            methods=methods,
         }),
-        source: clean::Span::empty(),
-        name: None,
-        attrs: attrs,
-        visibility: Some(ast::Inherited),
-        stability: stability::lookup(tcx, did).clean(),
-        def_id: did,
+        source=clean::Span::empty(),
+        name=None,
+        attrs=attrs,
+        visibility=Some(ast::Inherited),
+        stability=stability::lookup(tcx, did).clean(),
+        def_id=did,
     })
 }
 
@@ -346,8 +346,8 @@ fn build_module(cx: &core::DocContext, tcx: &ty::ctxt,
     });
 
     clean::Module {
-        items: items,
-        is_crate: false,
+        items=items,
+        is_crate=false,
     }
 }
 
@@ -355,8 +355,8 @@ fn build_static(tcx: &ty::ctxt,
                 did: ast::DefId,
                 mutable: bool) -> clean::Static {
     clean::Static {
-        type_: ty::lookup_item_type(tcx, did).ty.clean(),
-        mutability: if mutable {clean::Mutable} else {clean::Immutable},
-        expr: "\n\n\n".to_string(), // trigger the "[definition]" links
+        type_=ty::lookup_item_type(tcx, did).ty.clean(),
+        mutability=if mutable {clean::Mutable} else {clean::Immutable},
+        expr="\n\n\n".to_string(), // trigger the "[definition]" links
     }
 }

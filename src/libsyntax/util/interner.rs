@@ -31,8 +31,8 @@ pub struct Interner<T> {
 impl<T: Eq + Hash + Clone + 'static> Interner<T> {
     pub fn new() -> Interner<T> {
         Interner {
-            map: RefCell::new(HashMap::new()),
-            vect: RefCell::new(Vec::new()),
+            map=RefCell::new(HashMap::new()),
+            vect=RefCell::new(Vec::new()),
         }
     }
 
@@ -121,7 +121,7 @@ impl fmt::Show for RcStr {
 impl RcStr {
     pub fn new(string: &str) -> RcStr {
         RcStr {
-            string: Rc::new(string.to_string()),
+            string=Rc::new(string.to_string()),
         }
     }
 }
@@ -137,8 +137,8 @@ pub struct StrInterner {
 impl StrInterner {
     pub fn new() -> StrInterner {
         StrInterner {
-            map: RefCell::new(HashMap::new()),
-            vect: RefCell::new(Vec::new()),
+            map=RefCell::new(HashMap::new()),
+            vect=RefCell::new(Vec::new()),
         }
     }
 

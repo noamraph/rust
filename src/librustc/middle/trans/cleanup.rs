@@ -119,7 +119,7 @@ impl<'a> CleanupMethods<'a> for FunctionContext<'a> {
         let index = self.scopes_len();
         debug!("push_custom_cleanup_scope(): {}", index);
         self.push_scope(CleanupScope::new(CustomScopeKind));
-        CustomScopeIndex { index: index }
+        CustomScopeIndex { index=index }
     }
 
     fn pop_and_trans_ast_cleanup_scope(&self,
@@ -237,11 +237,11 @@ impl<'a> CleanupMethods<'a> for FunctionContext<'a> {
 
         if !ty::type_needs_drop(self.ccx.tcx(), ty) { return; }
         let drop = box DropValue {
-            is_immediate: false,
-            on_unwind: ty::type_needs_unwind_cleanup(self.ccx.tcx(), ty),
-            val: val,
-            ty: ty,
-            zero: false
+            is_immediate=false,
+            on_unwind=ty::type_needs_unwind_cleanup(self.ccx.tcx(), ty),
+            val=val,
+            ty=ty,
+            zero=false
         };
 
         debug!("schedule_drop_mem({:?}, val={}, ty={})",
@@ -263,11 +263,11 @@ impl<'a> CleanupMethods<'a> for FunctionContext<'a> {
 
         if !ty::type_needs_drop(self.ccx.tcx(), ty) { return; }
         let drop = box DropValue {
-            is_immediate: false,
-            on_unwind: ty::type_needs_unwind_cleanup(self.ccx.tcx(), ty),
-            val: val,
-            ty: ty,
-            zero: true
+            is_immediate=false,
+            on_unwind=ty::type_needs_unwind_cleanup(self.ccx.tcx(), ty),
+            val=val,
+            ty=ty,
+            zero=true
         };
 
         debug!("schedule_drop_and_zero_mem({:?}, val={}, ty={}, zero={})",
@@ -289,11 +289,11 @@ impl<'a> CleanupMethods<'a> for FunctionContext<'a> {
 
         if !ty::type_needs_drop(self.ccx.tcx(), ty) { return; }
         let drop = box DropValue {
-            is_immediate: true,
-            on_unwind: ty::type_needs_unwind_cleanup(self.ccx.tcx(), ty),
-            val: val,
-            ty: ty,
-            zero: false
+            is_immediate=true,
+            on_unwind=ty::type_needs_unwind_cleanup(self.ccx.tcx(), ty),
+            val=val,
+            ty=ty,
+            zero=false
         };
 
         debug!("schedule_drop_immediate({:?}, val={}, ty={})",
@@ -314,7 +314,7 @@ impl<'a> CleanupMethods<'a> for FunctionContext<'a> {
          * operation.
          */
 
-        let drop = box FreeValue { ptr: val, heap: heap, content_ty: content_ty };
+        let drop = box FreeValue { ptr=val, heap=heap, content_ty=content_ty };
 
         debug!("schedule_free_value({:?}, val={}, heap={:?})",
                cleanup_scope,
@@ -750,10 +750,10 @@ impl<'a> CleanupHelperMethods<'a> for FunctionContext<'a> {
 impl<'a> CleanupScope<'a> {
     fn new(kind: CleanupScopeKind<'a>) -> CleanupScope<'a> {
         CleanupScope {
-            kind: kind,
-            cleanups: vec!(),
-            cached_early_exits: vec!(),
-            cached_landing_pad: None,
+            kind=kind,
+            cleanups=vec!(),
+            cached_early_exits=vec!(),
+            cached_landing_pad=None,
         }
     }
 
@@ -774,8 +774,8 @@ impl<'a> CleanupScope<'a> {
                              label: EarlyExitLabel,
                              blk: BasicBlockRef) {
         self.cached_early_exits.push(
-            CachedEarlyExit { label: label,
-                              cleanup_block: blk });
+            CachedEarlyExit { label=label,
+                              cleanup_block=blk });
     }
 
     fn needs_invoke(&self) -> bool {

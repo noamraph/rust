@@ -154,14 +154,14 @@ impl Task {
     /// task creation functions through libnative or libgreen.
     pub fn new() -> Task {
         Task {
-            heap: LocalHeap::new(),
-            gc: GarbageCollector,
-            storage: LocalStorage(None),
-            unwinder: Unwinder::new(),
-            death: Death::new(),
-            destroyed: false,
-            name: None,
-            imp: None,
+            heap=LocalHeap::new(),
+            gc=GarbageCollector,
+            storage=LocalStorage(None),
+            unwinder=Unwinder::new(),
+            death=Death::new(),
+            destroyed=false,
+            name=None,
+            imp=None,
         }
     }
 
@@ -382,8 +382,8 @@ impl Task {
                     let data = mem::transmute::<_, raw::TraitObject>(t).data;
                     let obj: Box<Runtime + Send> =
                         mem::transmute(raw::TraitObject {
-                            vtable: vtable,
-                            data: data,
+                            vtable=vtable,
+                            data=data,
                         });
                     self.put_runtime(obj);
                     None
@@ -461,7 +461,7 @@ impl Drop for Task {
 
 impl TaskOpts {
     pub fn new() -> TaskOpts {
-        TaskOpts { on_exit: None, name: None, stack_size: None }
+        TaskOpts { on_exit=None, name=None, stack_size=None }
     }
 }
 
@@ -510,7 +510,7 @@ impl BlockedTask {
             }
             Shared(arc) => arc.clone(),
         };
-        BlockedTasks{ inner: arc }.take(num_handles)
+        BlockedTasks{ inner=arc }.take(num_handles)
     }
 
     /// Convert to an unsafe uint value. Useful for storing in a pipe's state
@@ -547,7 +547,7 @@ impl BlockedTask {
 
 impl Death {
     pub fn new() -> Death {
-        Death { on_exit: None, marker: marker::NoCopy }
+        Death { on_exit=None, marker=marker::NoCopy }
     }
 }
 
@@ -615,8 +615,8 @@ mod test {
             next: Option<Gc<RefCell<List>>>,
         }
 
-        let a = box(GC) RefCell::new(List { next: None });
-        let b = box(GC) RefCell::new(List { next: Some(a) });
+        let a = box(GC) RefCell::new(List { next=None });
+        let b = box(GC) RefCell::new(List { next=Some(a) });
 
         {
             let mut a = a.borrow_mut();

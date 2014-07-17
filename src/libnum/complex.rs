@@ -33,7 +33,7 @@ impl<T: Clone + Num> Complex<T> {
     /// Create a new Complex
     #[inline]
     pub fn new(re: T, im: T) -> Complex<T> {
-        Complex { re: re, im: im }
+        Complex { re=re, im=im }
     }
 
     /**
@@ -195,12 +195,12 @@ mod test {
     use super::{Complex64, Complex};
     use std::num::{Zero,One,Float};
 
-    pub static _0_0i : Complex64 = Complex { re: 0.0, im: 0.0 };
-    pub static _1_0i : Complex64 = Complex { re: 1.0, im: 0.0 };
-    pub static _1_1i : Complex64 = Complex { re: 1.0, im: 1.0 };
-    pub static _0_1i : Complex64 = Complex { re: 0.0, im: 1.0 };
-    pub static _neg1_1i : Complex64 = Complex { re: -1.0, im: 1.0 };
-    pub static _05_05i : Complex64 = Complex { re: 0.5, im: 0.5 };
+    pub static _0_0i : Complex64 = Complex { re=0.0, im=0.0 };
+    pub static _1_0i : Complex64 = Complex { re=1.0, im=0.0 };
+    pub static _1_1i : Complex64 = Complex { re=1.0, im=1.0 };
+    pub static _0_1i : Complex64 = Complex { re=0.0, im=1.0 };
+    pub static _neg1_1i : Complex64 = Complex { re=-1.0, im=1.0 };
+    pub static _05_05i : Complex64 = Complex { re=0.5, im=0.5 };
     pub static all_consts : [Complex64, .. 5] = [_0_0i, _1_0i, _1_1i, _neg1_1i, _05_05i];
 
     #[test]

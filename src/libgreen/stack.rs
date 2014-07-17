@@ -56,9 +56,9 @@ impl Stack {
         }
 
         let mut stk = Stack {
-            buf: stack,
-            min_size: size,
-            valgrind_id: 0
+            buf=stack,
+            min_size=size,
+            valgrind_id=0
         };
 
         // FIXME: Using the FFI to call a C macro. Slow
@@ -71,9 +71,9 @@ impl Stack {
     /// Create a 0-length stack which starts (and ends) at 0.
     pub unsafe fn dummy_stack() -> Stack {
         Stack {
-            buf: MemoryMap { data: 0 as *mut u8, len: 0, kind: MapVirtual },
-            min_size: 0,
-            valgrind_id: 0
+            buf=MemoryMap { data=0 as *mut u8, len=0, kind=MapVirtual },
+            min_size=0,
+            valgrind_id=0
         }
     }
 
@@ -132,7 +132,7 @@ pub struct StackPool {
 impl StackPool {
     pub fn new() -> StackPool {
         StackPool {
-            stacks: vec![],
+            stacks=vec![],
         }
     }
 

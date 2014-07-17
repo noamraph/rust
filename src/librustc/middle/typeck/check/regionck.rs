@@ -293,7 +293,7 @@ impl<'fcx> mc::Typer for Rcx<'fcx> {
 }
 
 pub fn regionck_expr(fcx: &FnCtxt, e: &ast::Expr) {
-    let mut rcx = Rcx { fcx: fcx, repeating_scope: e.id };
+    let mut rcx = Rcx { fcx=fcx, repeating_scope=e.id };
     let rcx = &mut rcx;
     if fcx.err_count_since_creation() == 0 {
         // regionck assumes typeck succeeded
@@ -303,7 +303,7 @@ pub fn regionck_expr(fcx: &FnCtxt, e: &ast::Expr) {
 }
 
 pub fn regionck_fn(fcx: &FnCtxt, blk: &ast::Block) {
-    let mut rcx = Rcx { fcx: fcx, repeating_scope: blk.id };
+    let mut rcx = Rcx { fcx=fcx, repeating_scope=blk.id };
     let rcx = &mut rcx;
     if fcx.err_count_since_creation() == 0 {
         // regionck assumes typeck succeeded
@@ -403,7 +403,7 @@ fn visit_expr(rcx: &mut Rcx, expr: &ast::Expr) {
     for &adjustment in rcx.fcx.inh.adjustments.borrow().find(&expr.id).iter() {
         debug!("adjustment={:?}", adjustment);
         match *adjustment {
-            ty::AutoDerefRef(ty::AutoDerefRef {autoderefs, autoref: opt_autoref}) => {
+            ty::AutoDerefRef(ty::AutoDerefRef {autoderefs, autoref=opt_autoref}) => {
                 let expr_ty = rcx.resolve_node_type(expr.id);
                 constrain_autoderefs(rcx, expr, autoderefs, expr_ty);
                 for autoref in opt_autoref.iter() {
@@ -620,7 +620,7 @@ fn check_expr_fn_block(rcx: &mut Rcx,
     let function_type = rcx.resolve_node_type(expr.id);
     match ty::get(function_type).sty {
         ty::ty_closure(box ty::ClosureTy {
-                store: ty::RegionTraitStore(region, _), ..}) => {
+                store=ty::RegionTraitStore(region, _), ..}) => {
             freevars::with_freevars(tcx, expr.id, |freevars| {
                 if freevars.is_empty() {
                     // No free variables means that the environment
@@ -646,7 +646,7 @@ fn check_expr_fn_block(rcx: &mut Rcx,
 
     match ty::get(function_type).sty {
         ty::ty_closure(box ty::ClosureTy {
-                store: ty::RegionTraitStore(..),
+                store=ty::RegionTraitStore(..),
                 ..
             }) => {
             freevars::with_freevars(tcx, expr.id, |freevars| {
@@ -677,8 +677,8 @@ fn check_expr_fn_block(rcx: &mut Rcx,
             let def = freevar.def;
             let def_id = def.def_id();
             assert!(def_id.krate == ast::LOCAL_CRATE);
-            let upvar_id = ty::UpvarId { var_id: def_id.node,
-                                         closure_expr_id: expr.id };
+            let upvar_id = ty::UpvarId { var_id=def_id.node,
+                                         closure_expr_id=expr.id };
 
             // Create a region variable to represent this borrow. This borrow
             // must outlive the region on the closure.
@@ -690,8 +690,8 @@ fn check_expr_fn_block(rcx: &mut Rcx,
             // Create a UpvarBorrow entry. Note that we begin with a
             // const borrow_kind, but change it to either mut or
             // immutable as dictated by the uses.
-            let upvar_borrow = ty::UpvarBorrow { kind: ty::ImmBorrow,
-                                                 region: freevar_region };
+            let upvar_borrow = ty::UpvarBorrow { kind=ty::ImmBorrow,
+                                                 region=freevar_region };
             rcx.fcx.inh.upvar_borrow_map.borrow_mut().insert(upvar_id,
                                                              upvar_borrow);
 
@@ -738,11 +738,11 @@ fn check_expr_fn_block(rcx: &mut Rcx,
                 def::DefUpvar(var_id, _, outer_closure_id, _) => {
                     // thing being captured is itself an upvar:
                     let outer_upvar_id = ty::UpvarId {
-                        var_id: var_id,
-                        closure_expr_id: outer_closure_id };
+                        var_id=var_id,
+                        closure_expr_id=outer_closure_id };
                     let inner_upvar_id = ty::UpvarId {
-                        var_id: var_id,
-                        closure_expr_id: expr.id };
+                        var_id=var_id,
+                        closure_expr_id=expr.id };
                     link_upvar_borrow_kind_for_nested_closures(rcx,
                                                                inner_upvar_id,
                                                                outer_upvar_id);

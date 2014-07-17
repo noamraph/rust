@@ -217,7 +217,7 @@ fn apply_adjustments<'a>(bcx: &'a Block<'a>,
         }
     }
     debug!("after adjustments, datum={}", datum.to_string(bcx.ccx()));
-    return DatumBlock {bcx: bcx, datum: datum};
+    return DatumBlock {bcx=bcx, datum=datum};
 
     fn auto_slice<'a>(
                   bcx: &'a Block<'a>,
@@ -244,7 +244,7 @@ fn apply_adjustments<'a>(bcx: &'a Block<'a>,
         // this type may have a different region/mutability than the
         // real one, but it will have the same runtime representation
         let slice_ty = ty::mk_slice(tcx, ty::ReStatic,
-                                    ty::mt { ty: unit_ty, mutbl: ast::MutImmutable });
+                                    ty::mt { ty=unit_ty, mutbl=ast::MutImmutable });
 
         let scratch = rvalue_scratch_datum(bcx, slice_ty, "__adjust");
         Store(bcx, base, GEPi(bcx, scratch.val, [0u, abi::slice_elt_base]));
@@ -336,7 +336,7 @@ fn trans_unadjusted<'a>(bcx: &'a Block<'a>,
                 trans_datum_unadjusted(bcx, expr)
             });
 
-            DatumBlock {bcx: bcx, datum: datum}
+            DatumBlock {bcx=bcx, datum=datum}
         }
 
         ty::RvalueStmtExpr => {
@@ -460,7 +460,7 @@ fn trans_rec_field<'a>(bcx: &'a Block<'a>,
             let d = base_datum.get_element(
                 field_tys[ix].mt.ty,
                 |srcval| adt::trans_field_ptr(bcx, &*repr, srcval, discr, ix));
-            DatumBlock { datum: d.to_expr_datum(), bcx: bcx }
+            DatumBlock { datum=d.to_expr_datum(), bcx=bcx }
         })
 }
 
@@ -1072,8 +1072,8 @@ fn trans_rec_or_struct<'a>(
                         leftovers.push((i, field_tys[i].mt.ty))
                     }
                 }
-                Some(StructBaseInfo {expr: base_expr,
-                                     fields: leftovers })
+                Some(StructBaseInfo {expr=base_expr,
+                                     fields=leftovers })
             }
             None => {
                 if need_base.iter().any(|b| *b) {
@@ -1270,7 +1270,7 @@ fn trans_managed_expr<'a>(bcx: &'a Block<'a>,
     let _icx = push_ctxt("trans_managed_expr");
     let fcx = bcx.fcx;
     let ty = type_of::type_of(bcx.ccx(), contents_ty);
-    let Result {bcx, val: bx} = malloc_raw_dyn_managed(bcx, contents_ty, MallocFnLangItem,
+    let Result {bcx, val=bx} = malloc_raw_dyn_managed(bcx, contents_ty, MallocFnLangItem,
                                                         llsize_of(bcx.ccx(), ty));
     let body = GEPi(bcx, bx, [0u, abi::box_field_body]);
 
@@ -1406,7 +1406,7 @@ fn trans_lazy_binop<'a>(
     let binop_ty = expr_ty(bcx, binop_expr);
     let fcx = bcx.fcx;
 
-    let DatumBlock {bcx: past_lhs, datum: lhs} = trans(bcx, a);
+    let DatumBlock {bcx=past_lhs, datum=lhs} = trans(bcx, a);
     let lhs = lhs.to_llscalarish(past_lhs);
 
     if past_lhs.unreachable.get() {
@@ -1421,7 +1421,7 @@ fn trans_lazy_binop<'a>(
       lazy_or => CondBr(past_lhs, lhs, join.llbb, before_rhs.llbb)
     }
 
-    let DatumBlock {bcx: past_rhs, datum: rhs} = trans(before_rhs, b);
+    let DatumBlock {bcx=past_rhs, datum=rhs} = trans(before_rhs, b);
     let rhs = rhs.to_llscalarish(past_rhs);
 
     if past_rhs.unreachable.get() {
@@ -1787,7 +1787,7 @@ fn deref_multiple<'a>(bcx: &'a Block<'a>,
         let method_call = MethodCall::autoderef(expr.id, i);
         datum = unpack_datum!(bcx, deref_once(bcx, expr, datum, method_call));
     }
-    DatumBlock { bcx: bcx, datum: datum }
+    DatumBlock { bcx=bcx, datum=datum }
 }
 
 fn deref_once<'a>(bcx: &'a Block<'a>,
@@ -1848,8 +1848,8 @@ fn deref_once<'a>(bcx: &'a Block<'a>,
             DatumBlock::new(bcx, Datum::new(llbody, content_ty, LvalueExpr))
         }
 
-        ty::ty_ptr(ty::mt { ty: content_ty, .. }) |
-        ty::ty_rptr(_, ty::mt { ty: content_ty, .. }) => {
+        ty::ty_ptr(ty::mt { ty=content_ty, .. }) |
+        ty::ty_rptr(_, ty::mt { ty=content_ty, .. }) => {
             match ty::get(content_ty).sty {
                 ty::ty_vec(_, None) | ty::ty_str | ty::ty_trait(..)
                     => bcx.tcx().sess.span_bug(expr.span, "unexpected unsized reference"),
@@ -1900,14 +1900,14 @@ fn deref_once<'a>(bcx: &'a Block<'a>,
          */
 
         match datum.kind {
-            RvalueExpr(Rvalue { mode: ByRef }) => {
+            RvalueExpr(Rvalue { mode=ByRef }) => {
                 let scope = cleanup::temporary_scope(bcx.tcx(), expr.id);
                 let ptr = Load(bcx, datum.val);
                 if !type_is_zero_size(bcx.ccx(), content_ty) {
                     bcx.fcx.schedule_free_value(scope, ptr, cleanup::HeapExchange, content_ty);
                 }
             }
-            RvalueExpr(Rvalue { mode: ByValue }) => {
+            RvalueExpr(Rvalue { mode=ByValue }) => {
                 let scope = cleanup::temporary_scope(bcx.tcx(), expr.id);
                 if !type_is_zero_size(bcx.ccx(), content_ty) {
                     bcx.fcx.schedule_free_value(scope, datum.val, cleanup::HeapExchange,
@@ -1922,15 +1922,15 @@ fn deref_once<'a>(bcx: &'a Block<'a>,
             LvalueExpr => {
                 (Load(bcx, datum.val), LvalueExpr)
             }
-            RvalueExpr(Rvalue { mode: ByRef }) => {
+            RvalueExpr(Rvalue { mode=ByRef }) => {
                 (Load(bcx, datum.val), RvalueExpr(Rvalue::new(ByRef)))
             }
-            RvalueExpr(Rvalue { mode: ByValue }) => {
+            RvalueExpr(Rvalue { mode=ByValue }) => {
                 (datum.val, RvalueExpr(Rvalue::new(ByRef)))
             }
         };
 
-        let datum = Datum { ty: content_ty, val: llptr, kind: kind };
-        DatumBlock { bcx: bcx, datum: datum }
+        let datum = Datum { ty=content_ty, val=llptr, kind=kind };
+        DatumBlock { bcx=bcx, datum=datum }
     }
 }

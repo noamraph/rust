@@ -657,7 +657,7 @@ impl BigUint {
         // omit trailing zeros
         let new_len = digits.iter().rposition(|n| *n != 0).map_or(0, |p| p + 1);
         digits.truncate(new_len);
-        BigUint { data: digits }
+        BigUint { data=digits }
     }
 
     /// Creates and initializes a `BigUint`.
@@ -1178,7 +1178,7 @@ impl ToBigInt for BigUint {
         if self.is_zero() {
             Some(Zero::zero())
         } else {
-            Some(BigInt { sign: Plus, data: self.clone() })
+            Some(BigInt { sign=Plus, data=self.clone() })
         }
     }
 }
@@ -1324,9 +1324,9 @@ impl BigInt {
     #[inline]
     pub fn from_biguint(sign: Sign, data: BigUint) -> BigInt {
         if sign == Zero || data.is_zero() {
-            return BigInt { sign: Zero, data: Zero::zero() };
+            return BigInt { sign=Zero, data=Zero::zero() };
         }
-        BigInt { sign: sign, data: data }
+        BigInt { sign=sign, data=data }
     }
 
     /// Creates and initializes a `BigInt`.
@@ -2226,7 +2226,7 @@ mod bigint_tests {
     fn test_from_biguint() {
         fn check(inp_s: Sign, inp_n: uint, ans_s: Sign, ans_n: uint) {
             let inp = BigInt::from_biguint(inp_s, FromPrimitive::from_uint(inp_n).unwrap());
-            let ans = BigInt { sign: ans_s, data: FromPrimitive::from_uint(ans_n).unwrap()};
+            let ans = BigInt { sign=ans_s, data=FromPrimitive::from_uint(ans_n).unwrap()};
             assert_eq!(inp, ans);
         }
         check(Plus, 1, Plus, 1);

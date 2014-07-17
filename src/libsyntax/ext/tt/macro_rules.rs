@@ -177,7 +177,7 @@ fn generic_extension(cx: &ExtCtxt,
                 // Let the context choose how to interpret the result.
                 // Weird, but useful for X-macros.
                 return box ParserAnyMacro {
-                    parser: RefCell::new(p),
+                    parser=RefCell::new(p),
                 } as Box<MacResult>
               }
               Failure(sp, ref msg) => if sp.lo >= best_fail_spot.lo {
@@ -204,8 +204,8 @@ pub fn add_new_extension(cx: &mut ExtCtxt,
     // these spans won't matter, anyways
     fn ms(m: Matcher_) -> Matcher {
         Spanned {
-            node: m.clone(),
-            span: DUMMY_SP
+            node=m.clone(),
+            span=DUMMY_SP
         }
     }
 
@@ -247,15 +247,15 @@ pub fn add_new_extension(cx: &mut ExtCtxt,
     };
 
     let exp = box MacroRulesMacroExpander {
-        name: name,
-        lhses: lhses,
-        rhses: rhses,
+        name=name,
+        lhses=lhses,
+        rhses=rhses,
     };
 
     box MacroRulesDefiner {
-        def: RefCell::new(Some(MacroDef {
-            name: token::get_ident(name).to_string(),
-            ext: NormalTT(exp, Some(sp))
+        def=RefCell::new(Some(MacroDef {
+            name=token::get_ident(name).to_string(),
+            ext=NormalTT(exp, Some(sp))
         }))
     } as Box<MacResult>
 }

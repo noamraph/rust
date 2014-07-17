@@ -71,7 +71,7 @@ pub struct Rvalue {
 
 impl Rvalue {
     pub fn new(m: RvalueMode) -> Rvalue {
-        Rvalue { mode: m }
+        Rvalue { mode=m }
     }
 }
 
@@ -501,9 +501,9 @@ impl Datum<Lvalue> {
                        gep: |ValueRef| -> ValueRef)
                        -> Datum<Lvalue> {
         Datum {
-            val: gep(self.val),
-            kind: Lvalue,
-            ty: ty,
+            val=gep(self.val),
+            kind=Lvalue,
+            ty=ty,
         }
     }
 
@@ -519,12 +519,12 @@ impl Datum<Lvalue> {
  */
 impl<K:KindOps> Datum<K> {
     pub fn new(val: ValueRef, ty: ty::t, kind: K) -> Datum<K> {
-        Datum { val: val, ty: ty, kind: kind }
+        Datum { val=val, ty=ty, kind=kind }
     }
 
     pub fn to_expr_datum(self) -> Datum<Expr> {
         let Datum { val, ty, kind } = self;
-        Datum { val: val, ty: ty, kind: kind.to_expr_kind() }
+        Datum { val=val, ty=ty, kind=kind.to_expr_kind() }
     }
 
     pub fn store_to<'a>(self,
@@ -636,7 +636,7 @@ impl<K:KindOps> Datum<K> {
 
 impl <'a, K> DatumBlock<'a, K> {
     pub fn new(bcx: &'a Block<'a>, datum: Datum<K>) -> DatumBlock<'a, K> {
-        DatumBlock { bcx: bcx, datum: datum }
+        DatumBlock { bcx=bcx, datum=datum }
     }
 }
 

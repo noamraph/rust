@@ -40,18 +40,18 @@ pub fn new(stack_bounds: (uint, uint)) -> Box<Task> {
 
 fn ops() -> Box<Ops> {
     box Ops {
-        lock: unsafe { NativeMutex::new() },
-        awoken: false,
-        io: io::IoFactory::new(),
+        lock=unsafe { NativeMutex::new() },
+        awoken=false,
+        io=io::IoFactory::new(),
         // these *should* get overwritten
-        stack_bounds: (0, 0),
+        stack_bounds=(0, 0),
     }
 }
 
 /// Spawns a function with the default configuration
 #[deprecated = "use the native method of NativeTaskBuilder instead"]
 pub fn spawn(f: proc():Send) {
-    spawn_opts(TaskOpts { name: None, stack_size: None, on_exit: None }, f)
+    spawn_opts(TaskOpts { name=None, stack_size=None, on_exit=None }, f)
 }
 
 /// Spawns a new task given the configuration options and a procedure to run

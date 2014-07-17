@@ -39,7 +39,7 @@ impl Type {
     #[inline(always)]
     pub fn from_ref(r: TypeRef) -> Type {
         Type {
-            rf: r
+            rf=r
         }
     }
 

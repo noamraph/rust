@@ -57,7 +57,7 @@ impl<T> Unsafe<T> {
 
     /// Static constructor
     pub fn new(value: T) -> Unsafe<T> {
-        Unsafe{value: value, marker1: marker::InvariantType}
+        Unsafe{value=value, marker1=marker::InvariantType}
     }
 
     /// Gets a mutable pointer to the wrapped value

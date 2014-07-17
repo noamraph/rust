@@ -54,9 +54,9 @@ pub fn run(lib_path: &str,
                 process.wait_with_output().unwrap();
 
             Some(Result {
-                status: status,
-                out: str::from_utf8(output.as_slice()).unwrap().to_string(),
-                err: str::from_utf8(error.as_slice()).unwrap().to_string()
+                status=status,
+                out=str::from_utf8(output.as_slice()).unwrap().to_string(),
+                err=str::from_utf8(error.as_slice()).unwrap().to_string()
             })
         },
         Err(..) => None

@@ -13,9 +13,9 @@ use syntax::abi;
 
 pub fn get_target_strs(target_triple: String, target_os: abi::Os) -> target_strs::t {
     return target_strs::t {
-        module_asm: "".to_string(),
+        module_asm="".to_string(),
 
-        data_layout: match target_os {
+        data_layout=match target_os {
           abi::OsMacos => {
             "e-p:32:32:32\
                 -i1:8:8-i8:8:8-i16:16:16-i32:32:32-i64:64:64\
@@ -65,8 +65,8 @@ pub fn get_target_strs(target_triple: String, target_os: abi::Os) -> target_strs
           }
         },
 
-        target_triple: target_triple,
+        target_triple=target_triple,
 
-        cc_args: Vec::new(),
+        cc_args=Vec::new(),
     };
 }

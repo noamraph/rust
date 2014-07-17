@@ -57,14 +57,14 @@ impl GetAddrInfoRequest {
 
         let hint = hints.map(|hint| {
             libc::addrinfo {
-                ai_flags: 0,
-                ai_family: hint.family as c_int,
-                ai_socktype: 0,
-                ai_protocol: 0,
-                ai_addrlen: 0,
-                ai_canonname: mut_null(),
-                ai_addr: mut_null(),
-                ai_next: mut_null(),
+                ai_flags=0,
+                ai_family=hint.family as c_int,
+                ai_socktype=0,
+                ai_protocol=0,
+                ai_addrlen=0,
+                ai_canonname=mut_null(),
+                ai_addr=mut_null(),
+                ai_next=mut_null(),
             }
         });
         let hint_ptr = hint.as_ref().map_or(null(), |x| {
@@ -79,7 +79,7 @@ impl GetAddrInfoRequest {
         } {
             0 => {
                 req.defuse(); // uv callback now owns this request
-                let mut cx = Ctx { slot: None, status: 0, addrinfo: None };
+                let mut cx = Ctx { slot=None, status=0, addrinfo=None };
 
                 wait_until_woken_after(&mut cx.slot, loop_, || {
                     req.set_data(&mut cx);
@@ -101,7 +101,7 @@ impl GetAddrInfoRequest {
             assert!(status != uvll::ECANCELED);
             let cx: &mut Ctx = unsafe { req.get_data() };
             cx.status = status;
-            cx.addrinfo = Some(Addrinfo { handle: res });
+            cx.addrinfo = Some(Addrinfo { handle=res });
 
             wakeup(&mut cx.slot);
         }
@@ -125,11 +125,11 @@ pub fn accum_addrinfo(addr: &Addrinfo) -> Vec<rtio::AddrinfoInfo> {
                                                  (*addr).ai_addrlen as uint);
 
             addrs.push(rtio::AddrinfoInfo {
-                address: rustaddr,
-                family: (*addr).ai_family as uint,
-                socktype: 0,
-                protocol: 0,
-                flags: 0,
+                address=rustaddr,
+                family=(*addr).ai_family as uint,
+                socktype=0,
+                protocol=0,
+                flags=0,
             });
             if (*addr).ai_next.is_not_null() {
                 addr = (*addr).ai_next as *const _;

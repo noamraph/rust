@@ -178,7 +178,7 @@ impl<'f,T:LatticeValue, K:UnifyKey<Bounds<T>>>
         let node_a = table.borrow_mut().get(tcx, a_id);
         let a_id = node_a.key.clone();
         let a_bounds = &node_a.value;
-        let b_bounds = &Bounds { lb: None, ub: Some(b.clone()) };
+        let b_bounds = &Bounds { lb=None, ub=Some(b.clone()) };
 
         debug!("var_sub_t({}={} <: {})",
                a_id,
@@ -200,7 +200,7 @@ impl<'f,T:LatticeValue, K:UnifyKey<Bounds<T>>>
 
         let tcx = self.infcx.tcx;
         let table = UnifyKey::unification_table(self.infcx);
-        let a_bounds = &Bounds { lb: Some(a.clone()), ub: None };
+        let a_bounds = &Bounds { lb=Some(a.clone()), ub=None };
         let node_b = table.borrow_mut().get(tcx, b_id);
         let b_id = node_b.key.clone();
         let b_bounds = &node_b.value;
@@ -265,7 +265,7 @@ impl<'f,T:LatticeValue, K:UnifyKey<Bounds<T>>>
         let () = if_ok!(self.bnds(&b.lb, &a.ub));
         let ub = if_ok!(self.merge_bnd(&a.ub, &b.ub, LatticeValue::glb));
         let lb = if_ok!(self.merge_bnd(&a.lb, &b.lb, LatticeValue::lub));
-        let bounds = Bounds { lb: lb, ub: ub };
+        let bounds = Bounds { lb=lb, ub=ub };
         debug!("merge({}): bounds={}",
                v_id,
                bounds.repr(self.infcx.tcx));
@@ -346,7 +346,7 @@ impl<'f> LatticeDir for Lub<'f> {
     fn combine_fields<'a>(&'a self) -> CombineFields<'a> { self.get_ref().clone() }
     fn bnd<T:Clone>(&self, b: &Bounds<T>) -> Option<T> { b.ub.clone() }
     fn with_bnd<T:Clone>(&self, b: &Bounds<T>, t: T) -> Bounds<T> {
-        Bounds { ub: Some(t), ..(*b).clone() }
+        Bounds { ub=Some(t), ..(*b).clone() }
     }
 }
 
@@ -360,7 +360,7 @@ impl<'f> LatticeDir for Glb<'f> {
     fn combine_fields<'a>(&'a self) -> CombineFields<'a> { self.get_ref().clone() }
     fn bnd<T:Clone>(&self, b: &Bounds<T>) -> Option<T> { b.lb.clone() }
     fn with_bnd<T:Clone>(&self, b: &Bounds<T>, t: T) -> Bounds<T> {
-        Bounds { lb: Some(t), ..(*b).clone() }
+        Bounds { lb=Some(t), ..(*b).clone() }
     }
 }
 

@@ -65,8 +65,8 @@ pub static InvalidEdgeIndex: EdgeIndex = EdgeIndex(uint::MAX);
 
 // Use a private field here to guarantee no more instances are created:
 pub struct Direction { repr: uint }
-pub static Outgoing: Direction = Direction { repr: 0 };
-pub static Incoming: Direction = Direction { repr: 1 };
+pub static Outgoing: Direction = Direction { repr=0 };
+pub static Incoming: Direction = Direction { repr=1 };
 
 impl NodeIndex {
     fn get(&self) -> uint { let NodeIndex(v) = *self; v }
@@ -83,16 +83,16 @@ impl EdgeIndex {
 impl<N,E> Graph<N,E> {
     pub fn new() -> Graph<N,E> {
         Graph {
-            nodes: Vec::new(),
-            edges: Vec::new(),
+            nodes=Vec::new(),
+            edges=Vec::new(),
         }
     }
 
     pub fn with_capacity(num_nodes: uint,
                          num_edges: uint) -> Graph<N,E> {
         Graph {
-            nodes: Vec::with_capacity(num_nodes),
-            edges: Vec::with_capacity(num_edges),
+            nodes=Vec::with_capacity(num_nodes),
+            edges=Vec::with_capacity(num_edges),
         }
     }
 
@@ -121,8 +121,8 @@ impl<N,E> Graph<N,E> {
     pub fn add_node(&mut self, data: N) -> NodeIndex {
         let idx = self.next_node_index();
         self.nodes.push(Node {
-            first_edge: [InvalidEdgeIndex, InvalidEdgeIndex],
-            data: data
+            first_edge=[InvalidEdgeIndex, InvalidEdgeIndex],
+            data=data
         });
         idx
     }
@@ -161,10 +161,10 @@ impl<N,E> Graph<N,E> {
         // create the new edge, with the previous firsts from each node
         // as the next pointers
         self.edges.push(Edge {
-            next_edge: [source_first, target_first],
-            source: source,
-            target: target,
-            data: data
+            next_edge=[source_first, target_first],
+            source=source,
+            target=target,
+            data=data
         });
 
         // adjust the firsts for each node target be the next object.

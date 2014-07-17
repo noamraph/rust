@@ -67,14 +67,14 @@ impl<T: Send> Packet<T> {
     // and later by inherit_blocker
     pub fn new() -> Packet<T> {
         let p = Packet {
-            queue: mpsc::Queue::new(),
-            cnt: atomics::AtomicInt::new(0),
-            steals: 0,
-            to_wake: atomics::AtomicUint::new(0),
-            channels: atomics::AtomicInt::new(2),
-            port_dropped: atomics::AtomicBool::new(false),
-            sender_drain: atomics::AtomicInt::new(0),
-            select_lock: unsafe { NativeMutex::new() },
+            queue=mpsc::Queue::new(),
+            cnt=atomics::AtomicInt::new(0),
+            steals=0,
+            to_wake=atomics::AtomicUint::new(0),
+            channels=atomics::AtomicInt::new(2),
+            port_dropped=atomics::AtomicBool::new(false),
+            sender_drain=atomics::AtomicInt::new(0),
+            select_lock=unsafe { NativeMutex::new() },
         };
         return p;
     }

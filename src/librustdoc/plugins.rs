@@ -31,9 +31,9 @@ impl PluginManager {
     /// Create a new plugin manager
     pub fn new(prefix: Path) -> PluginManager {
         PluginManager {
-            dylibs: Vec::new(),
-            callbacks: Vec::new(),
-            prefix: prefix,
+            dylibs=Vec::new(),
+            callbacks=Vec::new(),
+            prefix=prefix,
         }
     }
 

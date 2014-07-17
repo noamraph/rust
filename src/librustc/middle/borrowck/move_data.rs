@@ -180,12 +180,12 @@ fn loan_path_is_precise(loan_path: &LoanPath) -> bool {
 impl MoveData {
     pub fn new() -> MoveData {
         MoveData {
-            paths: RefCell::new(Vec::new()),
-            path_map: RefCell::new(HashMap::new()),
-            moves: RefCell::new(Vec::new()),
-            path_assignments: RefCell::new(Vec::new()),
-            var_assignments: RefCell::new(Vec::new()),
-            assignee_ids: RefCell::new(HashSet::new()),
+            paths=RefCell::new(Vec::new()),
+            path_map=RefCell::new(HashMap::new()),
+            moves=RefCell::new(Vec::new()),
+            path_assignments=RefCell::new(Vec::new()),
+            var_assignments=RefCell::new(Vec::new()),
+            assignee_ids=RefCell::new(HashSet::new()),
         }
     }
 
@@ -252,11 +252,11 @@ impl MoveData {
                 let index = MovePathIndex(self.paths.borrow().len());
 
                 self.paths.borrow_mut().push(MovePath {
-                    loan_path: lp.clone(),
-                    parent: InvalidMovePathIndex,
-                    first_move: InvalidMoveIndex,
-                    first_child: InvalidMovePathIndex,
-                    next_sibling: InvalidMovePathIndex,
+                    loan_path=lp.clone(),
+                    parent=InvalidMovePathIndex,
+                    first_move=InvalidMoveIndex,
+                    first_child=InvalidMovePathIndex,
+                    next_sibling=InvalidMovePathIndex,
                 });
 
                 index
@@ -271,11 +271,11 @@ impl MoveData {
                 self.set_path_first_child(parent_index, index);
 
                 self.paths.borrow_mut().push(MovePath {
-                    loan_path: lp.clone(),
-                    parent: parent_index,
-                    first_move: InvalidMoveIndex,
-                    first_child: InvalidMovePathIndex,
-                    next_sibling: next_sibling,
+                    loan_path=lp.clone(),
+                    parent=parent_index,
+                    first_move=InvalidMoveIndex,
+                    first_child=InvalidMovePathIndex,
+                    next_sibling=next_sibling,
                 });
 
                 index
@@ -351,10 +351,10 @@ impl MoveData {
         self.set_path_first_move(path_index, move_index);
 
         self.moves.borrow_mut().push(Move {
-            path: path_index,
-            id: id,
-            kind: kind,
-            next_move: next_move
+            path=path_index,
+            id=id,
+            kind=kind,
+            next_move=next_move
         });
     }
 
@@ -383,9 +383,9 @@ impl MoveData {
         }
 
         let assignment = Assignment {
-            path: path_index,
-            id: assign_id,
-            span: span,
+            path=path_index,
+            id=assign_id,
+            span=span,
         };
 
         if self.is_var_path(path_index) {
@@ -435,7 +435,7 @@ impl MoveData {
                     let path = *self.path_map.borrow().get(&path.loan_path);
                     self.kill_moves(path, kill_id, dfcx_moves);
                 }
-                LpUpvar(ty::UpvarId { var_id: _, closure_expr_id }) => {
+                LpUpvar(ty::UpvarId { var_id=_, closure_expr_id }) => {
                     let kill_id = closure_to_block(closure_expr_id, tcx);
                     let path = *self.path_map.borrow().get(&path.loan_path);
                     self.kill_moves(path, kill_id, dfcx_moves);
@@ -452,7 +452,7 @@ impl MoveData {
                     let kill_id = tcx.region_maps.var_scope(id);
                     dfcx_assign.add_kill(kill_id, assignment_index);
                 }
-                LpUpvar(ty::UpvarId { var_id: _, closure_expr_id }) => {
+                LpUpvar(ty::UpvarId { var_id=_, closure_expr_id }) => {
                     let kill_id = closure_to_block(closure_expr_id, tcx);
                     dfcx_assign.add_kill(kill_id, assignment_index);
                 }
@@ -562,9 +562,9 @@ impl<'a> FlowedMoveData<'a> {
         dfcx_assign.propagate(cfg, body);
 
         FlowedMoveData {
-            move_data: move_data,
-            dfcx_moves: dfcx_moves,
-            dfcx_assign: dfcx_assign,
+            move_data=move_data,
+            dfcx_moves=dfcx_moves,
+            dfcx_assign=dfcx_assign,
         }
     }
 

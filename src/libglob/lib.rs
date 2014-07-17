@@ -107,10 +107,10 @@ pub fn glob_with(pattern: &str, options: MatchOptions) -> Paths {
             // FIXME: How do we want to handle verbatim paths? I'm inclined to return nothing,
             // since we can't very well find all UNC shares with a 1-letter server name.
             return Paths {
-                dir_patterns: Vec::new(),
-                require_dir: false,
-                options: options,
-                todo: Vec::new(),
+                dir_patterns=Vec::new(),
+                require_dir=false,
+                options=options,
+                todo=Vec::new(),
             };
         }
         root.push(pat_root.get_ref());
@@ -132,10 +132,10 @@ pub fn glob_with(pattern: &str, options: MatchOptions) -> Paths {
     }
 
     Paths {
-        dir_patterns: dir_patterns,
-        require_dir: require_dir,
-        options: options,
-        todo: todo,
+        dir_patterns=dir_patterns,
+        require_dir=require_dir,
+        options=options,
+        todo=todo,
     }
 }
 
@@ -299,7 +299,7 @@ impl Pattern {
             }
         }
 
-        Pattern { tokens: tokens }
+        Pattern { tokens=tokens }
     }
 
     /**
@@ -636,9 +636,9 @@ impl MatchOptions {
      */
     pub fn new() -> MatchOptions {
         MatchOptions {
-            case_sensitive: true,
-            require_literal_separator: false,
-            require_literal_leading_dot: false
+            case_sensitive=true,
+            require_literal_separator=false,
+            require_literal_leading_dot=false
         }
     }
 
@@ -704,7 +704,7 @@ mod test {
                 assert!(pat.matches(c.to_string().as_slice()));
             }
             for c in "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars() {
-                let options = MatchOptions {case_sensitive: false, .. MatchOptions::new()};
+                let options = MatchOptions {case_sensitive=false, .. MatchOptions::new()};
                 assert!(pat.matches_with(c.to_string().as_slice(), options));
             }
             assert!(pat.matches("1"));
@@ -773,9 +773,9 @@ mod test {
 
         let pat = Pattern::new("aBcDeFg");
         let options = MatchOptions {
-            case_sensitive: false,
-            require_literal_separator: false,
-            require_literal_leading_dot: false
+            case_sensitive=false,
+            require_literal_separator=false,
+            require_literal_leading_dot=false
         };
 
         assert!(pat.matches_with("aBcDeFg", options));
@@ -791,14 +791,14 @@ mod test {
         let pat_except = Pattern::new("[!a]");
 
         let options_case_insensitive = MatchOptions {
-            case_sensitive: false,
-            require_literal_separator: false,
-            require_literal_leading_dot: false
+            case_sensitive=false,
+            require_literal_separator=false,
+            require_literal_leading_dot=false
         };
         let options_case_sensitive = MatchOptions {
-            case_sensitive: true,
-            require_literal_separator: false,
-            require_literal_leading_dot: false
+            case_sensitive=true,
+            require_literal_separator=false,
+            require_literal_leading_dot=false
         };
 
         assert!(pat_within.matches_with("a", options_case_insensitive));
@@ -814,14 +814,14 @@ mod test {
     fn test_pattern_matches_require_literal_separator() {
 
         let options_require_literal = MatchOptions {
-            case_sensitive: true,
-            require_literal_separator: true,
-            require_literal_leading_dot: false
+            case_sensitive=true,
+            require_literal_separator=true,
+            require_literal_leading_dot=false
         };
         let options_not_require_literal = MatchOptions {
-            case_sensitive: true,
-            require_literal_separator: false,
-            require_literal_leading_dot: false
+            case_sensitive=true,
+            require_literal_separator=false,
+            require_literal_leading_dot=false
         };
 
         assert!(Pattern::new("abc/def").matches_with("abc/def", options_require_literal));
@@ -839,14 +839,14 @@ mod test {
     fn test_pattern_matches_require_literal_leading_dot() {
 
         let options_require_literal_leading_dot = MatchOptions {
-            case_sensitive: true,
-            require_literal_separator: false,
-            require_literal_leading_dot: true
+            case_sensitive=true,
+            require_literal_separator=false,
+            require_literal_leading_dot=true
         };
         let options_not_require_literal_leading_dot = MatchOptions {
-            case_sensitive: true,
-            require_literal_separator: false,
-            require_literal_leading_dot: false
+            case_sensitive=true,
+            require_literal_separator=false,
+            require_literal_leading_dot=false
         };
 
         let f = |options| Pattern::new("*.txt").matches_with(".hello.txt", options);

@@ -120,7 +120,7 @@ pub fn stdin() -> BufferedReader<StdReader> {
 ///
 /// See `stdout()` for more notes about this function.
 pub fn stdin_raw() -> StdReader {
-    src(libc::STDIN_FILENO, true, |src| StdReader { inner: src })
+    src(libc::STDIN_FILENO, true, |src| StdReader { inner=src })
 }
 
 /// Creates a line-buffered handle to the stdout of the current process.
@@ -141,7 +141,7 @@ pub fn stdout() -> LineBufferedWriter<StdWriter> {
 ///
 /// See notes in `stdout()` for more information.
 pub fn stdout_raw() -> StdWriter {
-    src(libc::STDOUT_FILENO, false, |src| StdWriter { inner: src })
+    src(libc::STDOUT_FILENO, false, |src| StdWriter { inner=src })
 }
 
 /// Creates a line-buffered handle to the stderr of the current process.
@@ -155,7 +155,7 @@ pub fn stderr() -> LineBufferedWriter<StdWriter> {
 ///
 /// See notes in `stdout()` for more information.
 pub fn stderr_raw() -> StdWriter {
-    src(libc::STDERR_FILENO, false, |src| StdWriter { inner: src })
+    src(libc::STDERR_FILENO, false, |src| StdWriter { inner=src })
 }
 
 /// Resets the task-local stdout handle to the specified writer
@@ -317,9 +317,9 @@ impl StdWriter {
             }
             File(..) => {
                 Err(IoError {
-                    kind: OtherIoError,
-                    desc: "stream is not a tty",
-                    detail: None,
+                    kind=OtherIoError,
+                    desc="stream is not a tty",
+                    detail=None,
                 })
             }
         }
@@ -339,9 +339,9 @@ impl StdWriter {
             }
             File(..) => {
                 Err(IoError {
-                    kind: OtherIoError,
-                    desc: "stream is not a tty",
-                    detail: None,
+                    kind=OtherIoError,
+                    desc="stream is not a tty",
+                    detail=None,
                 })
             }
         }

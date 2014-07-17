@@ -89,7 +89,7 @@ pub struct LockGuard<'a> {
 }
 
 pub static NATIVE_MUTEX_INIT: StaticNativeMutex = StaticNativeMutex {
-    inner: imp::MUTEX_INIT,
+    inner=imp::MUTEX_INIT,
 };
 
 impl StaticNativeMutex {
@@ -99,7 +99,7 @@ impl StaticNativeMutex {
     /// freed with a call to `destroy` or it will leak.
     /// Also it is important to avoid locking until mutex has stopped moving
     pub unsafe fn new() -> StaticNativeMutex {
-        StaticNativeMutex { inner: imp::Mutex::new() }
+        StaticNativeMutex { inner=imp::Mutex::new() }
     }
 
     /// Acquires this lock. This assumes that the current thread does not
@@ -130,7 +130,7 @@ impl StaticNativeMutex {
     pub unsafe fn lock<'a>(&'a self) -> LockGuard<'a> {
         self.inner.lock();
 
-        LockGuard { lock: self }
+        LockGuard { lock=self }
     }
 
     /// Attempts to acquire the lock. The value returned is `Some` if
@@ -141,7 +141,7 @@ impl StaticNativeMutex {
     /// This method is unsafe for the same reasons as `lock`.
     pub unsafe fn trylock<'a>(&'a self) -> Option<LockGuard<'a>> {
         if self.inner.trylock() {
-            Some(LockGuard { lock: self })
+            Some(LockGuard { lock=self })
         } else {
             None
         }
@@ -216,7 +216,7 @@ impl NativeMutex {
     /// being destroyed.
     /// Also it is important to avoid locking until mutex has stopped moving
     pub unsafe fn new() -> NativeMutex {
-        NativeMutex { inner: StaticNativeMutex::new() }
+        NativeMutex { inner=StaticNativeMutex::new() }
     }
 
     /// Acquires this lock. This assumes that the current thread does not
@@ -393,12 +393,12 @@ mod imp {
         }
 
         pub static PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
-            __sig: _PTHREAD_MUTEX_SIG_init,
-            __opaque: [0, ..__PTHREAD_MUTEX_SIZE__],
+            __sig=_PTHREAD_MUTEX_SIG_init,
+            __opaque=[0, ..__PTHREAD_MUTEX_SIZE__],
         };
         pub static PTHREAD_COND_INITIALIZER: pthread_cond_t = pthread_cond_t {
-            __sig: _PTHREAD_COND_SIG_init,
-            __opaque: [0, ..__PTHREAD_COND_SIZE__],
+            __sig=_PTHREAD_COND_SIG_init,
+            __opaque=[0, ..__PTHREAD_COND_SIZE__],
         };
     }
 
@@ -440,12 +440,12 @@ mod imp {
         }
 
         pub static PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
-            __align: 0,
-            size: [0, ..__SIZEOF_PTHREAD_MUTEX_T],
+            __align=0,
+            size=[0, ..__SIZEOF_PTHREAD_MUTEX_T],
         };
         pub static PTHREAD_COND_INITIALIZER: pthread_cond_t = pthread_cond_t {
-            __align: 0,
-            size: [0, ..__SIZEOF_PTHREAD_COND_T],
+            __align=0,
+            size=[0, ..__SIZEOF_PTHREAD_COND_T],
         };
     }
     #[cfg(target_os = "android")]
@@ -458,10 +458,10 @@ mod imp {
         pub struct pthread_cond_t { value: libc::c_int }
 
         pub static PTHREAD_MUTEX_INITIALIZER: pthread_mutex_t = pthread_mutex_t {
-            value: 0,
+            value=0,
         };
         pub static PTHREAD_COND_INITIALIZER: pthread_cond_t = pthread_cond_t {
-            value: 0,
+            value=0,
         };
     }
 
@@ -471,13 +471,13 @@ mod imp {
     }
 
     pub static MUTEX_INIT: Mutex = Mutex {
-        lock: Unsafe {
-            value: PTHREAD_MUTEX_INITIALIZER,
-            marker1: marker::InvariantType,
+        lock=Unsafe {
+            value=PTHREAD_MUTEX_INITIALIZER,
+            marker1=marker::InvariantType,
         },
-        cond: Unsafe {
-            value: PTHREAD_COND_INITIALIZER,
-            marker1: marker::InvariantType,
+        cond=Unsafe {
+            value=PTHREAD_COND_INITIALIZER,
+            marker1=marker::InvariantType,
         },
     };
 
@@ -487,8 +487,8 @@ mod imp {
             // is better to avoid initialization of potentially
             // opaque OS data before it landed
             let m = Mutex {
-                lock: Unsafe::new(PTHREAD_MUTEX_INITIALIZER),
-                cond: Unsafe::new(PTHREAD_COND_INITIALIZER),
+                lock=Unsafe::new(PTHREAD_MUTEX_INITIALIZER),
+                cond=Unsafe::new(PTHREAD_COND_INITIALIZER),
             };
 
             return m;
@@ -544,15 +544,15 @@ mod imp {
     }
 
     pub static MUTEX_INIT: Mutex = Mutex {
-        lock: atomics::INIT_ATOMIC_UINT,
-        cond: atomics::INIT_ATOMIC_UINT,
+        lock=atomics::INIT_ATOMIC_UINT,
+        cond=atomics::INIT_ATOMIC_UINT,
     };
 
     impl Mutex {
         pub unsafe fn new() -> Mutex {
             Mutex {
-                lock: atomics::AtomicUint::new(init_lock()),
-                cond: atomics::AtomicUint::new(init_cond()),
+                lock=atomics::AtomicUint::new(init_lock()),
+                cond=atomics::AtomicUint::new(init_cond()),
             }
         }
         pub unsafe fn lock(&self) {

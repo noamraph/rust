@@ -100,15 +100,15 @@ impl Gamma {
             0.0 .. 1.0 => Small(GammaSmallShape::new_raw(shape, scale)),
             _          => Large(GammaLargeShape::new_raw(shape, scale))
         };
-        Gamma { repr: repr }
+        Gamma { repr=repr }
     }
 }
 
 impl GammaSmallShape {
     fn new_raw(shape: f64, scale: f64) -> GammaSmallShape {
         GammaSmallShape {
-            inv_shape: 1. / shape,
-            large_shape: GammaLargeShape::new_raw(shape + 1.0, scale)
+            inv_shape=1. / shape,
+            large_shape=GammaLargeShape::new_raw(shape + 1.0, scale)
         }
     }
 }
@@ -117,9 +117,9 @@ impl GammaLargeShape {
     fn new_raw(shape: f64, scale: f64) -> GammaLargeShape {
         let d = shape - 1. / 3.;
         GammaLargeShape {
-            scale: scale,
-            c: 1. / (9. * d).sqrt(),
-            d: d
+            scale=scale,
+            c=1. / (9. * d).sqrt(),
+            d=d
         }
     }
 }
@@ -211,7 +211,7 @@ impl ChiSquared {
             assert!(k > 0.0, "ChiSquared::new called with `k` < 0");
             DoFAnythingElse(Gamma::new(0.5 * k, 2.0))
         };
-        ChiSquared { repr: repr }
+        ChiSquared { repr=repr }
     }
 }
 impl Sample<f64> for ChiSquared {
@@ -262,9 +262,9 @@ impl FisherF {
         assert!(n > 0.0, "FisherF::new called with `n < 0`");
 
         FisherF {
-            numer: ChiSquared::new(m),
-            denom: ChiSquared::new(n),
-            dof_ratio: n / m
+            numer=ChiSquared::new(m),
+            denom=ChiSquared::new(n),
+            dof_ratio=n / m
         }
     }
 }
@@ -301,8 +301,8 @@ impl StudentT {
     pub fn new(n: f64) -> StudentT {
         assert!(n > 0.0, "StudentT::new called with `n <= 0`");
         StudentT {
-            chi: ChiSquared::new(n),
-            dof: n
+            chi=ChiSquared::new(n),
+            dof=n
         }
     }
 }

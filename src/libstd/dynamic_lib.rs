@@ -75,7 +75,7 @@ impl DynamicLibrary {
             // run.
             match maybe_library {
                 Err(err) => Err(err),
-                Ok(handle) => Ok(DynamicLibrary { handle: handle })
+                Ok(handle) => Ok(DynamicLibrary { handle=handle })
             }
         }
     }

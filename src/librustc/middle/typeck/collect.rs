@@ -84,7 +84,7 @@ impl<'a> visit::Visitor<()> for CollectItemTypesVisitor<'a> {
 pub fn collect_item_types(ccx: &CrateCtxt, krate: &ast::Crate) {
     fn collect_intrinsic_type(ccx: &CrateCtxt,
                               lang_item: ast::DefId) {
-        let ty::Polytype { ty: ty, .. } =
+        let ty::Polytype { ty=ty, .. } =
             ccx.get_item_ty(lang_item);
         ccx.tcx.intrinsic_defs.borrow_mut().insert(lang_item, ty);
     }
@@ -96,7 +96,7 @@ pub fn collect_item_types(ccx: &CrateCtxt, krate: &ast::Crate) {
         Some(id) => { collect_intrinsic_type(ccx, id); } None => {}
     }
 
-    let mut visitor = CollectItemTypesVisitor{ ccx: ccx };
+    let mut visitor = CollectItemTypesVisitor{ ccx=ccx };
     visit::walk_crate(&mut visitor, krate, ());
 }
 
@@ -168,8 +168,8 @@ pub fn get_enum_variant_types(ccx: &CrateCtxt,
 
             ast::StructVariantKind(struct_def) => {
                 let pty = Polytype {
-                    generics: ty_generics_for_type(ccx, generics),
-                    ty: enum_ty
+                    generics=ty_generics_for_type(ccx, generics),
+                    ty=enum_ty
                 };
 
                 convert_struct(ccx, &*struct_def, pty, variant.node.id);
@@ -181,8 +181,8 @@ pub fn get_enum_variant_types(ccx: &CrateCtxt,
         };
 
         let pty = Polytype {
-            generics: ty_generics_for_type(ccx, generics),
-            ty: result_ty
+            generics=ty_generics_for_type(ccx, generics),
+            ty=result_ty
         };
 
         tcx.tcache.borrow_mut().insert(local_def(variant.node.id), pty);
@@ -252,8 +252,8 @@ pub fn ensure_trait_methods(ccx: &CrateCtxt,
         ccx.tcx.tcache.borrow_mut().insert(
             m.def_id,
             Polytype {
-                generics: m.generics.clone(),
-                ty: ty::mk_bare_fn(ccx.tcx, m.fty.clone()) });
+                generics=m.generics.clone(),
+                ty=ty::mk_bare_fn(ccx.tcx, m.fty.clone()) });
     }
 
     fn ty_method_of_trait_method(this: &CrateCtxt,
@@ -296,25 +296,25 @@ pub fn convert_field(ccx: &CrateCtxt,
     /* add the field to the tcache */
     ccx.tcx.tcache.borrow_mut().insert(local_def(v.node.id),
                                        ty::Polytype {
-                                           generics: struct_generics.clone(),
-                                           ty: tt
+                                           generics=struct_generics.clone(),
+                                           ty=tt
                                        });
 
     match v.node.kind {
         ast::NamedField(ident, visibility) => {
             ty::field_ty {
-                name: ident.name,
-                id: local_def(v.node.id),
-                vis: visibility,
-                origin: origin,
+                name=ident.name,
+                id=local_def(v.node.id),
+                vis=visibility,
+                origin=origin,
             }
         }
         ast::UnnamedField(visibility) => {
             ty::field_ty {
-                name: special_idents::unnamed_field.name,
-                id: local_def(v.node.id),
-                vis: visibility,
-                origin: origin,
+                name=special_idents::unnamed_field.name,
+                id=local_def(v.node.id),
+                vis=visibility,
+                origin=origin,
             }
         }
     }
@@ -348,8 +348,8 @@ fn convert_methods(ccx: &CrateCtxt,
         tcx.tcache.borrow_mut().insert(
             local_def(m.id),
             Polytype {
-                generics: mty.generics.clone(),
-                ty: fty
+                generics=mty.generics.clone(),
+                ty=fty
             });
 
         write_ty_to_tcx(tcx, m.id, fty);
@@ -436,8 +436,8 @@ pub fn convert(ccx: &CrateCtxt, it: &ast::Item) {
 
             tcx.tcache.borrow_mut().insert(local_def(it.id),
                                 Polytype {
-                                    generics: ty_generics.clone(),
-                                    ty: selfty});
+                                    generics=ty_generics.clone(),
+                                    ty=selfty});
 
             // If there is a trait reference, treat the methods as always public.
             // This is to work around some incorrect behavior in privacy checking:
@@ -614,8 +614,8 @@ pub fn convert_struct(ccx: &CrateCtxt,
                 write_ty_to_tcx(tcx, ctor_id, ctor_fn_ty);
                 tcx.tcache.borrow_mut().insert(local_def(ctor_id),
                                   Polytype {
-                    generics: pty.generics,
-                    ty: ctor_fn_ty
+                    generics=pty.generics,
+                    ty=ctor_fn_ty
                 });
             }
         }
@@ -715,11 +715,11 @@ pub fn trait_def_of_item(ccx: &CrateCtxt, it: &ast::Item) -> Rc<ty::TraitDef> {
 
     let substs = mk_item_substs(ccx, &ty_generics);
     let trait_def = Rc::new(ty::TraitDef {
-        generics: ty_generics,
-        bounds: builtin_bounds,
-        trait_ref: Rc::new(ty::TraitRef {
-            def_id: def_id,
-            substs: substs
+        generics=ty_generics,
+        bounds=builtin_bounds,
+        trait_ref=Rc::new(ty::TraitRef {
+            def_id=def_id,
+            substs=substs
         })
     });
     tcx.trait_defs.borrow_mut().insert(def_id, trait_def.clone());
@@ -830,8 +830,8 @@ pub fn ty_of_item(ccx: &CrateCtxt, it: &ast::Item)
                                               abi,
                                               &*decl);
             let pty = Polytype {
-                generics: ty_generics,
-                ty: ty::mk_bare_fn(ccx.tcx, tofd)
+                generics=ty_generics,
+                ty=ty::mk_bare_fn(ccx.tcx, tofd)
             };
             debug!("type of {} (id {}) is {}",
                     token::get_ident(it.ident),
@@ -850,8 +850,8 @@ pub fn ty_of_item(ccx: &CrateCtxt, it: &ast::Item)
             let pty = {
                 let ty = ccx.to_ty(&ExplicitRscope, &*t);
                 Polytype {
-                    generics: ty_generics_for_type(ccx, generics),
-                    ty: ty
+                    generics=ty_generics_for_type(ccx, generics),
+                    ty=ty
                 }
             };
 
@@ -864,8 +864,8 @@ pub fn ty_of_item(ccx: &CrateCtxt, it: &ast::Item)
             let substs = mk_item_substs(ccx, &ty_generics);
             let t = ty::mk_enum(tcx, local_def(it.id), substs);
             let pty = Polytype {
-                generics: ty_generics,
-                ty: t
+                generics=ty_generics,
+                ty=t
             };
 
             tcx.tcache.borrow_mut().insert(local_def(it.id), pty.clone());
@@ -879,8 +879,8 @@ pub fn ty_of_item(ccx: &CrateCtxt, it: &ast::Item)
             let substs = mk_item_substs(ccx, &ty_generics);
             let t = ty::mk_struct(tcx, local_def(it.id), substs);
             let pty = Polytype {
-                generics: ty_generics,
-                ty: t
+                generics=ty_generics,
+                ty=t
             };
 
             tcx.tcache.borrow_mut().insert(local_def(it.id), pty.clone());
@@ -905,8 +905,8 @@ pub fn ty_of_foreign_item(ccx: &CrateCtxt,
         }
         ast::ForeignItemStatic(t, _) => {
             ty::Polytype {
-                generics: ty::Generics::empty(),
-                ty: ast_ty_to_ty(ccx, &ExplicitRscope, &*t)
+                generics=ty::Generics::empty(),
+                ty=ast_ty_to_ty(ccx, &ExplicitRscope, &*t)
             }
         }
     }
@@ -934,19 +934,19 @@ fn ty_generics_for_trait(ccx: &CrateCtxt,
     let param_id = trait_id;
 
     let self_trait_ref =
-        Rc::new(ty::TraitRef { def_id: local_def(trait_id),
-                               substs: (*substs).clone() });
+        Rc::new(ty::TraitRef { def_id=local_def(trait_id),
+                               substs=(*substs).clone() });
 
     let def = ty::TypeParameterDef {
-        space: subst::SelfSpace,
-        index: 0,
-        ident: special_idents::type_self,
-        def_id: local_def(param_id),
-        bounds: Rc::new(ty::ParamBounds {
-            builtin_bounds: ty::empty_builtin_bounds(),
-            trait_bounds: vec!(self_trait_ref),
+        space=subst::SelfSpace,
+        index=0,
+        ident=special_idents::type_self,
+        def_id=local_def(param_id),
+        bounds=Rc::new(ty::ParamBounds {
+            builtin_bounds=ty::empty_builtin_bounds(),
+            trait_bounds=vec!(self_trait_ref),
         }),
-        default: None
+        default=None
     };
 
     ccx.tcx.ty_param_defs.borrow_mut().insert(param_id, def.clone());
@@ -1014,10 +1014,10 @@ fn ty_generics(ccx: &CrateCtxt,
 
     for (i, l) in lifetimes.iter().enumerate() {
         result.regions.push(space,
-                            ty::RegionParameterDef { name: l.name,
-                                                     space: space,
-                                                     index: i,
-                                                     def_id: local_def(l.id) });
+                            ty::RegionParameterDef { name=l.name,
+                                                     space=space,
+                                                     index=i,
+                                                     def_id=local_def(l.id) });
     }
 
     for (i, param) in types.iter().enumerate() {
@@ -1039,9 +1039,9 @@ fn ty_generics(ccx: &CrateCtxt,
             None => { }
         }
 
-        let param_ty = ty::ParamTy {space: space,
-                                    idx: index,
-                                    def_id: local_def(param.id)};
+        let param_ty = ty::ParamTy {space=space,
+                                    idx=index,
+                                    def_id=local_def(param.id)};
         let bounds = Rc::new(compute_bounds(ccx,
                                             param_ty,
                                             &param.bounds,
@@ -1068,12 +1068,12 @@ fn ty_generics(ccx: &CrateCtxt,
         });
 
         let def = ty::TypeParameterDef {
-            space: space,
-            index: index,
-            ident: param.ident,
-            def_id: local_def(param.id),
-            bounds: bounds,
-            default: default
+            space=space,
+            index=index,
+            ident=param.ident,
+            def_id=local_def(param.id),
+            bounds=bounds,
+            default=default
         };
 
         ccx.tcx.ty_param_defs.borrow_mut().insert(param.id, def.clone());
@@ -1097,8 +1097,8 @@ fn ty_generics(ccx: &CrateCtxt,
          */
 
         let mut param_bounds = ty::ParamBounds {
-            builtin_bounds: ty::empty_builtin_bounds(),
-            trait_bounds: Vec::new()
+            builtin_bounds=ty::empty_builtin_bounds(),
+            trait_bounds=Vec::new()
         };
         for ast_bound in ast_bounds.iter() {
             match *ast_bound {
@@ -1208,16 +1208,16 @@ pub fn ty_of_foreign_fn_decl(ccx: &CrateCtxt,
     let t_fn = ty::mk_bare_fn(
         ccx.tcx,
         ty::BareFnTy {
-            abi: abi,
-            fn_style: ast::UnsafeFn,
-            sig: ty::FnSig {binder_id: def_id.node,
-                            inputs: input_tys,
-                            output: output_ty,
-                            variadic: decl.variadic}
+            abi=abi,
+            fn_style=ast::UnsafeFn,
+            sig=ty::FnSig {binder_id=def_id.node,
+                            inputs=input_tys,
+                            output=output_ty,
+                            variadic=decl.variadic}
         });
     let pty = Polytype {
-        generics: ty_generics_for_fn_or_method,
-        ty: t_fn
+        generics=ty_generics_for_fn_or_method,
+        ty=t_fn
     };
 
     ccx.tcx.tcache.borrow_mut().insert(def_id, pty.clone());

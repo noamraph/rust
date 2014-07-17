@@ -231,8 +231,8 @@ impl<'a,T> ImmutableVector<'a, T> for &'a [T] {
         assert!(end <= self.len());
         unsafe {
             transmute(Slice {
-                    data: self.as_ptr().offset(start as int),
-                    len: (end - start)
+                    data=self.as_ptr().offset(start as int),
+                    len=(end - start)
                 })
         }
     }
@@ -252,13 +252,13 @@ impl<'a,T> ImmutableVector<'a, T> for &'a [T] {
         unsafe {
             let p = self.as_ptr();
             if mem::size_of::<T>() == 0 {
-                Items{ptr: p,
-                      end: (p as uint + self.len()) as *const T,
-                      marker: marker::ContravariantLifetime::<'a>}
+                Items{ptr=p,
+                      end=(p as uint + self.len()) as *const T,
+                      marker=marker::ContravariantLifetime::<'a>}
             } else {
-                Items{ptr: p,
-                      end: p.offset(self.len() as int),
-                      marker: marker::ContravariantLifetime::<'a>}
+                Items{ptr=p,
+                      end=p.offset(self.len() as int),
+                      marker=marker::ContravariantLifetime::<'a>}
             }
         }
     }
@@ -266,40 +266,40 @@ impl<'a,T> ImmutableVector<'a, T> for &'a [T] {
     #[inline]
     fn split(self, pred: |&T|: 'a -> bool) -> Splits<'a, T> {
         Splits {
-            v: self,
-            pred: pred,
-            finished: false
+            v=self,
+            pred=pred,
+            finished=false
         }
     }
 
     #[inline]
     fn splitn(self, n: uint, pred: |&T|: 'a -> bool) -> SplitsN<'a, T> {
         SplitsN {
-            iter: self.split(pred),
-            count: n,
-            invert: false
+            iter=self.split(pred),
+            count=n,
+            invert=false
         }
     }
 
     #[inline]
     fn rsplitn(self, n: uint, pred: |&T|: 'a -> bool) -> SplitsN<'a, T> {
         SplitsN {
-            iter: self.split(pred),
-            count: n,
-            invert: true
+            iter=self.split(pred),
+            count=n,
+            invert=true
         }
     }
 
     #[inline]
     fn windows(self, size: uint) -> Windows<'a, T> {
         assert!(size != 0);
-        Windows { v: self, size: size }
+        Windows { v=self, size=size }
     }
 
     #[inline]
     fn chunks(self, size: uint) -> Chunks<'a, T> {
         assert!(size != 0);
-        Chunks { v: self, size: size }
+        Chunks { v=self, size=size }
     }
 
     #[inline]
@@ -606,8 +606,8 @@ impl<'a,T> MutableVector<'a, T> for &'a mut [T] {
         assert!(end <= self.len());
         unsafe {
             transmute(Slice {
-                    data: self.as_mut_ptr().offset(start as int) as *const T,
-                    len: (end - start)
+                    data=self.as_mut_ptr().offset(start as int) as *const T,
+                    len=(end - start)
                 })
         }
     }
@@ -637,15 +637,15 @@ impl<'a,T> MutableVector<'a, T> for &'a mut [T] {
         unsafe {
             let p = self.as_mut_ptr();
             if mem::size_of::<T>() == 0 {
-                MutItems{ptr: p,
-                         end: (p as uint + self.len()) as *mut T,
-                         marker: marker::ContravariantLifetime::<'a>,
-                         marker2: marker::NoCopy}
+                MutItems{ptr=p,
+                         end=(p as uint + self.len()) as *mut T,
+                         marker=marker::ContravariantLifetime::<'a>,
+                         marker2=marker::NoCopy}
             } else {
-                MutItems{ptr: p,
-                         end: p.offset(self.len() as int),
-                         marker: marker::ContravariantLifetime::<'a>,
-                         marker2: marker::NoCopy}
+                MutItems{ptr=p,
+                         end=p.offset(self.len() as int),
+                         marker=marker::ContravariantLifetime::<'a>,
+                         marker2=marker::NoCopy}
             }
         }
     }
@@ -659,13 +659,13 @@ impl<'a,T> MutableVector<'a, T> for &'a mut [T] {
 
     #[inline]
     fn mut_split(self, pred: |&T|: 'a -> bool) -> MutSplits<'a, T> {
-        MutSplits { v: self, pred: pred, finished: false }
+        MutSplits { v=self, pred=pred, finished=false }
     }
 
     #[inline]
     fn mut_chunks(self, chunk_size: uint) -> MutChunks<'a, T> {
         assert!(chunk_size > 0);
-        MutChunks { v: self, chunk_size: chunk_size }
+        MutChunks { v=self, chunk_size=chunk_size }
     }
 
     fn mut_shift_ref(&mut self) -> Option<&'a mut T> {
@@ -1310,7 +1310,7 @@ impl<'a, T> DoubleEndedIterator<&'a mut [T]> for MutChunks<'a, T> {
  */
 pub fn ref_slice<'a, A>(s: &'a A) -> &'a [A] {
     unsafe {
-        transmute(Slice { data: s, len: 1 })
+        transmute(Slice { data=s, len=1 })
     }
 }
 
@@ -1320,7 +1320,7 @@ pub fn ref_slice<'a, A>(s: &'a A) -> &'a [A] {
 pub fn mut_ref_slice<'a, A>(s: &'a mut A) -> &'a mut [A] {
     unsafe {
         let ptr: *const A = transmute(s);
-        transmute(Slice { data: ptr, len: 1 })
+        transmute(Slice { data=ptr, len=1 })
     }
 }
 
@@ -1346,8 +1346,8 @@ pub mod raw {
     pub unsafe fn buf_as_slice<T,U>(p: *const T, len: uint, f: |v: &[T]| -> U)
                                -> U {
         f(transmute(Slice {
-            data: p,
-            len: len
+            data=p,
+            len=len
         }))
     }
 
@@ -1363,8 +1363,8 @@ pub mod raw {
                                    f: |v: &mut [T]| -> U)
                                    -> U {
         f(transmute(Slice {
-            data: p as *const T,
-            len: len
+            data=p as *const T,
+            len=len
         }))
     }
 

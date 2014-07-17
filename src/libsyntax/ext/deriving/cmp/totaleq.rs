@@ -44,21 +44,21 @@ pub fn expand_deriving_totaleq(cx: &mut ExtCtxt,
     let attrs = vec!(cx.attribute(span, inline),
                      cx.attribute(span, doc));
     let trait_def = TraitDef {
-        span: span,
-        attributes: Vec::new(),
-        path: Path::new(vec!("std", "cmp", "Eq")),
-        additional_bounds: Vec::new(),
-        generics: LifetimeBounds::empty(),
-        methods: vec!(
+        span=span,
+        attributes=Vec::new(),
+        path=Path::new(vec!("std", "cmp", "Eq")),
+        additional_bounds=Vec::new(),
+        generics=LifetimeBounds::empty(),
+        methods=vec!(
             MethodDef {
-                name: "assert_receiver_is_total_eq",
-                generics: LifetimeBounds::empty(),
-                explicit_self: borrowed_explicit_self(),
-                args: vec!(),
-                ret_ty: nil_ty(),
-                attributes: attrs,
-                const_nonmatching: true,
-                combine_substructure: combine_substructure(|a, b, c| {
+                name="assert_receiver_is_total_eq",
+                generics=LifetimeBounds::empty(),
+                explicit_self=borrowed_explicit_self(),
+                args=vec!(),
+                ret_ty=nil_ty(),
+                attributes=attrs,
+                const_nonmatching=true,
+                combine_substructure=combine_substructure(|a, b, c| {
                     cs_total_eq_assert(a, b, c)
                 })
             }

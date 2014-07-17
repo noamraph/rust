@@ -59,7 +59,7 @@ pub fn trans_impl(ccx: &CrateContext,
     // Both here and below with generic methods, be sure to recurse and look for
     // items that we need to translate.
     if !generics.ty_params.is_empty() {
-        let mut v = TransItemVisitor{ ccx: ccx };
+        let mut v = TransItemVisitor{ ccx=ccx };
         for method in methods.iter() {
             visit::walk_method_helper(&mut v, &**method, ());
         }
@@ -71,7 +71,7 @@ pub fn trans_impl(ccx: &CrateContext,
             trans_fn(ccx, &*method.decl, &*method.body,
                      llfn, &param_substs::empty(), method.id, []);
         } else {
-            let mut v = TransItemVisitor{ ccx: ccx };
+            let mut v = TransItemVisitor{ ccx=ccx };
             visit::walk_method_helper(&mut v, &**method, ());
         }
     }
@@ -101,15 +101,15 @@ pub fn trans_method_callee<'a>(
     match origin {
         typeck::MethodStatic(did) => {
             Callee {
-                bcx: bcx,
-                data: Fn(callee::trans_fn_ref(bcx, did, MethodCall(method_call)))
+                bcx=bcx,
+                data=Fn(callee::trans_fn_ref(bcx, did, MethodCall(method_call)))
             }
         }
         typeck::MethodParam(typeck::MethodParam {
-            trait_id: trait_id,
-            method_num: off,
-            param_num: p,
-            bound_num: b
+            trait_id=trait_id,
+            method_num=off,
+            param_num=p,
+            bound_num=b
         }) => {
             ty::populate_implementations_for_trait_if_necessary(
                 bcx.tcx(),
@@ -246,7 +246,7 @@ fn trans_monomorphized_callee<'a>(bcx: &'a Block<'a>,
                                                callee_substs,
                                                callee_origins);
 
-          Callee { bcx: bcx, data: Fn(llfn) }
+          Callee { bcx=bcx, data=Fn(llfn) }
       }
       typeck::vtable_param(..) => {
           bcx.tcx().sess.bug(
@@ -300,8 +300,8 @@ fn combine_impl_and_methods_tps(bcx: &Block,
     let (rcvr_type, rcvr_self, rcvr_method) = rcvr_substs.types.clone().split();
     assert!(rcvr_method.is_empty());
     let ty_substs = subst::Substs {
-        regions: subst::ErasedRegions,
-        types: subst::VecPerParamSpace::new(rcvr_type, rcvr_self, node_method)
+        regions=subst::ErasedRegions,
+        types=subst::VecPerParamSpace::new(rcvr_type, rcvr_self, node_method)
     };
 
     // Now do the same work for the vtables.
@@ -396,10 +396,10 @@ pub fn trans_trait_callee_from_llval<'a>(bcx: &'a Block<'a>,
     let mptr = PointerCast(bcx, mptr, llcallee_ty.ptr_to());
 
     return Callee {
-        bcx: bcx,
-        data: TraitMethod(MethodData {
-            llfn: mptr,
-            llself: llself,
+        bcx=bcx,
+        data=TraitMethod(MethodData {
+            llfn=mptr,
+            llself=llself,
         })
     };
 }

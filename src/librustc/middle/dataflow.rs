@@ -219,7 +219,7 @@ fn build_nodeid_to_index(decl: Option<&ast::FnDecl>,
             entry: CFGIndex,
             index: &'a mut NodeMap<CFGIndex>,
         }
-        let mut formals = Formals { entry: entry, index: index };
+        let mut formals = Formals { entry=entry, index=index };
         visit::walk_fn_decl(&mut formals, decl, ());
         impl<'a> visit::Visitor<()> for Formals<'a> {
             fn visit_pat(&mut self, p: &ast::Pat, e: ()) {
@@ -251,16 +251,16 @@ impl<'a, O:DataFlowOperator> DataFlowContext<'a, O> {
         let nodeid_to_index = build_nodeid_to_index(decl, cfg);
 
         DataFlowContext {
-            tcx: tcx,
-            analysis_name: analysis_name,
-            words_per_id: words_per_id,
-            index_to_bitset: Vec::new(),
-            nodeid_to_index: nodeid_to_index,
-            bits_per_id: bits_per_id,
-            oper: oper,
-            gens: gens,
-            kills: kills,
-            on_entry: on_entry
+            tcx=tcx,
+            analysis_name=analysis_name,
+            words_per_id=words_per_id,
+            index_to_bitset=Vec::new(),
+            nodeid_to_index=nodeid_to_index,
+            bits_per_id=bits_per_id,
+            oper=oper,
+            gens=gens,
+            kills=kills,
+            on_entry=on_entry
         }
     }
 
@@ -449,8 +449,8 @@ impl<'a, O:DataFlowOperator+Clone+'static> DataFlowContext<'a, O> {
         {
             let words_per_id = self.words_per_id;
             let mut propcx = PropagationContext {
-                dfcx: &mut *self,
-                changed: true
+                dfcx=&mut *self,
+                changed=true
             };
 
             let mut temp = Vec::from_elem(words_per_id, 0u);

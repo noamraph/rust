@@ -358,7 +358,7 @@ impl<'a> Id<'a> {
             assert!(is_letter_or_underscore(chars.next().unwrap()));
             assert!(chars.all(is_constituent));
         }
-        return Id{ name: name };
+        return Id{ name=name };
 
         fn is_letter_or_underscore(c: char) -> bool {
             in_range('a', c, 'z') || in_range('A', c, 'Z') || c == '_'
@@ -522,7 +522,7 @@ mod tests {
     }
 
     fn Edge(from: uint, to: uint, label: &'static str) -> Edge {
-        Edge { from: from, to: to, label: label }
+        Edge { from=from, to=to, label=label }
     }
 
     struct LabelledGraph {
@@ -576,9 +576,9 @@ mod tests {
                node_labels: Trivial,
                edges: Vec<Edge>) -> LabelledGraph {
             LabelledGraph {
-                name: name,
-                node_labels: node_labels.to_opt_strs(),
-                edges: edges
+                name=name,
+                node_labels=node_labels.to_opt_strs(),
+                edges=edges
             }
         }
     }
@@ -588,7 +588,7 @@ mod tests {
                node_labels: Trivial,
                edges: Vec<Edge>) -> LabelledGraphWithEscStrs {
             LabelledGraphWithEscStrs {
-                graph: LabelledGraph::new(name, node_labels, edges)
+                graph=LabelledGraph::new(name, node_labels, edges)
             }
         }
     }

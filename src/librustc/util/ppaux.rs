@@ -377,7 +377,7 @@ pub fn ty_to_string(cx: &ctxt, typ: t) -> String {
       }
       ty_infer(infer_ty) => infer_ty.to_string(),
       ty_err => "[type error]".to_string(),
-      ty_param(ParamTy {idx: id, def_id: did, ..}) => {
+      ty_param(ParamTy {idx=id, def_id=did, ..}) => {
           let ident = match cx.ty_param_defs.borrow().find(&did.node) {
               Some(def) => token::get_ident(def.ident).get().to_string(),
               // This can only happen when a type mismatch error happens and
@@ -396,7 +396,7 @@ pub fn ty_to_string(cx: &ctxt, typ: t) -> String {
           parameterized(cx, base.as_slice(), substs, &generics)
       }
       ty_trait(box ty::TyTrait {
-          def_id: did, ref substs, ref bounds
+          def_id=did, ref substs, ref bounds
       }) => {
           let base = ty::item_path_str(cx, did);
           let trait_def = ty::lookup_trait_def(cx, did);

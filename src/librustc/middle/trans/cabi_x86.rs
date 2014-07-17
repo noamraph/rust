@@ -82,7 +82,7 @@ pub fn compute_abi_info(ccx: &CrateContext,
     }
 
     return FnType {
-        arg_tys: arg_tys,
-        ret_ty: ret_ty,
+        arg_tys=arg_tys,
+        ret_ty=ret_ty,
     };
 }

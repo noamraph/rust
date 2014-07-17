@@ -24,9 +24,9 @@ impl ExternalHtml {
                load_external_files(before_content),
                load_external_files(after_content)) {
             (Some(ih), Some(bc), Some(ac)) => Some(ExternalHtml {
-                in_header: ih,
-                before_content: bc,
-                after_content: ac
+                in_header=ih,
+                before_content=bc,
+                after_content=ac
             }),
             _ => None
         }

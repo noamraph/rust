@@ -110,13 +110,13 @@ impl QueuePool {
     pub fn new(loop_: &mut Loop) -> Box<QueuePool> {
         let handle = UvHandle::alloc(None::<AsyncWatcher>, uvll::UV_ASYNC);
         let state = Arc::new(State {
-            handle: handle,
-            lock: unsafe {NativeMutex::new()},
-            queue: mpsc::Queue::new(),
+            handle=handle,
+            lock=unsafe {NativeMutex::new()},
+            queue=mpsc::Queue::new(),
         });
         let mut q = box QueuePool {
-            refcnt: 0,
-            queue: state,
+            refcnt=0,
+            queue=state,
         };
 
         unsafe {
@@ -136,7 +136,7 @@ impl QueuePool {
             }
             self.refcnt += 1;
         }
-        Queue { queue: self.queue.clone() }
+        Queue { queue=self.queue.clone() }
     }
 
     pub fn handle(&self) -> *mut uvll::uv_async_t { self.queue.handle }
@@ -157,7 +157,7 @@ impl Clone for Queue {
         // and if the queue is dropped later on it'll see the increment for the
         // decrement anyway.
         self.queue.queue.push(Increment);
-        Queue { queue: self.queue.clone() }
+        Queue { queue=self.queue.clone() }
     }
 }
 

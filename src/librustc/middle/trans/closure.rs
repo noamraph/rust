@@ -182,18 +182,18 @@ pub fn store_environment<'a>(
     // tuple.  This could be a ptr in uniq or a box or on stack,
     // whatever.
     let cbox_ty = tuplify_box_ty(tcx, cdata_ty);
-    let cboxptr_ty = ty::mk_ptr(tcx, ty::mt {ty:cbox_ty, mutbl:ast::MutImmutable});
+    let cboxptr_ty = ty::mk_ptr(tcx, ty::mt {ty=cbox_ty, mutbl=ast::MutImmutable});
     let llboxptr_ty = type_of(ccx, cboxptr_ty);
 
     // If there are no bound values, no point in allocating anything.
     if bound_values.is_empty() {
-        return ClosureResult {llbox: C_null(llboxptr_ty),
-                              cdata_ty: cdata_ty,
-                              bcx: bcx};
+        return ClosureResult {llbox=C_null(llboxptr_ty),
+                              cdata_ty=cdata_ty,
+                              bcx=bcx};
     }
 
     // allocate closure in the heap
-    let Result {bcx: bcx, val: llbox} = allocate_cbox(bcx, store, cdata_ty);
+    let Result {bcx=bcx, val=llbox} = allocate_cbox(bcx, store, cdata_ty);
 
     let llbox = PointerCast(bcx, llbox, llboxptr_ty);
     debug!("tuplify_box_ty = {}", ty_to_string(tcx, cbox_ty));
@@ -220,7 +220,7 @@ pub fn store_environment<'a>(
         }
     }
 
-    ClosureResult { llbox: llbox, cdata_ty: cdata_ty, bcx: bcx }
+    ClosureResult { llbox=llbox, cdata_ty=cdata_ty, bcx=bcx }
 }
 
 // Given a context and a list of upvars, build a closure. This just
@@ -240,7 +240,7 @@ fn build_closure<'a>(bcx0: &'a Block<'a>,
     let mut env_vals = Vec::new();
     for freevar in freevars.iter() {
         let datum = expr::trans_local_var(bcx, freevar.def);
-        env_vals.push(EnvValue {action: freevar_mode, datum: datum});
+        env_vals.push(EnvValue {action=freevar_mode, datum=datum});
     }
 
     store_environment(bcx, env_vals, store)
