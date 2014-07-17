@@ -1642,7 +1642,7 @@ foo_module!()
     #[test]
     fn pat_idents(){
         let pat = string_to_pat(
-            "(a,Foo{x:c @ (b,9),y:Bar(4,d)})".to_string());
+            "(a,Foo{x=c @ (b,9),y=Bar(4,d)})".to_string());
         let idents = pattern_bindings(pat);
         assert_eq!(idents, strs_to_idents(vec!("a","c","b","d")));
     }
@@ -1653,7 +1653,7 @@ foo_module!()
     #[test]
     fn crate_bindings_test(){
         let the_crate = string_to_crate("fn main (a : int) -> int {|b| {
-        match 34 {None => 3, Some(i) | i => j, Foo{k:z,l:y} => \"banana\"}} }".to_string());
+        match 34 {None => 3, Some(i) | i => j, Foo{k=z,l=y} => \"banana\"}} }".to_string());
         let idents = crate_bindings(&the_crate);
         assert_eq!(idents, strs_to_idents(vec!("a","b","None","i","i","z","y")));
     }
